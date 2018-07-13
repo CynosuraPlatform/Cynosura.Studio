@@ -1,0 +1,17 @@
+﻿main(model) ::= <<
+using Autofac;
+using Cynosura.Core.Data;
+using $model.ProjectInfo.Namespace$.Core.Entities;
+
+namespace $model.ProjectInfo.Namespace$.Data.Autofac
+{
+    public class $model.Entity.Name$Module : Module
+    {
+		protected override void Load(ContainerBuilder builder)
+		{
+			builder.RegisterType<BaseEntityRepository<$model.Entity.Name$> >().As<IEntityRepository<$model.Entity.Name$> >();
+		}
+    }
+}
+
+>>

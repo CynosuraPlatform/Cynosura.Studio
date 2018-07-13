@@ -1,0 +1,21 @@
+﻿main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.Text;
+using AutoMapper;
+using $model.ProjectInfo.Namespace$.Core.Entities;
+using $model.ProjectInfo.Namespace$.Core.Services.Models;
+
+namespace $model.ProjectInfo.Namespace$.Core.AutoMapper
+{
+    public class $model.Entity.Name$Profile : Profile
+    {
+		public $model.Entity.Name$Profile()
+		{
+			CreateMap<$model.Entity.Name$CreateModel, $model.Entity.Name$>();
+			CreateMap<$model.Entity.Name$UpdateModel, $model.Entity.Name$>();
+		}
+    }
+}
+
+>>

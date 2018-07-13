@@ -1,0 +1,68 @@
+﻿main(model) ::= <<
+import { Component, Input, OnInit } from "@angular/core";
+import { ActivatedRoute, Router, Params } from "@angular/router";
+
+import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
+import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+
+import { Error } from "../core/error.model";
+
+
+@Component({
+    selector: "$model.Entity.NameLower$-edit",
+    templateUrl: "./edit.component.html"
+})
+export class $model.Entity.Name$EditComponent implements OnInit {
+    $model.Entity.NameLower$: $model.Entity.Name$;
+    error: Error;
+
+    constructor(private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
+        private route: ActivatedRoute,
+        private router: Router) {
+    }
+
+    ngOnInit(): void {
+        this.route.params.forEach((params: Params) => {
+            let id = +params["id"];
+            this.get$model.Entity.Name$(id);
+        });
+    }
+
+    private get$model.Entity.Name$(id: number): void {
+        if (id === 0) {
+            this.$model.Entity.NameLower$ = new $model.Entity.Name$();
+        } else {
+            this.$model.Entity.NameLower$Service.get$model.Entity.Name$(id).then($model.Entity.NameLower$ => {
+                this.$model.Entity.NameLower$ = $model.Entity.NameLower$;
+            });
+        }
+    }
+
+    cancel(): void {
+        window.history.back();
+    }
+
+    onSubmit(): void {
+        this.save$model.Entity.Name$();
+    }
+
+    private save$model.Entity.Name$(): void {
+        if (this.$model.Entity.NameLower$.id) {
+            this.$model.Entity.NameLower$Service.update$model.Entity.Name$(this.$model.Entity.NameLower$)
+                .then(
+                    () => window.history.back(),
+                    error => this.error = error
+                );
+        } else {
+            this.$model.Entity.NameLower$Service.create$model.Entity.Name$(this.$model.Entity.NameLower$)
+                .then(
+                    () => window.history.back(),
+                    error => this.error = error
+                );
+        }
+    }
+
+}
+
+>>
+

@@ -1,0 +1,91 @@
+﻿main(model) ::= <<
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+
+import { Modal } from "ngx-modialog/plugins/bootstrap";
+
+import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
+import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+
+import { StoreService } from "../core/store.service";
+import { Error } from "../core/error.model";
+import { Page } from "../core/page.model";
+
+@Component({
+    selector: "$model.Entity.NameLower$-list",
+    templateUrl: "./list.component.html"
+})
+export class $model.Entity.Name$ListComponent implements OnInit {
+    content: Page<$model.Entity.Name$>;
+    error: Error;
+    pageSize = 10;
+
+    constructor(
+        private modal: Modal,
+        private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
+        private router: Router,
+        private route: ActivatedRoute,
+        private storeService: StoreService
+        ) {}
+
+    ngOnInit(): void {
+        let pageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex");
+        if (!pageIndex) pageIndex = 0;
+        this.get$model.Entity.PluralName$(pageIndex);
+    }
+
+    get$model.Entity.PluralName$(pageIndex: number): void {        
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(pageIndex, this.pageSize)
+            .then(content => {
+                if (content.pageItems.length == 0 && content.totalItems != 0) {
+                    this.content.currentPageIndex--;
+                    this.storeService.set("$model.Entity.PluralNameLower$PageIndex", this.content.currentPageIndex);
+                    this.get$model.Entity.PluralName$(this.content.currentPageIndex);
+                }
+                this.content = content;
+            })
+            .catch(error => this.error = error);
+    }
+
+    reset(): void {
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(this.content.currentPageIndex, this.pageSize)
+            .then(content => { this.content = content; },
+                error => this.error = error.json() as Error);
+    }
+
+    edit(id: number): void {
+        this.router.navigate([id], { relativeTo: this.route });
+    }
+
+    add(): void {
+        this.router.navigate([0], { relativeTo: this.route });
+    }
+
+    delete(id: number): void {
+        const dialogRef = this.modal
+            .confirm()
+            .size("sm")
+            .keyboard(27)
+            .title("Удалить?")
+            .body("Действительно хотите удалить?")
+            .okBtn("Удалить")
+            .cancelBtn("Отмена")
+            .open();
+		dialogRef.result.then(dialog => dialog.result)
+            .then(() => {
+                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
+                    .then(() => {
+                        this.get$model.Entity.PluralName$(this.content.currentPageIndex);
+                    })
+                    .catch(error => this.error = error)
+            })
+            .catch(() => {});
+    }
+
+    onPageSelected(pageIndex: number) {
+        this.storeService.set("$model.Entity.PluralNameLower$PageIndex", pageIndex);
+        this.get$model.Entity.PluralName$(pageIndex);
+    }
+}
+>>
+

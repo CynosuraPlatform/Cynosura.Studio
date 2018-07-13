@@ -1,0 +1,11 @@
+﻿main(model) ::= <<
+export class $model.Entity.Name$
+{
+	id: number;
+$model.Entity.Fields:field(); separator="\n"$
+}
+>>
+
+field(field) ::= <<
+	$field.NameLower$: $field.JsTypeName$;
+>>

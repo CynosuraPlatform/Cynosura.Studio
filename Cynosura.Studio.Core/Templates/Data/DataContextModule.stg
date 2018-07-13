@@ -1,0 +1,17 @@
+﻿main(model) ::= <<
+using Cynosura.EF;
+using $model.ProjectInfo.Namespace$.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace $model.ProjectInfo.Namespace$.Data.DataContextModule
+{
+    public class $model.Entity.Name$Module : IDbContextModule
+    {
+        public void CreateModel(ModelBuilder builder)
+		{
+			builder.Entity<$model.Entity.Name$>();
+		}
+    }
+}
+
+>>

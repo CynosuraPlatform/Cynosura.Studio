@@ -1,0 +1,40 @@
+﻿main(model) ::= <<
+<h2>$model.Entity.PluralDisplayName$</h2>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<error-handler [error]="error"></error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+$model.Entity.Fields:fieldHeader(); separator="\n"$
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let $model.Entity.NameLower$ of content.pageItems">
+$model.Entity.Fields:field(); separator="\n"$
+            <td>
+                <button class="btn btn-default" (click)="edit($model.Entity.NameLower$.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete($model.Entity.NameLower$.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected(\$event)">
+</pager>
+>>
+
+fieldHeader(field) ::= <<
+            <th>$field.DisplayName$</th>
+>>
+
+field(field) ::= <<
+            <td>{{$model.Entity.NameLower$.$field.NameLower$}}</td>
+>>

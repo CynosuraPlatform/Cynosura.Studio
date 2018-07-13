@@ -1,0 +1,18 @@
+﻿main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace $model.ProjectInfo.Namespace$.Core.Services.Models
+{
+    public class $model.Entity.Name$UpdateModel
+    {
+$model.Entity.Fields:field(); separator="\n"$
+    }
+}
+
+>>
+
+field(field) ::= <<
+		public $field.TypeName$ $field.Name$ { get; set; }
+>>
