@@ -1,0 +1,32 @@
+<h2>Projects</h2>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<error-handler [error]="error"></error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Path</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let project of content.pageItems">
+            <td>{{project.name}}</td>
+            <td>{{project.path}}</td>
+            <td>
+                <button class="btn btn-default" (click)="edit(project.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(project.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected($event)">
+</pager>
