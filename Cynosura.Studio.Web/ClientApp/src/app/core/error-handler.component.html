@@ -1,0 +1,16 @@
+﻿<div class="alert alert-danger" style="margin-top: 20px;" *ngIf="error">
+    <div>{{ error.message }}</div>
+
+    <div class="text-danger" *ngIf="error.errors">
+        <ul>
+            <li *ngFor="let errorDetail of error.errors">
+                {{ errorDetail.message }}{{ errorDetail.description }}
+            </li>
+        </ul>
+    </div>
+    
+    <div *ngIf="isDev && error.exceptionType">
+        <div class="text-danger" *ngIf="error.exceptionType">{{ error.exceptionType }}</div>
+        <div class="text-danger" *ngIf="error.exceptionMessage">{{ error.exceptionMessage }}</div>
+    </div>
+</div>

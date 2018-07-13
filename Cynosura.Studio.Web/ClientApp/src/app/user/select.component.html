@@ -1,0 +1,4 @@
+﻿<select class="form-control" [ngModel]="selectedUserId" [disabled]="readonly" (ngModelChange)="selectedUserIdChange.emit($event!='0: null' ? $event : null)">
+    <option [ngValue]="null" selected="selected">Не выбран</option>
+    <option [ngValue]="user.id" *ngFor="let user of users">{{ user.id }} - {{user.email}}</option>
+</select>

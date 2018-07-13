@@ -1,0 +1,7 @@
+﻿<div class="text-danger" *ngIf="model && model.errors">
+    <ul>
+        <li *ngFor="let error of model.errors">
+            {{ error.errorMessage }}
+        </li>
+    </ul>
+</div>
