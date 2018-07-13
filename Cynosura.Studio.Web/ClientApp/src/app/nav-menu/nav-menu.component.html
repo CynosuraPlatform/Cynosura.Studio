@@ -22,16 +22,6 @@
                         <span class="glyphicon" [ngClass]="item.cssClass"></span> {{item.name}}
                     </a>
                 </li>
-                <li [routerLinkActive]="['link-active']" *ngIf="!loggedIn">
-                    <a [routerLink]="['login']">
-                        <span class='glyphicon glyphicon-log-in'></span> Log In
-                    </a>
-                </li>
-                <li [routerLinkActive]="['link-active']" *ngIf="loggedIn">
-                    <a href="javascript:void(0);" (click)="logout()">
-                        <span class='glyphicon glyphicon-log-out'></span> Log Out
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
