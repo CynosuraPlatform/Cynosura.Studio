@@ -15,13 +15,13 @@ export class ProjectService {
     getProjects(pageIndex?: number, pageSize?: number): Promise<Page<Project> > {
         const url = this.projectUrl;
 
-        const params = new HttpParams();
+        let params = new HttpParams();
 
         if (pageIndex != undefined)
-            params.set("pageIndex", pageIndex.toString());
+            params = params.set("pageIndex", pageIndex.toString());
 
         if (pageSize != undefined)
-            params.set("pageSize", pageSize.toString());
+            params = params.set("pageSize", pageSize.toString());
 
         return this.httpClient.get<Page<Project> >(url, {
             params: params

@@ -16,13 +16,13 @@ export class $model.Entity.Name$Service {
     get$model.Entity.PluralName$(pageIndex?: number, pageSize?: number): Promise<Page<$model.Entity.Name$> > {
         const url = this.$model.Entity.NameLower$Url;
 
-        const params = new HttpParams();
+        let params = new HttpParams();
 
         if (pageIndex != undefined)
-            params.set("pageIndex", pageIndex.toString());
+            params = params.set("pageIndex", pageIndex.toString());
 
         if (pageSize != undefined)
-            params.set("pageSize", pageSize.toString());
+            params = params.set("pageSize", pageSize.toString());
 
         return this.httpClient.get<Page<$model.Entity.Name$> >(url, {
             params: params
