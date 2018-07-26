@@ -5,13 +5,15 @@ import { CoreModule } from "../core/core.module";
 
 import { ProjectListComponent } from "./list.component";
 import { ProjectEditComponent } from "./edit.component";
+import { ProjectSelectComponent } from "./select.component";
 
 import { ProjectService } from "./project.service";
 
 @NgModule({
     declarations: [
         ProjectListComponent,
-        ProjectEditComponent
+        ProjectEditComponent,
+        ProjectSelectComponent
     ],
     imports: [
 		RouterModule.forChild([
@@ -22,6 +24,9 @@ import { ProjectService } from "./project.service";
     ],
     providers: [
         ProjectService
+    ],
+    exports: [
+        ProjectSelectComponent
     ]
 })
 export class ProjectModule {

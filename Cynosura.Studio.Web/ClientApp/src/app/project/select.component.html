@@ -1,0 +1,4 @@
+<select class="form-control" [ngModel]="selectedProjectId" [disabled]="readonly" (ngModelChange)="selectedProjectIdChange.emit($event!='0: null' ? $event : null)">
+    <option [ngValue]="null" selected="selected">Select Project</option>
+    <option [ngValue]="project.id" *ngFor="let project of projects">{{ project.name }}</option>
+</select>

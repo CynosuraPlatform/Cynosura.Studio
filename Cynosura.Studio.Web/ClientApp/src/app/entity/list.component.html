@@ -1,0 +1,38 @@
+<h2>Entities</h2>
+
+<project-select [(selectedProjectId)]="projectId"></project-select>
+
+<button *ngIf="projectId" type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<error-handler [error]="error"></error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Plural Name</th>
+            <th>Display Name</th>
+            <th>Plural Display Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let entity of content.pageItems">
+            <td>{{entity.name}}</td>
+            <td>{{entity.pluralName}}</td>
+            <td>{{entity.displayName}}</td>
+            <td>{{entity.pluralDisplayName}}</td>
+            <td>
+                <button class="btn btn-default" (click)="edit(entity.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(entity.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected($event)">
+</pager>
