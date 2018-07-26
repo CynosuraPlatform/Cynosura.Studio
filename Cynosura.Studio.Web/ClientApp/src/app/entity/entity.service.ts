@@ -12,12 +12,12 @@ export class EntityService {
 
     constructor(private httpClient: HttpClient) { }
 
-    getEntities(projectId: number, pageIndex?: number, pageSize?: number): Promise<Page<Entity>> {
+    getEntities(solutionId: number, pageIndex?: number, pageSize?: number): Promise<Page<Entity>> {
         const url = this.entityUrl;
 
         let params = new HttpParams();
 
-        params = params.set("projectId", projectId.toString());
+        params = params.set("solutionId", solutionId.toString());
 
         if (pageIndex != undefined)
             params = params.set("pageIndex", pageIndex.toString());
@@ -32,40 +32,40 @@ export class EntityService {
             .toPromise();
     }
 
-    getEntity(projectId: number, id: string): Promise<Entity> {
+    getEntity(solutionId: number, id: string): Promise<Entity> {
         const url = `${this.entityUrl}/${id}`;
         return this.httpClient.get<Entity>(url,
             {
-                params: { "projectId": projectId.toString() }
+                params: { "solutionId": solutionId.toString() }
             })
             .toPromise();
     }
 
-    updateEntity(projectId: number, entity: Entity): Promise<Entity> {
+    updateEntity(solutionId: number, entity: Entity): Promise<Entity> {
         const url = `${this.entityUrl}/${entity.id}`;
         return this.httpClient.put<Entity>(url,
             JSON.stringify(entity),
             {
                 headers: this.headers,
-                params: { "projectId": projectId.toString() }
+                params: { "solutionId": solutionId.toString() }
             })
             .toPromise();
     }
 
-    createEntity(projectId: number, entity: Entity): Promise<Entity> {
+    createEntity(solutionId: number, entity: Entity): Promise<Entity> {
         return this.httpClient.post<Entity>(this.entityUrl, JSON.stringify(entity),
             {
                 headers: this.headers,
-                params: { "projectId": projectId.toString() }
+                params: { "solutionId": solutionId.toString() }
             })
             .toPromise();
     }
 
-    deleteEntity(projectId: number, id: number): Promise<{}> {
+    deleteEntity(solutionId: number, id: number): Promise<{}> {
         const url = `${this.entityUrl}/${id}`;
         return this.httpClient.delete(url,
             {
-                params: { "projectId": projectId.toString() }
+                params: { "solutionId": solutionId.toString() }
             })
             .toPromise();
     }

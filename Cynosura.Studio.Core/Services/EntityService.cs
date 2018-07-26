@@ -14,29 +14,29 @@ namespace Cynosura.Studio.Core.Services
 {
     public class EntityService : IEntityService
     {
-        private readonly IProjectService _projectService;
+        private readonly ISolutionService _solutionService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EntityService(IProjectService projectService,
+        public EntityService(ISolutionService solutionService,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _projectService = projectService;
+            _solutionService = solutionService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<Entity> GetEntityAsync(int projectId, Guid id)
+        public async Task<Entity> GetEntityAsync(int solutionId, Guid id)
         {
-            var entities = await GetEntitiesAsync(projectId);
+            var entities = await GetEntitiesAsync(solutionId);
             return entities.PageItems
                 .FirstOrDefault(e => e.Id == id);
         }
 
         private List<Entity> GetEntitiesFromSolution(string path)
         {
-            var solution = new Solution.Solution(path);
+            var solution = new Generator.Models.Solution(path);
             return solution.GetEntities();
         }
 
@@ -55,24 +55,24 @@ namespace Cynosura.Studio.Core.Services
             }
         }
 
-        public async Task<PageModel<Entity> > GetEntitiesAsync(int projectId, int? pageIndex = null, int? pageSize = null)
+        public async Task<PageModel<Entity> > GetEntitiesAsync(int solutionId, int? pageIndex = null, int? pageSize = null)
         {
-            var project = await _projectService.GetProjectAsync(projectId);
-            var entities = GetEntitiesFromSolution(project.Path);
+            var solution = await _solutionService.GetSolutionAsync(solutionId);
+            var entities = GetEntitiesFromSolution(solution.Path);
             return ToPageModel(entities, pageIndex, pageSize);
         }
 
-        public async Task<Guid> CreateEntityAsync(int projectId, EntityCreateModel model)
+        public async Task<Guid> CreateEntityAsync(int solutionId, EntityCreateModel model)
         {
             return Guid.NewGuid();
         }
 
-        public async Task UpdateEntityAsync(int projectId, Guid id, EntityUpdateModel model)
+        public async Task UpdateEntityAsync(int solutionId, Guid id, EntityUpdateModel model)
         {
             
         }
 
-        public async Task DeleteEntityAsync(int projectId, Guid id)
+        public async Task DeleteEntityAsync(int solutionId, Guid id)
         {
             
         }

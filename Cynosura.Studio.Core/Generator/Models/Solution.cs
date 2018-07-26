@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Cynosura.Studio.Core.Entities;
 using Newtonsoft.Json;
 
-namespace Cynosura.Studio.Core.Solution
+namespace Cynosura.Studio.Core.Generator.Models
 {
     public class Solution
     {
@@ -46,16 +45,16 @@ namespace Cynosura.Studio.Core.Solution
             return JsonConvert.DeserializeObject<T>(content);
         }
 
-        public List<Entity> GetEntities()
+        public List<Entities.Entity> GetEntities()
         {
             var coreProject = Projects.Single(p => p.Namespace.EndsWith(".Core"));
             var files = coreProject.GetFiles("Metadata\\Entities");
-            var entities = new List<Entity>();
+            var entities = new List<Entities.Entity>();
             foreach (var file in files)
             {
                 using (var reader = new StreamReader(file))
                 {
-                    var entity = DeserializeMetadata<Entity>(reader.ReadToEnd());
+                    var entity = DeserializeMetadata<Entities.Entity>(reader.ReadToEnd());
                     entities.Add(entity);
                 }
             }

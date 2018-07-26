@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
-import { ProjectModule } from "../project/project.module";
+import { SolutionModule } from "../solution/solution.module";
 
 import { EntityListComponent } from "./list.component";
 import { EntityEditComponent } from "./edit.component";
@@ -20,7 +20,7 @@ import { EntityService } from "./entity.service";
             { path: "entity/:id", component: EntityEditComponent }
         ]),
         CoreModule,
-        ProjectModule
+        SolutionModule
     ],
     providers: [
         EntityService

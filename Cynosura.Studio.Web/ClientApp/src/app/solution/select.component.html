@@ -1,0 +1,4 @@
+<select class="form-control" [ngModel]="selectedSolutionId" [disabled]="readonly" (ngModelChange)="selectedSolutionIdChange.emit($event!='0: null' ? $event : null)">
+    <option [ngValue]="null" selected="selected">Select Solution</option>
+    <option [ngValue]="solution.id" *ngFor="let solution of solutions">{{ solution.name }}</option>
+</select>

@@ -1,4 +1,4 @@
-<h2>Projects</h2>
+<h2>Solutions</h2>
 
 <button type="button" class="btn btn-default" (click)="add()">Create</button>
 
@@ -13,12 +13,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let project of content.pageItems">
-            <td>{{project.name}}</td>
-            <td>{{project.path}}</td>
+        <tr *ngFor="let solution of content.pageItems">
+            <td>{{solution.name}}</td>
+            <td>{{solution.path}}</td>
             <td>
-                <button class="btn btn-default" (click)="edit(project.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete(project.id)">Delete</button>
+                <button class="btn btn-default" (click)="edit(solution.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(solution.id)">Delete</button>
             </td>
         </tr>
     </tbody>

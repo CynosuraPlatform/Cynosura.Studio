@@ -28,39 +28,39 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpGet("")]
-        public async Task<PageModel<EntityViewModel> > GetEntitiesAsync(int projectId, int? pageIndex, int? pageSize)
+        public async Task<PageModel<EntityViewModel> > GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize)
         {
-            var entities = await _entityService.GetEntitiesAsync(projectId, pageIndex, pageSize);
+            var entities = await _entityService.GetEntitiesAsync(solutionId, pageIndex, pageSize);
             return entities.Map<Entity, EntityViewModel>(_mapper);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<EntityViewModel> GetEntityAsync(int projectId, Guid id)
+        public async Task<EntityViewModel> GetEntityAsync(int solutionId, Guid id)
         {
-            var entity = await _entityService.GetEntityAsync(projectId, id);
+            var entity = await _entityService.GetEntityAsync(solutionId, id);
             return _mapper.Map<Entity, EntityViewModel>(entity);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> PutEntityAsync(int projectId, Guid id, [FromBody] EntityUpdateViewModel entity)
+        public async Task<StatusViewModel> PutEntityAsync(int solutionId, Guid id, [FromBody] EntityUpdateViewModel entity)
         {
             var model = _mapper.Map<EntityUpdateViewModel, EntityUpdateModel>(entity);
-            await _entityService.UpdateEntityAsync(projectId, id, model);
+            await _entityService.UpdateEntityAsync(solutionId, id, model);
             return new StatusViewModel();
         }
 
         [HttpPost("")]
-        public async Task<StatusViewModel> PostEntityAsync(int projectId, [FromBody] EntityCreateViewModel entity)
+        public async Task<StatusViewModel> PostEntityAsync(int solutionId, [FromBody] EntityCreateViewModel entity)
         {
             var model = _mapper.Map<EntityCreateViewModel, EntityCreateModel>(entity);
-            await _entityService.CreateEntityAsync(projectId, model);
+            await _entityService.CreateEntityAsync(solutionId, model);
             return new StatusViewModel();
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<StatusViewModel> DeleteEntityAsync(int projectId, Guid id)
+        public async Task<StatusViewModel> DeleteEntityAsync(int solutionId, Guid id)
         {
-            await _entityService.DeleteEntityAsync(projectId, id);
+            await _entityService.DeleteEntityAsync(solutionId, id);
             return new StatusViewModel();
         }
     }

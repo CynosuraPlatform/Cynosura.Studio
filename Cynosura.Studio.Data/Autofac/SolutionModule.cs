@@ -4,11 +4,11 @@ using Cynosura.Studio.Core.Entities;
 
 namespace Cynosura.Studio.Data.Autofac
 {
-    public class ProjectModule : Module
+    public class SolutionModule : Module
     {
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<BaseEntityRepository<Project> >().As<IEntityRepository<Project> >();
+			builder.RegisterType<BaseEntityRepository<Solution> >().As<IEntityRepository<Solution> >();
 		}
     }
 }

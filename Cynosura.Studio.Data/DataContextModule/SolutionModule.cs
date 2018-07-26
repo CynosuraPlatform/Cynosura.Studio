@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Data.DataContextModule
 {
-    public class ProjectModule : IDbContextModule
+    public class SolutionModule : IDbContextModule
     {
         public void CreateModel(ModelBuilder builder)
 		{
-			builder.Entity<Project>();
+			builder.Entity<Solution>();
 		}
     }
 }

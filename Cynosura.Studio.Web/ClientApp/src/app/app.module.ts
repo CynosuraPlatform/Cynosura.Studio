@@ -10,7 +10,7 @@ import { BootstrapModalModule } from "ngx-modialog/plugins/bootstrap";
 import { AuthModule } from "./auth/auth.module";
 import { RoleModule } from "./role/role.module";
 import { UserModule } from "./user/user.module";
-import { ProjectModule } from "./project/project.module";
+import { SolutionModule } from "./solution/solution.module";
 import { EntityModule } from "./entity/entity.module";
 
 import { AppComponent } from "./app.component";
@@ -40,7 +40,7 @@ var routes: Route[] = [
         AuthModule,
         RoleModule,
         UserModule,
-        ProjectModule,
+        SolutionModule,
         EntityModule
     ],
     providers: [],

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Cynosura.Studio.Core.Solution
+namespace Cynosura.Studio.Core.Generator.Models
 {
     public class Project
     {

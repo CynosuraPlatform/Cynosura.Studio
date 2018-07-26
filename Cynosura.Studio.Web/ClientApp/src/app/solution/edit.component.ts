@@ -1,21 +1,21 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { Project } from "./project.model";
-import { ProjectService } from "./project.service";
+import { Solution } from "./solution.model";
+import { SolutionService } from "./solution.service";
 
 import { Error } from "../core/error.model";
 
 
 @Component({
-    selector: "project-edit",
+    selector: "solution-edit",
     templateUrl: "./edit.component.html"
 })
-export class ProjectEditComponent implements OnInit {
-    project: Project;
+export class SolutionEditComponent implements OnInit {
+    solution: Solution;
     error: Error;
 
-    constructor(private projectService: ProjectService,
+    constructor(private solutionService: SolutionService,
         private route: ActivatedRoute,
         private router: Router) {
     }
@@ -23,16 +23,16 @@ export class ProjectEditComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             let id = +params["id"];
-            this.getProject(id);
+            this.getSolution(id);
         });
     }
 
-    private getProject(id: number): void {
+    private getSolution(id: number): void {
         if (id === 0) {
-            this.project = new Project();
+            this.solution = new Solution();
         } else {
-            this.projectService.getProject(id).then(project => {
-                this.project = project;
+            this.solutionService.getSolution(id).then(solution => {
+                this.solution = solution;
             });
         }
     }
@@ -42,18 +42,18 @@ export class ProjectEditComponent implements OnInit {
     }
 
     onSubmit(): void {
-        this.saveProject();
+        this.saveSolution();
     }
 
-    private saveProject(): void {
-        if (this.project.id) {
-            this.projectService.updateProject(this.project)
+    private saveSolution(): void {
+        if (this.solution.id) {
+            this.solutionService.updateSolution(this.solution)
                 .then(
                     () => window.history.back(),
                     error => this.error = error
                 );
         } else {
-            this.projectService.createProject(this.project)
+            this.solutionService.createSolution(this.solution)
                 .then(
                     () => window.history.back(),
                     error => this.error = error

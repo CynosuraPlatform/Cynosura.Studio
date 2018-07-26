@@ -3,43 +3,43 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { Modal } from "ngx-modialog/plugins/bootstrap";
 
-import { Project } from "./project.model";
-import { ProjectService } from "./project.service";
+import { Solution } from "./solution.model";
+import { SolutionService } from "./solution.service";
 
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
 @Component({
-    selector: "project-list",
+    selector: "solution-list",
     templateUrl: "./list.component.html"
 })
-export class ProjectListComponent implements OnInit {
-    content: Page<Project>;
+export class SolutionListComponent implements OnInit {
+    content: Page<Solution>;
     error: Error;
     pageSize = 10;
 
     constructor(
         private modal: Modal,
-        private projectService: ProjectService,
+        private solutionService: SolutionService,
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService
         ) {}
 
     ngOnInit(): void {
-        let pageIndex = this.storeService.get("projectsPageIndex");
+        let pageIndex = this.storeService.get("solutionsPageIndex");
         if (!pageIndex) pageIndex = 0;
-        this.getProjects(pageIndex);
+        this.getSolutions(pageIndex);
     }
 
-    getProjects(pageIndex: number): void {        
-        this.projectService.getProjects(pageIndex, this.pageSize)
+    getSolutions(pageIndex: number): void {        
+        this.solutionService.getSolutions(pageIndex, this.pageSize)
             .then(content => {
                 if (content.pageItems.length == 0 && content.totalItems != 0) {
                     this.content.currentPageIndex--;
-                    this.storeService.set("projectsPageIndex", this.content.currentPageIndex);
-                    this.getProjects(this.content.currentPageIndex);
+                    this.storeService.set("solutionsPageIndex", this.content.currentPageIndex);
+                    this.getSolutions(this.content.currentPageIndex);
                 }
                 this.content = content;
             })
@@ -47,7 +47,7 @@ export class ProjectListComponent implements OnInit {
     }
 
     reset(): void {
-        this.projectService.getProjects(this.content.currentPageIndex, this.pageSize)
+        this.solutionService.getSolutions(this.content.currentPageIndex, this.pageSize)
             .then(content => { this.content = content; },
                 error => this.error = error.json() as Error);
     }
@@ -72,9 +72,9 @@ export class ProjectListComponent implements OnInit {
             .open();
 		dialogRef.result.then(dialog => dialog.result)
             .then(() => {
-                this.projectService.deleteProject(id)
+                this.solutionService.deleteSolution(id)
                     .then(() => {
-                        this.getProjects(this.content.currentPageIndex);
+                        this.getSolutions(this.content.currentPageIndex);
                     })
                     .catch(error => this.error = error)
             })
@@ -82,7 +82,7 @@ export class ProjectListComponent implements OnInit {
     }
 
     onPageSelected(pageIndex: number) {
-        this.storeService.set("projectsPageIndex", pageIndex);
-        this.getProjects(pageIndex);
+        this.storeService.set("solutionsPageIndex", pageIndex);
+        this.getSolutions(pageIndex);
     }
 }

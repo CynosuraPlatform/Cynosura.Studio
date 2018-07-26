@@ -10,10 +10,10 @@ namespace Cynosura.Studio.Core.Services
 {
     public interface IEntityService
     {
-		Task<Entity> GetEntityAsync(int projectId, Guid id);
-        Task<PageModel<Entity> > GetEntitiesAsync(int projectId, int? pageIndex = null, int? pageSize = null);
-        Task<Guid> CreateEntityAsync(int projectId, EntityCreateModel model);
-        Task UpdateEntityAsync(int projectId, Guid id, EntityUpdateModel model);
-        Task DeleteEntityAsync(int projectId, Guid id);
+		Task<Entity> GetEntityAsync(int solutionId, Guid id);
+        Task<PageModel<Entity> > GetEntitiesAsync(int solutionId, int? pageIndex = null, int? pageSize = null);
+        Task<Guid> CreateEntityAsync(int solutionId, EntityCreateModel model);
+        Task UpdateEntityAsync(int solutionId, Guid id, EntityUpdateModel model);
+        Task DeleteEntityAsync(int solutionId, Guid id);
     }
 }

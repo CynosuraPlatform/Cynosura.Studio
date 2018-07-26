@@ -7,12 +7,12 @@ using Cynosura.Studio.Core.Services.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
 {
-    public class ProjectProfile : Profile
+    public class SolutionProfile : Profile
     {
-		public ProjectProfile()
+		public SolutionProfile()
 		{
-			CreateMap<ProjectCreateModel, Project>();
-			CreateMap<ProjectUpdateModel, Project>();
+			CreateMap<SolutionCreateModel, Solution>();
+			CreateMap<SolutionUpdateModel, Solution>();
 		}
     }
 }

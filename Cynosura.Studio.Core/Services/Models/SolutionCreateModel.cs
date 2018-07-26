@@ -4,9 +4,7 @@ using System.Text;
 
 namespace Cynosura.Studio.Core.Services.Models
 {
-    public class ProjectUpdateModel
+    public class SolutionCreateModel : SolutionUpdateModel
     {
-		public string Name { get; set; }
-		public string Path { get; set; }
     }
 }

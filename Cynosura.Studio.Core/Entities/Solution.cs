@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Cynosura.Studio.Core.Entities
 {
-    public class Project : BaseEntity
+    public class Solution : BaseEntity
     {
         public int Id { get; set; }
 		[Required()]

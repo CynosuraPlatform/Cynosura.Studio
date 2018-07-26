@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Cynosura.Studio.Web.Models.ProjectViewModels
+namespace Cynosura.Studio.Web.Models.SolutionViewModels
 {
-    public class ProjectUpdateViewModel
+    public class SolutionUpdateViewModel
     {
 		[Required()]
 		[StringLength(50)]

@@ -3,11 +3,11 @@ using Cynosura.Studio.Core.Services;
 
 namespace Cynosura.Studio.Core.Autofac
 {
-    public class ProjectModule : Module
+    public class SolutionModule : Module
     {
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.RegisterType<ProjectService>().As<IProjectService>();
+			builder.RegisterType<SolutionService>().As<ISolutionService>();
 		}
     }
 }

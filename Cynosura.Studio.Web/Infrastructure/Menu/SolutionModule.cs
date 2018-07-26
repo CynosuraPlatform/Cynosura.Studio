@@ -6,7 +6,7 @@ using Cynosura.Web.Infrastructure.Menu;
 
 namespace Cynosura.Studio.Web.Infrastructure.Menu
 {
-    public class ProjectModule : IMenuModule
+    public class SolutionModule : IMenuModule
     {
         public IList<MenuItem> GetMenuItems()
         {
@@ -14,8 +14,8 @@ namespace Cynosura.Studio.Web.Infrastructure.Menu
             {
                 new MenuItem()
                 {
-                    Name = "Projects",
-                    Route = "./project",
+                    Name = "Solutions",
+                    Route = "./solution",
                     CssClass = "glyphicon-folder-close",
                     Roles = new List<string>() {}
                 }

@@ -18,13 +18,13 @@ export class EntityListComponent implements OnInit {
     content: Page<Entity>;
     error: Error;
     pageSize = 10;
-    private _projectId: number;
-    get projectId(): number {
-        return this._projectId;
+    private _solutionId: number;
+    get solutionId(): number {
+        return this._solutionId;
     }
-    set projectId(val: number) {
-        this._projectId = val;
-        this.storeService.set("entitiesProjectId", this._projectId);
+    set solutionId(val: number) {
+        this._solutionId = val;
+        this.storeService.set("entitiesSolutionId", this._solutionId);
         this.getEntities(0);
     }
 
@@ -37,15 +37,15 @@ export class EntityListComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
-        this._projectId = this.storeService.get("entitiesProjectId");
+        this._solutionId = this.storeService.get("entitiesSolutionId");
         let pageIndex = this.storeService.get("entitiesPageIndex");
         if (!pageIndex) pageIndex = 0;
         this.getEntities(pageIndex);
     }
 
     getEntities(pageIndex: number): void {
-        if (this.projectId) {
-            this.entityService.getEntities(this.projectId, pageIndex, this.pageSize)
+        if (this.solutionId) {
+            this.entityService.getEntities(this.solutionId, pageIndex, this.pageSize)
                 .then(content => {
                     if (content.pageItems.length == 0 && content.totalItems != 0) {
                         this.content.currentPageIndex--;
@@ -67,11 +67,11 @@ export class EntityListComponent implements OnInit {
     }
 
     edit(id: string): void {
-        this.router.navigate([id], { relativeTo: this.route, queryParams: { projectId: this.projectId } });
+        this.router.navigate([id], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
     add(): void {
-        this.router.navigate([0], { relativeTo: this.route, queryParams: { projectId: this.projectId } });
+        this.router.navigate([0], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
     delete(id: number): void {
@@ -86,7 +86,7 @@ export class EntityListComponent implements OnInit {
             .open();
 		dialogRef.result.then(dialog => dialog.result)
             .then(() => {
-                this.entityService.deleteEntity(this.projectId, id)
+                this.entityService.deleteEntity(this.solutionId, id)
                     .then(() => {
                         this.getEntities(this.content.currentPageIndex);
                     })

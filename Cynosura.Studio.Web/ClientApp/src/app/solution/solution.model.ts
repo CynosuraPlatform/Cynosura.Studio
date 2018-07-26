@@ -1,4 +1,4 @@
-export class Project
+export class Solution
 {
 	id: number;
 	name: string;
