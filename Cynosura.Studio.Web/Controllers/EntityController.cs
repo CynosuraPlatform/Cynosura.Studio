@@ -34,14 +34,14 @@ namespace Cynosura.Studio.Web.Controllers
             return entities.Map<Entity, EntityViewModel>(_mapper);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:Guid}")]
         public async Task<EntityViewModel> GetEntityAsync(int solutionId, Guid id)
         {
             var entity = await _entityService.GetEntityAsync(solutionId, id);
             return _mapper.Map<Entity, EntityViewModel>(entity);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:Guid}")]
         public async Task<StatusViewModel> PutEntityAsync(int solutionId, Guid id, [FromBody] EntityUpdateViewModel entity)
         {
             var model = _mapper.Map<EntityUpdateViewModel, EntityUpdateModel>(entity);
@@ -57,7 +57,7 @@ namespace Cynosura.Studio.Web.Controllers
             return new StatusViewModel();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:Guid}")]
         public async Task<StatusViewModel> DeleteEntityAsync(int solutionId, Guid id)
         {
             await _entityService.DeleteEntityAsync(solutionId, id);

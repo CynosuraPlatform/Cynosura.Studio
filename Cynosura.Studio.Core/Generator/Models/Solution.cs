@@ -14,6 +14,8 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string Namespace { get; }
         public List<Project> Projects { get; }
 
+        private const string MetadataFileExtension = ".json";
+
         public Solution(string path)
         {
             Path = path;
@@ -45,9 +47,19 @@ namespace Cynosura.Studio.Core.Generator.Models
             return JsonConvert.DeserializeObject<T>(content);
         }
 
+        private static string SerializeMetadata<T>(T data)
+        {
+            return JsonConvert.SerializeObject(data, Formatting.Indented);
+        }
+
+        private Project GetProject(string name)
+        {
+            return Projects.Single(p => p.Namespace.EndsWith("." + name));
+        }
+
         public List<Entities.Entity> GetEntities()
         {
-            var coreProject = Projects.Single(p => p.Namespace.EndsWith(".Core"));
+            var coreProject = GetProject("Core");
             var files = coreProject.GetFiles("Metadata\\Entities");
             var entities = new List<Entities.Entity>();
             foreach (var file in files)
@@ -60,6 +72,49 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
 
             return entities;
+        }
+
+        public void CreateEntity(Entities.Entity entity)
+        {
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Entities");
+            coreProject.VerifyPathExists("Metadata\\Entities");
+            var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.Write(SerializeMetadata(entity));
+            }
+        }
+
+        public void UpdateEntity(Entities.Entity entity)
+        {
+            var existingEntity = GetEntities().FirstOrDefault(e => e.Id == entity.Id);
+            if (existingEntity == null)
+                throw new Exception($"Entity with Id = {entity.Id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Entities");
+            var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.Write(SerializeMetadata(entity));
+            }
+
+            if (existingEntity.Name != entity.Name)
+            {
+                filePath = System.IO.Path.Combine(path, existingEntity.Name + MetadataFileExtension);
+                File.Delete(filePath);
+            }
+        }
+
+        public void DeleteEntity(Guid id)
+        {
+            var existingEntity = GetEntities().FirstOrDefault(e => e.Id == id);
+            if (existingEntity == null)
+                throw new Exception($"Entity with Id = {id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Entities");
+            var filePath = System.IO.Path.Combine(path, existingEntity.Name + MetadataFileExtension);
+            File.Delete(filePath);
         }
     }
 }

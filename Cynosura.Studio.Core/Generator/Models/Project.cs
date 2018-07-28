@@ -25,5 +25,20 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
             return Directory.GetFiles(absolutePath);
         }
+
+        public string GetPath(string path)
+        {
+            var absolutePath = System.IO.Path.Combine(Path, path);
+            return absolutePath;
+        }
+
+        public void VerifyPathExists(string path)
+        {
+            var absolutePath = System.IO.Path.Combine(Path, path);
+            if (!Directory.Exists(absolutePath))
+            {
+                Directory.CreateDirectory(absolutePath);
+            }
+        }
     }
 }

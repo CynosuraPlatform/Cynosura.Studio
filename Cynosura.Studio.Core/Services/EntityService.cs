@@ -64,17 +64,28 @@ namespace Cynosura.Studio.Core.Services
 
         public async Task<Guid> CreateEntityAsync(int solutionId, EntityCreateModel model)
         {
-            return Guid.NewGuid();
+            var solution = await _solutionService.GetSolutionAsync(solutionId);
+            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var entity = _mapper.Map<EntityCreateModel, Entity>(model);
+            entity.Id = Guid.NewGuid();
+            solutionModel.CreateEntity(entity);
+            return entity.Id;
         }
 
         public async Task UpdateEntityAsync(int solutionId, Guid id, EntityUpdateModel model)
         {
-            
+            var solution = await _solutionService.GetSolutionAsync(solutionId);
+            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var entity = _mapper.Map<EntityUpdateModel, Entity>(model);
+            entity.Id = id;
+            solutionModel.UpdateEntity(entity);
         }
 
         public async Task DeleteEntityAsync(int solutionId, Guid id)
         {
-            
+            var solution = await _solutionService.GetSolutionAsync(solutionId);
+            var solutionModel = new Generator.Models.Solution(solution.Path);
+            solutionModel.DeleteEntity(id);
         }
     }
 }

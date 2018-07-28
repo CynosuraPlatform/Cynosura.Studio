@@ -14,7 +14,7 @@ import { Error } from "../core/error.model";
 export class EntityEditComponent implements OnInit {
     entity: Entity;
     error: Error;
-    projectId: number;
+    solutionId: number;
 
     constructor(private entityService: EntityService,
         private route: ActivatedRoute,
@@ -24,7 +24,7 @@ export class EntityEditComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             let id = params["id"];
-            this.projectId = this.route.snapshot.queryParams["projectId"];
+            this.solutionId = this.route.snapshot.queryParams["solutionId"];
             this.getEntity(id);
         });
     }
@@ -33,7 +33,7 @@ export class EntityEditComponent implements OnInit {
         if (id === "0") {
             this.entity = new Entity();
         } else {
-            this.entityService.getEntity(this.projectId, id).then(entity => {
+            this.entityService.getEntity(this.solutionId, id).then(entity => {
                 this.entity = entity;
             });
         }
@@ -49,13 +49,13 @@ export class EntityEditComponent implements OnInit {
 
     private saveEntity(): void {
         if (this.entity.id) {
-            this.entityService.updateEntity(this.projectId, this.entity)
+            this.entityService.updateEntity(this.solutionId, this.entity)
                 .then(
                     () => window.history.back(),
                     error => this.error = error
                 );
         } else {
-            this.entityService.createEntity(this.projectId, this.entity)
+            this.entityService.createEntity(this.solutionId, this.entity)
                 .then(
                     () => window.history.back(),
                     error => this.error = error
