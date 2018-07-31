@@ -8,4 +8,8 @@ export class Entity
 	displayName: string;
     pluralDisplayName: string;
     fields: Field[];
+
+    constructor() {
+        this.fields = new Array<Field>();
+    }
 }
