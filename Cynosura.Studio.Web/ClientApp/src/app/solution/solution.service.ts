@@ -50,4 +50,10 @@ export class SolutionService {
         return this.httpClient.delete(url)
             .toPromise();
     }
+
+    generateSolution(id: number): Promise<{}> {
+        const url = `${this.solutionUrl}/${id}/generate`;
+        return this.httpClient.post(url, null)
+            .toPromise();
+    }
 }

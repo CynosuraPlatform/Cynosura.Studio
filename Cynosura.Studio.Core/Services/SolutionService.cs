@@ -66,5 +66,13 @@ namespace Cynosura.Studio.Core.Services
             _solutionRepository.Delete(solution);
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task GenerateAsync(int id)
+        {
+            var solution = await GetSolutionAsync(id);
+            if (solution == null)
+                return;
+            Generator.Models.Solution.Generate(solution);
+        }
     }
 }

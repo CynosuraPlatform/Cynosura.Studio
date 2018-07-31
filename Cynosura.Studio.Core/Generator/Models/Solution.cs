@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,6 +26,24 @@ namespace Cynosura.Studio.Core.Generator.Models
                 throw new Exception("Solution file not found");
             Namespace = Regex.Replace(solutionFile, "^.*\\\\([^\\\\]+?).sln$", "$1");
             Projects = GetProjects(Path);
+        }
+
+        public static void Generate(Entities.Solution solution)
+        {
+            var process = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "dotnet",
+                Arguments = "new -i Cynosura.Template",
+                WorkingDirectory = solution.Path
+            });
+            process.WaitForExit();
+            process = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "dotnet",
+                Arguments = $"new cynosura -n {solution.Name}",
+                WorkingDirectory = solution.Path
+            });
+            process.WaitForExit();
         }
 
         private List<Project> GetProjects(string path)
