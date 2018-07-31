@@ -61,10 +61,18 @@ export class EntityService {
             .toPromise();
     }
 
-    deleteEntity(solutionId: number, id: number): Promise<{}> {
+    deleteEntity(solutionId: number, id: string): Promise<{}> {
         const url = `${this.entityUrl}/${id}`;
         return this.httpClient.delete(url,
             {
+                params: { "solutionId": solutionId.toString() }
+            })
+            .toPromise();
+    }
+
+    generateEntity(solutionId: number, id: string): Promise<{}> {
+        const url = `${this.entityUrl}/${id}/generate`;
+        return this.httpClient.post(url, null, {
                 params: { "solutionId": solutionId.toString() }
             })
             .toPromise();

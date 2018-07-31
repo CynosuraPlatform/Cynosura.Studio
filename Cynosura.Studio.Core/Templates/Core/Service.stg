@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
-using $model.ProjectInfo.Namespace$.Core.Entities;
-using $model.ProjectInfo.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services.Models;
 
-namespace $model.ProjectInfo.Namespace$.Core.Services
+namespace $model.Solution.Namespace$.Core.Services
 {
     public class $model.Entity.Name$Service : I$model.Entity.Name$Service
     {

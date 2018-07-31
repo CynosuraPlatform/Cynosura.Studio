@@ -63,4 +63,11 @@ export class EntityEditComponent implements OnInit {
         }
     }
 
+    generate(): void {
+        this.entityService.generateEntity(this.solutionId, this.entity.id)
+            .then(
+                () => { },
+                error => this.error = error
+            );
+    }
 }

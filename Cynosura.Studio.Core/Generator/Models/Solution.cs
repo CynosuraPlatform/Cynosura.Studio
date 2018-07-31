@@ -28,24 +28,6 @@ namespace Cynosura.Studio.Core.Generator.Models
             Projects = GetProjects(Path);
         }
 
-        public static void Generate(string path, string name)
-        {
-            var process = Process.Start(new ProcessStartInfo()
-            {
-                FileName = "dotnet",
-                Arguments = "new -i Cynosura.Template",
-                WorkingDirectory = path
-            });
-            process.WaitForExit();
-            process = Process.Start(new ProcessStartInfo()
-            {
-                FileName = "dotnet",
-                Arguments = $"new cynosura -n {name}",
-                WorkingDirectory = path
-            });
-            process.WaitForExit();
-        }
-
         private List<Project> GetProjects(string path)
         {
             var dirs = Directory.GetDirectories(path);

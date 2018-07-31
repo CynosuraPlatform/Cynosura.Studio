@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using $model.ProjectInfo.Namespace$.Core.Entities;
-using $model.ProjectInfo.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services.Models;
 
-namespace $model.ProjectInfo.Namespace$.Core.AutoMapper
+namespace $model.Solution.Namespace$.Core.AutoMapper
 {
     public class $model.Entity.Name$Profile : Profile
     {

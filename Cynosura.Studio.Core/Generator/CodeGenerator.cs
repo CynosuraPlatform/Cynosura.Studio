@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -41,22 +42,10 @@ namespace Cynosura.Studio.Core.Generator
             Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\Route.stg", InsertAfter = "// ADD ROUTES HERE" });
         }
 
-        private ProjectInfo GetProjectInfo(GeneratorOptions options)
+        private void CreateFile(CodeTemplate template, object model, Solution solution, Entity entity)
         {
-            var solutionFile = Directory.GetFiles(options.SolutionPath, "*.sln").FirstOrDefault();
-            if (solutionFile == null)
-                throw new Exception("Solution file not found");
-            var solutionNamespace = Regex.Replace(solutionFile, "^.*\\\\([^\\\\]+?).sln$", "$1");
-            return new ProjectInfo()
-            {
-                Namespace = solutionNamespace,
-            };
-        }
-
-        private void CreateFile(CodeTemplate template, object model, GeneratorOptions options)
-        {
-            var dir = FindDirectory(options.SolutionPath, template.FilePath);
-            var fileName = ProcessFileName(template.FileName, options.Model.Entity);
+            var dir = FindDirectory(solution.Path, template.FilePath);
+            var fileName = ProcessFileName(template.FileName, entity);
             var filePath = Path.Combine(dir, fileName);
             var fileDirectory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(fileDirectory))
@@ -91,37 +80,51 @@ namespace Cynosura.Studio.Core.Generator
                 }
             }
         }
-        
-        public void Generate(GeneratorOptions options)
+
+        public void GenerateSolution(string path, string name)
         {
-            var projectInfo = GetProjectInfo(options);
-            if (options.Model.Entity != null)
+            var process = Process.Start(new ProcessStartInfo()
             {
-                var model = new EntityModel()
-                {
-                    Entity = options.Model.Entity,
-                    ProjectInfo = projectInfo,
-                };
+                FileName = "dotnet",
+                Arguments = "new -i Cynosura.Template",
+                WorkingDirectory = path
+            });
+            process.WaitForExit();
+            process = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "dotnet",
+                Arguments = $"new cynosura -n {name}",
+                WorkingDirectory = path
+            });
+            process.WaitForExit();
+        }
 
-                foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
-                {
-                    CreateFile(template, model, options);
-                }
+        public void GenerateEntity(Solution solution, Entity entity)
+        {
+            var model = new EntityModel()
+            {
+                Entity = entity,
+                Solution = solution,
+            };
+
+            foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
+            {
+                CreateFile(template, model, solution, entity);
             }
+        }
 
-            if (options.Model.View != null)
+        public void GenerateView(Solution solution, View view, Entity entity)
+        {
+            var model = new ViewModel()
             {
-                var model = new ViewModel()
-                {
-                    View = options.Model.View,
-                    Entity = options.Model.Entity,
-                    ProjectInfo = projectInfo,
-                };
+                View = view,
+                Entity = entity,
+                Solution = solution,
+            };
 
-                foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
-                {
-                    CreateFile(template, model, options);
-                }
+            foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
+            {
+                CreateFile(template, model, solution, entity);
             }
         }
 

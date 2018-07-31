@@ -1,9 +1,9 @@
 ﻿main(model) ::= <<
 using Autofac;
 using Cynosura.Core.Data;
-using $model.ProjectInfo.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Entities;
 
-namespace $model.ProjectInfo.Namespace$.Data.Autofac
+namespace $model.Solution.Namespace$.Data.Autofac
 {
     public class $model.Entity.Name$Module : Module
     {

@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Services.Models;
 using Cynosura.Web.Infrastructure;
-using $model.ProjectInfo.Namespace$.Core.Entities;
-using $model.ProjectInfo.Namespace$.Core.Services;
-using $model.ProjectInfo.Namespace$.Core.Services.Models;
-using $model.ProjectInfo.Namespace$.Web.Models;
-using $model.ProjectInfo.Namespace$.Web.Models.$model.Entity.Name$ViewModels;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services;
+using $model.Solution.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Web.Models;
+using $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace $model.ProjectInfo.Namespace$.Web.Controllers
+namespace $model.Solution.Namespace$.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]

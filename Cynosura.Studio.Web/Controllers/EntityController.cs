@@ -63,5 +63,12 @@ namespace Cynosura.Studio.Web.Controllers
             await _entityService.DeleteEntityAsync(solutionId, id);
             return new StatusViewModel();
         }
+
+        [HttpPost("{id:Guid}/generate")]
+        public async Task<StatusViewModel> GenerateSolutionAsync(int solutionId, Guid id)
+        {
+            await _entityService.GenerateAsync(solutionId, id);
+            return new StatusViewModel();
+        }
     }
 }

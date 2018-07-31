@@ -74,7 +74,7 @@ export class EntityListComponent implements OnInit {
         this.router.navigate([0], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
-    delete(id: number): void {
+    delete(id: string): void {
         const dialogRef = this.modal
             .confirm()
             .size("sm")

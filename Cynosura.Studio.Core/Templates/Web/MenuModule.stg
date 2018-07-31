@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cynosura.Web.Infrastructure.Menu;
 
-namespace $model.ProjectInfo.Namespace$.Web.Infrastructure.Menu
+namespace $model.Solution.Namespace$.Web.Infrastructure.Menu
 {
     public class $model.Entity.Name$Module : IMenuModule
     {

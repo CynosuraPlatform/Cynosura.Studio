@@ -15,5 +15,6 @@ namespace Cynosura.Studio.Core.Services
         Task<Guid> CreateEntityAsync(int solutionId, EntityCreateModel model);
         Task UpdateEntityAsync(int solutionId, Guid id, EntityUpdateModel model);
         Task DeleteEntityAsync(int solutionId, Guid id);
+        Task GenerateAsync(int solutionId, Guid id);
     }
 }

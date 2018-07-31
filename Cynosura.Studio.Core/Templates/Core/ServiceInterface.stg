@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
-using $model.ProjectInfo.Namespace$.Core.Entities;
-using $model.ProjectInfo.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services.Models;
 
-namespace $model.ProjectInfo.Namespace$.Core.Services
+namespace $model.Solution.Namespace$.Core.Services
 {
     public interface I$model.Entity.Name$Service
     {

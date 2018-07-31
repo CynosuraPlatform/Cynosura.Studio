@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using $model.ProjectInfo.Namespace$.Core.Entities;
-using $model.ProjectInfo.Namespace$.Core.Services.Models;
-using $model.ProjectInfo.Namespace$.Web.Models.$model.Entity.Name$ViewModels;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels;
 
-namespace $model.ProjectInfo.Namespace$.Web.Infrastructure.AutoMapper
+namespace $model.Solution.Namespace$.Web.Infrastructure.AutoMapper
 {
     public class $model.Entity.Name$Profile : Profile
     {

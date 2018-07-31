@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace $model.ProjectInfo.Namespace$.Core.Entities
+namespace $model.Solution.Namespace$.Core.Entities
 {
     public class $model.Entity.Name$ : BaseEntity
     {

@@ -8,20 +8,24 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Generator;
 using Cynosura.Studio.Core.Services.Models;
 
 namespace Cynosura.Studio.Core.Services
 {
     public class EntityService : IEntityService
     {
+        private readonly CodeGenerator _codeGenerator;
         private readonly ISolutionService _solutionService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EntityService(ISolutionService solutionService,
+        public EntityService(CodeGenerator codeGenerator,
+            ISolutionService solutionService,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
+            _codeGenerator = codeGenerator;
             _solutionService = solutionService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -88,6 +92,16 @@ namespace Cynosura.Studio.Core.Services
             var solution = await _solutionService.GetSolutionAsync(solutionId);
             var solutionModel = new Generator.Models.Solution(solution.Path);
             solutionModel.DeleteEntity(id);
+        }
+
+        public async Task GenerateAsync(int solutionId, Guid id)
+        {
+            var solution = await _solutionService.GetSolutionAsync(solutionId);
+            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var entity = await GetEntityAsync(solutionId, id);
+            var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
+            _codeGenerator.GenerateEntity(solutionModel, entityModel);
+            _codeGenerator.GenerateView(solutionModel, new Generator.Models.View(), entityModel);
         }
     }
 }

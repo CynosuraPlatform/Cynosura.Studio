@@ -6,6 +6,6 @@ namespace Cynosura.Studio.Core.Generator
     {
         public View View { get; set; }
         public Entity Entity { get; set; }
-        public ProjectInfo ProjectInfo { get; set; }
+        public Solution Solution { get; set; }
     }
 }

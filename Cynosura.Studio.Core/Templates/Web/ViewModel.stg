@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace $model.ProjectInfo.Namespace$.Web.Models.$model.Entity.Name$ViewModels
+namespace $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels
 {
     public class $model.Entity.Name$ViewModel : $model.Entity.Name$CreateViewModel
     {

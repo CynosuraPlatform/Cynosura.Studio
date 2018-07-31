@@ -7,21 +7,25 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Generator;
 using Cynosura.Studio.Core.Services.Models;
 
 namespace Cynosura.Studio.Core.Services
 {
     public class SolutionService : ISolutionService
     {
-		private readonly IEntityRepository<Solution> _solutionRepository;
+        private readonly CodeGenerator _codeGenerator;
+        private readonly IEntityRepository<Solution> _solutionRepository;
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public SolutionService(IEntityRepository<Solution> solutionRepository,
+        public SolutionService(CodeGenerator codeGenerator,
+            IEntityRepository<Solution> solutionRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
+            _codeGenerator = codeGenerator;
             _solutionRepository = solutionRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -72,7 +76,7 @@ namespace Cynosura.Studio.Core.Services
             var solution = await GetSolutionAsync(id);
             if (solution == null)
                 return;
-            Generator.Models.Solution.Generate(solution.Path, solution.Name);
+            _codeGenerator.GenerateSolution(solution.Path, solution.Name);
         }
     }
 }
