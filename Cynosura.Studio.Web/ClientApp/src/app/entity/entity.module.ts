@@ -3,6 +3,7 @@ import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
 import { SolutionModule } from "../solution/solution.module";
+import { FieldModule } from "../field/field.module";
 
 import { EntityListComponent } from "./list.component";
 import { EntityEditComponent } from "./edit.component";
@@ -20,7 +21,8 @@ import { EntityService } from "./entity.service";
             { path: "entity/:id", component: EntityEditComponent }
         ]),
         CoreModule,
-        SolutionModule
+        SolutionModule,
+        FieldModule
     ],
     providers: [
         EntityService

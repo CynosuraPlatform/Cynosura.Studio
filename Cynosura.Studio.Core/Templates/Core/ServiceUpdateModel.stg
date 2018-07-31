@@ -14,5 +14,5 @@ $model.Entity.Fields:field(); separator="\n"$
 >>
 
 field(field) ::= <<
-		public $field.TypeName$ $field.Name$ { get; set; }
+        public $field.TypeName$ $field.Name$ { get; set; }
 >>

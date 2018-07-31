@@ -11,12 +11,12 @@ namespace $model.ProjectInfo.Namespace$.Web.Infrastructure.AutoMapper
 {
     public class $model.Entity.Name$Profile : Profile
     {
-		public $model.Entity.Name$Profile()
-		{
-			CreateMap<$model.Entity.Name$, $model.Entity.Name$ViewModel>();
-			CreateMap<$model.Entity.Name$UpdateViewModel, $model.Entity.Name$UpdateModel>();
-			CreateMap<$model.Entity.Name$CreateViewModel, $model.Entity.Name$CreateModel>();
-		}
+        public $model.Entity.Name$Profile()
+        {
+            CreateMap<$model.Entity.Name$, $model.Entity.Name$ViewModel>();
+            CreateMap<$model.Entity.Name$UpdateViewModel, $model.Entity.Name$UpdateModel>();
+            CreateMap<$model.Entity.Name$CreateViewModel, $model.Entity.Name$CreateModel>();
+        }
     }
 }
 

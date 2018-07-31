@@ -16,9 +16,11 @@ $model.Entity.Fields:field(); separator=""$
 
 field(field) ::= <<
 $field.Attributes:attrubute(); separator="\n"$
-		public $field.TypeName$ $field.Name$ { get; set; }
+        public $field.TypeName$ $field.Name$ { get; set; }
+
+
 >>
 
 attrubute(attrubute) ::= <<
-		[$attrubute.Name$($attrubute.Parameters; separator=", "$)]
+        [$attrubute.Name$($attrubute.Parameters; separator=", "$)]
 >>

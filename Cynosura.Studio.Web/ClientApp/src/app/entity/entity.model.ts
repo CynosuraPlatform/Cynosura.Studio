@@ -1,8 +1,11 @@
+import { Field } from "../field/field.model";
+
 export class Entity
 {
 	id: string;
 	name: string;
 	pluralName: string;
 	displayName: string;
-	pluralDisplayName: string;
+    pluralDisplayName: string;
+    fields: Field[];
 }

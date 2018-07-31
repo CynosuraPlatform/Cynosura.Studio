@@ -53,18 +53,22 @@ namespace Cynosura.Studio.Core.Generator.Models
                     return "number";
                 else if (Type == typeof(DateTime))
                     return "Date";
+                else if (Type == typeof(bool))
+                    return "boolean";
                 return "any";
             }
         }
 
         private string GetShortTypeName(Type type)
         {
-            if (Type == typeof(string))
+            if (type == typeof(string))
                 return "string";
             else if (Type == typeof(decimal))
                 return "decimal";
             else if (Type == typeof(int))
                 return "int";
+            else if (Type == typeof(bool))
+                return "bool";
             return Type.Name;
         }
     }

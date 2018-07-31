@@ -9,6 +9,7 @@ namespace $model.ProjectInfo.Namespace$.Core.Entities
     public class $model.Entity.Name$ : BaseEntity
     {
         public int Id { get; set; }
+
 $model.Entity.Fields:field(); separator="\n"$
     }
 }
@@ -17,9 +18,10 @@ $model.Entity.Fields:field(); separator="\n"$
 
 field(field) ::= <<
 $field.Attributes:attrubute(); separator="\n"$
-		public $field.TypeName$ $field.Name$ { get; set; }
+        public $field.TypeName$ $field.Name$ { get; set; }
+
 >>
 
 attrubute(attrubute) ::= <<
-		[$attrubute.Name$($attrubute.Parameters; separator=", "$)]
+        [$attrubute.Name$($attrubute.Parameters; separator=", "$)]
 >>

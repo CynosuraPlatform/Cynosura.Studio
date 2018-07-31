@@ -7,6 +7,7 @@ import { AuthInterceptor } from "./auth.interceptor";
 import { ErrorInterceptor } from "./error.interceptor";
 
 import { BoolPipe } from "./pipes/bool.pipe";
+import { EnumKeysPipe } from "./pipes/enumkeys.pipe";
 
 import { BoolComponent } from "./bool.component";
 import { ErrorHandlerComponent } from "./error-handler.component";
@@ -20,6 +21,7 @@ import { StoreService } from "./store.service";
 @NgModule({
     declarations: [
         BoolPipe,
+        EnumKeysPipe,
         BoolComponent,
         ErrorHandlerComponent,
         ModelValidatorComponent,
@@ -48,6 +50,7 @@ import { StoreService } from "./store.service";
         CommonModule,
         FormsModule,
         BoolPipe,
+        EnumKeysPipe,
         BoolComponent,
         ErrorHandlerComponent,
         ModelValidatorComponent,

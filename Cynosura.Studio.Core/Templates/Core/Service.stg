@@ -14,7 +14,7 @@ namespace $model.ProjectInfo.Namespace$.Core.Services
 {
     public class $model.Entity.Name$Service : I$model.Entity.Name$Service
     {
-		private readonly IEntityRepository<$model.Entity.Name$> _$model.Entity.NameLower$Repository;
+        private readonly IEntityRepository<$model.Entity.Name$> _$model.Entity.NameLower$Repository;
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -32,7 +32,7 @@ namespace $model.ProjectInfo.Namespace$.Core.Services
         {
             return await _$model.Entity.NameLower$Repository.GetEntities()
                 .Where(e => e.Id == id)
-				.FirstOrDefaultAsync(_$model.Entity.NameLower$Repository);
+                .FirstOrDefaultAsync(_$model.Entity.NameLower$Repository);
         }
 
         public async Task<PageModel<$model.Entity.Name$> > Get$model.Entity.PluralName$Async(int? pageIndex = null, int? pageSize = null)

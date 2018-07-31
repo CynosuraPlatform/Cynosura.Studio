@@ -10,5 +10,6 @@ namespace Cynosura.Studio.Core.Services.Models
 		public string PluralName { get; set; }
 		public string DisplayName { get; set; }
 		public string PluralDisplayName { get; set; }
+        public IList<FieldUpdateModel> Fields { get; set; }
     }
 }

@@ -71,7 +71,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
             .okBtn("Удалить")
             .cancelBtn("Отмена")
             .open();
-		dialogRef.result.then(dialog => dialog.result)
+        dialogRef.result.then(dialog => dialog.result)
             .then(() => {
                 this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
                     .then(() => {

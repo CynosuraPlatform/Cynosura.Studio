@@ -12,6 +12,7 @@ import { RoleModule } from "./role/role.module";
 import { UserModule } from "./user/user.module";
 import { SolutionModule } from "./solution/solution.module";
 import { EntityModule } from "./entity/entity.module";
+import { FieldModule } from "./field/field.module";
 
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./nav-menu/nav-menu.component";
@@ -41,7 +42,8 @@ var routes: Route[] = [
         RoleModule,
         UserModule,
         SolutionModule,
-        EntityModule
+        EntityModule,
+        FieldModule
     ],
     providers: [],
     bootstrap: [AppComponent]

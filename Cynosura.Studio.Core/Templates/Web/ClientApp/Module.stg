@@ -15,11 +15,11 @@ import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
         $model.Entity.Name$EditComponent
     ],
     imports: [
-		RouterModule.forChild([
+        RouterModule.forChild([
             { path: "", component: $model.Entity.Name$ListComponent },
             { path: ":id", component: $model.Entity.Name$EditComponent }
         ]),
-		CoreModule
+        CoreModule
     ],
     providers: [
         $model.Entity.Name$Service
