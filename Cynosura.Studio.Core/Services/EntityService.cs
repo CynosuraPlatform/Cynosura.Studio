@@ -37,7 +37,9 @@ namespace Cynosura.Studio.Core.Services
         private List<Entity> GetEntitiesFromSolution(string path)
         {
             var solution = new Generator.Models.Solution(path);
-            return solution.GetEntities();
+            var entities = solution.GetEntities();
+            return entities.Select(_mapper.Map<Generator.Models.Entity, Entity>)
+                .ToList();
         }
 
         private static PageModel<T> ToPageModel<T>(IList<T> list, int? pageIndex = null, int? pageSize = null)
@@ -68,7 +70,7 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new Generator.Models.Solution(solution.Path);
             var entity = _mapper.Map<EntityCreateModel, Entity>(model);
             entity.Id = Guid.NewGuid();
-            solutionModel.CreateEntity(entity);
+            solutionModel.CreateEntity(_mapper.Map<Entity,Generator.Models.Entity>(entity));
             return entity.Id;
         }
 
@@ -78,7 +80,7 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new Generator.Models.Solution(solution.Path);
             var entity = _mapper.Map<EntityUpdateModel, Entity>(model);
             entity.Id = id;
-            solutionModel.UpdateEntity(entity);
+            solutionModel.UpdateEntity(_mapper.Map<Entity, Generator.Models.Entity>(entity));
         }
 
         public async Task DeleteEntityAsync(int solutionId, Guid id)

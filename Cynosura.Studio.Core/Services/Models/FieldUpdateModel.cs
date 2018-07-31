@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Generator.Models;
 
 namespace Cynosura.Studio.Core.Services.Models
 {

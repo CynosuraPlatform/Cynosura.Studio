@@ -11,13 +11,7 @@
       "DisplayName": "Name",
       "Type": 0,
       "Size": 50,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     },
     {
       "Id": "f160a247-45da-4019-bb45-8191d1eeb8a3",
@@ -25,19 +19,7 @@
       "DisplayName": "Path",
       "Type": 0,
       "Size": 200,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     }
-  ],
-  "CreationDate": "0001-01-01T00:00:00",
-  "ModificationDate": "0001-01-01T00:00:00",
-  "CreationUserId": null,
-  "CreationUser": null,
-  "ModificationUserId": null,
-  "ModificationUser": null
+  ]
 }

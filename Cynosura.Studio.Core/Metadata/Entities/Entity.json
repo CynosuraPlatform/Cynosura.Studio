@@ -11,13 +11,7 @@
       "DisplayName": "Name",
       "Type": 0,
       "Size": 100,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     },
     {
       "Id": "0dd563b2-08a6-4941-b0da-bddbdccb57ec",
@@ -25,13 +19,7 @@
       "DisplayName": "Plural Name",
       "Type": 0,
       "Size": 100,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     },
     {
       "Id": "f5f22299-df61-42a7-989a-62a531bf8e79",
@@ -39,13 +27,7 @@
       "DisplayName": "Display Name",
       "Type": 0,
       "Size": 100,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     },
     {
       "Id": "f4838e81-4b8e-4bd0-8565-68f0d494145a",
@@ -53,19 +35,7 @@
       "DisplayName": "Plural Display Name",
       "Type": 0,
       "Size": 100,
-      "IsRequired": true,
-      "CreationDate": "0001-01-01T00:00:00",
-      "ModificationDate": "0001-01-01T00:00:00",
-      "CreationUserId": null,
-      "CreationUser": null,
-      "ModificationUserId": null,
-      "ModificationUser": null
+      "IsRequired": true
     }
-  ],
-  "CreationDate": "0001-01-01T00:00:00",
-  "ModificationDate": "0001-01-01T00:00:00",
-  "CreationUserId": null,
-  "CreationUser": null,
-  "ModificationUserId": null,
-  "ModificationUser": null
+  ]
 }

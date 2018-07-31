@@ -13,6 +13,8 @@ namespace Cynosura.Studio.Core.AutoMapper
 		{
 			CreateMap<EntityCreateModel, Entity>();
 			CreateMap<EntityUpdateModel, Entity>();
-		}
+		    CreateMap<Generator.Models.Entity, Entity>();
+		    CreateMap<Entity, Generator.Models.Entity>();
+        }
     }
 }

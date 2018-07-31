@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Generator.Models;
 
 namespace Cynosura.Studio.Web.Models.FieldViewModels
 {

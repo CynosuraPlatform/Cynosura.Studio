@@ -28,20 +28,20 @@ namespace Cynosura.Studio.Core.Generator.Models
             Projects = GetProjects(Path);
         }
 
-        public static void Generate(Entities.Solution solution)
+        public static void Generate(string path, string name)
         {
             var process = Process.Start(new ProcessStartInfo()
             {
                 FileName = "dotnet",
                 Arguments = "new -i Cynosura.Template",
-                WorkingDirectory = solution.Path
+                WorkingDirectory = path
             });
             process.WaitForExit();
             process = Process.Start(new ProcessStartInfo()
             {
                 FileName = "dotnet",
-                Arguments = $"new cynosura -n {solution.Name}",
-                WorkingDirectory = solution.Path
+                Arguments = $"new cynosura -n {name}",
+                WorkingDirectory = path
             });
             process.WaitForExit();
         }
@@ -77,16 +77,16 @@ namespace Cynosura.Studio.Core.Generator.Models
             return Projects.Single(p => p.Namespace.EndsWith("." + name));
         }
 
-        public List<Entities.Entity> GetEntities()
+        public List<Entity> GetEntities()
         {
             var coreProject = GetProject("Core");
             var files = coreProject.GetFiles("Metadata\\Entities");
-            var entities = new List<Entities.Entity>();
+            var entities = new List<Entity>();
             foreach (var file in files)
             {
                 using (var reader = new StreamReader(file))
                 {
-                    var entity = DeserializeMetadata<Entities.Entity>(reader.ReadToEnd());
+                    var entity = DeserializeMetadata<Entity>(reader.ReadToEnd());
                     entities.Add(entity);
                 }
             }
@@ -94,7 +94,7 @@ namespace Cynosura.Studio.Core.Generator.Models
             return entities;
         }
 
-        public void CreateEntity(Entities.Entity entity)
+        public void CreateEntity(Entity entity)
         {
             var coreProject = GetProject("Core");
             var path = coreProject.GetPath("Metadata\\Entities");
@@ -106,7 +106,7 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
         }
 
-        public void UpdateEntity(Entities.Entity entity)
+        public void UpdateEntity(Entity entity)
         {
             var existingEntity = GetEntities().FirstOrDefault(e => e.Id == entity.Id);
             if (existingEntity == null)

@@ -72,7 +72,7 @@ namespace Cynosura.Studio.Core.Services
             var solution = await GetSolutionAsync(id);
             if (solution == null)
                 return;
-            Generator.Models.Solution.Generate(solution);
+            Generator.Models.Solution.Generate(solution.Path, solution.Name);
         }
     }
 }

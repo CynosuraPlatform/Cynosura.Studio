@@ -12,6 +12,8 @@ namespace Cynosura.Studio.Core.AutoMapper
         public FieldProfile()
         {
             CreateMap<FieldUpdateModel, Field>();
+            CreateMap<Generator.Models.Field, Field>();
+            CreateMap<Field, Generator.Models.Field>();
         }
     }
 }

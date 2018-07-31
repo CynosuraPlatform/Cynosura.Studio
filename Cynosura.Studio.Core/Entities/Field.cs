@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Cynosura.Studio.Core.Generator.Models;
 
 namespace Cynosura.Studio.Core.Entities
 {
@@ -25,19 +26,5 @@ namespace Cynosura.Studio.Core.Entities
         [Required()]
         public bool IsRequired { get; set; }
 
-    }
-
-    public enum FieldType
-    {
-        String,
-        Int32,
-        Int64,
-        Decimal,
-        Double,
-        Boolean,
-        DateTime,
-        Date,
-        Time,
-        Guid
     }
 }
