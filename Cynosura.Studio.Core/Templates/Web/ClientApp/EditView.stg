@@ -14,8 +14,48 @@ field(field) ::= <<
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">$field.DisplayName$</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+$field:(field.Template)()$
             <model-validator [model]="error?.modelState?.$field.NameLower$"></model-validator>
         </div>
     </div>
+>>
+
+String(field) ::= <<
+            <input type="text" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Int32(field) ::= <<
+            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Int64(field) ::= <<
+            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Decimal(field) ::= <<
+            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Double(field) ::= <<
+            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Boolean(field) ::= <<
+            <input type="checkbox" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+DateTime(field) ::= <<
+            <input type="datetime-local" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Date(field) ::= <<
+            <input type="date" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Time(field) ::= <<
+            <input type="time" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+>>
+
+Guid(field) ::= <<
+            <input type="text" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
 >>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
@@ -32,6 +33,10 @@ namespace Cynosura.Studio.Core.Generator.Models
                         attributes.Add(new FieldAttribute() { Type = typeof(StringLengthAttribute), Parameters = new List<object>() { Size }});
                     }
                 }
+                else if (Type == FieldType.Date)
+                {
+                    attributes.Add(new FieldAttribute() { Type = typeof(ColumnAttribute), Parameters = new List<object>() { "TypeName = \"date\"" } });
+                }
                 return attributes;
             }
         }
@@ -56,6 +61,9 @@ namespace Cynosura.Studio.Core.Generator.Models
 
         [JsonIgnore]
         private string ShortTypeName => FieldTypeInfo.Types[Type].ShortTypeName;
+
+        [JsonIgnore]
+        public string Template => Enum.GetName(typeof(FieldType), Type);
     }
 
     public enum FieldType
