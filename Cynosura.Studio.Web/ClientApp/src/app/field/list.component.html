@@ -10,6 +10,7 @@
             <th>Name</th>
             <th>Display Name</th>
             <th>Type</th>
+            <th>Entity</th>
             <th></th>
         </tr>
     </thead>
@@ -18,6 +19,7 @@
             <td>{{field.name}}</td>
             <td>{{field.displayName}}</td>
             <td>{{FieldType[field.type]}}</td>
+            <td>{{field.entity?.name}}</td>
             <td>
                 <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(field.id)">Delete</button>
@@ -26,4 +28,4 @@
     </tbody>
 </table>
 
-<field-edit *ngIf="field" [field]="field" (fieldSave)="fieldSave($event)"></field-edit>
+<field-edit *ngIf="field" [field]="field" [solutionId]="solutionId" (fieldSave)="fieldSave($event)"></field-edit>

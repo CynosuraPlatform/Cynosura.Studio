@@ -13,6 +13,9 @@ export class FieldEditComponent implements OnInit {
 
     FieldType = FieldType;
 
+    @Input()
+    solutionId: number;
+
     innerField: Field;
 
     private _field: Field;

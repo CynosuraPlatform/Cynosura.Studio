@@ -19,9 +19,13 @@ namespace Cynosura.Studio.Core.Entities
         public string DisplayName { get; set; }
 
         [Required()]
-        public FieldType Type { get; set; }
+        public FieldType? Type { get; set; }
 
         public int? Size { get; set; }
+
+        public Guid? EntityId { get; set; }
+
+        public Entity Entity { get; set; }
 
         [Required()]
         public bool IsRequired { get; set; }

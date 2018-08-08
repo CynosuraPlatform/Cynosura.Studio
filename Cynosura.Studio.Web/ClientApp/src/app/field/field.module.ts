@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
+import { EntityCoreModule } from "../entity-core/entity-core.module";
 
 import { FieldListComponent } from "./list.component";
 import { FieldEditComponent } from "./edit.component";
@@ -12,7 +13,8 @@ import { FieldEditComponent } from "./edit.component";
         FieldEditComponent
     ],
     imports: [
-        CoreModule
+        CoreModule,
+        EntityCoreModule
     ],
     providers: [
     ],

@@ -4,6 +4,7 @@ export class Field
     name: string;
     displayName: string;
     type: FieldType;
+    entityId: string;
     size: number;
     isRequired: boolean;
 }

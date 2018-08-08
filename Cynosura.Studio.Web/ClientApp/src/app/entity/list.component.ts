@@ -3,8 +3,8 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { Modal } from "ngx-modialog/plugins/bootstrap";
 
-import { Entity } from "./entity.model";
-import { EntityService } from "./entity.service";
+import { Entity } from "../entity-core/entity.model";
+import { EntityService } from "../entity-core/entity.service";
 
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";

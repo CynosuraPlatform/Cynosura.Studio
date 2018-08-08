@@ -73,6 +73,17 @@ namespace Cynosura.Studio.Core.Generator.Models
                 }
             }
 
+            foreach (var entity in entities)
+            {
+                foreach (var field in entity.Fields)
+                {
+                    if (field.EntityId != null)
+                    {
+                        field.Entity = entities.First(e => e.Id == field.EntityId);
+                    }
+                }
+            }
+
             return entities;
         }
 

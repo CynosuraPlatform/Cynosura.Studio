@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { Entity } from "./entity.model";
-import { EntityService } from "./entity.service";
+import { Entity } from "../entity-core/entity.model";
+import { EntityService } from "../entity-core/entity.service";
 
 import { Error } from "../core/error.model";
 

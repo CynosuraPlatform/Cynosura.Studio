@@ -16,6 +16,9 @@ export class FieldListComponent implements OnInit {
     FieldType = FieldType;
 
     @Input()
+    solutionId: number;
+
+    @Input()
     fields: Field[];
 
     field: Field;

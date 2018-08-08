@@ -11,12 +11,24 @@ namespace Cynosura.Studio.Core.Generator.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
-        public FieldType Type { get; set; }
+        public FieldType? Type { get; set; }
         public int? Size { get; set; }
+        public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
 
         [JsonIgnore]
-        public Type NetType => FieldTypeInfo.Types[Type].NetType;
+        public Entity Entity { get; set; }
+
+        [JsonIgnore]
+        public Type NetType
+        {
+            get
+            {
+                if (Type != null)
+                    return FieldTypeInfo.Types[Type.Value].NetType;
+                return null;
+            }
+        }
 
         [JsonIgnore]
         public IList<FieldAttribute> Attributes
@@ -57,10 +69,26 @@ namespace Cynosura.Studio.Core.Generator.Models
         }
 
         [JsonIgnore]
-        public string JsTypeName => FieldTypeInfo.Types[Type].JsTypeName;
+        public string JsTypeName
+        {
+            get
+            {
+                if (Type != null)
+                    return FieldTypeInfo.Types[Type.Value].JsTypeName;
+                return null;
+            }
+        }
 
         [JsonIgnore]
-        private string ShortTypeName => FieldTypeInfo.Types[Type].ShortTypeName;
+        private string ShortTypeName
+        {
+            get
+            {
+                if (Type != null) 
+                    return FieldTypeInfo.Types[Type.Value].ShortTypeName;
+                return null;
+            }
+        }
 
         [JsonIgnore]
         public string Template => Enum.GetName(typeof(FieldType), Type);
