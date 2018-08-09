@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
+using Microsoft.EntityFrameworkCore;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Generator;
 using Cynosura.Studio.Core.Services.Models;
@@ -35,14 +36,14 @@ namespace Cynosura.Studio.Core.Services
         {
             return await _solutionRepository.GetEntities()
                 .Where(e => e.Id == id)
-				.FirstOrDefaultAsync(_solutionRepository);
+				.FirstOrDefaultAsync();
         }
 
         public async Task<PageModel<Solution> > GetSolutionsAsync(int? pageIndex = null, int? pageSize = null)
         {
             IQueryable<Solution> query = _solutionRepository.GetEntities();
             query = query.OrderBy(e => e.Id);
-            return await query.ToPagedListAsync(_solutionRepository, pageIndex, pageSize);
+            return await query.ToPagedListAsync(pageIndex, pageSize);
         }
 
         public async Task<int> CreateSolutionAsync(SolutionCreateModel model)
