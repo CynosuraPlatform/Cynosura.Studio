@@ -7,5 +7,13 @@ $model.Entity.Fields:field(); separator="\n"$
 >>
 
 field(field) ::= <<
+$field:(field.Template)()$
+>>
+
+Type(field) ::= <<
     $field.NameLower$: $field.JsTypeName$;
+>>
+
+Entity(field) ::= <<
+    $field.NameLower$Id: number;
 >>

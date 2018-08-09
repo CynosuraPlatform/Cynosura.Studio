@@ -3,11 +3,11 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
+import { $model.Entity.Name$CoreModule } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$-core.module";
+$model.Entity.DependentEntities:declareEntity(); separator="\n"$
 
 import { $model.Entity.Name$ListComponent } from "./list.component";
 import { $model.Entity.Name$EditComponent } from "./edit.component";
-
-import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
 
 @NgModule({
     declarations: [
@@ -16,16 +16,25 @@ import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
     ],
     imports: [
         RouterModule.forChild([
-            { path: "", component: $model.Entity.Name$ListComponent },
-            { path: ":id", component: $model.Entity.Name$EditComponent }
+            { path: "$model.Entity.NameLower$", component: $model.Entity.Name$ListComponent },
+            { path: "$model.Entity.NameLower$/:id", component: $model.Entity.Name$EditComponent }
         ]),
-        CoreModule
+        CoreModule,
+$model.Entity.DependentEntities:importEntity(); separator="\n"$
+        $model.Entity.Name$CoreModule
     ],
     providers: [
-        $model.Entity.Name$Service
     ]
 })
 export class $model.Entity.Name$Module {
     
 }
+>>
+
+declareEntity(entity) ::= <<
+import { $entity.Name$CoreModule } from "../$entity.NameLower$-core/$entity.NameLower$-core.module";
+>>
+
+importEntity(entity) ::= <<
+        $entity.Name$CoreModule,
 >>

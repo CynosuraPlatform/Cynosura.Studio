@@ -5,17 +5,16 @@ using System.Text;
 
 namespace $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels
 {
-    public class $model.Entity.Name$ViewModel : $model.Entity.Name$CreateViewModel
+    public class $model.Entity.Name$ShortViewModel
     {
         public int Id { get;set; }
 
-$model.Entity.EntityFields:field(); separator="\n"$
+$model.Entity.DefaultField:field()$
     }
 }
 
 >>
 
 field(field) ::= <<
-        public $field.Entity.Name$ViewModels.$field.Entity.Name$ShortViewModel $field.Name$ { get; set; }
-
+        public $field.TypeName$ $field.Name$ { get; set; }
 >>

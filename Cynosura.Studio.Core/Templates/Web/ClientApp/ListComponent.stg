@@ -4,8 +4,8 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { Modal } from "ngx-modialog/plugins/bootstrap";
 
-import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
-import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+import { $model.Entity.Name$ } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.model";
+import { $model.Entity.Name$Service } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.service";
 
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";

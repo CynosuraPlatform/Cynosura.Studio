@@ -61,10 +61,30 @@ namespace Cynosura.Studio.Core.Generator.Models
         {
             get
             {
-                var typeName = ShortTypeName;
-                if (NetType.IsValueType && !IsRequired)
-                    typeName += "?";
-                return typeName;
+                if (Type != null)
+                {
+                    var typeName = FieldTypeInfo.Types[Type.Value].NetTypeName;
+                    if (NetType.IsValueType && !IsRequired)
+                        typeName += "?";
+                    return typeName;
+                }
+                return null;
+            }
+        }
+
+        [JsonIgnore]
+        public string TypeNameNullable
+        {
+            get
+            {
+                if (Type != null)
+                {
+                    var typeName = FieldTypeInfo.Types[Type.Value].NetTypeName;
+                    if (NetType.IsValueType)
+                        typeName += "?";
+                    return typeName;
+                }
+                return null;
             }
         }
 
@@ -80,18 +100,17 @@ namespace Cynosura.Studio.Core.Generator.Models
         }
 
         [JsonIgnore]
-        private string ShortTypeName
-        {
+        public string Template {
             get
             {
-                if (Type != null) 
-                    return FieldTypeInfo.Types[Type.Value].ShortTypeName;
-                return null;
+                if (EntityId != null)
+                    return "Entity";
+                return "Type";
             }
         }
 
         [JsonIgnore]
-        public string Template => Enum.GetName(typeof(FieldType), Type);
+        public string TypeTemplate => Enum.GetName(typeof(FieldType), Type);
     }
 
     public enum FieldType

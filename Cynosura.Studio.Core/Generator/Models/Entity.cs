@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
@@ -18,5 +19,42 @@ namespace Cynosura.Studio.Core.Generator.Models
 
         [JsonIgnore]
         public string PluralNameLower => PluralName.ToLowerCamelCase();
+
+        [JsonIgnore]
+        public Field DefaultField
+        {
+            get
+            {
+                var nameField = Fields.FirstOrDefault(f => f.Name == "Name");
+                if (nameField != null)
+                    return nameField;
+                var stringField = Fields.FirstOrDefault(f => f.Type == FieldType.String);
+                if (stringField != null)
+                    return stringField;
+                return Fields.FirstOrDefault();
+            }
+        }
+
+        [JsonIgnore]
+        public IList<Field> EntityFields
+        {
+            get
+            {
+                return Fields.Where(f => f.EntityId != null)
+                    .ToList();
+            }
+        }
+
+        [JsonIgnore]
+        public IList<Entity> DependentEntities
+        {
+            get
+            {
+                return EntityFields.Select(f => f.Entity)
+                    .Where(e => e.Id != Id)
+                    .Distinct()
+                    .ToList();
+            }
+        }
     }
 }

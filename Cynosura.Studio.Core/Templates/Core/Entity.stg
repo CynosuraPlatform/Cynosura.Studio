@@ -19,10 +19,19 @@ $model.Entity.Fields:field(); separator="\n"$
 
 field(field) ::= <<
 $field.Attributes:attrubute(); separator="\n"$
-        public $field.TypeName$ $field.Name$ { get; set; }
-
+$field:(field.Template)()$
+        
 >>
 
 attrubute(attrubute) ::= <<
         [$attrubute.Name$($attrubute.Parameters; separator=", "$)]
+>>
+
+Type(field) ::= <<
+        public $field.TypeName$ $field.Name$ { get; set; }
+>>
+
+Entity(field) ::= <<
+        public int $field.Name$Id { get; set; }
+        public $field.Entity.Name$ $field.Name$ { get; set; }
 >>

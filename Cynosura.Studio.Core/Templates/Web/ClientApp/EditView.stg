@@ -15,9 +15,18 @@ field(field) ::= <<
         <label for="name" class="col-sm-2 control-label">$field.DisplayName$</label>
         <div class="col-sm-10">
 $field:(field.Template)()$
-            <model-validator [model]="error?.modelState?.$field.NameLower$"></model-validator>
         </div>
     </div>
+>>
+
+Type(field) ::= <<
+$field:(field.TypeTemplate)()$
+            <model-validator [model]="error?.modelState?.$field.NameLower$"></model-validator>
+>>
+
+Entity(field) ::= <<
+            <$field.Entity.NameLower$-select [(selected$field.Entity.Name$Id)]="$model.Entity.NameLower$.$field.NameLower$Id"></$field.Entity.NameLower$-select>
+            <model-validator [model]="error?.modelState?.$field.NameLower$Id"></model-validator>
 >>
 
 String(field) ::= <<

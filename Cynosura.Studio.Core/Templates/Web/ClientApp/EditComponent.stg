@@ -2,8 +2,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
-import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+import { $model.Entity.Name$ } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.model";
+import { $model.Entity.Name$Service } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.service";
 
 import { Error } from "../core/error.model";
 

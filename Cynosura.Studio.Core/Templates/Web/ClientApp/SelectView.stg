@@ -1,0 +1,6 @@
+﻿main(model) ::= <<
+<select class="form-control" [ngModel]="selected$model.Entity.Name$Id" [disabled]="readonly" (ngModelChange)="selected$model.Entity.Name$IdChange.emit(\$event!='0: null' ? \$event : null)">
+    <option [ngValue]="null" selected="selected">Select $model.Entity.Name$</option>
+    <option [ngValue]="$model.Entity.NameLower$.id" *ngFor="let $model.Entity.NameLower$ of $model.Entity.PluralNameLower$">{{ $model.Entity.NameLower$.name }}</option>
+</select>
+>>
