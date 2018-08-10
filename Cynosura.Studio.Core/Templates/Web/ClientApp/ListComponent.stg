@@ -2,11 +2,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { Modal } from "ngx-modialog/plugins/bootstrap";
-
 import { $model.Entity.Name$ } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.model";
 import { $model.Entity.Name$Service } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.service";
 
+import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
@@ -32,7 +31,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     }
 
     constructor(
-        private modal: Modal,
+        private modalHelper: ModalHelper,
         private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
         private router: Router,
         private route: ActivatedRoute,
@@ -66,24 +65,14 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     }
 
     delete(id: number): void {
-        const dialogRef = this.modal
-            .confirm()
-            .size("sm")
-            .keyboard(27)
-            .title("Удалить?")
-            .body("Действительно хотите удалить?")
-            .okBtn("Удалить")
-            .cancelBtn("Отмена")
-            .open();
-        dialogRef.result.then(dialog => dialog.result)
+        this.modalHelper.confirmDelete()
             .then(() => {
                 this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
                     .then(() => {
                         this.get$model.Entity.PluralName$();
                     })
                     .catch(error => this.error = error);
-            })
-            .catch(() => {});
+            });
     }
 
     onPageSelected(pageIndex: number) {
