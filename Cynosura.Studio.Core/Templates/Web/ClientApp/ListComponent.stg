@@ -19,6 +19,17 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     content: Page<$model.Entity.Name$>;
     error: Error;
     pageSize = 10;
+    private _pageIndex: number;
+    get pageIndex(): number {
+        if (!this._pageIndex) {
+            this._pageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex") | 0;
+        }
+        return this._pageIndex;
+    }
+    set pageIndex(value: number) {
+        this._pageIndex = value;
+        this.storeService.set("$model.Entity.PluralNameLower$PageIndex", value);
+    }
 
     constructor(
         private modal: Modal,
@@ -29,19 +40,12 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
-        let pageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex");
-        if (!pageIndex) pageIndex = 0;
-        this.get$model.Entity.PluralName$(pageIndex);
+        this.get$model.Entity.PluralName$();
     }
 
-    get$model.Entity.PluralName$(pageIndex: number): void {        
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(pageIndex, this.pageSize)
+    get$model.Entity.PluralName$(): void {        
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(this.pageIndex, this.pageSize)
             .then(content => {
-                if (content.pageItems.length == 0 && content.totalItems != 0) {
-                    this.content.currentPageIndex--;
-                    this.storeService.set("$model.Entity.PluralNameLower$PageIndex", this.content.currentPageIndex);
-                    this.get$model.Entity.PluralName$(this.content.currentPageIndex);
-                }
                 this.content = content;
             })
             .catch(error => this.error = error);
@@ -75,16 +79,16 @@ export class $model.Entity.Name$ListComponent implements OnInit {
             .then(() => {
                 this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
                     .then(() => {
-                        this.get$model.Entity.PluralName$(this.content.currentPageIndex);
+                        this.get$model.Entity.PluralName$();
                     })
-                    .catch(error => this.error = error)
+                    .catch(error => this.error = error);
             })
             .catch(() => {});
     }
 
     onPageSelected(pageIndex: number) {
-        this.storeService.set("$model.Entity.PluralNameLower$PageIndex", pageIndex);
-        this.get$model.Entity.PluralName$(pageIndex);
+        this.pageIndex = pageIndex;
+        this.get$model.Entity.PluralName$();
     }
 }
 >>
