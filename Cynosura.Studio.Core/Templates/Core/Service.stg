@@ -76,5 +76,5 @@ $model.Entity.EntityFields:include(); separator="\n "$;
 >>
 
 include(field) ::= <<
-                .Include(e => e.$field.Entity.Name$)
+                .Include(e => e.$field.Name$)
 >>
