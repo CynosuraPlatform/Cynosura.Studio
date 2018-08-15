@@ -30,41 +30,41 @@ Entity(field) ::= <<
 >>
 
 String(field) ::= <<
-            <input type="text" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <text-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></text-edit>
 >>
 
 Int32(field) ::= <<
-            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
 >>
 
 Int64(field) ::= <<
-            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
 >>
 
 Decimal(field) ::= <<
-            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
 >>
 
 Double(field) ::= <<
-            <input type="number" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
 >>
 
 Boolean(field) ::= <<
-            <input type="checkbox" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <bool-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></bool-edit>
 >>
 
 DateTime(field) ::= <<
-            <input type="datetime-local" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <datetime-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></datetime-edit>
 >>
 
 Date(field) ::= <<
-            <input type="date" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <date-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></date-edit>
 >>
 
 Time(field) ::= <<
-            <input type="time" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <time-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></time-edit>
 >>
 
 Guid(field) ::= <<
-            <input type="text" class="form-control" id="$field.NameLower$" name="$field.NameLower$" [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" placeholder="$field.DisplayName$">
+            <text-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></text-edit>
 >>
