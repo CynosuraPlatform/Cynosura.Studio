@@ -1,0 +1,3 @@
+﻿main(model) ::= <<
+import { $model.Entity.Name$Module } from "./$model.Entity.NameLower$/$model.Entity.NameLower$.module";
+>>

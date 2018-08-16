@@ -44,6 +44,7 @@ namespace Cynosura.Studio.Core.Generator
             Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\edit.component.html", TemplatePath = "Web\\ClientApp\\EditView.stg" });
             Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\{NameLower}.module.ts", TemplatePath = "Web\\ClientApp\\Module.stg" });
             Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\Route.stg", InsertAfter = "// ADD ROUTES HERE" });
+            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\RouteImport.stg", InsertAfter = "// ADD MODULES HERE" });
         }
 
         private void CreateFile(CodeTemplate template, object model, Solution solution, Entity entity)
