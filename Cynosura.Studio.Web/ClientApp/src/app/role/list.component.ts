@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { Modal } from "ngx-modialog/plugins/bootstrap";
+import { Role } from "../role-core/role.model";
+import { RoleService } from "../role-core/role.service";
 
-import { Role } from "./role.model";
-import { RoleService } from "./role.service";
-
+import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
@@ -18,9 +17,20 @@ export class RoleListComponent implements OnInit {
     content: Page<Role>;
     error: Error;
     pageSize = 10;
+    private _pageIndex: number;
+    get pageIndex(): number {
+        if (!this._pageIndex) {
+            this._pageIndex = this.storeService.get("rolesPageIndex") | 0;
+        }
+        return this._pageIndex;
+    }
+    set pageIndex(value: number) {
+        this._pageIndex = value;
+        this.storeService.set("rolesPageIndex", value);
+    }
 
     constructor(
-        private modal: Modal,
+        private modalHelper: ModalHelper,
         private roleService: RoleService,
         private router: Router,
         private route: ActivatedRoute,
@@ -28,19 +38,12 @@ export class RoleListComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
-        let pageIndex = this.storeService.get("rolesPageIndex");
-        if (!pageIndex) pageIndex = 0;
-        this.getRoles(pageIndex);
+        this.getRoles();
     }
 
-    getRoles(pageIndex: number): void {
-        this.roleService.getRoles(pageIndex, this.pageSize)
+    getRoles(): void {
+        this.roleService.getRoles(this.pageIndex, this.pageSize)
             .then(content => {
-                if (content.pageItems.length == 0 && content.totalItems != 0) {
-                    this.content.currentPageIndex--;
-                    this.storeService.set("rolesPageIndex", this.content.currentPageIndex);
-                    this.getRoles(this.content.currentPageIndex);
-                }
                 this.content = content;
             })
             .catch(error => this.error = error);
@@ -55,28 +58,18 @@ export class RoleListComponent implements OnInit {
     }
 
     delete(id: number): void {
-        const dialogRef = this.modal
-            .confirm()
-            .size("sm")
-            .keyboard(27)
-            .title("Delete?")
-            .body("Are you sure you want to delete?")
-            .okBtn("Delete")
-            .cancelBtn("Cancel")
-            .open();
-        dialogRef.result
+        this.modalHelper.confirmDelete()
             .then(() => {
                 this.roleService.deleteRole(id)
                     .then(() => {
-                        this.getRoles(this.content.currentPageIndex);
+                        this.getRoles();
                     })
                     .catch(error => this.error = error);
-            })
-            .catch(() => {});
+            });
     }
 
     onPageSelected(pageIndex: number) {
-        this.storeService.set("rolesPageIndex", pageIndex);
-        this.getRoles(pageIndex);
+        this.pageIndex = pageIndex;
+        this.getRoles();
     }
 }

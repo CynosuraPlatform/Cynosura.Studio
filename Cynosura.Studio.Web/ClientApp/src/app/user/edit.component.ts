@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { User } from "./user.model";
-import { UserService } from "./user.service";
+import { User } from "../user-core/user.model";
+import { UserService } from "../user-core/user.service";
 
-import { Role } from "../role/role.model";
-import { RoleService } from "../role/role.service";
+import { Role } from "../role-core/role.model";
+import { RoleService } from "../role-core/role.service";
 
 import { Error } from "../core/error.model";
 

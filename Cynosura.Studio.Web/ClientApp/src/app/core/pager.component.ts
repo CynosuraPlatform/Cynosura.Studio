@@ -55,6 +55,11 @@ export class PagerComponent {
     private updatePages() {
         const totalPages = Math.ceil(this._totalItems / this._pageSize);
 
+        if (this._currentPage >= totalPages && totalPages > 0) {
+            this.onChangeObj(totalPages - 1);
+            return;
+        }
+
         let temp: number[] = [];
         this.pages = [];
 
