@@ -2,11 +2,10 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
+import { RoleCoreModule } from "../role-core/role-core.module";
 
 import { RoleListComponent } from "./list.component";
 import { RoleEditComponent } from "./edit.component";
-
-import { RoleService } from "./role.service";
 
 @NgModule({
     declarations: [
@@ -15,13 +14,13 @@ import { RoleService } from "./role.service";
     ],
     imports: [
         RouterModule.forChild([
-            { path: "role", component: RoleListComponent },
-            { path: "role/:id", component: RoleEditComponent }
+            { path: "", component: RoleListComponent },
+            { path: ":id", component: RoleEditComponent }
         ]),
-        CoreModule
+        CoreModule,
+        RoleCoreModule
     ],
     providers: [
-        RoleService
     ]
 })
 export class RoleModule {

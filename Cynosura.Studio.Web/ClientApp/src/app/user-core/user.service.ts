@@ -16,13 +16,13 @@ export class UserService {
     getUsers(pageIndex?: number, pageSize?: number): Promise<Page<User>> {
         const url = this.userUrl;
 
-        const params = new HttpParams();
+        let params = new HttpParams();
 
         if (pageIndex != undefined)
-            params.set("pageIndex", pageIndex.toString());
+            params = params.set("pageIndex", pageIndex.toString());
 
         if (pageSize != undefined)
-            params.set("pageSize", pageSize.toString());
+            params = params.set("pageSize", pageSize.toString());
 
         return this.httpClient.get<Page<User>>(url, {
             params: params

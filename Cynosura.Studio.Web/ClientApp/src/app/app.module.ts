@@ -8,6 +8,8 @@ import { ModalModule } from "ngx-modialog";
 import { BootstrapModalModule } from "ngx-modialog/plugins/bootstrap";
 
 import { AuthModule } from "./auth/auth.module";
+import { CoreModule } from "./core/core.module";
+// ADD MODULES HERE
 import { RoleModule } from "./role/role.module";
 import { UserModule } from "./user/user.module";
 
@@ -19,8 +21,9 @@ var routes: Route[] = [
     { path: "", component: HomeComponent, pathMatch: "full" }
 ];
 
-//routes.push({ path: "user", loadChildren: "./user/user.module#UserModule" });
-//routes.push({ path: "role", loadChildren: "./role/role.module#RoleModule" });
+// ADD ROUTES HERE
+routes.push({ path: "user", loadChildren: () => UserModule });
+routes.push({ path: "role", loadChildren: () => RoleModule });
 
 @NgModule({
     declarations: [
@@ -36,8 +39,7 @@ var routes: Route[] = [
         ModalModule.forRoot(),
         BootstrapModalModule,
         AuthModule,
-        RoleModule,
-        UserModule
+        CoreModule
     ],
     providers: [],
     bootstrap: [AppComponent]

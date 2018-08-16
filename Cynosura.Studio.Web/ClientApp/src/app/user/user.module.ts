@@ -2,11 +2,11 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
+import { UserCoreModule } from "../user-core/user-core.module";
+import { RoleCoreModule } from "../role-core/role-core.module";
 
 import { UserListComponent } from "./list.component";
 import { UserEditComponent } from "./edit.component";
-
-import { UserService } from "./user.service";
 
 @NgModule({
     declarations: [
@@ -15,13 +15,14 @@ import { UserService } from "./user.service";
     ],
     imports: [
         RouterModule.forChild([
-            { path: "user", component: UserListComponent },
-            { path: "user/:id", component: UserEditComponent }
+            { path: "", component: UserListComponent },
+            { path: ":id", component: UserEditComponent }
         ]),
-        CoreModule
+        CoreModule,
+        UserCoreModule,
+        RoleCoreModule
     ],
     providers: [
-        UserService
     ]
 })
 export class UserModule {

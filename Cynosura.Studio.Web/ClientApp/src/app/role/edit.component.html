@@ -9,7 +9,7 @@
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="role.name" placeholder="Name">
+            <text-edit [(value)]="role.name" name="name" label="Name"></text-edit>
             <model-validator [model]="error?.modelState?.name"></model-validator>
         </div>
     </div>

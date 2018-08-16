@@ -7,6 +7,7 @@ using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Data;
 using Cynosura.Studio.Web.Infrastructure;
+using Cynosura.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,36 +60,46 @@ namespace Cynosura.Studio.Web
             });
 
             // Register the OpenIddict services.
-            services.AddOpenIddict(options =>
-            {
-                // Register the Entity Framework stores.
-                options.AddEntityFrameworkCoreStores<DataContext>();
-
-                // Register the ASP.NET Core MVC binder used by OpenIddict.
-                options.AddMvcBinders();
-
-                // Enable the token endpoint.
-                options.EnableTokenEndpoint("/connect/token");
-
-                // Enable the password and the refresh token flows.
-                options.AllowPasswordFlow()
-                    .AllowRefreshTokenFlow();
-
-                // During development, you can disable the HTTPS requirement.
-                options.DisableHttpsRequirement();
-
-                options.UseJsonWebTokens();
-
-                if (_env.IsDevelopment())
+            services.AddOpenIddict()
+                .AddCore(options =>
                 {
-                    options.AddEphemeralSigningKey();
-                }
-                else
+                    // Configure OpenIddict to use the Entity Framework Core stores and entities.
+                    options.UseEntityFrameworkCore()
+                        .UseDbContext<DataContext>();
+                })
+
+                .AddServer(options =>
                 {
-                    var certificate = new X509Certificate2(Configuration["Jwt:CertificatePath"], Configuration["Jwt:CertificatePassword"]);
-                    options.AddSigningCertificate(certificate);
-                }
-            });
+                    // Register the ASP.NET Core MVC binder used by OpenIddict.
+                    // Note: if you don't call this method, you won't be able to
+                    // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
+                    options.UseMvc();
+
+                    // Enable the token endpoint (required to use the password flow).
+                    options.EnableTokenEndpoint("/connect/token");
+
+                    // Allow client applications to use the grant_type=password flow.
+                    options.AllowPasswordFlow();
+                    options.AllowRefreshTokenFlow();
+
+                    // During development, you can disable the HTTPS requirement.
+                    options.DisableHttpsRequirement();
+
+                    // Accept token requests that don't specify a client_id.
+                    options.AcceptAnonymousClients();
+
+                    options.UseJsonWebTokens();
+
+                    if (_env.IsDevelopment())
+                    {
+                        options.AddEphemeralSigningKey();
+                    }
+                    else
+                    {
+                        var certificate = new X509Certificate2(Configuration["Jwt:CertificatePath"], Configuration["Jwt:CertificatePassword"]);
+                        options.AddSigningCertificate(certificate);
+                    }
+                });
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
@@ -120,7 +131,7 @@ namespace Cynosura.Studio.Web
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(o =>
                 {
-                    //o.Filters.Add(typeof(ExceptionLoggerFilter), 10);
+                    o.Filters.Add(typeof(ExceptionLoggerFilter), 10);
                     o.ModelBinderProviders.Insert(0, new UserInfoModelBinderProvider());
                 })
                 .AddJsonOptions(options =>

@@ -14,8 +14,8 @@
     </thead>
     <tbody>
         <tr *ngFor="let user of content.pageItems">
-            <td>{{user.userName}}</td>
-            <td>{{user.email}}</td>
+            <td><text-view [value]="user.userName"></text-view></td>
+            <td><text-view [value]="user.email"></text-view></td>
             <td>
                 <button class="btn btn-default" (click)="edit(user.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(user.id)">Delete</button>

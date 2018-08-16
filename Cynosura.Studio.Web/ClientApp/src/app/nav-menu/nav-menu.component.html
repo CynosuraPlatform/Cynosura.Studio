@@ -8,6 +8,7 @@
                 <span class='icon-bar'></span>
             </button>
             <a class='navbar-brand' [routerLink]='["/"]'>Cynosura.Studio</a>
+            <span class="loader glyphicon glyphicon-repeat pull-right" *ngIf="isLoading"></span>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }' *ngIf="menu">

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from "../core/services/auth.service";
 import { MenuService } from "../core/services/menu.service";
+import { LoadingService } from "../core/loading.service";
 import { Menu } from "../core/models/menu.model";
 
 @Component({
@@ -14,10 +15,16 @@ export class NavMenuComponent implements OnInit {
     menu: Menu;
     isExpanded = false;
     loggedIn = false;
+    isLoading = false;
 
     constructor(private menuService: MenuService,
         private authService: AuthService,
-        private router: Router) { }
+        private loadingService: LoadingService,
+        private router: Router) {
+        loadingService
+            .onLoadingChanged
+            .subscribe(isLoading => this.isLoading = isLoading);
+    }
 
     ngOnInit(): void {
         this.authService.loggedIn$.subscribe(loggedIn => this.loggedIn = loggedIn);

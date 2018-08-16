@@ -14,12 +14,13 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="Cynosura.Web" Version="0.1.5" />
+    <PackageReference Include="Cynosura.Web" Version="0.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
-    <PackageReference Include="OpenIddict" Version="2.0.0-rc2-final" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc2-final" />
-    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc2-final" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.6.0" />
+    <PackageReference Include="OpenIddict" Version="2.0.0-rc3-final" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="2.0.0-rc3-final" />
+    <PackageReference Include="OpenIddict.Mvc" Version="2.0.0-rc3-final" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +31,9 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\core\core.module.ts" />
+    <None Remove="ClientApp\src\app\role-core\role-core.module.ts" />
     <None Remove="ClientApp\src\app\role\role.module.ts" />
+    <None Remove="ClientApp\src\app\user-core\user-core.module.ts" />
     <None Remove="ClientApp\src\app\user\user.module.ts" />
   </ItemGroup>
 
@@ -41,8 +44,19 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\core\core.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\role-core\role-core.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\role\role.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\user-core\user-core.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user\user.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="nlog.Test.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
