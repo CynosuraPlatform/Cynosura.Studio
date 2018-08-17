@@ -3,7 +3,7 @@ import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
 import { EntityCoreModule } from "../entity-core/entity-core.module";
-import { SolutionModule } from "../solution/solution.module";
+import { SolutionCoreModule } from "../solution-core/solution-core.module";
 import { FieldModule } from "../field/field.module";
 
 import { EntityListComponent } from "./list.component";
@@ -16,12 +16,12 @@ import { EntityEditComponent } from "./edit.component";
     ],
     imports: [
 		RouterModule.forChild([
-            { path: "entity", component: EntityListComponent },
-            { path: "entity/:id", component: EntityEditComponent }
+            { path: "", component: EntityListComponent },
+            { path: ":id", component: EntityEditComponent }
         ]),
         CoreModule,
         EntityCoreModule,
-        SolutionModule,
+        SolutionCoreModule,
         FieldModule
     ],
     providers: [

@@ -2,31 +2,27 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
+import { SolutionCoreModule } from "../solution-core/solution-core.module";
 
 import { SolutionListComponent } from "./list.component";
 import { SolutionEditComponent } from "./edit.component";
-import { SolutionSelectComponent } from "./select.component";
-
-import { SolutionService } from "./solution.service";
 
 @NgModule({
     declarations: [
         SolutionListComponent,
-        SolutionEditComponent,
-        SolutionSelectComponent
+        SolutionEditComponent
     ],
     imports: [
 		RouterModule.forChild([
-            { path: "solution", component: SolutionListComponent },
-            { path: "solution/:id", component: SolutionEditComponent }
+            { path: "", component: SolutionListComponent },
+            { path: ":id", component: SolutionEditComponent }
         ]),
-		CoreModule
+        CoreModule,
+        SolutionCoreModule
     ],
     providers: [
-        SolutionService
     ],
     exports: [
-        SolutionSelectComponent
     ]
 })
 export class SolutionModule {

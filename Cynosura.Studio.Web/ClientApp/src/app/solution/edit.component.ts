@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { Solution } from "./solution.model";
-import { SolutionService } from "./solution.service";
+import { Solution } from "../solution-core/solution.model";
+import { SolutionService } from "../solution-core/solution.service";
 
 import { Error } from "../core/error.model";
 

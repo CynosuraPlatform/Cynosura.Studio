@@ -14,7 +14,6 @@ import { RoleModule } from "./role/role.module";
 import { UserModule } from "./user/user.module";
 import { SolutionModule } from "./solution/solution.module";
 import { EntityModule } from "./entity/entity.module";
-import { FieldModule } from "./field/field.module";
 
 import { AppComponent } from "./app.component";
 import { NavMenuComponent } from "./nav-menu/nav-menu.component";
@@ -27,6 +26,8 @@ var routes: Route[] = [
 // ADD ROUTES HERE
 routes.push({ path: "user", loadChildren: () => UserModule });
 routes.push({ path: "role", loadChildren: () => RoleModule });
+routes.push({ path: "entity", loadChildren: () => EntityModule });
+routes.push({ path: "solution", loadChildren: () => SolutionModule });
 
 @NgModule({
     declarations: [
@@ -42,10 +43,7 @@ routes.push({ path: "role", loadChildren: () => RoleModule });
         ModalModule.forRoot(),
         BootstrapModalModule,
         AuthModule,
-        CoreModule,
-        SolutionModule,
-        EntityModule,
-        FieldModule
+        CoreModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -3,8 +3,8 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { Modal } from "ngx-modialog/plugins/bootstrap";
 
-import { Solution } from "./solution.model";
-import { SolutionService } from "./solution.service";
+import { Solution } from "../solution-core/solution.model";
+import { SolutionService } from "../solution-core/solution.service";
 
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
