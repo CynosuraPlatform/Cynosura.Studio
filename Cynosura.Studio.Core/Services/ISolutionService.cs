@@ -16,5 +16,6 @@ namespace Cynosura.Studio.Core.Services
         Task UpdateSolutionAsync(int id, SolutionUpdateModel model);
         Task DeleteSolutionAsync(int id);
         Task GenerateAsync(int id);
+        Task UpgradeAsync(int id);
     }
 }

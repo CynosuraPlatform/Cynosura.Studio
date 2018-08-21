@@ -14,6 +14,7 @@ namespace Cynosura.Studio.Core.Generator.Models
     {
         public string Path { get; }
         public string Namespace { get; }
+        public SolutionMetadata Metadata { get; }
         public List<Project> Projects { get; }
 
         private const string MetadataFileExtension = ".json";
@@ -26,6 +27,17 @@ namespace Cynosura.Studio.Core.Generator.Models
                 throw new Exception("Solution file not found");
             Namespace = Regex.Replace(solutionFile, "^.*\\\\([^\\\\]+?).sln$", "$1");
             Projects = GetProjects(Path);
+            Metadata = GetMetadata();
+        }
+
+        private SolutionMetadata GetMetadata()
+        {
+            var coreProject = GetProject("Core");
+            var metadataPath = System.IO.Path.Combine(coreProject.Path, "Metadata/Solution.json");
+            using (var reader = new StreamReader(metadataPath))
+            {
+                return DeserializeMetadata<SolutionMetadata>(reader.ReadToEnd());
+            }
         }
 
         private List<Project> GetProjects(string path)

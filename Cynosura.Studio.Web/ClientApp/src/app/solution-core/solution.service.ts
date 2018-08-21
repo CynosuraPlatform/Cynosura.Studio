@@ -56,4 +56,10 @@ export class SolutionService {
         return this.httpClient.post(url, null)
             .toPromise();
     }
+
+    upgradeSolution(id: number): Promise<{}> {
+        const url = `${this.solutionUrl}/${id}/upgrade`;
+        return this.httpClient.post(url, null)
+            .toPromise();
+    }
 }

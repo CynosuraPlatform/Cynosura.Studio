@@ -69,5 +69,12 @@ namespace Cynosura.Studio.Web.Controllers
             await _solutionService.GenerateAsync(id);
             return new StatusViewModel();
         }
+
+        [HttpPost("{id:int}/upgrade")]
+        public async Task<StatusViewModel> UpgradeSolutionAsync(int id)
+        {
+            await _solutionService.UpgradeAsync(id);
+            return new StatusViewModel();
+        }
     }
 }

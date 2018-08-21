@@ -4,19 +4,28 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
+using Microsoft.Extensions.Logging;
 
 namespace Cynosura.Studio.Core.Generator
 {
     public class CodeGenerator
     {
         private readonly ITemplateEngine _templateEngine;
+        private readonly IPackageFeed _packageFeed;
+        private readonly ILogger<CodeGenerator> _logger;
         public IList<CodeTemplate> Templates { get; set; } = new List<CodeTemplate>();
 
-        public CodeGenerator(ITemplateEngine templateEngine)
+        public CodeGenerator(ITemplateEngine templateEngine, 
+            IPackageFeed packageFeed,
+            ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
+            _packageFeed = packageFeed;
+            _logger = logger;
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Entities", FileName = "{Name}.cs", TemplatePath = "Core\\Entity.stg"});
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}CreateModel.cs", TemplatePath = "Core\\ServiceCreateModel.stg" });
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}UpdateModel.cs", TemplatePath = "Core\\ServiceUpdateModel.stg" });
@@ -88,6 +97,12 @@ namespace Cynosura.Studio.Core.Generator
 
         public void GenerateSolution(string path, string name)
         {
+            _logger.LogInformation("GenerateSolution");
+            if (Directory.GetFiles(path).Any())
+            {
+                _logger.LogWarning($"Path {path} is not empty. Skip generation.");
+                return;
+            }
             var process = Process.Start(new ProcessStartInfo()
             {
                 FileName = "dotnet",
@@ -102,6 +117,32 @@ namespace Cynosura.Studio.Core.Generator
                 WorkingDirectory = path
             });
             process.WaitForExit();
+        }
+
+        public async Task UpgradeSolutionAsync(Solution solution)
+        {
+            const string packageName = "Cynosura.Template";
+            _logger.LogInformation("UpgradeSolution");
+            if (solution.Metadata == null)
+            {
+                _logger.LogWarning("Solution metadata not found. Cannot upgrade.");
+                return;
+            }
+            _logger.LogInformation($"Current version: {solution.Metadata.Version}");
+            var latestVersion = (await _packageFeed.GetVersionsAsync(packageName)).First();
+            _logger.LogInformation($"Latest version: {latestVersion}");
+            if (solution.Metadata.Version == latestVersion)
+            {
+                _logger.LogWarning("Using latest version. Nothing to upgrade");
+                return;
+            }
+            var packagesPath = Path.Combine(Path.GetTempPath(), "Cynosura.Studio", "Packages");
+            if (!Directory.Exists(packagesPath))
+                Directory.CreateDirectory(packagesPath);
+            var latestPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, latestVersion);
+            _logger.LogWarning($"Downloaded latest version to {latestPackageFilePath}");
+            var currentPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, solution.Metadata.Version);
+            _logger.LogWarning($"Downloaded current version to {currentPackageFilePath}");
         }
 
         public void GenerateEntity(Solution solution, Entity entity)

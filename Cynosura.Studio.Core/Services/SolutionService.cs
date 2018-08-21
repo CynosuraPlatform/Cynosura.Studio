@@ -79,5 +79,13 @@ namespace Cynosura.Studio.Core.Services
                 return;
             _codeGenerator.GenerateSolution(solution.Path, solution.Name);
         }
+
+        public async Task UpgradeAsync(int id)
+        {
+            var solution = await GetSolutionAsync(id);
+            if (solution == null)
+                return;
+            await _codeGenerator.UpgradeSolutionAsync(new Generator.Models.Solution(solution.Path));
+        }
     }
 }

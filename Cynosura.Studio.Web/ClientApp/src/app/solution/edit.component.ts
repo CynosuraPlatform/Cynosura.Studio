@@ -62,9 +62,19 @@ export class SolutionEditComponent implements OnInit {
     }
 
     generate(): void {
+        this.error = null;
         this.solutionService.generateSolution(this.solution.id)
             .then(
                 () => {},
+                error => this.error = error
+            );
+    }
+
+    upgrade(): void {
+        this.error = null;
+        this.solutionService.upgradeSolution(this.solution.id)
+            .then(
+                () => { },
                 error => this.error = error
             );
     }

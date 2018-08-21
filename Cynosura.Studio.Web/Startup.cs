@@ -5,6 +5,7 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Data;
 using Cynosura.Studio.Web.Infrastructure;
 using Cynosura.Web;
@@ -39,6 +40,8 @@ namespace Cynosura.Studio.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.Configure<NugetSettings>(Configuration.GetSection("Nuget"));
+
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
