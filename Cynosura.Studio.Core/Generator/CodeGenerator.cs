@@ -146,9 +146,9 @@ namespace Cynosura.Studio.Core.Generator
             if (!Directory.Exists(packagesPath))
                 Directory.CreateDirectory(packagesPath);
             var latestPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, latestVersion);
-            _logger.LogWarning($"Downloaded latest version to {latestPackageFilePath}");
+            _logger.LogInformation($"Downloaded latest version to {latestPackageFilePath}");
             var currentPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, solution.Metadata.Version);
-            _logger.LogWarning($"Downloaded current version to {currentPackageFilePath}");
+            _logger.LogInformation($"Downloaded current version to {currentPackageFilePath}");
 
             var solutionsPath = Path.Combine(studioDirectoryPath, "Solutions");
             var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.Version}");
@@ -156,18 +156,18 @@ namespace Cynosura.Studio.Core.Generator
                 Directory.Delete(currentPackageSolutionPath, true);
             CopyDirectory(currentPackageFilePath, currentPackageSolutionPath);
             await RenameSolutionAsync(currentPackageSolutionPath, packageName, solution.Namespace);
-            _logger.LogWarning($"Created {currentPackageSolutionPath}");
+            _logger.LogInformation($"Created {currentPackageSolutionPath}");
 
             var latestPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{latestVersion}");
             if (Directory.Exists(latestPackageSolutionPath))
                 Directory.Delete(latestPackageSolutionPath, true);
             CopyDirectory(latestPackageFilePath, latestPackageSolutionPath);
             await RenameSolutionAsync(latestPackageSolutionPath, packageName, solution.Namespace);
-            _logger.LogWarning($"Created {latestPackageSolutionPath}");
+            _logger.LogInformation($"Created {latestPackageSolutionPath}");
 
-            _logger.LogWarning($"Merging changes to {solution.Path}");
+            _logger.LogInformation($"Merging changes to {solution.Path}");
             await _merge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
-            _logger.LogWarning($"Completed");
+            _logger.LogInformation($"Completed");
         }
 
         private void CopyDirectory(string fromPath, string toPath)
