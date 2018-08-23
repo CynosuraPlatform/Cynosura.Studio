@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
 using Microsoft.Extensions.Logging;
@@ -16,15 +17,18 @@ namespace Cynosura.Studio.Core.Generator
     {
         private readonly ITemplateEngine _templateEngine;
         private readonly IPackageFeed _packageFeed;
+        private readonly IMerge _merge;
         private readonly ILogger<CodeGenerator> _logger;
         public IList<CodeTemplate> Templates { get; set; } = new List<CodeTemplate>();
 
         public CodeGenerator(ITemplateEngine templateEngine, 
             IPackageFeed packageFeed,
+            IMerge merge,
             ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
             _packageFeed = packageFeed;
+            _merge = merge;
             _logger = logger;
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Entities", FileName = "{Name}.cs", TemplatePath = "Core\\Entity.stg"});
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}CreateModel.cs", TemplatePath = "Core\\ServiceCreateModel.stg" });
@@ -122,6 +126,8 @@ namespace Cynosura.Studio.Core.Generator
         public async Task UpgradeSolutionAsync(Solution solution)
         {
             const string packageName = "Cynosura.Template";
+            string studioDirectoryPath = Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
+
             _logger.LogInformation("UpgradeSolution");
             if (solution.Metadata == null)
             {
@@ -136,13 +142,92 @@ namespace Cynosura.Studio.Core.Generator
                 _logger.LogWarning("Using latest version. Nothing to upgrade");
                 return;
             }
-            var packagesPath = Path.Combine(Path.GetTempPath(), "Cynosura.Studio", "Packages");
+            var packagesPath = Path.Combine(studioDirectoryPath, "Packages");
             if (!Directory.Exists(packagesPath))
                 Directory.CreateDirectory(packagesPath);
             var latestPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, latestVersion);
             _logger.LogWarning($"Downloaded latest version to {latestPackageFilePath}");
             var currentPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, solution.Metadata.Version);
             _logger.LogWarning($"Downloaded current version to {currentPackageFilePath}");
+
+            var solutionsPath = Path.Combine(studioDirectoryPath, "Solutions");
+            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.Version}");
+            if (Directory.Exists(currentPackageSolutionPath))
+                Directory.Delete(currentPackageSolutionPath, true);
+            CopyDirectory(currentPackageFilePath, currentPackageSolutionPath);
+            await RenameSolutionAsync(currentPackageSolutionPath, packageName, solution.Namespace);
+            _logger.LogWarning($"Created {currentPackageSolutionPath}");
+
+            var latestPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{latestVersion}");
+            if (Directory.Exists(latestPackageSolutionPath))
+                Directory.Delete(latestPackageSolutionPath, true);
+            CopyDirectory(latestPackageFilePath, latestPackageSolutionPath);
+            await RenameSolutionAsync(latestPackageSolutionPath, packageName, solution.Namespace);
+            _logger.LogWarning($"Created {latestPackageSolutionPath}");
+
+            _logger.LogWarning($"Merging changes to {solution.Path}");
+            await _merge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
+            _logger.LogWarning($"Completed");
+        }
+
+        private void CopyDirectory(string fromPath, string toPath)
+        {
+            foreach (string dirPath in Directory.GetDirectories(fromPath, "*",
+                SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(fromPath, toPath));
+
+            foreach (string newPath in Directory.GetFiles(fromPath, "*.*",
+                SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(fromPath, toPath), true);
+        }
+
+        private async Task RenameSolutionAsync(string path, string oldValue, string newValue)
+        {
+            foreach (var directory in Directory.GetDirectories(path))
+            {
+                var directoryName = Path.GetRelativePath(path, directory);
+                var newDirectoryName = directoryName.Replace(oldValue, newValue);
+                var newDirectory = Path.Combine(path, newDirectoryName);
+                if (directory != newDirectory)
+                {
+                    Directory.Move(directory, newDirectory);
+                }
+                await RenameSolutionAsync(newDirectory, oldValue, newValue);
+            }
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                var fileName = Path.GetRelativePath(path, file);
+                var newFileName = fileName.Replace(oldValue, newValue);
+                var newFile = Path.Combine(path, newFileName);
+                if (file != newFile)
+                {
+                    Directory.Move(file, newFile);
+                }
+
+                var fileContent = await ReadFileAsync(newFile);
+                var newFileContent = fileContent.Replace(oldValue, newValue);
+                if (fileContent != newFileContent)
+                {
+                    await WriteFileAsync(newFile, newFileContent);
+                }
+            }
+        }
+
+        private async Task<string> ReadFileAsync(string filePath)
+        {
+            using (var fileReader = new StreamReader(filePath))
+            {
+                return await fileReader.ReadToEndAsync();
+            }
+        }
+
+        private async Task WriteFileAsync(string filePath, string content)
+        {
+            using (var fileWriter = new StreamWriter(filePath))
+            {
+                await fileWriter.WriteAsync(content);
+            }
         }
 
         public void GenerateEntity(Solution solution, Entity entity)
