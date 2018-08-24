@@ -1,11 +1,9 @@
 import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
 
-import { EntitySelectComponent } from "./select.component";
-
 import { EntityService } from "./entity.service";
+import { EntitySelectComponent } from "./select.component";
 
 @NgModule({
     declarations: [

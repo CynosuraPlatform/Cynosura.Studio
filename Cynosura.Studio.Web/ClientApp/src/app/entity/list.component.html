@@ -18,10 +18,18 @@
     </thead>
     <tbody>
         <tr *ngFor="let entity of content.pageItems">
-            <td>{{entity.name}}</td>
-            <td>{{entity.pluralName}}</td>
-            <td>{{entity.displayName}}</td>
-            <td>{{entity.pluralDisplayName}}</td>
+            <td>
+                <text-view [value]="entity.name"></text-view>
+            </td>
+            <td>
+                <text-view [value]="entity.pluralName"></text-view>
+            </td>
+            <td>
+                <text-view [value]="entity.displayName"></text-view>
+            </td>
+            <td>
+                <text-view [value]="entity.pluralDisplayName"></text-view>
+            </td>
             <td>
                 <button class="btn btn-default" (click)="edit(entity.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(entity.id)">Delete</button>

@@ -10,11 +10,11 @@ namespace Cynosura.Studio.Web.Infrastructure.AutoMapper
 {
     public class EntityProfile : Profile
     {
-		public EntityProfile()
-		{
-			CreateMap<Entity, EntityViewModel>();
-			CreateMap<EntityUpdateViewModel, EntityUpdateModel>();
-			CreateMap<EntityCreateViewModel, EntityCreateModel>();
-		}
+        public EntityProfile()
+        {
+            CreateMap<Entity, EntityViewModel>();
+            CreateMap<EntityUpdateViewModel, EntityUpdateModel>();
+            CreateMap<EntityCreateViewModel, EntityCreateModel>();
+        }
     }
 }

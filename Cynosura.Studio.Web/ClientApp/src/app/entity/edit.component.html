@@ -9,28 +9,28 @@
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="entity.name" placeholder="Name">
+            <text-edit [(value)]="entity.name" name="name" label="Name"></text-edit>
             <model-validator [model]="error?.modelState?.name"></model-validator>
         </div>
     </div>
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Plural Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="pluralName" name="pluralName" [(ngModel)]="entity.pluralName" placeholder="Plural Name">
+            <text-edit [(value)]="entity.pluralName" name="pluralName" label="Plural Name"></text-edit>
             <model-validator [model]="error?.modelState?.pluralName"></model-validator>
         </div>
     </div>
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Display Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="displayName" name="displayName" [(ngModel)]="entity.displayName" placeholder="Display Name">
+            <text-edit [(value)]="entity.displayName" name="displayName" label="Display Name"></text-edit>
             <model-validator [model]="error?.modelState?.displayName"></model-validator>
         </div>
     </div>
     <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Plural Display Name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="pluralDisplayName" name="pluralDisplayName" [(ngModel)]="entity.pluralDisplayName" placeholder="Plural Display Name">
+            <text-edit [(value)]="entity.pluralDisplayName" name="pluralDisplayName" label="Plural Display Name"></text-edit>
             <model-validator [model]="error?.modelState?.pluralDisplayName"></model-validator>
         </div>
     </div>

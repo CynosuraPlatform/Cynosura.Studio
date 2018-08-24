@@ -6,6 +6,7 @@ namespace Cynosura.Studio.Web.Models.EntityViewModels
 {
     public class EntityViewModel : EntityCreateViewModel
     {
-  		public Guid Id { get;set; }
+        public Guid Id { get;set; }
+
     }
 }
