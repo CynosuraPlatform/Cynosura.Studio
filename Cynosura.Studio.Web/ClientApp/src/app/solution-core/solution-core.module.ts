@@ -2,16 +2,15 @@ import { NgModule } from "@angular/core";
 
 import { CoreModule } from "../core/core.module";
 
-import { SolutionSelectComponent } from "./select.component";
-
 import { SolutionService } from "./solution.service";
+import { SolutionSelectComponent } from "./select.component";
 
 @NgModule({
     declarations: [
         SolutionSelectComponent
     ],
     imports: [
-		CoreModule
+        CoreModule
     ],
     providers: [
         SolutionService

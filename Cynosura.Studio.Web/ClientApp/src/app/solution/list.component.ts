@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { Modal } from "ngx-modialog/plugins/bootstrap";
-
 import { Solution } from "../solution-core/solution.model";
 import { SolutionService } from "../solution-core/solution.service";
 
+import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
@@ -18,9 +17,20 @@ export class SolutionListComponent implements OnInit {
     content: Page<Solution>;
     error: Error;
     pageSize = 10;
+    private _pageIndex: number;
+    get pageIndex(): number {
+        if (!this._pageIndex) {
+            this._pageIndex = this.storeService.get("solutionsPageIndex") | 0;
+        }
+        return this._pageIndex;
+    }
+    set pageIndex(value: number) {
+        this._pageIndex = value;
+        this.storeService.set("solutionsPageIndex", value);
+    }
 
     constructor(
-        private modal: Modal,
+        private modalHelper: ModalHelper,
         private solutionService: SolutionService,
         private router: Router,
         private route: ActivatedRoute,
@@ -28,19 +38,12 @@ export class SolutionListComponent implements OnInit {
         ) {}
 
     ngOnInit(): void {
-        let pageIndex = this.storeService.get("solutionsPageIndex");
-        if (!pageIndex) pageIndex = 0;
-        this.getSolutions(pageIndex);
+        this.getSolutions();
     }
 
-    getSolutions(pageIndex: number): void {        
-        this.solutionService.getSolutions(pageIndex, this.pageSize)
+    getSolutions(): void {        
+        this.solutionService.getSolutions(this.pageIndex, this.pageSize)
             .then(content => {
-                if (content.pageItems.length == 0 && content.totalItems != 0) {
-                    this.content.currentPageIndex--;
-                    this.storeService.set("solutionsPageIndex", this.content.currentPageIndex);
-                    this.getSolutions(this.content.currentPageIndex);
-                }
                 this.content = content;
             })
             .catch(error => this.error = error);
@@ -61,28 +64,18 @@ export class SolutionListComponent implements OnInit {
     }
 
     delete(id: number): void {
-        const dialogRef = this.modal
-            .confirm()
-            .size("sm")
-            .keyboard(27)
-            .title("Удалить?")
-            .body("Действительно хотите удалить?")
-            .okBtn("Удалить")
-            .cancelBtn("Отмена")
-            .open();
-		dialogRef.result.then(dialog => dialog.result)
+        this.modalHelper.confirmDelete()
             .then(() => {
                 this.solutionService.deleteSolution(id)
                     .then(() => {
-                        this.getSolutions(this.content.currentPageIndex);
+                        this.getSolutions();
                     })
-                    .catch(error => this.error = error)
-            })
-            .catch(() => {});
+                    .catch(error => this.error = error);
+            });
     }
 
     onPageSelected(pageIndex: number) {
-        this.storeService.set("solutionsPageIndex", pageIndex);
-        this.getSolutions(pageIndex);
+        this.pageIndex = pageIndex;
+        this.getSolutions();
     }
 }

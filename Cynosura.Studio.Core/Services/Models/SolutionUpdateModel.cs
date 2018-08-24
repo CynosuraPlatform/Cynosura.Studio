@@ -6,7 +6,7 @@ namespace Cynosura.Studio.Core.Services.Models
 {
     public class SolutionUpdateModel
     {
-		public string Name { get; set; }
-		public string Path { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

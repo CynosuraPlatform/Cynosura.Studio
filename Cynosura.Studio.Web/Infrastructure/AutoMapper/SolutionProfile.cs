@@ -10,11 +10,11 @@ namespace Cynosura.Studio.Web.Infrastructure.AutoMapper
 {
     public class SolutionProfile : Profile
     {
-		public SolutionProfile()
-		{
-			CreateMap<Solution, SolutionViewModel>();
-			CreateMap<SolutionUpdateViewModel, SolutionUpdateModel>();
-			CreateMap<SolutionCreateViewModel, SolutionCreateModel>();
-		}
+        public SolutionProfile()
+        {
+            CreateMap<Solution, SolutionViewModel>();
+            CreateMap<SolutionUpdateViewModel, SolutionUpdateModel>();
+            CreateMap<SolutionCreateViewModel, SolutionCreateModel>();
+        }
     }
 }

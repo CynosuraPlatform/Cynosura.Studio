@@ -13,7 +13,7 @@ import { SolutionEditComponent } from "./edit.component";
         SolutionEditComponent
     ],
     imports: [
-		RouterModule.forChild([
+        RouterModule.forChild([
             { path: "", component: SolutionListComponent },
             { path: ":id", component: SolutionEditComponent }
         ]),
@@ -21,8 +21,6 @@ import { SolutionEditComponent } from "./edit.component";
         SolutionCoreModule
     ],
     providers: [
-    ],
-    exports: [
     ]
 })
 export class SolutionModule {

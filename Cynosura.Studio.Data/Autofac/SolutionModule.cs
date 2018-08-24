@@ -6,9 +6,9 @@ namespace Cynosura.Studio.Data.Autofac
 {
     public class SolutionModule : Module
     {
-		protected override void Load(ContainerBuilder builder)
-		{
-			builder.RegisterType<BaseEntityRepository<Solution> >().As<IEntityRepository<Solution> >();
-		}
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<BaseEntityRepository<Solution> >().As<IEntityRepository<Solution> >();
+        }
     }
 }

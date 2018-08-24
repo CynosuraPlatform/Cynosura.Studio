@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Cynosura.Studio.Web.Models.SolutionViewModels
 {
-    public class SolutionViewModel : SolutionCreateViewModel
+    public class SolutionShortViewModel
     {
         public int Id { get;set; }
 
+        public string Name { get; set; }
     }
 }

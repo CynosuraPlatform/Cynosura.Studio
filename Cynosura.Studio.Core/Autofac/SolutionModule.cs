@@ -5,9 +5,9 @@ namespace Cynosura.Studio.Core.Autofac
 {
     public class SolutionModule : Module
     {
-		protected override void Load(ContainerBuilder builder)
-		{
-			builder.RegisterType<SolutionService>().As<ISolutionService>();
-		}
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<SolutionService>().As<ISolutionService>();
+        }
     }
 }

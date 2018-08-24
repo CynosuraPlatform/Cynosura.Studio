@@ -14,8 +14,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let solution of content.pageItems">
-            <td>{{solution.name}}</td>
-            <td>{{solution.path}}</td>
+            <td>
+                <text-view [value]="solution.name"></text-view>
+            </td>
+            <td>
+                <text-view [value]="solution.path"></text-view>
+            </td>
             <td>
                 <button class="btn btn-default" (click)="edit(solution.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(solution.id)">Delete</button>

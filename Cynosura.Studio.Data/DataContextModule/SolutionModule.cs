@@ -7,8 +7,8 @@ namespace Cynosura.Studio.Data.DataContextModule
     public class SolutionModule : IDbContextModule
     {
         public void CreateModel(ModelBuilder builder)
-		{
-			builder.Entity<Solution>();
-		}
+        {
+            builder.Entity<Solution>();
+        }
     }
 }

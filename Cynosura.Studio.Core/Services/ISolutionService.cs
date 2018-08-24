@@ -10,7 +10,7 @@ namespace Cynosura.Studio.Core.Services
 {
     public interface ISolutionService
     {
-		Task<Solution> GetSolutionAsync(int id);
+        Task<Solution> GetSolutionAsync(int id);
         Task<PageModel<Solution> > GetSolutionsAsync(int? pageIndex = null, int? pageSize = null);
         Task<int> CreateSolutionAsync(SolutionCreateModel model);
         Task UpdateSolutionAsync(int id, SolutionUpdateModel model);
