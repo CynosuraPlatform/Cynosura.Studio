@@ -51,6 +51,7 @@ namespace Cynosura.Studio.Core.Services
             var solution = _mapper.Map<SolutionCreateModel, Solution>(model);
             _solutionRepository.Add(solution);
             await _unitOfWork.CommitAsync();
+            await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name);
             return solution.Id;
         }
 
@@ -77,7 +78,7 @@ namespace Cynosura.Studio.Core.Services
             var solution = await GetSolutionAsync(id);
             if (solution == null)
                 return;
-            _codeGenerator.GenerateSolution(solution.Path, solution.Name);
+            await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name);
         }
 
         public async Task UpgradeAsync(int id)

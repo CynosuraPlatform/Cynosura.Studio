@@ -15,6 +15,9 @@ namespace Cynosura.Studio.Core.Generator
 {
     public class CodeGenerator
     {
+        private const string PackageName = "Cynosura.Template";
+        private string StudioDirectoryPath => Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
+
         private readonly ITemplateEngine _templateEngine;
         private readonly IPackageFeed _packageFeed;
         private readonly IMerge _merge;
@@ -120,35 +123,34 @@ namespace Cynosura.Studio.Core.Generator
             await WriteFileAsync(newFilePath, newFileContent);
         }
 
-        public void GenerateSolution(string path, string name)
+        public async Task GenerateSolutionAsync(string path, string name)
         {
             _logger.LogInformation("GenerateSolution");
-            if (Directory.GetFiles(path).Any())
+            var latestVersion = (await _packageFeed.GetVersionsAsync(PackageName)).First();
+            _logger.LogInformation($"Latest version: {latestVersion}");
+            if (Directory.GetFiles(path).Length > 0 || Directory.GetDirectories(path).Length > 0)
             {
-                _logger.LogWarning($"Path {path} is not empty. Skip generation.");
+                _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
                 return;
             }
-            var process = Process.Start(new ProcessStartInfo()
-            {
-                FileName = "dotnet",
-                Arguments = "new -i Cynosura.Template",
-                WorkingDirectory = path
-            });
-            process.WaitForExit();
-            process = Process.Start(new ProcessStartInfo()
-            {
-                FileName = "dotnet",
-                Arguments = $"new cynosura -n {name}",
-                WorkingDirectory = path
-            });
-            process.WaitForExit();
+            await InitSolutionAsync(name, latestVersion, path);
+        }
+
+        private async Task InitSolutionAsync(string solutionName, string packageVersion, string path)
+        {
+            var packagesPath = Path.Combine(StudioDirectoryPath, "Packages");
+            if (!Directory.Exists(packagesPath))
+                Directory.CreateDirectory(packagesPath);
+            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, PackageName, packageVersion);
+            _logger.LogInformation($"Downloaded version {packageVersion} to {packageFilePath}");
+
+            CopyDirectory(packageFilePath, path);
+            await RenameSolutionAsync(path, PackageName, solutionName);
+            _logger.LogInformation($"Created solution in {path}");
         }
 
         public async Task UpgradeSolutionAsync(Solution solution)
         {
-            const string packageName = "Cynosura.Template";
-            string studioDirectoryPath = Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
-
             _logger.LogInformation("UpgradeSolution");
             if (solution.Metadata == null)
             {
@@ -156,35 +158,24 @@ namespace Cynosura.Studio.Core.Generator
                 return;
             }
             _logger.LogInformation($"Current version: {solution.Metadata.Version}");
-            var latestVersion = (await _packageFeed.GetVersionsAsync(packageName)).First();
+            var latestVersion = (await _packageFeed.GetVersionsAsync(PackageName)).First();
             _logger.LogInformation($"Latest version: {latestVersion}");
             if (solution.Metadata.Version == latestVersion)
             {
                 _logger.LogWarning("Using latest version. Nothing to upgrade");
                 return;
             }
-            var packagesPath = Path.Combine(studioDirectoryPath, "Packages");
-            if (!Directory.Exists(packagesPath))
-                Directory.CreateDirectory(packagesPath);
-            var latestPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, latestVersion);
-            _logger.LogInformation($"Downloaded latest version to {latestPackageFilePath}");
-            var currentPackageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, packageName, solution.Metadata.Version);
-            _logger.LogInformation($"Downloaded current version to {currentPackageFilePath}");
 
-            var solutionsPath = Path.Combine(studioDirectoryPath, "Solutions");
-            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.Version}");
-            if (Directory.Exists(currentPackageSolutionPath))
-                Directory.Delete(currentPackageSolutionPath, true);
-            CopyDirectory(currentPackageFilePath, currentPackageSolutionPath);
-            await RenameSolutionAsync(currentPackageSolutionPath, packageName, solution.Namespace);
-            _logger.LogInformation($"Created {currentPackageSolutionPath}");
-
+            var solutionsPath = Path.Combine(StudioDirectoryPath, "Solutions");
             var latestPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{latestVersion}");
             if (Directory.Exists(latestPackageSolutionPath))
                 Directory.Delete(latestPackageSolutionPath, true);
-            CopyDirectory(latestPackageFilePath, latestPackageSolutionPath);
-            await RenameSolutionAsync(latestPackageSolutionPath, packageName, solution.Namespace);
-            _logger.LogInformation($"Created {latestPackageSolutionPath}");
+            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.Version}");
+            if (Directory.Exists(currentPackageSolutionPath))
+                Directory.Delete(currentPackageSolutionPath, true);
+
+            await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath);
+            await InitSolutionAsync(solution.Namespace, solution.Metadata.Version, currentPackageSolutionPath);
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
             await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
