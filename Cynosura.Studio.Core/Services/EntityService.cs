@@ -74,7 +74,10 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new Generator.Models.Solution(solution.Path);
             var entity = _mapper.Map<EntityCreateModel, Entity>(model);
             entity.Id = Guid.NewGuid();
-            solutionModel.CreateEntity(_mapper.Map<Entity,Generator.Models.Entity>(entity));
+            var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
+            solutionModel.CreateEntity(entityModel);
+            await _codeGenerator.GenerateEntityAsync(solutionModel, entityModel);
+            await _codeGenerator.GenerateViewAsync(solutionModel, new Generator.Models.View(), entityModel);
             return entity.Id;
         }
 
@@ -84,7 +87,11 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new Generator.Models.Solution(solution.Path);
             var entity = _mapper.Map<EntityUpdateModel, Entity>(model);
             entity.Id = id;
-            solutionModel.UpdateEntity(_mapper.Map<Entity, Generator.Models.Entity>(entity));
+            var oldEntity = solutionModel.GetEntities().FirstOrDefault(e => e.Id == id);
+            var newEntity = _mapper.Map<Entity, Generator.Models.Entity>(entity);
+            solutionModel.UpdateEntity(newEntity);
+            await _codeGenerator.UpgradeEntityAsync(solutionModel, oldEntity, newEntity);
+            await _codeGenerator.UpgradeViewAsync(solutionModel, new Generator.Models.View(), oldEntity, newEntity);
         }
 
         public async Task DeleteEntityAsync(int solutionId, Guid id)
@@ -100,8 +107,8 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new Generator.Models.Solution(solution.Path);
             var entity = await GetEntityAsync(solutionId, id);
             var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
-            _codeGenerator.GenerateEntity(solutionModel, entityModel);
-            _codeGenerator.GenerateView(solutionModel, new Generator.Models.View(), entityModel);
+            await _codeGenerator.GenerateEntityAsync(solutionModel, entityModel);
+            await _codeGenerator.GenerateViewAsync(solutionModel, new Generator.Models.View(), entityModel);
         }
     }
 }

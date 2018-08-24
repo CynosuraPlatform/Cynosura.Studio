@@ -17,6 +17,7 @@ namespace Cynosura.Studio.Core.Autofac
             builder.RegisterType<StringTemplateEngine>().As<ITemplateEngine>();
             builder.RegisterType<NugetFeed>().As<IPackageFeed>();
             builder.RegisterType<DmpMerge>().As<IMerge>();
+            builder.RegisterType<FileMerge>();
         }
     }
 }

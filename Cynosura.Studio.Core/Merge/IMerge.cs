@@ -7,7 +7,6 @@ namespace Cynosura.Studio.Core.Merge
 {
     public interface IMerge
     {
-        Task MergeFileAsync(string originalFilePath, string theirFilePath, string myFilePath);
-        Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath);
+        string Merge(string original, string their, string my);
     }
 }

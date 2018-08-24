@@ -18,17 +18,20 @@ namespace Cynosura.Studio.Core.Generator
         private readonly ITemplateEngine _templateEngine;
         private readonly IPackageFeed _packageFeed;
         private readonly IMerge _merge;
+        private readonly FileMerge _fileMerge;
         private readonly ILogger<CodeGenerator> _logger;
         public IList<CodeTemplate> Templates { get; set; } = new List<CodeTemplate>();
 
         public CodeGenerator(ITemplateEngine templateEngine, 
             IPackageFeed packageFeed,
             IMerge merge,
+            FileMerge fileMerge,
             ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
             _packageFeed = packageFeed;
             _merge = merge;
+            _fileMerge = fileMerge;
             _logger = logger;
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Entities", FileName = "{Name}.cs", TemplatePath = "Core\\Entity.stg"});
             Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}CreateModel.cs", TemplatePath = "Core\\ServiceCreateModel.stg" });
@@ -60,7 +63,13 @@ namespace Cynosura.Studio.Core.Generator
             Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\RouteImport.stg", InsertAfter = "// ADD MODULES HERE" });
         }
 
-        private void CreateFile(CodeTemplate template, object model, Solution solution, Entity entity)
+        private string ProcessTemplate(CodeTemplate template, object model)
+        {
+            var templatePath = PathHelper.GetAbsolutePath("..\\..\\..\\..\\Cynosura.Studio.Core\\Templates", template.TemplatePath);
+            return _templateEngine.ProcessTemplate(templatePath, model);
+        }
+
+        private string GetTemplateFilePath(CodeTemplate template, Solution solution, Entity entity)
         {
             var dir = FindDirectory(solution.Path, template.FilePath);
             var fileName = ProcessFileName(template.FileName, entity);
@@ -68,35 +77,47 @@ namespace Cynosura.Studio.Core.Generator
             var fileDirectory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(fileDirectory))
                 Directory.CreateDirectory(fileDirectory);
-            var templatePath = PathHelper.GetAbsolutePath("..\\..\\..\\..\\Cynosura.Studio.Core\\Templates", template.TemplatePath);
-            var content = _templateEngine.ProcessTemplate(templatePath, model);
+            return filePath;
+        }
+
+        private async Task CreateFileAsync(CodeTemplate template, object model, Solution solution, Entity entity)
+        {
+            var filePath = GetTemplateFilePath(template, solution, entity);
+            var content = ProcessTemplate(template, model);
 
             if (!string.IsNullOrEmpty(template.InsertAfter))
             {
-                string fileContent;
-                using (var streamWriter = new StreamReader(filePath))
-                {
-                    fileContent = streamWriter.ReadToEnd();
-                }
+                var fileContent = await ReadFileAsync(filePath);
 
                 if (!fileContent.Contains(content))
                 {
                     fileContent = fileContent.Replace(template.InsertAfter + Environment.NewLine,
                         template.InsertAfter + Environment.NewLine + content + Environment.NewLine);
 
-                    using (var streamWriter = new StreamWriter(filePath))
-                    {
-                        streamWriter.Write(fileContent);
-                    }
+                    await WriteFileAsync(filePath, fileContent);
                 }
             }
             else
             {
-                using (var streamWriter = new StreamWriter(filePath))
-                {
-                    streamWriter.Write(content);
-                }
+                await WriteFileAsync(filePath, content);
             }
+        }
+
+        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, Solution solution, Entity oldEntity, Entity newEntity)
+        {
+            var oldContent = ProcessTemplate(template, oldModel);
+            var newContent = ProcessTemplate(template, newModel);
+            var oldFilePath = GetTemplateFilePath(template, solution, oldEntity);
+            var newFilePath = GetTemplateFilePath(template, solution, newEntity);
+            var oldFileContent = await ReadFileAsync(oldFilePath);
+            var newFileContent = _merge.Merge(oldContent, newContent, oldFileContent);
+            if (oldFilePath != newFilePath)
+            {
+                File.Delete(oldFilePath);
+            }
+            if (oldFileContent == newFileContent && oldFilePath == newFilePath)
+                return;
+            await WriteFileAsync(newFilePath, newFileContent);
         }
 
         public void GenerateSolution(string path, string name)
@@ -166,7 +187,7 @@ namespace Cynosura.Studio.Core.Generator
             _logger.LogInformation($"Created {latestPackageSolutionPath}");
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _merge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
+            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
             _logger.LogInformation($"Completed");
         }
 
@@ -230,7 +251,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public void GenerateEntity(Solution solution, Entity entity)
+        public async Task GenerateEntityAsync(Solution solution, Entity entity)
         {
             var model = new EntityModel()
             {
@@ -240,11 +261,31 @@ namespace Cynosura.Studio.Core.Generator
 
             foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
             {
-                CreateFile(template, model, solution, entity);
+                await CreateFileAsync(template, model, solution, entity);
             }
         }
 
-        public void GenerateView(Solution solution, View view, Entity entity)
+        public async Task UpgradeEntityAsync(Solution solution, Entity oldEntity, Entity newEntity)
+        {
+            var oldModel = new EntityModel()
+            {
+                Entity = oldEntity,
+                Solution = solution,
+            };
+
+            var newModel = new EntityModel()
+            {
+                Entity = newEntity,
+                Solution = solution,
+            };
+
+            foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
+            {
+                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
+            }
+        }
+
+        public async Task GenerateViewAsync(Solution solution, View view, Entity entity)
         {
             var model = new ViewModel()
             {
@@ -255,7 +296,29 @@ namespace Cynosura.Studio.Core.Generator
 
             foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
             {
-                CreateFile(template, model, solution, entity);
+                await CreateFileAsync(template, model, solution, entity);
+            }
+        }
+
+        public async Task UpgradeViewAsync(Solution solution, View view, Entity oldEntity, Entity newEntity)
+        {
+            var oldModel = new ViewModel()
+            {
+                View = view,
+                Entity = oldEntity,
+                Solution = solution,
+            };
+
+            var newModel = new ViewModel()
+            {
+                View = view,
+                Entity = newEntity,
+                Solution = solution,
+            };
+
+            foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
+            {
+                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
             }
         }
 
