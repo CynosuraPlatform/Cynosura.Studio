@@ -16,10 +16,18 @@
     </thead>
     <tbody>
         <tr *ngFor="let field of fields">
-            <td>{{field.name}}</td>
-            <td>{{field.displayName}}</td>
-            <td>{{FieldType[field.type]}}</td>
-            <td>{{field.entity?.name}}</td>
+            <td>
+                <text-view [value]="field.name"></text-view>
+            </td>
+            <td>
+                <text-view [value]="field.displayName"></text-view>
+            </td>
+            <td>
+                {{FieldType[field.type]}}
+            </td>
+            <td>
+                {{field.entity?.name}}
+            </td>
             <td>
                 <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(field.id)">Delete</button>

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
 
-import { Modal } from "ngx-modialog/plugins/bootstrap";
+import { ModalHelper } from "../core/modal.helper";
 
-import { Field, FieldType } from "./field.model";
+import { Field, FieldType } from "../field-core/field.model";
 
 import { Guid } from "../core/guid";
 import { Error } from "../core/error.model";
@@ -26,11 +26,11 @@ export class FieldListComponent implements OnInit {
     error: Error;
 
     constructor(
-        private modal: Modal
+        private modalHelper: ModalHelper
         ) {}
 
     ngOnInit(): void {
-        
+
     }
 
     findField(id: string): Field {
@@ -56,27 +56,17 @@ export class FieldListComponent implements OnInit {
             field.id = Guid.newGuid();
             this.fields.push(field);
         }
-        
+
         this.field = null;
     }
 
     delete(id: string): void {
-        const dialogRef = this.modal
-            .confirm()
-            .size("sm")
-            .keyboard(27)
-            .title("Удалить?")
-            .body("Действительно хотите удалить?")
-            .okBtn("Удалить")
-            .cancelBtn("Отмена")
-            .open();
-        dialogRef.result.then(dialog => dialog.result)
+        this.modalHelper.confirmDelete()
             .then(() => {
                 const foundField = this.findField(id);
                 const index = this.fields.indexOf(foundField);
                 this.fields.splice(index, 1);
-            })
-            .catch(() => {});
+            });
     }
 
 }

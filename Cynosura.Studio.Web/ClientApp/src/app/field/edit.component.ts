@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { Field, FieldType } from "./field.model";
+import { Field, FieldType } from "../field-core/field.model";
 import { Error } from "../core/error.model";
 
 
