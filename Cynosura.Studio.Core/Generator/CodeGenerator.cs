@@ -112,6 +112,11 @@ namespace Cynosura.Studio.Core.Generator
             var newContent = ProcessTemplate(template, newModel);
             var oldFilePath = GetTemplateFilePath(template, solution, oldEntity);
             var newFilePath = GetTemplateFilePath(template, solution, newEntity);
+            if (!File.Exists(oldFilePath))
+            {
+                _logger.LogWarning($"File {oldFilePath} is not found. Skip upgrade");
+                return;
+            }
             var oldFileContent = await ReadFileAsync(oldFilePath);
             var newFileContent = _merge.Merge(oldContent, newContent, oldFileContent);
             if (oldFilePath != newFilePath)
