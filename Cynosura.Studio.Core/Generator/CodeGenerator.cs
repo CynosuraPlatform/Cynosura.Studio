@@ -133,16 +133,18 @@ namespace Cynosura.Studio.Core.Generator
                 if (toEntity == null)
                 {
                     await toSolution.CreateEntityAsync(entity);
-                    toEntity = (await toSolution.GetEntitiesAsync())
+                    var newEntity = (await toSolution.GetEntitiesAsync())
                         .FirstOrDefault(e => e.Id == entity.Id);
-                    await GenerateEntityAsync(toSolution, toEntity);
-                    await GenerateViewAsync(toSolution, new View(), toEntity);
+                    await GenerateEntityAsync(toSolution, newEntity);
+                    await GenerateViewAsync(toSolution, new View(), newEntity);
                 }
                 else
                 {
                     await toSolution.UpdateEntityAsync(entity);
-                    await UpgradeEntityAsync(toSolution, toEntity, entity);
-                    await UpgradeViewAsync(toSolution, new View(), toEntity, entity);
+                    var newEntity = (await toSolution.GetEntitiesAsync())
+                        .FirstOrDefault(e => e.Id == entity.Id);
+                    await UpgradeEntityAsync(toSolution, toEntity, newEntity);
+                    await UpgradeViewAsync(toSolution, new View(), toEntity, newEntity);
                 }
             }
         }

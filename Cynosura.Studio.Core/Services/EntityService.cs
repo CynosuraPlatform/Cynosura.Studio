@@ -93,6 +93,9 @@ namespace Cynosura.Studio.Core.Services
             var oldEntity = (await solutionModel.GetEntitiesAsync()).FirstOrDefault(e => e.Id == id);
             var newEntity = _mapper.Map<Entity, Generator.Models.Entity>(entity);
             await solutionModel.UpdateEntityAsync(newEntity);
+            // reload Entity from Solution
+            newEntity = (await solutionModel.GetEntitiesAsync())
+                .FirstOrDefault(e => e.Id == entity.Id);
             await _codeGenerator.UpgradeEntityAsync(solutionModel, oldEntity, newEntity);
             await _codeGenerator.UpgradeViewAsync(solutionModel, new Generator.Models.View(), oldEntity, newEntity);
         }
