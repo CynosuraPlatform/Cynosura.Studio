@@ -125,20 +125,25 @@ namespace Cynosura.Studio.Core.Generator
 
         private async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
         {
-            var entities = await fromSolution.GetEntitiesAsync();
-            foreach (var entity in entities)
+            var fromEntities = await fromSolution.GetEntitiesAsync();
+            var toEntities = await toSolution.GetEntitiesAsync();
+            foreach (var entity in fromEntities)
             {
-                await toSolution.CreateEntityAsync(entity);
-            }
-        }
-
-        private async Task GenerateAllEntitiesAsync(SolutionAccessor solution)
-        {
-            var entities = await solution.GetEntitiesAsync();
-            foreach (var entity in entities)
-            {
-                await GenerateEntityAsync(solution, entity);
-                await GenerateViewAsync(solution, new View(), entity);
+                var toEntity = toEntities.FirstOrDefault(e => e.Id == entity.Id);
+                if (toEntity == null)
+                {
+                    await toSolution.CreateEntityAsync(entity);
+                    toEntity = (await toSolution.GetEntitiesAsync())
+                        .FirstOrDefault(e => e.Id == entity.Id);
+                    await GenerateEntityAsync(toSolution, toEntity);
+                    await GenerateViewAsync(toSolution, new View(), toEntity);
+                }
+                else
+                {
+                    await toSolution.UpdateEntityAsync(entity);
+                    await UpgradeEntityAsync(toSolution, toEntity, entity);
+                    await UpgradeViewAsync(toSolution, new View(), toEntity, entity);
+                }
             }
         }
 
@@ -170,12 +175,10 @@ namespace Cynosura.Studio.Core.Generator
             await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath);
             var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
             await CopyEntitiesAsync(solution, latestPackageSolution);
-            await GenerateAllEntitiesAsync(latestPackageSolution);
 
             await InitSolutionAsync(solution.Namespace, solution.Metadata.Version, currentPackageSolutionPath);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
             await CopyEntitiesAsync(solution, currentPackageSolution);
-            await GenerateAllEntitiesAsync(currentPackageSolution);
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
             await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
