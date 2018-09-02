@@ -1,0 +1,70 @@
+main(model) ::= <<
+<h2>$model.Entity.DisplayName$</h2>
+<form class="form-horizontal" *ngIf="$model.Entity.NameLower$" (ngSubmit)="onSubmit()">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">Back</button>
+    <div class="form-group">
+        <error-handler [error]="error"></error-handler>
+    </div>
+$model.Entity.Fields:field(); separator="\n"$
+</form>
+>>
+
+field(field) ::= <<
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">$field.DisplayName$</label>
+        <div class="col-sm-10">
+$field:(field.Template)()$
+        </div>
+    </div>
+>>
+
+Type(field) ::= <<
+$field:(field.TypeTemplate)()$
+            <model-validator [model]="error?.modelState?.$field.NameLower$"></model-validator>
+>>
+
+Entity(field) ::= <<
+            <$field.Entity.NameLower$-select [(selected$field.Entity.Name$Id)]="$model.Entity.NameLower$.$field.NameLower$Id"></$field.Entity.NameLower$-select>
+            <model-validator [model]="error?.modelState?.$field.NameLower$Id"></model-validator>
+>>
+
+String(field) ::= <<
+            <text-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></text-edit>
+>>
+
+Int32(field) ::= <<
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
+>>
+
+Int64(field) ::= <<
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
+>>
+
+Decimal(field) ::= <<
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
+>>
+
+Double(field) ::= <<
+            <number-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></number-edit>
+>>
+
+Boolean(field) ::= <<
+            <bool-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></bool-edit>
+>>
+
+DateTime(field) ::= <<
+            <datetime-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></datetime-edit>
+>>
+
+Date(field) ::= <<
+            <date-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></date-edit>
+>>
+
+Time(field) ::= <<
+            <time-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></time-edit>
+>>
+
+Guid(field) ::= <<
+            <text-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></text-edit>
+>>

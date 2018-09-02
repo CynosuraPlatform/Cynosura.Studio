@@ -1,0 +1,26 @@
+main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace $model.Solution.Namespace$.Core.Services.Models
+{
+    public class $model.Entity.Name$UpdateModel
+    {
+$model.Entity.Fields:field(); separator="\n"$
+    }
+}
+
+>>
+
+field(field) ::= <<
+$field:(field.Template)()$
+>>
+
+Type(field) ::= <<
+        public $field.TypeName$ $field.Name$ { get; set; }
+>>
+
+Entity(field) ::= <<
+        public int $field.Name$Id { get; set; }
+>>

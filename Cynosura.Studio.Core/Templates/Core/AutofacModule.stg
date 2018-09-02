@@ -1,0 +1,16 @@
+main(model) ::= <<
+using Autofac;
+using $model.Solution.Namespace$.Core.Services;
+
+namespace $model.Solution.Namespace$.Core.Autofac
+{
+    public class $model.Entity.Name$Module : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<$model.Entity.Name$Service>().As<I$model.Entity.Name$Service>();
+        }
+    }
+}
+
+>>

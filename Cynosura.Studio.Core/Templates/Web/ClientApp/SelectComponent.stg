@@ -1,0 +1,30 @@
+main(model) ::= <<
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+
+import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
+import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+
+@Component({
+    selector: "$model.Entity.NameLower$-select",
+    templateUrl: "./select.component.html"
+})
+
+export class $model.Entity.Name$SelectComponent implements OnInit {
+    constructor(private $model.Entity.NameLower$Service: $model.Entity.Name$Service) { }
+
+    $model.Entity.PluralNameLower$: $model.Entity.Name$[] = [];
+
+    @Input()
+    selected$model.Entity.Name$Id: string | null = null;
+
+    @Output()
+    selected$model.Entity.Name$IdChange = new EventEmitter<string>();
+
+    @Input()
+    readonly = false;
+
+    ngOnInit(): void {
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$().then($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
+    }
+}
+>>

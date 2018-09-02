@@ -1,0 +1,69 @@
+main(model) ::= <<
+using System.Threading.Tasks;
+using AutoMapper;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using $model.Solution.Namespace$.Core.Entities;
+using $model.Solution.Namespace$.Core.Services;
+using $model.Solution.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Web.Models;
+using $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace $model.Solution.Namespace$.Web.Controllers
+{
+    [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
+    [Authorize(Roles = "Administrator")]
+    [ValidateModel]
+    [Route("api/[controller]")]
+    public class $model.Entity.Name$Controller : Controller
+    {
+        private readonly I$model.Entity.Name$Service _$model.Entity.NameLower$Service;
+        private readonly IMapper _mapper;
+
+        public $model.Entity.Name$Controller(I$model.Entity.Name$Service $model.Entity.NameLower$Service, IMapper mapper)
+        {
+            _$model.Entity.NameLower$Service = $model.Entity.NameLower$Service;
+            _mapper = mapper;
+        }
+
+        [HttpGet("")]
+        public async Task<PageModel<$model.Entity.Name$ViewModel> > Get$model.Entity.PluralName$Async(int? pageIndex, int? pageSize)
+        {
+            var $model.Entity.PluralNameLower$ = await _$model.Entity.NameLower$Service.Get$model.Entity.PluralName$Async(pageIndex, pageSize);
+            return $model.Entity.PluralNameLower$.Map<$model.Entity.Name$, $model.Entity.Name$ViewModel>(_mapper);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<$model.Entity.Name$ViewModel> Get$model.Entity.Name$Async(int id)
+        {
+            var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Service.Get$model.Entity.Name$Async(id);
+            return _mapper.Map<$model.Entity.Name$, $model.Entity.Name$ViewModel>($model.Entity.NameLower$);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<StatusViewModel> Put$model.Entity.Name$Async(int id, [FromBody] $model.Entity.Name$UpdateViewModel $model.Entity.NameLower$)
+        {
+            var model = _mapper.Map<$model.Entity.Name$UpdateViewModel, $model.Entity.Name$UpdateModel>($model.Entity.NameLower$);
+            await _$model.Entity.NameLower$Service.Update$model.Entity.Name$Async(id, model);
+            return new StatusViewModel();
+        }
+
+        [HttpPost("")]
+        public async Task<StatusViewModel> Post$model.Entity.Name$Async([FromBody] $model.Entity.Name$CreateViewModel $model.Entity.NameLower$)
+        {
+            var model = _mapper.Map<$model.Entity.Name$CreateViewModel, $model.Entity.Name$CreateModel>($model.Entity.NameLower$);
+            await _$model.Entity.NameLower$Service.Create$model.Entity.Name$Async(model);
+            return new StatusViewModel();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<StatusViewModel> Delete$model.Entity.Name$Async(int id)
+        {
+            await _$model.Entity.NameLower$Service.Delete$model.Entity.Name$Async(id);
+            return new StatusViewModel();
+        }
+    }
+}
+>>

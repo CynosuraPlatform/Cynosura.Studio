@@ -65,7 +65,8 @@ export class UserListComponent implements OnInit {
                         this.getUsers();
                     })
                     .catch(error => this.error = error);
-            });
+            })
+            .catch(() => { });
     }
 
     onPageSelected(pageIndex: number) {

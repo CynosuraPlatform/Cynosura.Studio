@@ -1,0 +1,35 @@
+main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
+
+namespace $model.Solution.Namespace$.Web.Models.$model.Entity.Name$ViewModels
+{
+    public class $model.Entity.Name$UpdateViewModel
+    {
+$model.Entity.Fields:field(); separator=""$
+    }
+}
+
+>>
+
+field(field) ::= <<
+$field.Attributes:attrubute(); separator="\n"$
+$field:(field.Template)()$
+
+
+>>
+
+attrubute(attrubute) ::= <<
+        [$attrubute.Name$($attrubute.Parameters; separator=", "$)]
+>>
+
+Type(field) ::= <<
+        public $field.TypeNameNullable$ $field.Name$ { get; set; }
+>>
+
+Entity(field) ::= <<
+        public int? $field.Name$Id { get; set; }
+>>
