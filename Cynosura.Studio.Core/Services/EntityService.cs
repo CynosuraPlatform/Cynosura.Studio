@@ -76,6 +76,9 @@ namespace Cynosura.Studio.Core.Services
             entity.Id = Guid.NewGuid();
             var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
             await solutionModel.CreateEntityAsync(entityModel);
+            // reload Entity from Solution
+            entityModel = (await solutionModel.GetEntitiesAsync())
+                .FirstOrDefault(e => e.Id == entity.Id);
             await _codeGenerator.GenerateEntityAsync(solutionModel, entityModel);
             await _codeGenerator.GenerateViewAsync(solutionModel, new Generator.Models.View(), entityModel);
             return entity.Id;
