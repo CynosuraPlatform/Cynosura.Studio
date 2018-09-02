@@ -38,10 +38,10 @@ namespace Cynosura.Studio.Core.Services
                 .FirstOrDefault(e => e.Id == id);
         }
 
-        private List<Entity> GetEntitiesFromSolution(string path)
+        private async Task<List<Entity>> GetEntitiesFromSolutionAsync(string path)
         {
             var solution = new SolutionAccessor(path);
-            var entities = solution.GetEntities();
+            var entities = await solution.GetEntitiesAsync();
             return entities.Select(_mapper.Map<Generator.Models.Entity, Entity>)
                 .ToList();
         }
@@ -64,7 +64,7 @@ namespace Cynosura.Studio.Core.Services
         public async Task<PageModel<Entity> > GetEntitiesAsync(int solutionId, int? pageIndex = null, int? pageSize = null)
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
-            var entities = GetEntitiesFromSolution(solution.Path);
+            var entities = await GetEntitiesFromSolutionAsync(solution.Path);
             return ToPageModel(entities, pageIndex, pageSize);
         }
 
@@ -75,7 +75,7 @@ namespace Cynosura.Studio.Core.Services
             var entity = _mapper.Map<EntityCreateModel, Entity>(model);
             entity.Id = Guid.NewGuid();
             var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
-            solutionModel.CreateEntity(entityModel);
+            await solutionModel.CreateEntityAsync(entityModel);
             await _codeGenerator.GenerateEntityAsync(solutionModel, entityModel);
             await _codeGenerator.GenerateViewAsync(solutionModel, new Generator.Models.View(), entityModel);
             return entity.Id;
@@ -87,9 +87,9 @@ namespace Cynosura.Studio.Core.Services
             var solutionModel = new SolutionAccessor(solution.Path);
             var entity = _mapper.Map<EntityUpdateModel, Entity>(model);
             entity.Id = id;
-            var oldEntity = solutionModel.GetEntities().FirstOrDefault(e => e.Id == id);
+            var oldEntity = (await solutionModel.GetEntitiesAsync()).FirstOrDefault(e => e.Id == id);
             var newEntity = _mapper.Map<Entity, Generator.Models.Entity>(entity);
-            solutionModel.UpdateEntity(newEntity);
+            await solutionModel.UpdateEntityAsync(newEntity);
             await _codeGenerator.UpgradeEntityAsync(solutionModel, oldEntity, newEntity);
             await _codeGenerator.UpgradeViewAsync(solutionModel, new Generator.Models.View(), oldEntity, newEntity);
         }
@@ -98,7 +98,7 @@ namespace Cynosura.Studio.Core.Services
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
             var solutionModel = new SolutionAccessor(solution.Path);
-            solutionModel.DeleteEntity(id);
+            await solutionModel.DeleteEntityAsync(id);
         }
 
         public async Task GenerateAsync(int solutionId, Guid id)

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Cynosura.Studio.Core.Generator.Models;
 using Newtonsoft.Json;
 
@@ -28,17 +29,14 @@ namespace Cynosura.Studio.Core.Generator
                 throw new Exception("Solution file not found");
             Namespace = Regex.Replace(solutionFile, "^.*\\\\([^\\\\]+?).sln$", "$1");
             Projects = GetProjects(Path);
-            Metadata = GetMetadata();
+            Metadata = GetMetadataAsync().Result; // TODO: remove .Result
         }
 
-        private SolutionMetadata GetMetadata()
+        private async Task<SolutionMetadata> GetMetadataAsync()
         {
             var coreProject = GetProject("Core");
             var metadataPath = System.IO.Path.Combine(coreProject.Path, "Metadata/Solution.json");
-            using (var reader = new StreamReader(metadataPath))
-            {
-                return DeserializeMetadata<SolutionMetadata>(reader.ReadToEnd());
-            }
+            return DeserializeMetadata<SolutionMetadata>(await ReadFileAsync(metadataPath));
         }
 
         private List<ProjectAccessor> GetProjects(string path)
@@ -72,18 +70,15 @@ namespace Cynosura.Studio.Core.Generator
             return Projects.Single(p => p.Namespace.EndsWith("." + name));
         }
 
-        public List<Entity> GetEntities()
+        public async Task<List<Entity>> GetEntitiesAsync()
         {
             var coreProject = GetProject("Core");
             var files = coreProject.GetFiles("Metadata\\Entities");
             var entities = new List<Entity>();
             foreach (var file in files)
             {
-                using (var reader = new StreamReader(file))
-                {
-                    var entity = DeserializeMetadata<Entity>(reader.ReadToEnd());
-                    entities.Add(entity);
-                }
+                var entity = DeserializeMetadata<Entity>(await ReadFileAsync(file));
+                entities.Add(entity);
             }
 
             foreach (var entity in entities)
@@ -100,30 +95,24 @@ namespace Cynosura.Studio.Core.Generator
             return entities;
         }
 
-        public void CreateEntity(Entity entity)
+        public async Task CreateEntityAsync(Entity entity)
         {
             var coreProject = GetProject("Core");
             var path = coreProject.GetPath("Metadata\\Entities");
             coreProject.VerifyPathExists("Metadata\\Entities");
             var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
-            using (var writer = new StreamWriter(filePath))
-            {
-                writer.Write(SerializeMetadata(entity));
-            }
+            await WriteFileAsync(filePath, SerializeMetadata(entity));
         }
 
-        public void UpdateEntity(Entity entity)
+        public async Task UpdateEntityAsync(Entity entity)
         {
-            var existingEntity = GetEntities().FirstOrDefault(e => e.Id == entity.Id);
+            var existingEntity = (await GetEntitiesAsync()).FirstOrDefault(e => e.Id == entity.Id);
             if (existingEntity == null)
                 throw new Exception($"Entity with Id = {entity.Id} not found");
             var coreProject = GetProject("Core");
             var path = coreProject.GetPath("Metadata\\Entities");
             var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
-            using (var writer = new StreamWriter(filePath))
-            {
-                writer.Write(SerializeMetadata(entity));
-            }
+            await WriteFileAsync(filePath, SerializeMetadata(entity));
 
             if (existingEntity.Name != entity.Name)
             {
@@ -132,15 +121,46 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public void DeleteEntity(Guid id)
+        public async Task DeleteEntityAsync(Guid id)
         {
-            var existingEntity = GetEntities().FirstOrDefault(e => e.Id == id);
+            var existingEntity = (await GetEntitiesAsync()).FirstOrDefault(e => e.Id == id);
             if (existingEntity == null)
                 throw new Exception($"Entity with Id = {id} not found");
             var coreProject = GetProject("Core");
             var path = coreProject.GetPath("Metadata\\Entities");
             var filePath = System.IO.Path.Combine(path, existingEntity.Name + MetadataFileExtension);
             File.Delete(filePath);
+        }
+
+        private async Task<string> ReadFileAsync(string filePath)
+        {
+            using (var fileReader = new StreamReader(filePath))
+            {
+                return await fileReader.ReadToEndAsync();
+            }
+        }
+
+        private async Task WriteFileAsync(string filePath, string content)
+        {
+            using (var fileWriter = new StreamWriter(filePath))
+            {
+                await fileWriter.WriteAsync(content);
+            }
+        }
+
+        public async Task<IList<CodeTemplate>> LoadTemplatesAsync()
+        {
+            var coreProject = GetProject("Core");
+            var templatesPath = coreProject.GetPath("Templates");
+            var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));
+            return DeserializeMetadata<List<CodeTemplate>>(templatesJson);
+        }
+
+        public string GetTemplatePath(CodeTemplate template)
+        {
+            var coreProject = GetProject("Core");
+            var templatesPath = coreProject.GetPath("Templates");
+            return System.IO.Path.Combine(templatesPath, template.TemplatePath);
         }
     }
 }

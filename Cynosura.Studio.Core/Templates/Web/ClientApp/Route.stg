@@ -1,3 +1,0 @@
-﻿main(model) ::= <<
-routes.push({ path: "$model.Entity.NameLower$", loadChildren: () => $model.Entity.Name$Module });
->>

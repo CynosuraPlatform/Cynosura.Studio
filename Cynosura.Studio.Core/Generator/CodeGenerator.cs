@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Studio.Core.Generator.Models;
 using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator
 {
@@ -24,7 +21,6 @@ namespace Cynosura.Studio.Core.Generator
         private readonly IMerge _merge;
         private readonly FileMerge _fileMerge;
         private readonly ILogger<CodeGenerator> _logger;
-        private IList<CodeTemplate> Templates { get; set; }
 
         public CodeGenerator(ITemplateEngine templateEngine, 
             IPackageFeed packageFeed,
@@ -37,18 +33,11 @@ namespace Cynosura.Studio.Core.Generator
             _merge = merge;
             _fileMerge = fileMerge;
             _logger = logger;
-            var templatesJson = ReadFileAsync(Path.Combine(GetTemplatesPath(), "Templates.json")).Result;
-            Templates = JsonConvert.DeserializeObject<List<CodeTemplate>>(templatesJson);
         }
 
-        private string GetTemplatesPath()
+        private string ProcessTemplate(CodeTemplate template, SolutionAccessor solutionAccessor, object model)
         {
-            return PathHelper.GetAbsolutePath("..\\..\\..\\..\\Cynosura.Studio.Core\\Templates");
-        }
-
-        private string ProcessTemplate(CodeTemplate template, object model)
-        {
-            var templatePath = Path.Combine(GetTemplatesPath(), template.TemplatePath);
+            var templatePath = solutionAccessor.GetTemplatePath(template);
             return _templateEngine.ProcessTemplate(templatePath, model);
         }
 
@@ -66,7 +55,7 @@ namespace Cynosura.Studio.Core.Generator
         private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, Entity entity)
         {
             var filePath = GetTemplateFilePath(template, solution, entity);
-            var content = ProcessTemplate(template, model);
+            var content = ProcessTemplate(template, solution, model);
 
             if (!string.IsNullOrEmpty(template.InsertAfter))
             {
@@ -88,8 +77,8 @@ namespace Cynosura.Studio.Core.Generator
 
         private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
-            var oldContent = ProcessTemplate(template, oldModel);
-            var newContent = ProcessTemplate(template, newModel);
+            var oldContent = ProcessTemplate(template, solution, oldModel);
+            var newContent = ProcessTemplate(template, solution, newModel);
             var oldFilePath = GetTemplateFilePath(template, solution, oldEntity);
             var newFilePath = GetTemplateFilePath(template, solution, newEntity);
             if (!File.Exists(oldFilePath))
@@ -235,7 +224,8 @@ namespace Cynosura.Studio.Core.Generator
                 Solution = solution,
             };
 
-            foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.Entity))
             {
                 await CreateFileAsync(template, model, solution, entity);
             }
@@ -255,7 +245,8 @@ namespace Cynosura.Studio.Core.Generator
                 Solution = solution,
             };
 
-            foreach (var template in Templates.Where(t => t.Type == TemplateType.Entity))
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.Entity))
             {
                 await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
             }
@@ -270,7 +261,8 @@ namespace Cynosura.Studio.Core.Generator
                 Solution = solution,
             };
 
-            foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.View))
             {
                 await CreateFileAsync(template, model, solution, entity);
             }
@@ -292,7 +284,8 @@ namespace Cynosura.Studio.Core.Generator
                 Solution = solution,
             };
 
-            foreach (var template in Templates.Where(t => t.Type == TemplateType.View))
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.View))
             {
                 await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
             }
