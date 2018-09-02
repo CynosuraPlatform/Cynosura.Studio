@@ -123,6 +123,25 @@ namespace Cynosura.Studio.Core.Generator
             _logger.LogInformation($"Created solution in {path}");
         }
 
+        private async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
+        {
+            var entities = await fromSolution.GetEntitiesAsync();
+            foreach (var entity in entities)
+            {
+                await toSolution.CreateEntityAsync(entity);
+            }
+        }
+
+        private async Task GenerateAllEntitiesAsync(SolutionAccessor solution)
+        {
+            var entities = await solution.GetEntitiesAsync();
+            foreach (var entity in entities)
+            {
+                await GenerateEntityAsync(solution, entity);
+                await GenerateViewAsync(solution, new View(), entity);
+            }
+        }
+
         public async Task UpgradeSolutionAsync(SolutionAccessor solution)
         {
             _logger.LogInformation("UpgradeSolution");
@@ -149,7 +168,14 @@ namespace Cynosura.Studio.Core.Generator
                 Directory.Delete(currentPackageSolutionPath, true);
 
             await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath);
+            var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
+            await CopyEntitiesAsync(solution, latestPackageSolution);
+            await GenerateAllEntitiesAsync(latestPackageSolution);
+
             await InitSolutionAsync(solution.Namespace, solution.Metadata.Version, currentPackageSolutionPath);
+            var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
+            await CopyEntitiesAsync(solution, currentPackageSolution);
+            await GenerateAllEntitiesAsync(currentPackageSolution);
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
             await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
