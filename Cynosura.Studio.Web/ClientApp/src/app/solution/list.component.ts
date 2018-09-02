@@ -71,7 +71,8 @@ export class SolutionListComponent implements OnInit {
                         this.getSolutions();
                     })
                     .catch(error => this.error = error);
-            });
+            })
+            .catch(() => { });
     }
 
     onPageSelected(pageIndex: number) {

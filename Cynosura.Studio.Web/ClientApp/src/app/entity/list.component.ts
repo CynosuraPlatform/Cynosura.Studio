@@ -70,7 +70,7 @@ export class EntityListComponent implements OnInit {
             .then(content => { this.content = content; },
                 error => this.error = error.json() as Error);
     }
-
+            
     edit(id: string): void {
         this.router.navigate([id], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
@@ -87,7 +87,8 @@ export class EntityListComponent implements OnInit {
                         this.getEntities();
                     })
                     .catch(error => this.error = error);
-            });
+            })
+            .catch(() => { });
     }
 
     onPageSelected(pageIndex: number) {

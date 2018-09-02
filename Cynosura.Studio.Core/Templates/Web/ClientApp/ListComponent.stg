@@ -72,7 +72,8 @@ export class $model.Entity.Name$ListComponent implements OnInit {
                         this.get$model.Entity.PluralName$();
                     })
                     .catch(error => this.error = error);
-            });
+            })
+            .catch(() => { });
     }
 
     onPageSelected(pageIndex: number) {

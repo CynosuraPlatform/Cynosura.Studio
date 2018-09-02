@@ -66,7 +66,8 @@ export class FieldListComponent implements OnInit {
                 const foundField = this.findField(id);
                 const index = this.fields.indexOf(foundField);
                 this.fields.splice(index, 1);
-            });
+            })
+            .catch(() => { });
     }
 
 }
