@@ -10,6 +10,7 @@ using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator
 {
@@ -23,7 +24,7 @@ namespace Cynosura.Studio.Core.Generator
         private readonly IMerge _merge;
         private readonly FileMerge _fileMerge;
         private readonly ILogger<CodeGenerator> _logger;
-        public IList<CodeTemplate> Templates { get; set; } = new List<CodeTemplate>();
+        private IList<CodeTemplate> Templates { get; set; }
 
         public CodeGenerator(ITemplateEngine templateEngine, 
             IPackageFeed packageFeed,
@@ -36,43 +37,22 @@ namespace Cynosura.Studio.Core.Generator
             _merge = merge;
             _fileMerge = fileMerge;
             _logger = logger;
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Entities", FileName = "{Name}.cs", TemplatePath = "Core\\Entity.stg"});
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}CreateModel.cs", TemplatePath = "Core\\ServiceCreateModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services\\Models", FileName = "{Name}UpdateModel.cs", TemplatePath = "Core\\ServiceUpdateModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services", FileName = "I{Name}Service.cs", TemplatePath = "Core\\ServiceInterface.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Services", FileName = "{Name}Service.cs", TemplatePath = "Core\\Service.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\AutoMapper", FileName = "{Name}Profile.cs", TemplatePath = "Core\\AutoMapperProfile.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Core\\Autofac", FileName = "{Name}Module.cs", TemplatePath = "Core\\AutofacModule.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Data\\Autofac", FileName = "{Name}Module.cs", TemplatePath = "Data\\AutofacModule.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Data\\DataContextModule", FileName = "{Name}Module.cs", TemplatePath = "Data\\DataContextModule.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Models", FileName = "{Name}ViewModels\\{Name}CreateViewModel.cs", TemplatePath = "Web\\CreateViewModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Models", FileName = "{Name}ViewModels\\{Name}UpdateViewModel.cs", TemplatePath = "Web\\UpdateViewModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Models", FileName = "{Name}ViewModels\\{Name}ViewModel.cs", TemplatePath = "Web\\ViewModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Models", FileName = "{Name}ViewModels\\{Name}ShortViewModel.cs", TemplatePath = "Web\\ShortViewModel.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Controllers", FileName = "{Name}Controller.cs", TemplatePath = "Web\\Controller.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Infrastructure\\AutoMapper", FileName = "{Name}Profile.cs", TemplatePath = "Web\\AutoMapperProfile.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.Entity, FilePath = "*.Web\\Infrastructure\\Menu", FileName = "{Name}Module.cs", TemplatePath = "Web\\MenuModule.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}-core\\{NameLower}.model.ts", TemplatePath = "Web\\ClientApp\\Model.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}-core\\{NameLower}.service.ts", TemplatePath = "Web\\ClientApp\\Service.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}-core\\select.component.ts", TemplatePath = "Web\\ClientApp\\SelectComponent.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}-core\\select.component.html", TemplatePath = "Web\\ClientApp\\SelectView.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}-core\\{NameLower}-core.module.ts", TemplatePath = "Web\\ClientApp\\CoreModule.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\list.component.ts", TemplatePath = "Web\\ClientApp\\ListComponent.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\list.component.html", TemplatePath = "Web\\ClientApp\\ListView.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\edit.component.ts", TemplatePath = "Web\\ClientApp\\EditComponent.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\edit.component.html", TemplatePath = "Web\\ClientApp\\EditView.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "{NameLower}\\{NameLower}.module.ts", TemplatePath = "Web\\ClientApp\\Module.stg" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\Route.stg", InsertAfter = "// ADD ROUTES HERE" });
-            Templates.Add(new CodeTemplate() { Type = TemplateType.View, FilePath = "*.Web\\ClientApp\\src\\app", FileName = "app.module.ts", TemplatePath = "Web\\ClientApp\\RouteImport.stg", InsertAfter = "// ADD MODULES HERE" });
+            var templatesJson = ReadFileAsync(Path.Combine(GetTemplatesPath(), "Templates.json")).Result;
+            Templates = JsonConvert.DeserializeObject<List<CodeTemplate>>(templatesJson);
+        }
+
+        private string GetTemplatesPath()
+        {
+            return PathHelper.GetAbsolutePath("..\\..\\..\\..\\Cynosura.Studio.Core\\Templates");
         }
 
         private string ProcessTemplate(CodeTemplate template, object model)
         {
-            var templatePath = PathHelper.GetAbsolutePath("..\\..\\..\\..\\Cynosura.Studio.Core\\Templates", template.TemplatePath);
+            var templatePath = Path.Combine(GetTemplatesPath(), template.TemplatePath);
             return _templateEngine.ProcessTemplate(templatePath, model);
         }
 
-        private string GetTemplateFilePath(CodeTemplate template, Solution solution, Entity entity)
+        private string GetTemplateFilePath(CodeTemplate template, SolutionAccessor solution, Entity entity)
         {
             var dir = FindDirectory(solution.Path, template.FilePath);
             var fileName = ProcessFileName(template.FileName, entity);
@@ -83,7 +63,7 @@ namespace Cynosura.Studio.Core.Generator
             return filePath;
         }
 
-        private async Task CreateFileAsync(CodeTemplate template, object model, Solution solution, Entity entity)
+        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, Entity entity)
         {
             var filePath = GetTemplateFilePath(template, solution, entity);
             var content = ProcessTemplate(template, model);
@@ -106,7 +86,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, Solution solution, Entity oldEntity, Entity newEntity)
+        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
             var oldContent = ProcessTemplate(template, oldModel);
             var newContent = ProcessTemplate(template, newModel);
@@ -154,7 +134,7 @@ namespace Cynosura.Studio.Core.Generator
             _logger.LogInformation($"Created solution in {path}");
         }
 
-        public async Task UpgradeSolutionAsync(Solution solution)
+        public async Task UpgradeSolutionAsync(SolutionAccessor solution)
         {
             _logger.LogInformation("UpgradeSolution");
             if (solution.Metadata == null)
@@ -247,7 +227,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task GenerateEntityAsync(Solution solution, Entity entity)
+        public async Task GenerateEntityAsync(SolutionAccessor solution, Entity entity)
         {
             var model = new EntityModel()
             {
@@ -261,7 +241,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task UpgradeEntityAsync(Solution solution, Entity oldEntity, Entity newEntity)
+        public async Task UpgradeEntityAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
             var oldModel = new EntityModel()
             {
@@ -281,7 +261,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task GenerateViewAsync(Solution solution, View view, Entity entity)
+        public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
         {
             var model = new ViewModel()
             {
@@ -296,7 +276,7 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task UpgradeViewAsync(Solution solution, View view, Entity oldEntity, Entity newEntity)
+        public async Task UpgradeViewAsync(SolutionAccessor solution, View view, Entity oldEntity, Entity newEntity)
         {
             var oldModel = new ViewModel()
             {

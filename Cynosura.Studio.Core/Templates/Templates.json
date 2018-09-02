@@ -1,0 +1,198 @@
+﻿[
+  {
+    "FilePath": "*.Core\\Entities",
+    "FileName": "{Name}.cs",
+    "TemplatePath": "Core\\Entity.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Services\\Models",
+    "FileName": "{Name}CreateModel.cs",
+    "TemplatePath": "Core\\ServiceCreateModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Services\\Models",
+    "FileName": "{Name}UpdateModel.cs",
+    "TemplatePath": "Core\\ServiceUpdateModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Services",
+    "FileName": "I{Name}Service.cs",
+    "TemplatePath": "Core\\ServiceInterface.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Services",
+    "FileName": "{Name}Service.cs",
+    "TemplatePath": "Core\\Service.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\AutoMapper",
+    "FileName": "{Name}Profile.cs",
+    "TemplatePath": "Core\\AutoMapperProfile.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Autofac",
+    "FileName": "{Name}Module.cs",
+    "TemplatePath": "Core\\AutofacModule.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Data\\Autofac",
+    "FileName": "{Name}Module.cs",
+    "TemplatePath": "Data\\AutofacModule.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Data\\DataContextModule",
+    "FileName": "{Name}Module.cs",
+    "TemplatePath": "Data\\DataContextModule.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Models",
+    "FileName": "{Name}ViewModels\\{Name}CreateViewModel.cs",
+    "TemplatePath": "Web\\CreateViewModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Models",
+    "FileName": "{Name}ViewModels\\{Name}UpdateViewModel.cs",
+    "TemplatePath": "Web\\UpdateViewModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Models",
+    "FileName": "{Name}ViewModels\\{Name}ViewModel.cs",
+    "TemplatePath": "Web\\ViewModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Models",
+    "FileName": "{Name}ViewModels\\{Name}ShortViewModel.cs",
+    "TemplatePath": "Web\\ShortViewModel.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Controllers",
+    "FileName": "{Name}Controller.cs",
+    "TemplatePath": "Web\\Controller.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Infrastructure\\AutoMapper",
+    "FileName": "{Name}Profile.cs",
+    "TemplatePath": "Web\\AutoMapperProfile.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\Infrastructure\\Menu",
+    "FileName": "{Name}Module.cs",
+    "TemplatePath": "Web\\MenuModule.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}-core\\{NameLower}.model.ts",
+    "TemplatePath": "Web\\ClientApp\\Model.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}-core\\{NameLower}.service.ts",
+    "TemplatePath": "Web\\ClientApp\\Service.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}-core\\select.component.ts",
+    "TemplatePath": "Web\\ClientApp\\SelectComponent.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}-core\\select.component.html",
+    "TemplatePath": "Web\\ClientApp\\SelectView.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}-core\\{NameLower}-core.module.ts",
+    "TemplatePath": "Web\\ClientApp\\CoreModule.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}\\list.component.ts",
+    "TemplatePath": "Web\\ClientApp\\ListComponent.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}\\list.component.html",
+    "TemplatePath": "Web\\ClientApp\\ListView.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}\\edit.component.ts",
+    "TemplatePath": "Web\\ClientApp\\EditComponent.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}\\edit.component.html",
+    "TemplatePath": "Web\\ClientApp\\EditView.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameLower}\\{NameLower}.module.ts",
+    "TemplatePath": "Web\\ClientApp\\Module.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "app.module.ts",
+    "TemplatePath": "Web\\ClientApp\\Route.stg",
+    "Type": 1,
+    "InsertAfter": "// ADD ROUTES HERE"
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "app.module.ts",
+    "TemplatePath": "Web\\ClientApp\\RouteImport.stg",
+    "Type": 1,
+    "InsertAfter": "// ADD MODULES HERE"
+  }
+]

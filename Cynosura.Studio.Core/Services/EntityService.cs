@@ -40,7 +40,7 @@ namespace Cynosura.Studio.Core.Services
 
         private List<Entity> GetEntitiesFromSolution(string path)
         {
-            var solution = new Generator.Models.Solution(path);
+            var solution = new SolutionAccessor(path);
             var entities = solution.GetEntities();
             return entities.Select(_mapper.Map<Generator.Models.Entity, Entity>)
                 .ToList();
@@ -71,7 +71,7 @@ namespace Cynosura.Studio.Core.Services
         public async Task<Guid> CreateEntityAsync(int solutionId, EntityCreateModel model)
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
-            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var solutionModel = new SolutionAccessor(solution.Path);
             var entity = _mapper.Map<EntityCreateModel, Entity>(model);
             entity.Id = Guid.NewGuid();
             var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
@@ -84,7 +84,7 @@ namespace Cynosura.Studio.Core.Services
         public async Task UpdateEntityAsync(int solutionId, Guid id, EntityUpdateModel model)
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
-            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var solutionModel = new SolutionAccessor(solution.Path);
             var entity = _mapper.Map<EntityUpdateModel, Entity>(model);
             entity.Id = id;
             var oldEntity = solutionModel.GetEntities().FirstOrDefault(e => e.Id == id);
@@ -97,14 +97,14 @@ namespace Cynosura.Studio.Core.Services
         public async Task DeleteEntityAsync(int solutionId, Guid id)
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
-            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var solutionModel = new SolutionAccessor(solution.Path);
             solutionModel.DeleteEntity(id);
         }
 
         public async Task GenerateAsync(int solutionId, Guid id)
         {
             var solution = await _solutionService.GetSolutionAsync(solutionId);
-            var solutionModel = new Generator.Models.Solution(solution.Path);
+            var solutionModel = new SolutionAccessor(solution.Path);
             var entity = await GetEntityAsync(solutionId, id);
             var entityModel = _mapper.Map<Entity, Generator.Models.Entity>(entity);
             await _codeGenerator.GenerateEntityAsync(solutionModel, entityModel);

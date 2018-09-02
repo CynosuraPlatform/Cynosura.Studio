@@ -17,11 +17,11 @@ namespace Cynosura.Studio.Core
             }
         }
 
-        public static string GetAbsolutePath(string path1, string path2 = null)
+        public static string GetAbsolutePath(string path1)
         {
             if (!Path.IsPathRooted(path1))
             {
-                return Path.Combine(AssemblyDirectory, path1, path2);
+                return Path.Combine(AssemblyDirectory, path1);
             }
             return path1;
         }

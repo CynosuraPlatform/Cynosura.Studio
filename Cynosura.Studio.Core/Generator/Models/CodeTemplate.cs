@@ -1,4 +1,4 @@
-﻿namespace Cynosura.Studio.Core.Generator
+﻿namespace Cynosura.Studio.Core.Generator.Models
 {
     public class CodeTemplate
     {

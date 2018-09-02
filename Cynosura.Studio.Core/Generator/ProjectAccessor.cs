@@ -1,15 +1,15 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Cynosura.Studio.Core.Generator.Models
+namespace Cynosura.Studio.Core.Generator
 {
-    public class Project
+    public class ProjectAccessor
     {
         public string Path { get; }
         public string Namespace { get; }
-        public Solution Solution { get; }
+        public SolutionAccessor Solution { get; }
 
-        internal Project(Solution solution, string path, string projectFile)
+        internal ProjectAccessor(SolutionAccessor solution, string path, string projectFile)
         {
             Solution = solution;
             Path = path;

@@ -6,20 +6,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Cynosura.Studio.Core.Generator.Models;
 using Newtonsoft.Json;
 
-namespace Cynosura.Studio.Core.Generator.Models
+namespace Cynosura.Studio.Core.Generator
 {
-    public class Solution
+    public class SolutionAccessor
     {
         public string Path { get; }
         public string Namespace { get; }
         public SolutionMetadata Metadata { get; }
-        public List<Project> Projects { get; }
+        public List<ProjectAccessor> Projects { get; }
 
         private const string MetadataFileExtension = ".json";
 
-        public Solution(string path)
+        public SolutionAccessor(string path)
         {
             Path = path;
             var solutionFile = Directory.GetFiles(Path, "*.sln").FirstOrDefault();
@@ -40,16 +41,16 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
         }
 
-        private List<Project> GetProjects(string path)
+        private List<ProjectAccessor> GetProjects(string path)
         {
             var dirs = Directory.GetDirectories(path);
-            var projects = new List<Project>();
+            var projects = new List<ProjectAccessor>();
             foreach (var dir in dirs)
             {
                 var projectFile = Directory.GetFiles(dir, "*.csproj").FirstOrDefault();
                 if (projectFile != null)
                 {
-                    projects.Add(new Project(this, dir, projectFile));
+                    projects.Add(new ProjectAccessor(this, dir, projectFile));
                 }
             }
 
@@ -66,7 +67,7 @@ namespace Cynosura.Studio.Core.Generator.Models
             return JsonConvert.SerializeObject(data, Formatting.Indented);
         }
 
-        private Project GetProject(string name)
+        private ProjectAccessor GetProject(string name)
         {
             return Projects.Single(p => p.Namespace.EndsWith("." + name));
         }

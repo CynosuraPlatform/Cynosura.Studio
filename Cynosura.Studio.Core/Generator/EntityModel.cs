@@ -5,6 +5,6 @@ namespace Cynosura.Studio.Core.Generator
     public class EntityModel
     {
         public Entity Entity { get; set; }
-        public Solution Solution { get; set; }
+        public SolutionAccessor Solution { get; set; }
     }
 }
