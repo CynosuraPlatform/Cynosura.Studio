@@ -55,14 +55,14 @@ namespace Cynosura.Studio.Core.Generator
             return projects;
         }
 
-        private static T DeserializeMetadata<T>(string content)
+        private static T DeserializeMetadata<T>(string content) where T: new()
         {
-            return JsonConvert.DeserializeObject<T>(content);
+            return content.DeserializeFromJson<T>();
         }
 
         private static string SerializeMetadata<T>(T data)
         {
-            return JsonConvert.SerializeObject(data, Formatting.Indented);
+            return data.SerializeJson();
         }
 
         private ProjectAccessor GetProject(string name)

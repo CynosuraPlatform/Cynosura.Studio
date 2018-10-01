@@ -34,7 +34,7 @@ namespace Cynosura.Studio.Core.PackageFeed
         {
             var httpClient = GetHttpClient();
             var feedResult = await httpClient.GetStringAsync(_settings.FeedUrl);
-            var feed = JsonConvert.DeserializeObject<FeedData>(feedResult);
+            var feed = feedResult.DeserializeFromJson<FeedData>();
             return feed.Resources.Where(r => r.Type == "PackageBaseAddress/3.0.0")
                 .Select(r => r.Id)
                 .FirstOrDefault();
@@ -46,7 +46,7 @@ namespace Cynosura.Studio.Core.PackageFeed
             var versionsUrl = $"{baseAddress}/{packageName.ToLower()}/index.json";
             var httpClient = GetHttpClient();
             var versionsResult = await httpClient.GetStringAsync(versionsUrl);
-            var versions = JsonConvert.DeserializeObject<VersionData>(versionsResult);
+            var versions = versionsResult.DeserializeFromJson<VersionData>();
             return versions.Versions;
         }
 
