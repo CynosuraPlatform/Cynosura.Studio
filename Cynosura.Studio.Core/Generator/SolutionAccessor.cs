@@ -62,7 +62,7 @@ namespace Cynosura.Studio.Core.Generator
 
         private static string SerializeMetadata<T>(T data)
         {
-            return data.SerializeJson();
+            return data.SerializeToJson();
         }
 
         private ProjectAccessor GetProject(string name)

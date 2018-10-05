@@ -10,7 +10,7 @@ namespace Cynosura.Studio.Core
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
 
-        public static string SerializeJson<T>(this T obj)
+        public static string SerializeToJson<T>(this T obj)
         {
             var json = JsonConvert.SerializeObject(obj, Formatting.Indented, Settings);
             return json;
