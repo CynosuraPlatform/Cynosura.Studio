@@ -325,7 +325,9 @@ namespace Cynosura.Studio.Core.Generator
         private string ProcessFileName(string fileName, Entity entity)
         {
             fileName = fileName.Replace("{Name}", entity.Name);
+            fileName = fileName.Replace("{PluralName}", entity.PluralName);
             fileName = fileName.Replace("{NameLower}", entity.NameLower);
+            fileName = fileName.Replace("{PluralNameLower}", entity.PluralNameLower);
             return fileName;
         }
 
