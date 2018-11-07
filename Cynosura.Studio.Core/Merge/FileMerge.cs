@@ -101,7 +101,8 @@ namespace Cynosura.Studio.Core.Merge
                 }
                 else
                 {
-                    await MergeFileAsync(compareFile.LeftPath, compareFile.RightPath, myFilePath);
+                    if (File.Exists(myFilePath))
+                        await MergeFileAsync(compareFile.LeftPath, compareFile.RightPath, myFilePath);
                 }
             }
         }
