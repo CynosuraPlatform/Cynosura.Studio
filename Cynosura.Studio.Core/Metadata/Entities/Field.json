@@ -1,41 +1,54 @@
 {
-  "Id": "4deae62f-8e41-4900-b2dd-5e5cd2ca540f",
-  "Name": "Field",
-  "PluralName": "Fields",
-  "DisplayName": "Field",
-  "PluralDisplayName": "Fields",
-  "Fields": [
+  "id": "4deae62f-8e41-4900-b2dd-5e5cd2ca540f",
+  "name": "Field",
+  "pluralName": "Fields",
+  "displayName": "Field",
+  "pluralDisplayName": "Fields",
+  "fields": [
     {
-      "Id": "cd2d906a-02ab-4aa4-912b-a557252a1a8b",
-      "Name": "Name",
-      "DisplayName": "Name",
-      "Type": 0,
-      "Size": 100,
-      "IsRequired": true
+      "id": "cd2d906a-02ab-4aa4-912b-a557252a1a8b",
+      "name": "Name",
+      "displayName": "Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": true
     },
     {
-      "Id": "23528c92-f8a8-42f4-8b51-4c6f4bdd7fe1",
-      "Name": "DisplayName",
-      "DisplayName": "Display Name",
-      "Type": 0,
-      "Size": 100,
-      "IsRequired": true
+      "id": "23528c92-f8a8-42f4-8b51-4c6f4bdd7fe1",
+      "name": "DisplayName",
+      "displayName": "Display Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": true
     },
     {
-      "Id": "8a5eca27-8b39-42e9-9f7c-5f64656e17c2",
-      "Name": "Size",
-      "DisplayName": "Size",
-      "Type": 1,
-      "Size": null,
-      "IsRequired": false
+      "id": "8a5eca27-8b39-42e9-9f7c-5f64656e17c2",
+      "name": "Size",
+      "displayName": "Size",
+      "type": 1,
+      "size": null,
+      "entityId": null,
+      "isRequired": false
     },
     {
-      "Id": "2b843756-acb6-4ee0-95b2-a44507673712",
-      "Name": "IsRequired",
-      "DisplayName": "Required",
-      "Type": 5,
-      "Size": null,
-      "IsRequired": true
+      "id": "ea3a023a-9891-4d95-9257-1b795c68b3a1",
+      "name": "Entity",
+      "displayName": "Entity",
+      "type": null,
+      "size": null,
+      "entityId": "4018a0cd-b020-4836-a9ef-ba432a553a0f",
+      "isRequired": false
+    },
+    {
+      "id": "2b843756-acb6-4ee0-95b2-a44507673712",
+      "name": "IsRequired",
+      "displayName": "Required",
+      "type": 5,
+      "size": null,
+      "entityId": null,
+      "isRequired": true
     }
   ]
 }
