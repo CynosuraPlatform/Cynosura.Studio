@@ -6,8 +6,8 @@ namespace Cynosura.Studio.Core.Requests.Solutions
     {
         public UpdateSolutionValidator()
         {
-            RuleFor(x => x.Name).Length(50).NotEmpty();
-            RuleFor(x => x.Path).Length(200).NotEmpty();
+            RuleFor(x => x.Name).MaximumLength(50).NotEmpty();
+            RuleFor(x => x.Path).MaximumLength(200).NotEmpty();
         }
 
     }

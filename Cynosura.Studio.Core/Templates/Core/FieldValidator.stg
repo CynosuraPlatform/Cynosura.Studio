@@ -15,5 +15,5 @@ $if(field.IsRequired)$.NotEmpty()$endif$
 >>
 
 length(field) ::= <<
-$if(field.Size)$.Length($field.Size$)$endif$
+$if(field.Size)$.MaximumLength($field.Size$)$endif$
 >>

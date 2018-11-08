@@ -6,10 +6,10 @@ namespace Cynosura.Studio.Core.Requests.Entities
     {
         public UpdateEntityValidator()
         {
-            RuleFor(x => x.Name).Length(100).NotEmpty();
-            RuleFor(x => x.PluralName).Length(100).NotEmpty();
-            RuleFor(x => x.DisplayName).Length(100).NotEmpty();
-            RuleFor(x => x.PluralDisplayName).Length(100).NotEmpty();
+            RuleFor(x => x.Name).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.PluralName).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.PluralDisplayName).MaximumLength(100).NotEmpty();
         }
 
     }
