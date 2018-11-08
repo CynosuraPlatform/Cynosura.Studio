@@ -1,0 +1,27 @@
+{
+  "Id": "51c285a8-11d0-4f3c-8b9d-534269015981",
+  "Name": "User",
+  "PluralName": "Users",
+  "DisplayName": "User",
+  "PluralDisplayName": "Users",
+  "Fields": [
+    {
+      "Id": "e61e1a22-733e-4398-8fa0-3b3dfac12a0f",
+      "Name": "UserName",
+      "DisplayName": "UserName",
+      "Type": 0,
+      "Size": 256,
+      "EntityId": null,
+      "IsRequired": false
+    },
+    {
+      "Id": "e7d6b2e1-b948-4bfb-b421-7cc19ee0896c",
+      "Name": "Email",
+      "DisplayName": "Email",
+      "Type": 0,
+      "Size": 256,
+      "EntityId": null,
+      "IsRequired": false
+    }
+  ]
+}

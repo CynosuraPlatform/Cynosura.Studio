@@ -7,5 +7,5 @@ import { Component, Input } from "@angular/core";
 
 export class ModelValidatorComponent {
     @Input()
-    model: Object | null = null;
+    model: any;
 }

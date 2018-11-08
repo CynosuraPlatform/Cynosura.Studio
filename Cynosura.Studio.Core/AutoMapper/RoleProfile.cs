@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Roles;
+using Cynosura.Studio.Core.Requests.Roles.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
 {
@@ -11,8 +9,9 @@ namespace Cynosura.Studio.Core.AutoMapper
     {
         public RoleProfile()
         {
-            CreateMap<RoleCreateModel, Role>();
-            CreateMap<RoleUpdateModel, Role>();
+            CreateMap<Role, RoleModel>();
+            CreateMap<CreateRole, Role>();
+            CreateMap<UpdateRole, Role>();
         }
     }
 }

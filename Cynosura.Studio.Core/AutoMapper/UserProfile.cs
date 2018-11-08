@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Users;
+using Cynosura.Studio.Core.Requests.Users.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
 {
@@ -11,8 +9,9 @@ namespace Cynosura.Studio.Core.AutoMapper
     {
         public UserProfile()
         {
-            CreateMap<UserCreateModel, User>();
-            CreateMap<UserUpdateModel, User>();
+            CreateMap<User, UserModel>();
+            CreateMap<CreateUser, User>();
+            CreateMap<UpdateUser, User>();
         }
     }
 }

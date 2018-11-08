@@ -1,0 +1,18 @@
+{
+  "Id": "99e4f0b9-6ed6-4d0e-8faa-8c5c85b65909",
+  "Name": "Role",
+  "PluralName": "Roles",
+  "DisplayName": "Role",
+  "PluralDisplayName": "Roles",
+  "Fields": [
+    {
+      "Id": "cf8078d8-a0d5-4cf2-b2e1-d33f6932d3f9",
+      "Name": "Name",
+      "DisplayName": "Name",
+      "Type": 0,
+      "Size": 256,
+      "EntityId": null,
+      "IsRequired": false
+    }
+  ]
+}

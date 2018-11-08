@@ -1,0 +1,19 @@
+fieldValidator(field) ::= <<
+$field:(field.Template)()$$field:length()$$field:required()$;
+>>
+
+Type(field) ::= <<
+            RuleFor(x => x.$field.Name$)
+>>
+
+Entity(field) ::= <<
+            RuleFor(x => x.$field.Name$Id)
+>>
+
+required(field) ::= <<
+$if(field.IsRequired)$.NotEmpty()$endif$
+>>
+
+length(field) ::= <<
+$if(field.Size)$.Length($field.Size$)$endif$
+>>

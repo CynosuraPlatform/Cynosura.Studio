@@ -7,30 +7,100 @@
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Core\\Services\\Models",
-    "FileName": "{Name}CreateModel.cs",
-    "TemplatePath": "Core\\ServiceCreateModel.stg",
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Models\\{Name}Model.cs",
+    "TemplatePath": "Core\\Model.stg",
     "Type": 0,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Core\\Services\\Models",
-    "FileName": "{Name}UpdateModel.cs",
-    "TemplatePath": "Core\\ServiceUpdateModel.stg",
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Models\\{Name}ShortModel.cs",
+    "TemplatePath": "Core\\ShortModel.stg",
     "Type": 0,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Core\\Services",
-    "FileName": "I{Name}Service.cs",
-    "TemplatePath": "Core\\ServiceInterface.stg",
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Create{Name}.cs",
+    "TemplatePath": "Core\\CreateRequest.stg",
     "Type": 0,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Core\\Services",
-    "FileName": "{Name}Service.cs",
-    "TemplatePath": "Core\\Service.stg",
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Create{Name}Handler.cs",
+    "TemplatePath": "Core\\CreateRequestHandler.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Create{Name}Validator.cs",
+    "TemplatePath": "Core\\CreateRequestValidator.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Delete{Name}.cs",
+    "TemplatePath": "Core\\DeleteRequest.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Delete{Name}Handler.cs",
+    "TemplatePath": "Core\\DeleteRequestHandler.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Get{Name}.cs",
+    "TemplatePath": "Core\\GetRequest.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Get{Name}Handler.cs",
+    "TemplatePath": "Core\\GetRequestHandler.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Get{PluralName}.cs",
+    "TemplatePath": "Core\\GetListRequest.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Get{PluralName}Handler.cs",
+    "TemplatePath": "Core\\GetListRequestHandler.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Update{Name}.cs",
+    "TemplatePath": "Core\\UpdateRequest.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Update{Name}Handler.cs",
+    "TemplatePath": "Core\\UpdateRequestHandler.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Update{Name}Validator.cs",
+    "TemplatePath": "Core\\UpdateRequestValidator.stg",
     "Type": 0,
     "InsertAfter": null
   },
@@ -42,13 +112,6 @@
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Core\\Autofac",
-    "FileName": "{Name}Module.cs",
-    "TemplatePath": "Core\\AutofacModule.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
     "FilePath": "*.Data\\Autofac",
     "FileName": "{Name}Module.cs",
     "TemplatePath": "Data\\AutofacModule.stg",
@@ -56,37 +119,9 @@
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Data\\DataContextModule",
-    "FileName": "{Name}Module.cs",
-    "TemplatePath": "Data\\DataContextModule.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
-    "FilePath": "*.Web\\Models",
-    "FileName": "{Name}ViewModels\\{Name}CreateViewModel.cs",
-    "TemplatePath": "Web\\CreateViewModel.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
-    "FilePath": "*.Web\\Models",
-    "FileName": "{Name}ViewModels\\{Name}UpdateViewModel.cs",
-    "TemplatePath": "Web\\UpdateViewModel.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
-    "FilePath": "*.Web\\Models",
-    "FileName": "{Name}ViewModels\\{Name}ViewModel.cs",
-    "TemplatePath": "Web\\ViewModel.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
-    "FilePath": "*.Web\\Models",
-    "FileName": "{Name}ViewModels\\{Name}ShortViewModel.cs",
-    "TemplatePath": "Web\\ShortViewModel.stg",
+    "FilePath": "*.Data\\Configurations",
+    "FileName": "{Name}Configuration.cs",
+    "TemplatePath": "Data\\Configuration.stg",
     "Type": 0,
     "InsertAfter": null
   },
@@ -94,13 +129,6 @@
     "FilePath": "*.Web\\Controllers",
     "FileName": "{Name}Controller.cs",
     "TemplatePath": "Web\\Controller.stg",
-    "Type": 0,
-    "InsertAfter": null
-  },
-  {
-    "FilePath": "*.Web\\Infrastructure\\AutoMapper",
-    "FileName": "{Name}Profile.cs",
-    "TemplatePath": "Web\\AutoMapperProfile.stg",
     "Type": 0,
     "InsertAfter": null
   },

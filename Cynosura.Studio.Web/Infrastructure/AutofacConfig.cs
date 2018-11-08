@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +23,7 @@ namespace Cynosura.Studio.Web.Infrastructure
                 .WithParameter((p, c) => p.Name == "connectionString", (p, c) => configuration.GetConnectionString("DefaultConnection"))
                 .InstancePerLifetimeScope();
 
-            //builder.RegisterType<MenuProvider>().As<IMenuProvider>().SingleInstance();
+            builder.RegisterType<ValidationExceptionHandler>().As<IExceptionHandler>();
             builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
             builder.Register(c => new MapperConfiguration(cfg =>
             {

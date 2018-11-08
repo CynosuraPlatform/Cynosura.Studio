@@ -1,0 +1,40 @@
+main(model) ::= <<
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Cynosura.Core.Data;
+using $model.Solution.Namespace$.Core.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
+{
+    public class Delete$model.Entity.Name$Handler : IRequestHandler<Delete$model.Entity.Name$>
+    {
+        private readonly IEntityRepository<$model.Entity.Name$> _$model.Entity.NameLower$Repository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public Delete$model.Entity.Name$Handler(IEntityRepository<$model.Entity.Name$> $model.Entity.NameLower$Repository,
+            IUnitOfWork unitOfWork)
+        {
+            _$model.Entity.NameLower$Repository = $model.Entity.NameLower$Repository;
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<Unit> Handle(Delete$model.Entity.Name$ request, CancellationToken cancellationToken)
+        {
+            var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Repository.GetEntities()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync();
+            if ($model.Entity.NameLower$ != null)
+            {
+                _$model.Entity.NameLower$Repository.Delete($model.Entity.NameLower$);
+                await _unitOfWork.CommitAsync();
+            }
+            return Unit.Value;
+        }
+
+    }
+}
+
+>>

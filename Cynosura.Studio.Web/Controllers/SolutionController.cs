@@ -1,79 +1,70 @@
 using System.Threading.Tasks;
-using AutoMapper;
 using Cynosura.Core.Services.Models;
-using Cynosura.Web.Infrastructure;
-using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Solutions;
+using Cynosura.Studio.Core.Requests.Solutions.Models;
 using Cynosura.Studio.Web.Models;
-using Cynosura.Studio.Web.Models.SolutionViewModels;
+using Cynosura.Web.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
-    [ValidateModel]
     [Route("api/[controller]")]
     public class SolutionController : Controller
     {
-        private readonly ISolutionService _solutionService;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public SolutionController(ISolutionService solutionService, IMapper mapper)
+        public SolutionController(IMediator mediator)
         {
-            _solutionService = solutionService;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet("")]
-        public async Task<PageModel<SolutionViewModel> > GetSolutionsAsync(int? pageIndex, int? pageSize)
+        public async Task<PageModel<SolutionModel>> GetSolutionsAsync(int? pageIndex, int? pageSize)
         {
-            var solutions = await _solutionService.GetSolutionsAsync(pageIndex, pageSize);
-            return solutions.Map<Solution, SolutionViewModel>(_mapper);
+            return await _mediator.Send(new GetSolutions() {PageIndex = pageIndex, PageSize = pageSize});
         }
 
         [HttpGet("{id:int}")]
-        public async Task<SolutionViewModel> GetSolutionAsync(int id)
+        public async Task<SolutionModel> GetSolutionAsync(int id)
         {
-            var solution = await _solutionService.GetSolutionAsync(id);
-            return _mapper.Map<Solution, SolutionViewModel>(solution);
+            return await _mediator.Send(new GetSolution() {Id = id});
         }
 
         [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> PutSolutionAsync(int id, [FromBody] SolutionUpdateViewModel solution)
+        public async Task<StatusViewModel> PutSolutionAsync(int id, [FromBody] UpdateSolution updateSolution)
         {
-            var model = _mapper.Map<SolutionUpdateViewModel, SolutionUpdateModel>(solution);
-            await _solutionService.UpdateSolutionAsync(id, model);
+            await _mediator.Send(updateSolution);
             return new StatusViewModel();
         }
 
         [HttpPost("")]
-        public async Task<StatusViewModel> PostSolutionAsync([FromBody] SolutionCreateViewModel solution)
+        public async Task<StatusViewModel> PostSolutionAsync([FromBody] CreateSolution createSolution)
         {
-            var model = _mapper.Map<SolutionCreateViewModel, SolutionCreateModel>(solution);
-            await _solutionService.CreateSolutionAsync(model);
-            return new StatusViewModel();
+            var id = await _mediator.Send(createSolution);
+            return new CreationStatusViewModel(id);
         }
 
         [HttpDelete("{id:int}")]
         public async Task<StatusViewModel> DeleteSolutionAsync(int id)
         {
-            await _solutionService.DeleteSolutionAsync(id);
+            await _mediator.Send(new DeleteSolution() {Id = id});
             return new StatusViewModel();
         }
 
         [HttpPost("{id:int}/generate")]
         public async Task<StatusViewModel> GenerateSolutionAsync(int id)
         {
-            await _solutionService.GenerateAsync(id);
+            await _mediator.Send(new GenerateSolution() { Id = id });
             return new StatusViewModel();
         }
 
         [HttpPost("{id:int}/upgrade")]
         public async Task<StatusViewModel> UpgradeSolutionAsync(int id)
         {
-            await _solutionService.UpgradeAsync(id);
+            await _mediator.Send(new UpgradeSolution() { Id = id });
             return new StatusViewModel();
         }
     }

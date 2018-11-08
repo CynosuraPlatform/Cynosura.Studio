@@ -1,0 +1,4 @@
+<select class="form-control" [ngModel]="selectedRoleId" [disabled]="readonly" (ngModelChange)="selectedRoleIdChange.emit($event!='0: null' ? $event : null)">
+    <option [ngValue]="null" selected="selected">Select Role</option>
+    <option [ngValue]="role.id" *ngFor="let role of roles">{{ role.name }}</option>
+</select>

@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Entities;
+using Cynosura.Studio.Core.Requests.Entities.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
 {
@@ -11,10 +9,9 @@ namespace Cynosura.Studio.Core.AutoMapper
     {
 		public EntityProfile()
 		{
-			CreateMap<EntityCreateModel, Entity>();
-			CreateMap<EntityUpdateModel, Entity>();
-		    CreateMap<Generator.Models.Entity, Entity>();
-		    CreateMap<Entity, Generator.Models.Entity>();
+			CreateMap<Generator.Models.Entity, EntityModel>();
+            CreateMap<CreateEntity, Generator.Models.Entity>();
+			CreateMap<UpdateEntity, Generator.Models.Entity>();
         }
     }
 }

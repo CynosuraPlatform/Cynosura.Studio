@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { Role } from "../role-core/role.model";
 import { RoleService } from "../role-core/role.service";
@@ -41,12 +41,18 @@ export class RoleListComponent implements OnInit {
         this.getRoles();
     }
 
-    getRoles(): void {
+    getRoles(): void {        
         this.roleService.getRoles(this.pageIndex, this.pageSize)
             .then(content => {
                 this.content = content;
             })
             .catch(error => this.error = error);
+    }
+
+    reset(): void {
+        this.roleService.getRoles(this.content.currentPageIndex, this.pageSize)
+            .then(content => { this.content = content; },
+                error => this.error = error.json() as Error);
     }
 
     edit(id: number): void {

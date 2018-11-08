@@ -12,7 +12,7 @@ export class SolutionService {
 
     constructor(private httpClient: HttpClient) { }
 
-    getSolutions(pageIndex?: number, pageSize?: number): Promise<Page<Solution> > {
+    getSolutions(pageIndex?: number, pageSize?: number): Promise<Page<Solution>> {
         const url = this.solutionUrl;
 
         let params = new HttpParams();
@@ -23,7 +23,7 @@ export class SolutionService {
         if (pageSize != undefined)
             params = params.set("pageSize", pageSize.toString());
 
-        return this.httpClient.get<Page<Solution> >(url, {
+        return this.httpClient.get<Page<Solution>>(url, {
             params: params
         }).toPromise();
     }
