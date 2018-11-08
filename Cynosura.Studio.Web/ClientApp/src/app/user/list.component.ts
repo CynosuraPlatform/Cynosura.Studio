@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { User } from "../user-core/user.model";
 import { UserService } from "../user-core/user.service";
@@ -41,12 +41,18 @@ export class UserListComponent implements OnInit {
         this.getUsers();
     }
 
-    getUsers(): void {
+    getUsers(): void {        
         this.userService.getUsers(this.pageIndex, this.pageSize)
             .then(content => {
                 this.content = content;
             })
             .catch(error => this.error = error);
+    }
+
+    reset(): void {
+        this.userService.getUsers(this.content.currentPageIndex, this.pageSize)
+            .then(content => { this.content = content; },
+                error => this.error = error.json() as Error);
     }
 
     edit(id: number): void {

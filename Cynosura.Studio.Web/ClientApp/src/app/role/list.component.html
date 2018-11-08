@@ -13,7 +13,9 @@
     </thead>
     <tbody>
         <tr *ngFor="let role of content.pageItems">
-            <td><text-view [value]="role.name"></text-view></td>
+            <td>
+                <text-view [value]="role.name"></text-view>
+            </td>
             <td>
                 <button class="btn btn-default" (click)="edit(role.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(role.id)">Delete</button>

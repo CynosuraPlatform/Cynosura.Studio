@@ -1,0 +1,27 @@
+main(model) ::= <<
+using System;
+using System.Collections.Generic;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models
+{
+    public class $model.Entity.Name$ShortModel
+    {
+        public int Id { get; set; }
+
+$model.Entity.DefaultField:field()$
+    }
+}
+
+>>
+
+field(field) ::= <<
+$field:(field.Template)()$        
+>>
+
+Type(field) ::= <<
+        public $field.TypeName$ $field.Name$ { get; set; }
+>>
+
+Entity(field) ::= <<
+        public int $field.Name$Id { get; set; }
+>>

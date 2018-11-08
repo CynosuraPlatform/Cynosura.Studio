@@ -1,73 +1,65 @@
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using Cynosura.Core.Services.Models;
-using Cynosura.Web.Infrastructure;
-using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Entities;
+using Cynosura.Studio.Core.Requests.Entities.Models;
 using Cynosura.Studio.Web.Models;
-using Cynosura.Studio.Web.Models.EntityViewModels;
+using Cynosura.Web.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
-    [ValidateModel]
     [Route("api/[controller]")]
     public class EntityController : Controller
     {
-        private readonly IEntityService _entityService;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public EntityController(IEntityService entityService, IMapper mapper)
+        public EntityController(IMediator mediator)
         {
-            _entityService = entityService;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpGet("")]
-        public async Task<PageModel<EntityViewModel> > GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize)
+        public async Task<PageModel<EntityModel>> GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize)
         {
-            var entities = await _entityService.GetEntitiesAsync(solutionId, pageIndex, pageSize);
-            return entities.Map<Entity, EntityViewModel>(_mapper);
+            return await _mediator.Send(new GetEntities() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize });
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<EntityViewModel> GetEntityAsync(int solutionId, Guid id)
+        public async Task<EntityModel> GetEntityAsync(int solutionId, Guid id)
         {
-            var entity = await _entityService.GetEntityAsync(solutionId, id);
-            return _mapper.Map<Entity, EntityViewModel>(entity);
+            return await _mediator.Send(new GetEntity() { SolutionId = solutionId, Id = id});
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<StatusViewModel> PutEntityAsync(int solutionId, Guid id, [FromBody] EntityUpdateViewModel entity)
+        public async Task<StatusViewModel> PutEntityAsync(int solutionId, Guid id, [FromBody] UpdateEntity updateEntity)
         {
-            var model = _mapper.Map<EntityUpdateViewModel, EntityUpdateModel>(entity);
-            await _entityService.UpdateEntityAsync(solutionId, id, model);
+            updateEntity.SolutionId = solutionId;
+            await _mediator.Send(updateEntity);
             return new StatusViewModel();
         }
 
         [HttpPost("")]
-        public async Task<StatusViewModel> PostEntityAsync(int solutionId, [FromBody] EntityCreateViewModel entity)
+        public async Task<StatusViewModel> PostEntityAsync(int solutionId, [FromBody] CreateEntity createEntity)
         {
-            var model = _mapper.Map<EntityCreateViewModel, EntityCreateModel>(entity);
-            await _entityService.CreateEntityAsync(solutionId, model);
+            await _mediator.Send(createEntity);
             return new StatusViewModel();
         }
 
         [HttpDelete("{id:Guid}")]
         public async Task<StatusViewModel> DeleteEntityAsync(int solutionId, Guid id)
         {
-            await _entityService.DeleteEntityAsync(solutionId, id);
+            await _mediator.Send(new DeleteEntity() { SolutionId = solutionId, Id = id });
             return new StatusViewModel();
         }
 
         [HttpPost("{id:Guid}/generate")]
-        public async Task<StatusViewModel> GenerateSolutionAsync(int solutionId, Guid id)
+        public async Task<StatusViewModel> GenerateEntityAsync(int solutionId, Guid id)
         {
-            await _entityService.GenerateAsync(solutionId, id);
+            await _mediator.Send(new GenerateEntity() { SolutionId = solutionId, Id = id });
             return new StatusViewModel();
         }
     }

@@ -15,10 +15,10 @@ export class $model.Entity.Name$SelectComponent implements OnInit {
     $model.Entity.PluralNameLower$: $model.Entity.Name$[] = [];
 
     @Input()
-    selected$model.Entity.Name$Id: string | null = null;
+    selected$model.Entity.Name$Id: number | null = null;
 
     @Output()
-    selected$model.Entity.Name$IdChange = new EventEmitter<string>();
+    selected$model.Entity.Name$IdChange = new EventEmitter<number>();
 
     @Input()
     readonly = false;

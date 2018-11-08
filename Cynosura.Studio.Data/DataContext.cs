@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace Cynosura.Studio.Data
         {
             base.OnModelCreating(builder);
 
-            builder.CreateModelFromModules();
+            builder.ApplyAllConfigurations();
         }
 
         protected virtual void OnSavingChanges()

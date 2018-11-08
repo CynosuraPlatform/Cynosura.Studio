@@ -1,0 +1,15 @@
+main(model) ::= <<
+using Cynosura.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
+using MediatR;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
+{
+    public class Get$model.Entity.PluralName$ : IRequest<PageModel<$model.Entity.Name$Model>\>
+    {
+        public int? PageIndex { get; set; }
+        public int? PageSize { get; set; }
+    }
+}
+
+>>

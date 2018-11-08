@@ -1,5 +1,4 @@
-export class Field
-{
+export class Field {
     id: string;
     name: string;
     displayName: string;

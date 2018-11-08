@@ -1,0 +1,29 @@
+main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using MediatR;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
+{
+    public class Update$model.Entity.Name$ : IRequest
+    {
+        public int Id { get; set; }
+
+$model.Entity.Fields:field(); separator="\n"$
+    }
+}
+
+>>
+
+field(field) ::= <<
+$field:(field.Template)()$
+>>
+
+Type(field) ::= <<
+        public $field.TypeNameNullable$ $field.Name$ { get; set; }
+>>
+
+Entity(field) ::= <<
+        public int? $field.Name$Id { get; set; }
+>>

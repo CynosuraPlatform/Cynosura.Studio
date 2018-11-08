@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Services.Models;
+using Cynosura.Studio.Core.Requests.Fields;
+using Cynosura.Studio.Core.Requests.Fields.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
 {
@@ -11,9 +9,9 @@ namespace Cynosura.Studio.Core.AutoMapper
     {
         public FieldProfile()
         {
-            CreateMap<FieldUpdateModel, Field>();
-            CreateMap<Generator.Models.Field, Field>();
-            CreateMap<Field, Generator.Models.Field>();
+            CreateMap<Generator.Models.Field, FieldModel>();
+            CreateMap<CreateField, Generator.Models.Field>();
+            CreateMap<UpdateField, Generator.Models.Field>();
         }
     }
 }

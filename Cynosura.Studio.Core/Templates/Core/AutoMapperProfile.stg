@@ -1,10 +1,8 @@
 main(model) ::= <<
-using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
 using $model.Solution.Namespace$.Core.Entities;
-using $model.Solution.Namespace$.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$;
+using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
 
 namespace $model.Solution.Namespace$.Core.AutoMapper
 {
@@ -12,8 +10,9 @@ namespace $model.Solution.Namespace$.Core.AutoMapper
     {
         public $model.Entity.Name$Profile()
         {
-            CreateMap<$model.Entity.Name$CreateModel, $model.Entity.Name$>();
-            CreateMap<$model.Entity.Name$UpdateModel, $model.Entity.Name$>();
+            CreateMap<$model.Entity.Name$, $model.Entity.Name$Model>();
+            CreateMap<Create$model.Entity.Name$, $model.Entity.Name$>();
+            CreateMap<Update$model.Entity.Name$, $model.Entity.Name$>();
         }
     }
 }

@@ -13,7 +13,7 @@ export class $model.Entity.Name$Service {
 
     constructor(private httpClient: HttpClient) { }
 
-    get$model.Entity.PluralName$(pageIndex?: number, pageSize?: number): Promise<Page<$model.Entity.Name$> > {
+    get$model.Entity.PluralName$(pageIndex?: number, pageSize?: number): Promise<Page<$model.Entity.Name$>\> {
         const url = this.$model.Entity.NameLower$Url;
 
         let params = new HttpParams();
@@ -24,7 +24,7 @@ export class $model.Entity.Name$Service {
         if (pageSize != undefined)
             params = params.set("pageSize", pageSize.toString());
 
-        return this.httpClient.get<Page<$model.Entity.Name$> >(url, {
+        return this.httpClient.get<Page<$model.Entity.Name$>\>(url, {
             params: params
         }).toPromise();
     }

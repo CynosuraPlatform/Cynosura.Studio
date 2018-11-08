@@ -1,0 +1,18 @@
+import "FieldValidator.stg"
+
+main(model) ::= <<
+using FluentValidation;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
+{
+    public class Create$model.Entity.Name$Validator : AbstractValidator<Create$model.Entity.Name$>
+    {
+        public Create$model.Entity.Name$Validator()
+        {
+$model.Entity.Fields:fieldValidator(); separator="\n"$
+        }
+
+    }
+}
+
+>>

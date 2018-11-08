@@ -1,0 +1,44 @@
+main(model) ::= <<
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using Cynosura.Core.Data;
+using $model.Solution.Namespace$.Core.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
+{
+    public class Update$model.Entity.Name$Handler : IRequestHandler<Update$model.Entity.Name$>
+    {
+        private readonly IEntityRepository<$model.Entity.Name$> _$model.Entity.NameLower$Repository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public Update$model.Entity.Name$Handler(IEntityRepository<$model.Entity.Name$> $model.Entity.NameLower$Repository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
+        {
+            _$model.Entity.NameLower$Repository = $model.Entity.NameLower$Repository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<Unit> Handle(Update$model.Entity.Name$ request, CancellationToken cancellationToken)
+        {
+            var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Repository.GetEntities()
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync();
+            if ($model.Entity.NameLower$ != null)
+            {
+                _mapper.Map(request, $model.Entity.NameLower$);
+                await _unitOfWork.CommitAsync();
+            }
+            return Unit.Value;
+        }
+
+    }
+}
+
+>>

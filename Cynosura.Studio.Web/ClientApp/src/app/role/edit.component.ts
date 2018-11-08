@@ -17,7 +17,8 @@ export class RoleEditComponent implements OnInit {
 
     constructor(private roleService: RoleService,
         private route: ActivatedRoute,
-        private router: Router) { }
+        private router: Router) {
+    }
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
@@ -30,7 +31,9 @@ export class RoleEditComponent implements OnInit {
         if (id === 0) {
             this.role = new Role();
         } else {
-            this.roleService.getRole(id).then(role => this.role = role);
+            this.roleService.getRole(id).then(role => {
+                this.role = role;
+            });
         }
     }
 
@@ -57,4 +60,5 @@ export class RoleEditComponent implements OnInit {
                 );
         }
     }
+
 }
