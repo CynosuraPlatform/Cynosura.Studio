@@ -45,6 +45,7 @@ namespace Cynosura.Studio.Web.Controllers
         [HttpPost("")]
         public async Task<StatusViewModel> PostEntityAsync(int solutionId, [FromBody] CreateEntity createEntity)
         {
+            createEntity.SolutionId = solutionId;
             await _mediator.Send(createEntity);
             return new StatusViewModel();
         }
