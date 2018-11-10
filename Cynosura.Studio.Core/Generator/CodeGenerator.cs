@@ -123,9 +123,32 @@ namespace Cynosura.Studio.Core.Generator
             _logger.LogInformation($"Created solution in {path}");
         }
 
+        private IEnumerable<Entity> SortByDependency(IEnumerable<Entity> entities)
+        {
+            var entityList = entities.ToList();
+            var sortedList = new List<Entity>();
+            while (entityList.Count > 0)
+            {
+                var okEntities = entityList
+                    .Where(e => e.DependentEntities.Count == 0 ||
+                                e.DependentEntities.All(de => sortedList.Contains(de)))
+                    .ToList();
+                if (okEntities.Count == 0)
+                    throw new Exception("Cannot sort by dependency");
+                foreach (var okEntity in okEntities)
+                {
+                    entityList.Remove(okEntity);
+                    sortedList.Add(okEntity);
+                }
+            }
+
+            return sortedList;
+        }
+
         private async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
         {
             var fromEntities = await fromSolution.GetEntitiesAsync();
+            fromEntities = SortByDependency(fromEntities).ToList();
             var toEntities = await toSolution.GetEntitiesAsync();
             foreach (var entity in fromEntities)
             {
@@ -207,6 +230,8 @@ namespace Cynosura.Studio.Core.Generator
                 var newDirectory = Path.Combine(path, newDirectoryName);
                 if (directory != newDirectory)
                 {
+                    if (Directory.Exists(newDirectory))
+                        Directory.Delete(newDirectory);
                     Directory.Move(directory, newDirectory);
                 }
                 await RenameSolutionAsync(newDirectory, oldValue, newValue);
