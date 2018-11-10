@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Data.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BaseEntityRepository<Solution>>().As<IEntityRepository<Solution> >();
+            builder.RegisterType<BaseEntityRepository<Solution>>().As<IEntityRepository<Solution>>();
         }
     }
 }

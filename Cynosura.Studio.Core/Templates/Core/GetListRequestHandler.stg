@@ -26,8 +26,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 
         public async Task<PageModel<$model.Entity.Name$Model>\> Handle(Get$model.Entity.PluralName$ request, CancellationToken cancellationToken)
         {
-            IQueryable<$model.Entity.Name$> query = _$model.Entity.NameLower$Repository.GetEntities()
-$model.Entity.EntityFields:include(); separator="\n "$;
+            IQueryable<$model.Entity.Name$> query = _$model.Entity.NameLower$Repository.GetEntities()$model.Entity.EntityFields:include(); separator=""$;
             query = query.OrderBy(e => e.Id);
             var $model.Entity.PluralNameLower$ = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
             return $model.Entity.PluralNameLower$.Map<$model.Entity.Name$, $model.Entity.Name$Model>(_mapper);
@@ -39,5 +38,6 @@ $model.Entity.EntityFields:include(); separator="\n "$;
 >>
 
 include(field) ::= <<
+
                 .Include(e => e.$field.Name$)
 >>

@@ -25,8 +25,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 
         public async Task<$model.Entity.Name$Model> Handle(Get$model.Entity.Name$ request, CancellationToken cancellationToken)
         {
-            var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Repository.GetEntities()
-$model.Entity.EntityFields:include(); separator="\n "$
+            var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Repository.GetEntities()$model.Entity.EntityFields:include(); separator=""$
                 .Where(e => e.Id == request.Id)
                 .FirstOrDefaultAsync();
             return _mapper.Map<$model.Entity.Name$, $model.Entity.Name$Model>($model.Entity.NameLower$);
@@ -38,5 +37,6 @@ $model.Entity.EntityFields:include(); separator="\n "$
 >>
 
 include(field) ::= <<
+
                 .Include(e => e.$field.Name$)
 >>

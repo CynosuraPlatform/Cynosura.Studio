@@ -24,13 +24,13 @@ namespace Cynosura.Studio.Web.Controllers
         [HttpGet("")]
         public async Task<PageModel<SolutionModel>> GetSolutionsAsync(int? pageIndex, int? pageSize)
         {
-            return await _mediator.Send(new GetSolutions() {PageIndex = pageIndex, PageSize = pageSize});
+            return await _mediator.Send(new GetSolutions() { PageIndex = pageIndex, PageSize = pageSize });
         }
 
         [HttpGet("{id:int}")]
         public async Task<SolutionModel> GetSolutionAsync(int id)
         {
-            return await _mediator.Send(new GetSolution() {Id = id});
+            return await _mediator.Send(new GetSolution() { Id = id });
         }
 
         [HttpPut("{id:int}")]
@@ -50,7 +50,7 @@ namespace Cynosura.Studio.Web.Controllers
         [HttpDelete("{id:int}")]
         public async Task<StatusViewModel> DeleteSolutionAsync(int id)
         {
-            await _mediator.Send(new DeleteSolution() {Id = id});
+            await _mediator.Send(new DeleteSolution() { Id = id });
             return new StatusViewModel();
         }
 

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {
-    public class UpdateSolutionValidator : AbstractValidator<CreateSolution>
+    public class UpdateSolutionValidator : AbstractValidator<UpdateSolution>
     {
         public UpdateSolutionValidator()
         {

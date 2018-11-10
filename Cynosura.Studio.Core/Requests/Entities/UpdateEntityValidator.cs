@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
-    public class UpdateEntityValidator : AbstractValidator<CreateEntity>
+    public class UpdateEntityValidator : AbstractValidator<UpdateEntity>
     {
         public UpdateEntityValidator()
         {

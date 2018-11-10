@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
-    public class Update$model.Entity.Name$Validator : AbstractValidator<Create$model.Entity.Name$>
+    public class Update$model.Entity.Name$Validator : AbstractValidator<Update$model.Entity.Name$>
     {
         public Update$model.Entity.Name$Validator()
         {

@@ -26,13 +26,13 @@ namespace $model.Solution.Namespace$.Web.Controllers
         [HttpGet("")]
         public async Task<PageModel<$model.Entity.Name$Model>\> Get$model.Entity.PluralName$Async(int? pageIndex, int? pageSize)
         {
-            return await _mediator.Send(new Get$model.Entity.PluralName$() {PageIndex = pageIndex, PageSize = pageSize});
+            return await _mediator.Send(new Get$model.Entity.PluralName$() { PageIndex = pageIndex, PageSize = pageSize });
         }
 
         [HttpGet("{id:int}")]
         public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async(int id)
         {
-            return await _mediator.Send(new Get$model.Entity.Name$() {Id = id});
+            return await _mediator.Send(new Get$model.Entity.Name$() { Id = id });
         }
 
         [HttpPut("{id:int}")]
@@ -52,7 +52,7 @@ namespace $model.Solution.Namespace$.Web.Controllers
         [HttpDelete("{id:int}")]
         public async Task<StatusViewModel> Delete$model.Entity.Name$Async(int id)
         {
-            await _mediator.Send(new Delete$model.Entity.Name$() {Id = id});
+            await _mediator.Send(new Delete$model.Entity.Name$() { Id = id });
             return new StatusViewModel();
         }
     }

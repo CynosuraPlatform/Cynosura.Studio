@@ -9,7 +9,7 @@ namespace $model.Solution.Namespace$.Data.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BaseEntityRepository<$model.Entity.Name$>\>().As<IEntityRepository<$model.Entity.Name$> >();
+            builder.RegisterType<BaseEntityRepository<$model.Entity.Name$>\>().As<IEntityRepository<$model.Entity.Name$>\>();
         }
     }
 }

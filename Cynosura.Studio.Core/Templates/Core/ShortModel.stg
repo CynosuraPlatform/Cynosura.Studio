@@ -15,7 +15,7 @@ $model.Entity.DefaultField:field()$
 >>
 
 field(field) ::= <<
-$field:(field.Template)()$        
+$field:(field.Template)()$
 >>
 
 Type(field) ::= <<
