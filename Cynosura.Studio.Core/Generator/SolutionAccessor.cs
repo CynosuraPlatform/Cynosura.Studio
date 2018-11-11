@@ -132,6 +132,56 @@ namespace Cynosura.Studio.Core.Generator
             File.Delete(filePath);
         }
 
+        public async Task<List<Models.Enum>> GetEnumsAsync()
+        {
+            var coreProject = GetProject("Core");
+            var files = coreProject.GetFiles("Metadata\\Enums");
+            var enums = new List<Models.Enum>();
+            foreach (var file in files)
+            {
+                var @enum = DeserializeMetadata<Models.Enum>(await ReadFileAsync(file));
+                enums.Add(@enum);
+            }
+            return enums;
+        }
+
+        public async Task CreateEnumAsync(Models.Enum @enum)
+        {
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Enums");
+            coreProject.VerifyPathExists("Metadata\\Enums");
+            var filePath = System.IO.Path.Combine(path, @enum.Name + MetadataFileExtension);
+            await WriteFileAsync(filePath, SerializeMetadata(@enum));
+        }
+
+        public async Task UpdateEnumAsync(Models.Enum @enum)
+        {
+            var existingEnum = (await GetEnumsAsync()).FirstOrDefault(e => e.Id == @enum.Id);
+            if (existingEnum == null)
+                throw new Exception($"Enum with Id = {@enum.Id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Enums");
+            var filePath = System.IO.Path.Combine(path, @enum.Name + MetadataFileExtension);
+            await WriteFileAsync(filePath, SerializeMetadata(@enum));
+
+            if (existingEnum.Name != @enum.Name)
+            {
+                filePath = System.IO.Path.Combine(path, existingEnum.Name + MetadataFileExtension);
+                File.Delete(filePath);
+            }
+        }
+
+        public async Task DeleteEnumAsync(Guid id)
+        {
+            var existingEnum = (await GetEnumsAsync()).FirstOrDefault(e => e.Id == id);
+            if (existingEnum == null)
+                throw new Exception($"Enum with Id = {id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata\\Enums");
+            var filePath = System.IO.Path.Combine(path, existingEnum.Name + MetadataFileExtension);
+            File.Delete(filePath);
+        }
+
         private async Task<string> ReadFileAsync(string filePath)
         {
             using (var fileReader = new StreamReader(filePath))

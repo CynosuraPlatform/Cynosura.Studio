@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class EnumValue : BaseEntity
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required()]
         [StringLength(100)]
@@ -21,7 +21,7 @@ namespace Cynosura.Studio.Core.Entities
         public int? Value { get; set; }
         
         [Required()]
-        public int EnumId { get; set; }
+        public Guid EnumId { get; set; }
         public Enum Enum { get; set; }
         
     }

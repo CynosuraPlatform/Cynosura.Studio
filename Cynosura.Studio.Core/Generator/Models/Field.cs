@@ -110,7 +110,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         }
 
         [JsonIgnore]
-        public string TypeTemplate => Enum.GetName(typeof(FieldType), Type);
+        public string TypeTemplate => System.Enum.GetName(typeof(FieldType), Type);
     }
 
     public enum FieldType

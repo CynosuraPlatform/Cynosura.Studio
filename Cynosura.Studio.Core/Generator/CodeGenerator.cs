@@ -41,10 +41,10 @@ namespace Cynosura.Studio.Core.Generator
             return _templateEngine.ProcessTemplate(templatePath, model);
         }
 
-        private string GetTemplateFilePath(CodeTemplate template, SolutionAccessor solution, Entity entity)
+        private string GetTemplateFilePath(CodeTemplate template, SolutionAccessor solution, ISimpleTemplateProcessor fileNameTemplateProcessor)
         {
             var dir = FindDirectory(solution.Path, template.FilePath);
-            var fileName = ProcessFileName(template.FileName, entity);
+            var fileName = fileNameTemplateProcessor.ProcessTemplate(template.FileName);
             var filePath = Path.Combine(dir, fileName);
             var fileDirectory = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(fileDirectory))
@@ -52,9 +52,9 @@ namespace Cynosura.Studio.Core.Generator
             return filePath;
         }
 
-        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, Entity entity)
+        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, ISimpleTemplateProcessor fileNameTemplateProcessor)
         {
-            var filePath = GetTemplateFilePath(template, solution, entity);
+            var filePath = GetTemplateFilePath(template, solution, fileNameTemplateProcessor);
             var content = ProcessTemplate(template, solution, model);
 
             if (!string.IsNullOrEmpty(template.InsertAfter))
@@ -75,12 +75,12 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, SolutionAccessor solution, Entity oldEntity, Entity newEntity)
+        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, SolutionAccessor solution, ISimpleTemplateProcessor oldFileNameTemplateProcessor, ISimpleTemplateProcessor newFileNameTemplateProcessor)
         {
             var oldContent = ProcessTemplate(template, solution, oldModel);
             var newContent = ProcessTemplate(template, solution, newModel);
-            var oldFilePath = GetTemplateFilePath(template, solution, oldEntity);
-            var newFilePath = GetTemplateFilePath(template, solution, newEntity);
+            var oldFilePath = GetTemplateFilePath(template, solution, oldFileNameTemplateProcessor);
+            var newFilePath = GetTemplateFilePath(template, solution, newFileNameTemplateProcessor);
             if (!File.Exists(oldFilePath))
             {
                 _logger.LogWarning($"File {oldFilePath} is not found. Skip upgrade");
@@ -347,13 +347,79 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        private string ProcessFileName(string fileName, Entity entity)
+        public async Task GenerateEnumAsync(SolutionAccessor solution, Models.Enum @enum)
         {
-            fileName = fileName.Replace("{Name}", entity.Name);
-            fileName = fileName.Replace("{PluralName}", entity.PluralName);
-            fileName = fileName.Replace("{NameLower}", entity.NameLower);
-            fileName = fileName.Replace("{PluralNameLower}", entity.PluralNameLower);
-            return fileName;
+            var model = new EnumModel()
+            {
+                Enum = @enum,
+                Solution = solution,
+            };
+
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.Enum))
+            {
+                await CreateFileAsync(template, model, solution, @enum);
+            }
+        }
+
+        public async Task UpgradeEnumAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
+        {
+            var oldModel = new EnumModel()
+            {
+                Enum = oldEnum,
+                Solution = solution,
+            };
+
+            var newModel = new EnumModel()
+            {
+                Enum = newEnum,
+                Solution = solution,
+            };
+
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.Enum))
+            {
+                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+            }
+        }
+
+        public async Task GenerateEnumViewAsync(SolutionAccessor solution, View view, Models.Enum @enum)
+        {
+            var model = new EnumViewModel()
+            {
+                View = view,
+                Enum = @enum,
+                Solution = solution,
+            };
+
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.EnumView))
+            {
+                await CreateFileAsync(template, model, solution, @enum);
+            }
+        }
+
+        public async Task UpgradeEnumViewAsync(SolutionAccessor solution, View view, Models.Enum oldEnum, Models.Enum newEnum)
+        {
+            var oldModel = new EnumViewModel()
+            {
+                View = view,
+                Enum = oldEnum,
+                Solution = solution,
+            };
+
+            var newModel = new EnumViewModel()
+            {
+                View = view,
+                Enum = newEnum,
+                Solution = solution,
+            };
+
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.Type == TemplateType.EnumView))
+            {
+                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+            }
         }
 
         private bool HasWildcards(string path)

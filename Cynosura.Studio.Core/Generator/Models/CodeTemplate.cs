@@ -13,5 +13,7 @@
     {
         Entity,
         View,
+        Enum,
+        EnumView,
     }
 }

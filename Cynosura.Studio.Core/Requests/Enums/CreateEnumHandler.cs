@@ -1,33 +1,45 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Generator;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
-    public class CreateEnumHandler : IRequestHandler<CreateEnum, int>
+    public class CreateEnumHandler : IRequestHandler<CreateEnum, Guid>
     {
-        private readonly IEntityRepository<Enum> _enumRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly CodeGenerator _codeGenerator;
+        private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
 
-        public CreateEnumHandler(IEntityRepository<Enum> enumRepository,
-            IUnitOfWork unitOfWork,
+        public CreateEnumHandler(CodeGenerator codeGenerator,
+            IEntityRepository<Solution> solutionRepository,
             IMapper mapper)
         {
-            _enumRepository = enumRepository;
-            _unitOfWork = unitOfWork;
+            _codeGenerator = codeGenerator;
+            _solutionRepository = solutionRepository;
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateEnum request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateEnum request, CancellationToken cancellationToken)
         {
-            var @enum = _mapper.Map<CreateEnum, Enum>(request);
-            _enumRepository.Add(@enum);
-            await _unitOfWork.CommitAsync();
+            var solution = await _solutionRepository.GetEntities()
+                .Where(e => e.Id == request.SolutionId)
+                .FirstOrDefaultAsync();
+            var solutionAccessor = new SolutionAccessor(solution.Path);
+            var @enum = _mapper.Map<CreateEnum, Generator.Models.Enum>(request);
+            @enum.Id = Guid.NewGuid();
+            await solutionAccessor.CreateEnumAsync(@enum);
+            // reload Enum from Solution
+            @enum = (await solutionAccessor.GetEnumsAsync())
+                .First(e => e.Id == @enum.Id);
+            await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
+            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, new Generator.Models.View(), @enum);
             return @enum.Id;
         }
 

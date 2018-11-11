@@ -6,6 +6,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
 {
     public class GetEnums : IRequest<PageModel<EnumModel>>
     {
+        public int SolutionId { get; set; }
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
     }

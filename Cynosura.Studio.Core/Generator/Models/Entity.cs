@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
-    public class Entity
+    public class Entity : ISimpleTemplateProcessor
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -55,6 +55,15 @@ namespace Cynosura.Studio.Core.Generator.Models
                     .Distinct()
                     .ToList();
             }
+        }
+
+        public string ProcessTemplate(string template)
+        {
+            template = template.Replace("{Name}", Name);
+            template = template.Replace("{PluralName}", PluralName);
+            template = template.Replace("{NameLower}", NameLower);
+            template = template.Replace("{PluralNameLower}", PluralNameLower);
+            return template;
         }
     }
 }

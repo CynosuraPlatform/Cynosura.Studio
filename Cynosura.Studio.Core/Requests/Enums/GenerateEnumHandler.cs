@@ -9,22 +9,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
-    public class DeleteEnumHandler : IRequestHandler<DeleteEnum>
+    public class GenerateEnumHandler : IRequestHandler<GenerateEnum>
     {
+        private readonly CodeGenerator _codeGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public DeleteEnumHandler(IEntityRepository<Solution> solutionRepository)
+        public GenerateEnumHandler(CodeGenerator codeGenerator,
+            IEntityRepository<Solution> solutionRepository)
         {
+            _codeGenerator = codeGenerator;
             _solutionRepository = solutionRepository;
         }
 
-        public async Task<Unit> Handle(DeleteEnum request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(GenerateEnum request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
-            await solutionAccessor.DeleteEnumAsync(request.Id);
+            var @enum = (await solutionAccessor.GetEnumsAsync()).FirstOrDefault(e => e.Id == request.Id);
+            await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
+            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, new Generator.Models.View(), @enum);
             return Unit.Value;
         }
 
