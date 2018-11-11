@@ -1,0 +1,4 @@
+<select class="form-control" [ngModel]="selectedEnumId" [disabled]="readonly" (ngModelChange)="selectedEnumIdChange.emit($event!='0: null' ? $event : null)">
+    <option [ngValue]="null" selected="selected">Select Enum</option>
+    <option [ngValue]="enum.id" *ngFor="let enum of enums">{{ enum.name }}</option>
+</select>

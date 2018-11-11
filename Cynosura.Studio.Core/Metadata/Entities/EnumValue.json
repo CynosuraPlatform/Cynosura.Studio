@@ -1,0 +1,45 @@
+{
+  "id": "2533e564-8719-43ef-b895-fc2e1c4f187e",
+  "name": "EnumValue",
+  "pluralName": "EnumValues",
+  "displayName": "Enum Value",
+  "pluralDisplayName": "Enum Values",
+  "fields": [
+    {
+      "id": "7ad2e415-ffff-440f-83a8-fb88f1e6a43e",
+      "name": "Name",
+      "displayName": "Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": true
+    },
+    {
+      "id": "df9be3e4-cf88-4024-bc57-c639f35e611e",
+      "name": "DisplayName",
+      "displayName": "Display Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": false
+    },
+    {
+      "id": "42c96f1e-35b8-498f-82b3-a3d6dd83e95b",
+      "name": "Value",
+      "displayName": "Value",
+      "type": 1,
+      "size": null,
+      "entityId": null,
+      "isRequired": false
+    },
+    {
+      "id": "0c519796-6268-4086-aa10-409450adb340",
+      "name": "Enum",
+      "displayName": "Enum",
+      "type": null,
+      "size": null,
+      "entityId": "14c4ab08-5b37-4387-adaa-4effd866c34d",
+      "isRequired": true
+    }
+  ]
+}

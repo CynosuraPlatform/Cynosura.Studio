@@ -1,0 +1,27 @@
+{
+  "id": "14c4ab08-5b37-4387-adaa-4effd866c34d",
+  "name": "Enum",
+  "pluralName": "Enums",
+  "displayName": "Enum",
+  "pluralDisplayName": "Enums",
+  "fields": [
+    {
+      "id": "eb1a071e-485e-4d35-b1a0-a210ecce5f7c",
+      "name": "Name",
+      "displayName": "Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": true
+    },
+    {
+      "id": "78d4e455-79a9-4818-9a52-5dbd03855b37",
+      "name": "DisplayName",
+      "displayName": "Display Name",
+      "type": 0,
+      "size": 100,
+      "entityId": null,
+      "isRequired": true
+    }
+  ]
+}
