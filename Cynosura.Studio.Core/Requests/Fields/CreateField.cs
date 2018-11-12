@@ -8,6 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Fields
 {
     public class CreateField : IRequest<int>
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public FieldType? Type { get; set; }
