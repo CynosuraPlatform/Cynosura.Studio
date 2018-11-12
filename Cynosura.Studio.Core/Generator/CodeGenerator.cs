@@ -172,6 +172,32 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
+        private async Task CopyEnumsAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
+        {
+            var fromEnums = await fromSolution.GetEnumsAsync();
+            var toEnums = await toSolution.GetEnumsAsync();
+            foreach (var @enum in fromEnums)
+            {
+                var toEnum = toEnums.FirstOrDefault(e => e.Id == @enum.Id);
+                if (toEnum == null)
+                {
+                    await toSolution.CreateEnumAsync(@enum);
+                    var newEnum = (await toSolution.GetEnumsAsync())
+                        .FirstOrDefault(e => e.Id == @enum.Id);
+                    await GenerateEnumAsync(toSolution, newEnum);
+                    await GenerateEnumViewAsync(toSolution, new View(), newEnum);
+                }
+                else
+                {
+                    await toSolution.UpdateEnumAsync(@enum);
+                    var newEnum = (await toSolution.GetEnumsAsync())
+                        .FirstOrDefault(e => e.Id == @enum.Id);
+                    await UpgradeEnumAsync(toSolution, toEnum, newEnum);
+                    await UpgradeEnumViewAsync(toSolution, new View(), toEnum, newEnum);
+                }
+            }
+        }
+
         public async Task UpgradeSolutionAsync(SolutionAccessor solution)
         {
             _logger.LogInformation("UpgradeSolution");
@@ -199,10 +225,12 @@ namespace Cynosura.Studio.Core.Generator
 
             await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath);
             var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
+            await CopyEnumsAsync(solution, latestPackageSolution);
             await CopyEntitiesAsync(solution, latestPackageSolution);
 
             await InitSolutionAsync(solution.Namespace, solution.Metadata.Version, currentPackageSolutionPath);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
+            await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
