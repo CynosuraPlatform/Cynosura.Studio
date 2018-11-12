@@ -49,6 +49,15 @@
       "size": null,
       "entityId": null,
       "isRequired": true
+    },
+    {
+      "id": "cc4344cc-ae56-48cc-9a67-d88ccff5d6f6",
+      "name": "Enum",
+      "displayName": "Enum",
+      "type": null,
+      "size": null,
+      "entityId": "14c4ab08-5b37-4387-adaa-4effd866c34d",
+      "isRequired": false
     }
   ]
 }

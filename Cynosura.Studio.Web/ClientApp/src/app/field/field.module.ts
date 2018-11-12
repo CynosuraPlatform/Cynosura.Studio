@@ -4,6 +4,7 @@ import { RouterModule } from "@angular/router";
 import { CoreModule } from "../core/core.module";
 import { FieldCoreModule } from "../field-core/field-core.module";
 import { EntityCoreModule } from "../entity-core/entity-core.module";
+import { EnumCoreModule } from "../enum-core/enum-core.module";
 
 import { FieldListComponent } from "./list.component";
 import { FieldEditComponent } from "./edit.component";
@@ -15,6 +16,7 @@ import { FieldEditComponent } from "./edit.component";
     ],
     imports: [
         CoreModule,
+        EnumCoreModule,
         FieldCoreModule,
         EntityCoreModule
     ],

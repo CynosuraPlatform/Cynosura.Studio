@@ -57,6 +57,27 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
         }
 
+        [JsonIgnore]
+        public IList<Field> EnumFields
+        {
+            get
+            {
+                return Fields.Where(f => f.EnumId != null)
+                    .ToList();
+            }
+        }
+
+        [JsonIgnore]
+        public IList<Enum> DependentEnums
+        {
+            get
+            {
+                return EnumFields.Select(f => f.Enum)
+                    .Distinct()
+                    .ToList();
+            }
+        }
+
         public string ProcessTemplate(string template)
         {
             template = template.Replace("{Name}", Name);

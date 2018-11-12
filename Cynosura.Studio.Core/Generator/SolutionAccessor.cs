@@ -81,6 +81,8 @@ namespace Cynosura.Studio.Core.Generator
                 entities.Add(entity);
             }
 
+            var enums = await GetEnumsAsync();
+
             foreach (var entity in entities)
             {
                 foreach (var field in entity.Fields)
@@ -88,6 +90,11 @@ namespace Cynosura.Studio.Core.Generator
                     if (field.EntityId != null)
                     {
                         field.Entity = entities.First(e => e.Id == field.EntityId);
+                    }
+
+                    if (field.EnumId != null)
+                    {
+                        field.Enum = enums.First(e => e.Id == field.EnumId);
                     }
                 }
             }

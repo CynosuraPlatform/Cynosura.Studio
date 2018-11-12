@@ -29,6 +29,10 @@ namespace Cynosura.Studio.Core.Entities
 
         [Required()]
         public bool IsRequired { get; set; }
+        
+        public Guid? EnumId { get; set; }
 
+        public Enum Enum { get; set; }
+        
     }
 }

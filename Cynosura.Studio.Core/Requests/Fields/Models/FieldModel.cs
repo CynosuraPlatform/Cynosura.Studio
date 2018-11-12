@@ -16,5 +16,7 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
         public Guid? EntityId { get; set; }
         public EntityShortModel Entity { get; set; }
         public bool IsRequired { get; set; }
+        public Guid? EnumId { get; set; }
+        public Enums.Models.EnumShortModel Enum { get; set; }
     }
 }

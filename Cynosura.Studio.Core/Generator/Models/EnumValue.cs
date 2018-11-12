@@ -11,5 +11,8 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public int? Value { get; set; }
+
+        [JsonIgnore]
+        public string DisplayNameOrName => !string.IsNullOrEmpty(DisplayName) ? DisplayName : Name;
     }
 }

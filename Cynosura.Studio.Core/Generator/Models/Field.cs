@@ -15,9 +15,13 @@ namespace Cynosura.Studio.Core.Generator.Models
         public int? Size { get; set; }
         public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
+        public Guid? EnumId { get; set; }
 
         [JsonIgnore]
         public Entity Entity { get; set; }
+
+        [JsonIgnore]
+        public Enum Enum { get; set; }
 
         [JsonIgnore]
         public Type NetType
@@ -105,6 +109,8 @@ namespace Cynosura.Studio.Core.Generator.Models
             {
                 if (EntityId != null)
                     return "Entity";
+                if (EnumId != null)
+                    return "Enum";
                 return "Type";
             }
         }

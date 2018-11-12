@@ -15,5 +15,6 @@ namespace Cynosura.Studio.Core.Requests.Fields
         public int? Size { get; set; }
         public Guid? EntityId { get; set; }
         public bool? IsRequired { get; set; }
+        public Guid? EnumId { get; set; }
     }
 }

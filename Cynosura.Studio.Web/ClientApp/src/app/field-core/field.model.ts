@@ -6,6 +6,7 @@ export class Field {
     entityId: string;
     size: number;
     isRequired: boolean;
+    enumId: string;
 }
 
 export enum FieldType {

@@ -11,6 +11,7 @@
             <th>Display Name</th>
             <th>Type</th>
             <th>Entity</th>
+            <th>Enum</th>
             <th></th>
         </tr>
     </thead>
@@ -28,6 +29,7 @@
             <td>
                 {{field.entity?.name}}
             </td>
+            <td>{{field.enum?.name}}</td>
             <td>
                 <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(field.id)">Delete</button>
