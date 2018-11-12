@@ -14,6 +14,14 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string PluralDisplayName { get; set; }
         public IList<Field> Fields { get; set; }
 
+        public Field IdField { get; } = new Field()
+        {
+            Name = "Id",
+            DisplayName = "Id",
+            IsRequired = true,
+            Type = FieldType.Int32,
+        };
+
         [JsonIgnore]
         public string NameLower => Name.ToLowerCamelCase();
 

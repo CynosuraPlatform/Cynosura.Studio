@@ -104,6 +104,23 @@ namespace Cynosura.Studio.Core.Generator.Models
         }
 
         [JsonIgnore]
+        public string EntityIdTypeName
+        {
+            get
+            {
+                if (Entity?.IdField.Type != null)
+                {
+                    var typeInfo = FieldTypeInfo.Types[Entity.IdField.Type.Value];
+                    var typeName = typeInfo.NetTypeName;
+                    if (typeInfo.NetType.IsValueType && !IsRequired)
+                        typeName += "?";
+                    return typeName;
+                }
+                return null;
+            }
+        }
+
+        [JsonIgnore]
         public string Template {
             get
             {
