@@ -28,6 +28,18 @@ export class EnumListComponent implements OnInit {
         this._pageIndex = value;
         this.storeService.set("enumsPageIndex", value);
     }
+    private _solutionId: number;
+    get solutionId(): number {
+        if (!this._solutionId) {
+            this._solutionId = this.storeService.get("enumsSolutionId") | 0;
+        }
+        return this._solutionId;
+    }
+    set solutionId(val: number) {
+        this._solutionId = val;
+        this.storeService.set("enumsSolutionId", this._solutionId);
+        this.getEnums();
+    }
 
     constructor(
         private modalHelper: ModalHelper,
@@ -41,32 +53,36 @@ export class EnumListComponent implements OnInit {
         this.getEnums();
     }
 
-    getEnums(): void {        
-        this.enumService.getEnums(this.pageIndex, this.pageSize)
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.error = error);
+    getEnums(): void {
+        if (this.solutionId) {
+            this.enumService.getEnums(this.solutionId, this.pageIndex, this.pageSize)
+                .then(content => {
+                    this.content = content;
+                })
+                .catch(error => this.error = error);
+        } else {
+            this.content = null;
+        }
     }
 
     reset(): void {
-        this.enumService.getEnums(this.content.currentPageIndex, this.pageSize)
+        this.enumService.getEnums(this.solutionId, this.content.currentPageIndex, this.pageSize)
             .then(content => { this.content = content; },
                 error => this.error = error.json() as Error);
     }
 
     edit(id: number): void {
-        this.router.navigate([id], { relativeTo: this.route });
+        this.router.navigate([id], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
     add(): void {
-        this.router.navigate([0], { relativeTo: this.route });
+        this.router.navigate([0], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.enumService.deleteEnum(id)
+                this.enumService.deleteEnum(this.solutionId, id)
                     .then(() => {
                         this.getEnums();
                     })

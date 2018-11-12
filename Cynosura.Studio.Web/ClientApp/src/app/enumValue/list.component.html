@@ -4,18 +4,17 @@
 
 <error-handler [error]="error"></error-handler>
 
-<table *ngIf="content" class="table table-bordered table-striped">
+<table *ngIf="enumValues" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Display Name</th>
             <th>Value</th>
-            <th>Enum</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let enumValue of content.pageItems">
+        <tr *ngFor="let enumValue of enumValues">
             <td>
                 <text-view [value]="enumValue.name"></text-view>
             </td>
@@ -25,7 +24,6 @@
             <td>
                 <number-view [value]="enumValue.value"></number-view>
             </td>
-            <td>{{enumValue.enum.name}}</td>
             <td>
                 <button class="btn btn-default" (click)="edit(enumValue.id)">Edit</button>
                 <button class="btn btn-default" (click)="delete(enumValue.id)">Delete</button>
@@ -34,9 +32,4 @@
     </tbody>
 </table>
 
-<pager *ngIf="content"
-       [currentPage]="content.currentPageIndex"
-       [pageSize]="pageSize"
-       [totalItems]="content.totalItems"
-       (currentPageChange)="onPageSelected($event)">
-</pager>
+<enumValue-edit *ngIf="enumValue" [enumValue]="enumValue" [solutionId]="solutionId" (enumValueSave)="enumValueSave($event)"></enumValue-edit>

@@ -11,8 +11,5 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public int? Value { get; set; }
-        public Guid EnumId { get; set; }
-        [JsonIgnore]
-        public Enum Enum { get; set; }
     }
 }

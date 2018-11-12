@@ -10,7 +10,6 @@ import { BootstrapModalModule } from "ngx-modialog/plugins/bootstrap";
 import { AuthModule } from "./auth/auth.module";
 import { CoreModule } from "./core/core.module";
 // ADD MODULES HERE
-import { EnumValueModule } from "./enumValue/enumValue.module";
 import { EnumModule } from "./enum/enum.module";
 import { RoleModule } from "./role/role.module";
 import { UserModule } from "./user/user.module";
@@ -26,7 +25,6 @@ var routes: Route[] = [
 ];
 
 // ADD ROUTES HERE
-routes.push({ path: "enumValue", loadChildren: () => EnumValueModule });
 routes.push({ path: "enum", loadChildren: () => EnumModule });
 routes.push({ path: "user", loadChildren: () => UserModule });
 routes.push({ path: "role", loadChildren: () => RoleModule });

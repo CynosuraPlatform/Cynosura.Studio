@@ -14,6 +14,7 @@ import { Error } from "../core/error.model";
 export class EnumEditComponent implements OnInit {
     enum: Enum;
     error: Error;
+    solutionId: number;
 
     constructor(private enumService: EnumService,
         private route: ActivatedRoute,
@@ -22,17 +23,18 @@ export class EnumEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            let id = +params["id"];
+            let id = params["id"];
+            this.solutionId = this.route.snapshot.queryParams["solutionId"];
             this.getEnum(id);
         });
     }
 
-    private getEnum(id: number): void {
-        if (id === 0) {
+    private getEnum(id: string): void {
+        if (id === "0") {
             this.enum = new Enum();
         } else {
-            this.enumService.getEnum(id).then(enum => {
-                this.enum = enum;
+            this.enumService.getEnum(this.solutionId, id).then(enumModel => {
+                this.enum = enumModel;
             });
         }
     }
@@ -47,13 +49,13 @@ export class EnumEditComponent implements OnInit {
 
     private saveEnum(): void {
         if (this.enum.id) {
-            this.enumService.updateEnum(this.enum)
+            this.enumService.updateEnum(this.solutionId, this.enum)
                 .then(
                     () => window.history.back(),
                     error => this.error = error
                 );
         } else {
-            this.enumService.createEnum(this.enum)
+            this.enumService.createEnum(this.solutionId, this.enum)
                 .then(
                     () => window.history.back(),
                     error => this.error = error
@@ -61,4 +63,11 @@ export class EnumEditComponent implements OnInit {
         }
     }
 
+    generate(): void {
+        this.enumService.generateEnum(this.solutionId, this.enum.id)
+            .then(
+                () => { },
+                error => this.error = error
+            );
+    }
 }

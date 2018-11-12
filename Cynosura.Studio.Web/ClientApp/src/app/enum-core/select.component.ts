@@ -14,6 +14,9 @@ export class EnumSelectComponent implements OnInit {
     enums: Enum[] = [];
 
     @Input()
+    solutionId: number;
+
+    @Input()
     selectedEnumId: number | null = null;
 
     @Output()
@@ -23,6 +26,6 @@ export class EnumSelectComponent implements OnInit {
     readonly = false;
 
     ngOnInit(): void {
-        this.enumService.getEnums().then(enums => this.enums = enums.pageItems);
+        this.enumService.getEnums(this.solutionId).then(enums => this.enums = enums.pageItems);
     }
 }

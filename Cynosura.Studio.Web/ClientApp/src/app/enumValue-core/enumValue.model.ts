@@ -1,7 +1,6 @@
 export class EnumValue {
-    id: number;
+    id: string;
     name: string;
     displayName: string;
     value: number;
-    enumId: number;
 }

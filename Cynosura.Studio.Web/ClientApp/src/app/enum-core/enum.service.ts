@@ -12,10 +12,12 @@ export class EnumService {
 
     constructor(private httpClient: HttpClient) { }
 
-    getEnums(pageIndex?: number, pageSize?: number): Promise<Page<Enum>> {
+    getEnums(solutionId: number, pageIndex?: number, pageSize?: number): Promise<Page<Enum>> {
         const url = this.enumUrl;
 
         let params = new HttpParams();
+
+        params = params.set("solutionId", solutionId.toString());
 
         if (pageIndex != undefined)
             params = params.set("pageIndex", pageIndex.toString());
@@ -28,26 +30,40 @@ export class EnumService {
         }).toPromise();
     }
 
-    getEnum(id: number): Promise<Enum> {
+    getEnum(solutionId: number, id: string): Promise<Enum> {
         const url = `${this.enumUrl}/${id}`;
-        return this.httpClient.get<Enum>(url)
-            .toPromise();
+        return this.httpClient.get<Enum>(url, {
+            params: { "solutionId": solutionId.toString() }
+        }).toPromise();
     }
 
-    updateEnum(enum: Enum): Promise<Enum> {
-        const url = `${this.enumUrl}/${enum.id}`;
-        return this.httpClient.put<Enum>(url, JSON.stringify(enum), { headers: this.headers })
-            .toPromise();
+    updateEnum(solutionId: number, enumModel: Enum): Promise<Enum> {
+        const url = `${this.enumUrl}/${enumModel.id}`;
+        return this.httpClient.put<Enum>(url, JSON.stringify(enumModel), {
+            headers: this.headers,
+            params: { "solutionId": solutionId.toString() }
+        }).toPromise();
     }
 
-    createEnum(enum: Enum): Promise<Enum> {
-        return this.httpClient.post<Enum>(this.enumUrl, JSON.stringify(enum), { headers: this.headers })
-            .toPromise();
+    createEnum(solutionId: number, enumModel: Enum): Promise<Enum> {
+        return this.httpClient.post<Enum>(this.enumUrl, JSON.stringify(enumModel), {
+            headers: this.headers,
+            params: { "solutionId": solutionId.toString() }
+        }).toPromise();
     }
 
-    deleteEnum(id: number): Promise<{}> {
+    deleteEnum(solutionId: number, id: number): Promise<{}> {
         const url = `${this.enumUrl}/${id}`;
-        return this.httpClient.delete(url)
+        return this.httpClient.delete(url, {
+            params: { "solutionId": solutionId.toString() }
+        }).toPromise();
+    }
+
+    generateEnum(solutionId: number, id: string): Promise<{}> {
+        const url = `${this.enumUrl}/${id}/generate`;
+        return this.httpClient.post(url, null, {
+                params: { "solutionId": solutionId.toString() }
+            })
             .toPromise();
     }
 }

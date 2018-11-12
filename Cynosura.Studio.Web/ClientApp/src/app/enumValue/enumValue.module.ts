@@ -14,15 +14,14 @@ import { EnumValueEditComponent } from "./edit.component";
         EnumValueEditComponent
     ],
     imports: [
-        RouterModule.forChild([
-            { path: "", component: EnumValueListComponent },
-            { path: ":id", component: EnumValueEditComponent }
-        ]),
         CoreModule,
         EnumCoreModule,
         EnumValueCoreModule
     ],
     providers: [
+    ],
+    exports: [
+        EnumValueListComponent
     ]
 })
 export class EnumValueModule {

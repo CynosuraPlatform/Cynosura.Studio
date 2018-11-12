@@ -17,7 +17,7 @@ namespace Cynosura.Studio.Web.Infrastructure.Menu
                     Name = "Enums",
                     Route = "./enum",
                     CssClass = "glyphicon-folder-close",
-                    Roles = new List<string>() {"Administrator"}
+                    Roles = new List<string>() {}
                 }
             };
         }

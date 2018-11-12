@@ -9,9 +9,9 @@ namespace Cynosura.Studio.Core.AutoMapper
     {
         public EnumProfile()
         {
-            CreateMap<Enum, EnumModel>();
-            CreateMap<CreateEnum, Enum>();
-            CreateMap<UpdateEnum, Enum>();
+            CreateMap<Generator.Models.Enum, EnumModel>();
+            CreateMap<CreateEnum, Generator.Models.Enum>();
+            CreateMap<UpdateEnum, Generator.Models.Enum>();
         }
     }
 }

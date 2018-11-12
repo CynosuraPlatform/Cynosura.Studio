@@ -1,6 +1,8 @@
 <h2>Enums</h2>
 
-<button type="button" class="btn btn-default" (click)="add()">Create</button>
+<solution-select [(selectedSolutionId)]="solutionId"></solution-select>
+
+<button *ngIf="solutionId" type="button" class="btn btn-default" (click)="add()">Create</button>
 
 <error-handler [error]="error"></error-handler>
 

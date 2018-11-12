@@ -9,7 +9,6 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
             RuleFor(x => x.Name).MaximumLength(100).NotEmpty();
             RuleFor(x => x.DisplayName).MaximumLength(100);
             RuleFor(x => x.Value);
-            RuleFor(x => x.EnumId).NotEmpty();
         }
 
     }
