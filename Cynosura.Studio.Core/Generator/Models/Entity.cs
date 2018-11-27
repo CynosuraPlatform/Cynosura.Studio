@@ -14,6 +14,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string PluralDisplayName { get; set; }
         public IList<Field> Fields { get; set; }
 
+        [JsonIgnore]
         public Field IdField { get; } = new Field()
         {
             Name = "Id",
