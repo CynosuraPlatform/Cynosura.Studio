@@ -13,9 +13,17 @@ namespace Cynosura.Studio.Core.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             builder.RegisterType<CodeGenerator>();
             builder.RegisterType<StringTemplateEngine>().As<ITemplateEngine>();
-            builder.RegisterType<NugetFeed>().As<IPackageFeed>();
+            if (environment == "Development")
+            {
+                builder.RegisterType<LocalFeed>().As<IPackageFeed>();
+            }
+            else
+            {
+                builder.RegisterType<NugetFeed>().As<IPackageFeed>();
+            }
             builder.RegisterType<DmpMerge>().As<IMerge>();
             builder.RegisterType<FileMerge>();
         }
