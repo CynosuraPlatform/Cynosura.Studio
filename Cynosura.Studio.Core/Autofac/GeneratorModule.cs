@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Autofac;
 using Cynosura.Studio.Core.Generator;
+using Cynosura.Studio.Core.Infrastructure.Options;
 using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
+using Microsoft.Extensions.Options;
 
 namespace Cynosura.Studio.Core.Autofac
 {
@@ -13,17 +16,19 @@ namespace Cynosura.Studio.Core.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             builder.RegisterType<CodeGenerator>();
             builder.RegisterType<StringTemplateEngine>().As<ITemplateEngine>();
-            if (environment == "Development")
+
+            builder.RegisterType<LocalFeed>();
+            builder.RegisterType<NugetFeed>();
+            builder.Register(ctx =>
             {
-                builder.RegisterType<LocalFeed>().As<IPackageFeed>();
-            }
-            else
-            {
-                builder.RegisterType<NugetFeed>().As<IPackageFeed>();
-            }
+                var options = ctx.Resolve<IOptions<LocalFeedOptions>>();
+                return string.IsNullOrEmpty(options.Value?.SourcePath)
+                    ? (IPackageFeed) (ctx.Resolve<NugetFeed>())
+                    : ctx.Resolve<LocalFeed>();
+            });
+
             builder.RegisterType<DmpMerge>().As<IMerge>();
             builder.RegisterType<FileMerge>();
         }
