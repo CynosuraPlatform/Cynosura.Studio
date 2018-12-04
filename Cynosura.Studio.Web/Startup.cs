@@ -5,6 +5,7 @@ using AspNet.Security.OpenIdConnect.Primitives;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure.Options;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Data;
 using Cynosura.Studio.Web.Infrastructure;
@@ -27,12 +28,21 @@ namespace Cynosura.Studio.Web
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        public Startup(IHostingEnvironment hostingEnvironment)
         {
-            _env = env;
-            Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
+
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.SetBasePath(_hostingEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
+            configurationBuilder.AddEnvironmentVariables();
+
+            Configuration = configurationBuilder.Build();
+            ;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +51,7 @@ namespace Cynosura.Studio.Web
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<NugetSettings>(Configuration.GetSection("Nuget"));
+            services.Configure<LocalFeedOptions>(Configuration.GetSection("LocalFeed"));
 
             services.AddDbContext<DataContext>(options =>
             {
@@ -70,7 +81,6 @@ namespace Cynosura.Studio.Web
                     options.UseEntityFrameworkCore()
                         .UseDbContext<DataContext>();
                 })
-
                 .AddServer(options =>
                 {
                     // Register the ASP.NET Core MVC binder used by OpenIddict.
@@ -93,13 +103,14 @@ namespace Cynosura.Studio.Web
 
                     options.UseJsonWebTokens();
 
-                    if (_env.IsDevelopment())
+                    if (_hostingEnvironment.IsDevelopment())
                     {
                         options.AddEphemeralSigningKey();
                     }
                     else
                     {
-                        var certificate = new X509Certificate2(Configuration["Jwt:CertificatePath"], Configuration["Jwt:CertificatePassword"]);
+                        var certificate = new X509Certificate2(Configuration["Jwt:CertificatePath"],
+                            Configuration["Jwt:CertificatePassword"]);
                         options.AddSigningCertificate(certificate);
                     }
                 });
@@ -123,10 +134,11 @@ namespace Cynosura.Studio.Web
                         NameClaimType = OpenIdConnectConstants.Claims.Name,
                         RoleClaimType = OpenIdConnectConstants.Claims.Role,
                     };
-                    if (_env.IsDevelopment())
+                    if (_hostingEnvironment.IsDevelopment())
                     {
                         options.TokenValidationParameters.ValidateIssuer = false;
-                        options.TokenValidationParameters.SignatureValidator = (token, parameters) => new JwtSecurityTokenHandler().ReadToken(token);
+                        options.TokenValidationParameters.SignatureValidator = (token, parameters) =>
+                            new JwtSecurityTokenHandler().ReadToken(token);
                     }
                 });
 
@@ -146,10 +158,7 @@ namespace Cynosura.Studio.Web
                 );
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
             var builder = new ContainerBuilder();
             AutofacConfig.ConfigureAutofac(builder, Configuration);
