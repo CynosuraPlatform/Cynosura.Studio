@@ -3,7 +3,6 @@
 
 NuGet.config
 appsettings.local.json
-package-lock.json
 
 # User-specific files
 *.suo
