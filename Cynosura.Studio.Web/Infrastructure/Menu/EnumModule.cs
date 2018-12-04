@@ -8,18 +8,11 @@ namespace Cynosura.Studio.Web.Infrastructure.Menu
 {
     public class EnumModule : IMenuModule
     {
-        public IList<MenuItem> GetMenuItems()
+        private readonly IEnumerable<MenuItem> _items = new[]
         {
-            return new List<MenuItem>()
-            {
-                new MenuItem()
-                {
-                    Name = "Enums",
-                    Route = "./enum",
-                    CssClass = "glyphicon-folder-close",
-                    Roles = new List<string>() {}
-                }
-            };
-        }
+            new MenuItem("./enum", "Enums", "glyphicon-folder-close", new string[0])
+        };
+
+        public IEnumerable<MenuItem> GetMenuItems() => _items;
     }
 }

@@ -27,7 +27,7 @@ namespace Cynosura.Studio.Web.Controllers
         {
             var menuItems = _menuProvider.GetMenuItems().Where(item =>
             {
-                if (item.Roles == null || item.Roles.Count == 0)
+                if (item.Roles == null || !item.Roles.Any())
                     return true;
                 if (userInfo.Roles == null)
                     return false;
