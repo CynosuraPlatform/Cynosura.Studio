@@ -31,7 +31,7 @@ namespace Cynosura.Studio.Core.PackageFeed
                 .Where(w => w.Name.EndsWith(Extension))
                 .Where(w => w.Name.StartsWith(packageName))
                 .Select(s => GetVersion(packageName, s.FullName))
-                .Where(s=>s!=null)
+                .Where(s => s != null)
                 .ToList() as IList<string>;
             return Task.FromResult(result);
         }
