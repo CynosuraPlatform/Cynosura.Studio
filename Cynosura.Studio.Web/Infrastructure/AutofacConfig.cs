@@ -24,6 +24,7 @@ namespace Cynosura.Studio.Web.Infrastructure
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<ValidationExceptionHandler>().As<IExceptionHandler>();
+            builder.RegisterType<StudioExceptionHandler>().As<IExceptionHandler>();
             builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
