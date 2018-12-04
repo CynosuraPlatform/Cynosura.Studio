@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using Antlr4.StringTemplate;
+using Antlr4.StringTemplate.Misc;
+using Cynosura.Studio.Core.Infrastructure;
 
 namespace Cynosura.Studio.Core.TemplateEngine
 {
@@ -12,6 +14,10 @@ namespace Cynosura.Studio.Core.TemplateEngine
             stg.RegisterRenderer(typeof(Decimal), new DecimalRenderer());
             stg.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             var st = stg.GetInstanceOf("main");
+            if (st == null)
+            {
+                throw new StudioException($"{templateFile} template error","StringTemplateEngine/Parsing");
+            }
             st.Add("model", model);
             return cultureInfo == null ? st.Render() : st.Render(cultureInfo);
         }

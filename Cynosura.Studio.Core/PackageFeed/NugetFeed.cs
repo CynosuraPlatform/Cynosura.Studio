@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Cynosura.Studio.Core.Infrastructure;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -23,6 +24,10 @@ namespace Cynosura.Studio.Core.PackageFeed
 
         private HttpClient GetHttpClient()
         {
+            if (string.IsNullOrEmpty(_settings.FeedUrl))
+            {
+                throw new StudioException("NugetFeed/FeedUrl not configured", "NugetFeed/FeedUrl");
+            }
             var httpClient = new HttpClient();
             var encryptedCredentials = Convert.ToBase64String(
                 Encoding.ASCII.GetBytes($"{_settings.Username}:{_settings.Password}"));
