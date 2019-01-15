@@ -457,8 +457,8 @@ namespace Cynosura.Studio.Core.Generator
 
         private string FindDirectory(string path, string templatePath)
         {
-            var ignoreList = new List<string>() {"AebIt.Platform.Common"};
-            var templatePathItems = templatePath.Split('\\');
+            var ignoreList = new [] {"AebIt.Platform.Common"};
+            var templatePathItems = templatePath.Split(Path.DirectorySeparatorChar);
             foreach (var templatePathItem in templatePathItems)
             {
                 var dir = Directory.GetDirectories(path, templatePathItem)

@@ -15,8 +15,8 @@ namespace Cynosura.Studio.Core.Generator
     public class SolutionAccessor
     {
         public string Path { get; }
-        public string Namespace { get; }
         public SolutionMetadata Metadata { get; }
+        public string Namespace { get; }
         public List<ProjectAccessor> Projects { get; }
 
         private const string MetadataFileExtension = ".json";
@@ -27,7 +27,8 @@ namespace Cynosura.Studio.Core.Generator
             var solutionFile = Directory.GetFiles(Path, "*.sln").FirstOrDefault();
             if (solutionFile == null)
                 throw new Exception("Solution file not found");
-            Namespace = Regex.Replace(solutionFile, "^.*\\\\([^\\\\]+?).sln$", "$1");
+            var info = new FileInfo(solutionFile);
+            Namespace = Regex.Replace(info.Name, "\\.sln$", "");
             Projects = GetProjects(Path);
             Metadata = GetMetadataAsync().Result; // TODO: remove .Result
         }
@@ -55,7 +56,7 @@ namespace Cynosura.Studio.Core.Generator
             return projects;
         }
 
-        private static T DeserializeMetadata<T>(string content) where T: new()
+        private static T DeserializeMetadata<T>(string content) where T : new()
         {
             return content.DeserializeFromJson<T>();
         }
@@ -67,13 +68,13 @@ namespace Cynosura.Studio.Core.Generator
 
         private ProjectAccessor GetProject(string name)
         {
-            return Projects.Single(p => p.Namespace.EndsWith("." + name));
+            return Projects.First(p => p.Namespace.EndsWith("." + name));
         }
 
         public async Task<List<Entity>> GetEntitiesAsync()
         {
             var coreProject = GetProject("Core");
-            var files = coreProject.GetFiles("Metadata\\Entities");
+            var files = coreProject.GetFiles(System.IO.Path.Combine("Metadata", "Entities"));
             var entities = new List<Entity>();
             foreach (var file in files)
             {
@@ -105,8 +106,8 @@ namespace Cynosura.Studio.Core.Generator
         public async Task CreateEntityAsync(Entity entity)
         {
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Entities");
-            coreProject.VerifyPathExists("Metadata\\Entities");
+            var path = coreProject.GetPath("Metadata", "Entities");
+            coreProject.VerifyPathExists("Metadata", "Entities");
             var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
             await WriteFileAsync(filePath, SerializeMetadata(entity));
         }
@@ -117,7 +118,7 @@ namespace Cynosura.Studio.Core.Generator
             if (existingEntity == null)
                 throw new Exception($"Entity with Id = {entity.Id} not found");
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Entities");
+            var path = coreProject.GetPath("Metadata", "Entities");
             var filePath = System.IO.Path.Combine(path, entity.Name + MetadataFileExtension);
             await WriteFileAsync(filePath, SerializeMetadata(entity));
 
@@ -134,7 +135,7 @@ namespace Cynosura.Studio.Core.Generator
             if (existingEntity == null)
                 throw new Exception($"Entity with Id = {id} not found");
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Entities");
+            var path = coreProject.GetPath("Metadata", "Entities");
             var filePath = System.IO.Path.Combine(path, existingEntity.Name + MetadataFileExtension);
             File.Delete(filePath);
         }
@@ -142,21 +143,22 @@ namespace Cynosura.Studio.Core.Generator
         public async Task<List<Models.Enum>> GetEnumsAsync()
         {
             var coreProject = GetProject("Core");
-            var files = coreProject.GetFiles("Metadata\\Enums");
+            var files = coreProject.GetFiles(System.IO.Path.Combine("Metadata", "Enums"));
             var enums = new List<Models.Enum>();
             foreach (var file in files)
             {
                 var @enum = DeserializeMetadata<Models.Enum>(await ReadFileAsync(file));
                 enums.Add(@enum);
             }
+
             return enums;
         }
 
         public async Task CreateEnumAsync(Models.Enum @enum)
         {
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Enums");
-            coreProject.VerifyPathExists("Metadata\\Enums");
+            var path = coreProject.GetPath("Metadata", "Enums");
+            coreProject.VerifyPathExists("Metadata", "Enums");
             var filePath = System.IO.Path.Combine(path, @enum.Name + MetadataFileExtension);
             await WriteFileAsync(filePath, SerializeMetadata(@enum));
         }
@@ -167,7 +169,7 @@ namespace Cynosura.Studio.Core.Generator
             if (existingEnum == null)
                 throw new Exception($"Enum with Id = {@enum.Id} not found");
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Enums");
+            var path = coreProject.GetPath("Metadata", "Enums");
             var filePath = System.IO.Path.Combine(path, @enum.Name + MetadataFileExtension);
             await WriteFileAsync(filePath, SerializeMetadata(@enum));
 
@@ -184,7 +186,7 @@ namespace Cynosura.Studio.Core.Generator
             if (existingEnum == null)
                 throw new Exception($"Enum with Id = {id} not found");
             var coreProject = GetProject("Core");
-            var path = coreProject.GetPath("Metadata\\Enums");
+            var path = coreProject.GetPath("Metadata", "Enums");
             var filePath = System.IO.Path.Combine(path, existingEnum.Name + MetadataFileExtension);
             File.Delete(filePath);
         }
@@ -205,12 +207,20 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task<IList<CodeTemplate>> LoadTemplatesAsync()
+        public async Task<IEnumerable<CodeTemplate>> LoadTemplatesAsync()
         {
             var coreProject = GetProject("Core");
             var templatesPath = coreProject.GetPath("Templates");
             var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));
-            return DeserializeMetadata<List<CodeTemplate>>(templatesJson);
+            var templates = DeserializeMetadata<List<CodeTemplate>>(templatesJson);
+            templates.ForEach(f =>
+                {
+                    f.TemplatePath = string.Join(System.IO.Path.DirectorySeparatorChar,
+                        f.TemplatePath.Split('\\', '/'));
+                    f.FilePath = string.Join(System.IO.Path.DirectorySeparatorChar,
+                        f.FilePath.Split('\\', '/'));
+                });
+            return templates;
         }
 
         public string GetTemplatePath(CodeTemplate template)

@@ -13,7 +13,8 @@ namespace Cynosura.Studio.Core.Generator
         {
             Solution = solution;
             Path = path;
-            Namespace = Regex.Replace(projectFile, "^.*\\\\([^\\\\]+?).csproj", "$1");
+            var info = new FileInfo(projectFile);
+            Namespace = Regex.Replace(info.Name, "\\.csproj$", "");
         }
 
         public string[] GetFiles(string path)
@@ -21,19 +22,22 @@ namespace Cynosura.Studio.Core.Generator
             var absolutePath = System.IO.Path.Combine(Path, path);
             if (!Directory.Exists(absolutePath))
             {
-                return new string[] {};
+                return new string[] { };
             }
+
             return Directory.GetFiles(absolutePath);
         }
 
-        public string GetPath(string path)
+        public string GetPath(params string[] pathItems)
         {
+            var path = System.IO.Path.Combine(pathItems);
             var absolutePath = System.IO.Path.Combine(Path, path);
             return absolutePath;
         }
 
-        public void VerifyPathExists(string path)
+        public void VerifyPathExists(params string[] pathItems)
         {
+            var path = System.IO.Path.Combine(pathItems);
             var absolutePath = System.IO.Path.Combine(Path, path);
             if (!Directory.Exists(absolutePath))
             {
