@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text;
 using Antlr4.StringTemplate;
 using Antlr4.StringTemplate.Misc;
 using Cynosura.Studio.Core.Infrastructure;
@@ -10,7 +11,7 @@ namespace Cynosura.Studio.Core.TemplateEngine
     {
         public string ProcessTemplate(string templateFile, object model, CultureInfo cultureInfo = null)
         {
-            var stg = new TemplateGroupFile(templateFile, '$', '$');
+            var stg = new CustomTemplateGroupFile(templateFile);
             stg.RegisterRenderer(typeof(Decimal), new DecimalRenderer());
             stg.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
             var st = stg.GetInstanceOf("main");
