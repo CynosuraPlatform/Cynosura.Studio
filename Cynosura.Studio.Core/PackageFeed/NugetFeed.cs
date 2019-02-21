@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Studio.Core.Infrastructure;
 using Microsoft.Extensions.Options;
@@ -29,9 +30,12 @@ namespace Cynosura.Studio.Core.PackageFeed
                 throw new StudioException("NugetFeed/FeedUrl not configured", "NugetFeed/FeedUrl");
             }
             var httpClient = new HttpClient();
-            var encryptedCredentials = Convert.ToBase64String(
-                Encoding.ASCII.GetBytes($"{_settings.Username}:{_settings.Password}"));
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encryptedCredentials);
+            if (!string.IsNullOrEmpty(_settings.Username) || !string.IsNullOrEmpty(_settings.Password))
+            {
+                var encryptedCredentials = Convert.ToBase64String(
+                    Encoding.ASCII.GetBytes($"{_settings.Username}:{_settings.Password}"));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", encryptedCredentials);
+            }
             return httpClient;
         }
 
@@ -40,9 +44,12 @@ namespace Cynosura.Studio.Core.PackageFeed
             var httpClient = GetHttpClient();
             var feedResult = await httpClient.GetStringAsync(_settings.FeedUrl);
             var feed = feedResult.DeserializeFromJson<FeedData>();
-            return feed.Resources.Where(r => r.Type == "PackageBaseAddress/3.0.0")
+            var baseAddress = feed.Resources.Where(r => r.Type == "PackageBaseAddress/3.0.0")
                 .Select(r => r.Id)
                 .FirstOrDefault();
+            if (baseAddress != null)
+                baseAddress = Regex.Replace(baseAddress, "/$", "");
+            return baseAddress;
         }
 
         public async Task<IList<string>> GetVersionsAsync(string packageName)
@@ -52,7 +59,7 @@ namespace Cynosura.Studio.Core.PackageFeed
             var httpClient = GetHttpClient();
             var versionsResult = await httpClient.GetStringAsync(versionsUrl);
             var versions = versionsResult.DeserializeFromJson<VersionData>();
-            return versions.Versions;
+            return OrderVersionsDescending(versions.Versions);
         }
 
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
@@ -83,6 +90,11 @@ namespace Cynosura.Studio.Core.PackageFeed
             return Path.Combine(extractedPath, "content");
         }
 
+        private IList<string> OrderVersionsDescending(IList<string> versions)
+        {
+            return versions.OrderByDescending(v => v, new VersionComparer()).ToList();
+        }
+
         private void Extract(string sourcePath, string destinationPath)
         {
             ZipFile.ExtractToDirectory(sourcePath, destinationPath);
@@ -108,6 +120,30 @@ namespace Cynosura.Studio.Core.PackageFeed
         public class VersionData
         {
             public IList<string> Versions { get; set; }
+        }
+
+        class VersionComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                var xSplit = x.Split('.', '-');
+                var ySplit = y.Split('.', '-');
+                for (int i = 0; i < Math.Min(xSplit.Length, ySplit.Length); i++)
+                {
+                    int compare;
+                    if (int.TryParse(xSplit[i], out var xNumber) && int.TryParse(ySplit[i], out var yNumber))
+                    {
+                        compare = xNumber.CompareTo(yNumber);
+                    }
+                    else
+                    {
+                        compare = xSplit[i].CompareTo(ySplit[i]);
+                    }
+                    if (compare != 0)
+                        return compare;
+                }
+                return 0;
+            }
         }
     }
 }
