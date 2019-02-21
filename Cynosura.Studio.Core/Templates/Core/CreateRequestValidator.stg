@@ -1,4 +1,4 @@
-import "FieldValidator.stg"
+import "./FieldValidator.stg"
 
 main(model) ::= <<
 using FluentValidation;

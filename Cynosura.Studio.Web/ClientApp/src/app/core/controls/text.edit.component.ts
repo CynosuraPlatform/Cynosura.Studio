@@ -2,7 +2,8 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
     selector: "text-edit",
-    templateUrl: "./text.edit.component.html"
+    templateUrl: "./text.edit.component.html",
+    styleUrls: ["text.edit.component.css"]
 })
 export class TextEditComponent {
     @Input()
@@ -16,6 +17,12 @@ export class TextEditComponent {
 
     @Input()
     label: string;
+
+    @Input()
+    type: string = "text";
+
+    @Input()
+    multiline: boolean = false;
 
     onValueChange(value: string) {
         this.value = value;

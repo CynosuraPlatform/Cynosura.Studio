@@ -28,7 +28,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
         public async Task<Unit> Handle(Update$model.Entity.Name$ request, CancellationToken cancellationToken)
         {
             var $model.Entity.NameLower$ = await _$model.Entity.NameLower$Repository.GetEntities()
-                .Where(e => e.Id == request.Id)
+                .Where(e => e.$model.Entity.IdField.Name$ == request.$model.Entity.IdField.Name$)
                 .FirstOrDefaultAsync();
             if ($model.Entity.NameLower$ != null)
             {

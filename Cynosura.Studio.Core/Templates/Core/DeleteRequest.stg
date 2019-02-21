@@ -5,7 +5,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
     public class Delete$model.Entity.Name$ : IRequest
     {
-        public int Id { get; set; }
+        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
     }
 }
 

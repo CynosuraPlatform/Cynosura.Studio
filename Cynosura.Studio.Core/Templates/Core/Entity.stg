@@ -9,7 +9,7 @@ namespace $model.Solution.Namespace$.Core.Entities
 {
     public class $model.Entity.Name$ : BaseEntity
     {
-        public int Id { get; set; }
+        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
 
 $model.Entity.Fields:field(); separator="\n"$
     }
@@ -32,6 +32,10 @@ Type(field) ::= <<
 >>
 
 Entity(field) ::= <<
-        public int $field.Name$Id { get; set; }
+        public $field.EntityIdTypeName$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
         public $field.Entity.Name$ $field.Name$ { get; set; }
+>>
+
+Enum(field) ::= <<
+        public Enums.$field.Enum.Name$$if(!field.IsRequired)$?$endif$ $field.Name$ { get; set; }
 >>

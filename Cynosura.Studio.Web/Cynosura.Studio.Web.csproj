@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
-    <PackageReference Include="Cynosura.Web" Version="0.1.9-b738" />
+    <PackageReference Include="Cynosura.Web" Version="0.1.10-b1218" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.6.0" />

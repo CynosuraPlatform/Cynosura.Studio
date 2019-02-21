@@ -1,3 +1,4 @@
+
 import { EnumValue } from "../enumValue-core/enumValue.model";
 
 export class Enum {

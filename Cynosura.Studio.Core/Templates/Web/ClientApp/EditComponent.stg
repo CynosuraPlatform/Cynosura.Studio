@@ -28,7 +28,7 @@ export class $model.Entity.Name$EditComponent implements OnInit {
         });
     }
 
-    private get$model.Entity.Name$(id: number): void {
+    private get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$): void {
         if (id === 0) {
             this.$model.Entity.NameLower$ = new $model.Entity.Name$();
         } else {

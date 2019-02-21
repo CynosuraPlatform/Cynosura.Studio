@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { CoreModule } from "../core/core.module";
 import { $model.Entity.Name$CoreModule } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$-core.module";
 $model.Entity.DependentEntities:declareEntity(); separator="\n"$
+$model.Entity.DependentEnums:declareEnum(); separator="\n"$
 
 import { $model.Entity.Name$ListComponent } from "./list.component";
 import { $model.Entity.Name$EditComponent } from "./edit.component";
@@ -21,6 +22,7 @@ import { $model.Entity.Name$EditComponent } from "./edit.component";
         ]),
         CoreModule,
 $model.Entity.DependentEntities:importEntity(); separator="\n"$
+$model.Entity.DependentEnums:importEnum(); separator="\n"$
         $model.Entity.Name$CoreModule
     ],
     providers: [
@@ -37,4 +39,12 @@ import { $entity.Name$CoreModule } from "../$entity.NameLower$-core/$entity.Name
 
 importEntity(entity) ::= <<
         $entity.Name$CoreModule,
+>>
+
+declareEnum(enum) ::= <<
+import { $enum.Name$Module } from "../$enum.NameLower$/$enum.NameLower$.module";
+>>
+
+importEnum(enum) ::= <<
+        $enum.Name$Module,
 >>

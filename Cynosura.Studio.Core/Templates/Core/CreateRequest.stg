@@ -6,7 +6,7 @@ using MediatR;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
-    public class Create$model.Entity.Name$ : IRequest<int>
+    public class Create$model.Entity.Name$ : IRequest<$model.Entity.IdField.TypeName$>
     {
 $model.Entity.Fields:field(); separator="\n"$
     }
@@ -19,9 +19,13 @@ $field:(field.Template)()$
 >>
 
 Type(field) ::= <<
-        public $field.TypeNameNullable$ $field.Name$ { get; set; }
+        public $field.TypeName$ $field.Name$ { get; set; }
 >>
 
 Entity(field) ::= <<
-        public int? $field.Name$Id { get; set; }
+        public $field.EntityIdTypeName$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
+>>
+
+Enum(field) ::= <<
+        public Enums.$field.Enum.Name$$if(!field.IsRequired)$?$endif$ $field.Name$ { get; set; }
 >>

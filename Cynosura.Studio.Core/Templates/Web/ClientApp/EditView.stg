@@ -27,6 +27,11 @@ Entity(field) ::= <<
             <model-validator [model]="error?.modelState?.$field.NameLower$Id"></model-validator>
 >>
 
+Enum(field) ::= <<
+            <$field.Enum.NameLower$-select [(selected$field.Enum.Name$)]="$model.Entity.NameLower$.$field.NameLower$"></$field.Enum.NameLower$-select>
+            <model-validator [model]="error?.modelState?.$field.NameLower$"></model-validator>
+>>
+
 String(field) ::= <<
             <text-edit [(value)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></text-edit>
 >>

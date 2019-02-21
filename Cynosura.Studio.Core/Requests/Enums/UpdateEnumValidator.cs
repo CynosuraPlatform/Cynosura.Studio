@@ -6,8 +6,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
     {
         public UpdateEnumValidator()
         {
-            RuleFor(x => x.Name).MaximumLength(100).NotEmpty();
-            RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.Name).MaximumLength(100).NotEmpty().WithName("Name");
+            RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty().WithName("Display Name");
         }
 
     }

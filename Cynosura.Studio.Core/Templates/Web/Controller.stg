@@ -29,14 +29,14 @@ namespace $model.Solution.Namespace$.Web.Controllers
             return await _mediator.Send(new Get$model.Entity.PluralName$() { PageIndex = pageIndex, PageSize = pageSize });
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async(int id)
+        [HttpGet("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
+        public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$)
         {
-            return await _mediator.Send(new Get$model.Entity.Name$() { Id = id });
+            return await _mediator.Send(new Get$model.Entity.Name$() { $model.Entity.IdField.Name$ = $model.Entity.IdField.NameLower$ });
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> Put$model.Entity.Name$Async(int id, [FromBody] Update$model.Entity.Name$ update$model.Entity.Name$)
+        [HttpPut("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
+        public async Task<StatusViewModel> Put$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$, [FromBody] Update$model.Entity.Name$ update$model.Entity.Name$)
         {
             await _mediator.Send(update$model.Entity.Name$);
             return new StatusViewModel();
@@ -45,14 +45,14 @@ namespace $model.Solution.Namespace$.Web.Controllers
         [HttpPost("")]
         public async Task<StatusViewModel> Post$model.Entity.Name$Async([FromBody] Create$model.Entity.Name$ create$model.Entity.Name$)
         {
-            var id = await _mediator.Send(create$model.Entity.Name$);
-            return new CreationStatusViewModel(id);
+            var $model.Entity.IdField.NameLower$ = await _mediator.Send(create$model.Entity.Name$);
+            return new CreationStatusViewModel($model.Entity.IdField.NameLower$);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<StatusViewModel> Delete$model.Entity.Name$Async(int id)
+        [HttpDelete("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
+        public async Task<StatusViewModel> Delete$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$)
         {
-            await _mediator.Send(new Delete$model.Entity.Name$() { Id = id });
+            await _mediator.Send(new Delete$model.Entity.Name$() { $model.Entity.IdField.Name$ = $model.Entity.IdField.NameLower$ });
             return new StatusViewModel();
         }
     }

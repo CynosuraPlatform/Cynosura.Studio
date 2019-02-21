@@ -6,8 +6,8 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { tap } from "rxjs/operators/tap";
 import { catchError } from "rxjs/operators/catchError";
 
-import { AuthService } from "./services/auth.service";
-import { AuthTokenModel } from "./models/auth-tokens.model";
+import { AuthService } from "./auth.service";
+import { AuthTokenModel } from "./auth-tokens.model";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

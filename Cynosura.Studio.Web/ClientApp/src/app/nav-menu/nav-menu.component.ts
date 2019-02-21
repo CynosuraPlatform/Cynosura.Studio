@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 
-import { AuthService } from "../core/services/auth.service";
+import { AuthService } from "../auth/auth.service";
 import { MenuService } from "../core/services/menu.service";
 import { LoadingService } from "../core/loading.service";
 import { Menu } from "../core/models/menu.model";

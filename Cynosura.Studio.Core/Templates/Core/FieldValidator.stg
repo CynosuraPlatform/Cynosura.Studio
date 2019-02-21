@@ -1,5 +1,5 @@
 fieldValidator(field) ::= <<
-$field:(field.Template)()$$field:length()$$field:required()$;
+$field:(field.Template)()$$field:length()$$field:required()$.WithName("$field.DisplayName$");
 >>
 
 Type(field) ::= <<
@@ -8,6 +8,10 @@ Type(field) ::= <<
 
 Entity(field) ::= <<
             RuleFor(x => x.$field.Name$Id)
+>>
+
+Enum(field) ::= <<
+            RuleFor(x => x.$field.Name$)
 >>
 
 required(field) ::= <<

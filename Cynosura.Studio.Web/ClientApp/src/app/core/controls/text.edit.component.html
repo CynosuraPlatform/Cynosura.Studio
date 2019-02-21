@@ -1,1 +1,2 @@
-<input type="text" class="form-control" [id]="name" [name]="name" [ngModel]="value" (ngModelChange)="onValueChange($event)" [placeholder]="label">
+<input *ngIf="!multiline" class="form-control" [id]="name" [name]="name" [type]="type" [ngModel]="value" (ngModelChange)="onValueChange($event)" [placeholder]="label">
+<textarea *ngIf="multiline" class="form-control" [id]="name" [name]="name" [ngModel]="value" (ngModelChange)="onValueChange($event)" [placeholder]="label"></textarea>

@@ -16,8 +16,8 @@ $model.Entity.Fields:fieldHeader(); separator="\n"$
         <tr *ngFor="let $model.Entity.NameLower$ of content.pageItems">
 $model.Entity.Fields:field(); separator="\n"$
             <td>
-                <button class="btn btn-default" (click)="edit($model.Entity.NameLower$.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete($model.Entity.NameLower$.id)">Delete</button>
+                <button class="btn btn-default" (click)="edit($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Edit</button>
+                <button class="btn btn-default" (click)="delete($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Delete</button>
             </td>
         </tr>
     </tbody>
@@ -46,7 +46,13 @@ $field:(field.TypeTemplate)()$
 >>
 
 Entity(field) ::= <<
-            <td>{{$model.Entity.NameLower$.$field.NameLower$.$field.Entity.DefaultField.NameLower$}}</td>
+            <td>{{$model.Entity.NameLower$.$field.NameLower$?.$field.Entity.DefaultField.NameLower$}}</td>
+>>
+
+Enum(field) ::= <<
+            <td>
+                <$field.Enum.NameLower$-view [value]="$model.Entity.NameLower$.$field.NameLower$"></$field.Enum.NameLower$-view>
+            </td>
 >>
 
 String(field) ::= <<

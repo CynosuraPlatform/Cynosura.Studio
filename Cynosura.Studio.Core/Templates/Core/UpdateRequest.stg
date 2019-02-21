@@ -8,7 +8,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
     public class Update$model.Entity.Name$ : IRequest
     {
-        public int Id { get; set; }
+        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
 
 $model.Entity.Fields:field(); separator="\n"$
     }
@@ -21,9 +21,13 @@ $field:(field.Template)()$
 >>
 
 Type(field) ::= <<
-        public $field.TypeNameNullable$ $field.Name$ { get; set; }
+        public $field.TypeName$ $field.Name$ { get; set; }
 >>
 
 Entity(field) ::= <<
-        public int? $field.Name$Id { get; set; }
+        public $field.EntityIdTypeName$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
+>>
+
+Enum(field) ::= <<
+        public Enums.$field.Enum.Name$$if(!field.IsRequired)$?$endif$ $field.Name$ { get; set; }
 >>

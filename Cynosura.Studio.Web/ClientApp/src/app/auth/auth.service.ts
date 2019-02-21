@@ -6,10 +6,10 @@ import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
 import { tap } from "rxjs/operators/tap";
 
-import { AuthStateModel } from "../models/auth-state.model";
-import { AuthTokenModel } from "../models/auth-tokens.model";
-import { LoginModel } from "../models/login.model";
-import { RefreshGrantModel } from "../models/refresh-grant.model";
+import { AuthStateModel } from "./auth-state.model";
+import { AuthTokenModel } from "./auth-tokens.model";
+import { LoginModel } from "./login.model";
+import { RefreshGrantModel } from "./refresh-grant.model";
 
 @Injectable()
 export class AuthService {

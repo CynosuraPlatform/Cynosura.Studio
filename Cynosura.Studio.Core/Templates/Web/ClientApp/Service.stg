@@ -29,14 +29,14 @@ export class $model.Entity.Name$Service {
         }).toPromise();
     }
 
-    get$model.Entity.Name$(id: number): Promise<$model.Entity.Name$> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${id}`;
+    get$model.Entity.Name$($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): Promise<$model.Entity.Name$> {
+        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.IdField.NameLower$}`;
         return this.httpClient.get<$model.Entity.Name$>(url)
             .toPromise();
     }
 
     update$model.Entity.Name$($model.Entity.NameLower$: $model.Entity.Name$): Promise<$model.Entity.Name$> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.NameLower$.id}`;
+        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.NameLower$.$model.Entity.IdField.NameLower$}`;
         return this.httpClient.put<$model.Entity.Name$>(url, JSON.stringify($model.Entity.NameLower$), { headers: this.headers })
             .toPromise();
     }
@@ -46,8 +46,8 @@ export class $model.Entity.Name$Service {
             .toPromise();
     }
 
-    delete$model.Entity.Name$(id: number): Promise<{}> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${id}`;
+    delete$model.Entity.Name$($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): Promise<{}> {
+        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.IdField.NameLower$}`;
         return this.httpClient.delete(url)
             .toPromise();
     }

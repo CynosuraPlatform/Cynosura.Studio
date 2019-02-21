@@ -1,3 +1,4 @@
+
 export class EnumValue {
     id: string;
     name: string;

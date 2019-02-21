@@ -1,0 +1,30 @@
+main(model) ::= <<
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+
+import { $model.Enum.Name$, $model.Enum.Name$Display } from "./$model.Enum.NameLower$.model";
+
+@Component({
+    selector: "$model.Enum.NameLower$-select",
+    templateUrl: "./select.component.html"
+})
+
+export class $model.Enum.Name$SelectComponent implements OnInit {
+    constructor() { }
+
+    $model.Enum.Name$ = $model.Enum.Name$;
+    $model.Enum.Name$Display = $model.Enum.Name$Display;
+
+    @Input()
+    selected$model.Enum.Name$: $model.Enum.Name$ | null = null;
+
+    @Output()
+    selected$model.Enum.Name$Change = new EventEmitter<$model.Enum.Name$>();
+
+    @Input()
+    readonly = false;
+
+    ngOnInit(): void {
+        
+    }
+}
+>>

@@ -6,7 +6,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
     public class Get$model.Entity.Name$ : IRequest<$model.Entity.Name$Model>
     {
-        public int Id { get; set; }
+        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
     }
 }
 

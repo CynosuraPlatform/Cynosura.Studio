@@ -56,7 +56,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
                 error => this.error = error.json() as Error);
     }
 
-    edit(id: number): void {
+    edit($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.router.navigate([id], { relativeTo: this.route });
     }
 
@@ -64,7 +64,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         this.router.navigate([0], { relativeTo: this.route });
     }
 
-    delete(id: number): void {
+    delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.modalHelper.confirmDelete()
             .then(() => {
                 this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)

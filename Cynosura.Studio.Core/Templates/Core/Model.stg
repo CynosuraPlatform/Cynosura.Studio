@@ -6,7 +6,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Mod
 {
     public class $model.Entity.Name$Model
     {
-        public int Id { get; set; }
+        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
 
 $model.Entity.Fields:field(); separator="\n"$
     }
@@ -23,7 +23,10 @@ Type(field) ::= <<
 >>
 
 Entity(field) ::= <<
-        public int $field.Name$Id { get; set; }
-
+        public $field.EntityIdTypeName$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
         public $field.Entity.PluralName$.Models.$field.Entity.Name$ShortModel $field.Name$ { get; set; }
+>>
+
+Enum(field) ::= <<
+        public Enums.$field.Enum.Name$$if(!field.IsRequired)$?$endif$ $field.Name$ { get; set; }
 >>

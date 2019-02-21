@@ -6,7 +6,7 @@ namespace Cynosura.Studio.Core.Requests.Roles
     {
         public CreateRoleValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().WithName("Name");
         }
     }
 }

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
-    public class Create$model.Entity.Name$Handler : IRequestHandler<Create$model.Entity.Name$, int>
+    public class Create$model.Entity.Name$Handler : IRequestHandler<Create$model.Entity.Name$, $model.Entity.IdField.TypeName$>
     {
         private readonly IEntityRepository<$model.Entity.Name$> _$model.Entity.NameLower$Repository;
         private readonly IUnitOfWork _unitOfWork;
@@ -24,12 +24,12 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(Create$model.Entity.Name$ request, CancellationToken cancellationToken)
+        public async Task<$model.Entity.IdField.TypeName$> Handle(Create$model.Entity.Name$ request, CancellationToken cancellationToken)
         {
             var $model.Entity.NameLower$ = _mapper.Map<Create$model.Entity.Name$, $model.Entity.Name$>(request);
             _$model.Entity.NameLower$Repository.Add($model.Entity.NameLower$);
             await _unitOfWork.CommitAsync();
-            return $model.Entity.NameLower$.Id;
+            return $model.Entity.NameLower$.$model.Entity.IdField.Name$;
         }
 
     }
