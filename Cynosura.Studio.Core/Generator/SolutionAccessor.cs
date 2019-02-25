@@ -219,6 +219,8 @@ namespace Cynosura.Studio.Core.Generator
                         f.TemplatePath.Split('\\', '/'));
                     f.FilePath = string.Join(System.IO.Path.DirectorySeparatorChar,
                         f.FilePath.Split('\\', '/'));
+                    f.FileName = string.Join(System.IO.Path.DirectorySeparatorChar,
+                        f.FileName.Split('\\', '/'));
                 });
             return templates;
         }
