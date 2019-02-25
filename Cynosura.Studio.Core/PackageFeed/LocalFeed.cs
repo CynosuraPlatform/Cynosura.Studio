@@ -94,13 +94,14 @@ namespace Cynosura.Studio.Core.PackageFeed
             }
 
             var extractedPath = Path.Combine(path, $"{packageName}.{version}");
-            if (!Directory.Exists(extractedPath))
+            if (Directory.Exists(extractedPath))
             {
-                ZipFile.ExtractToDirectory(filePath, extractedPath);
-                var systemPath = Path.Combine(extractedPath, "content", ".template.config");
-                if (Directory.Exists(systemPath))
-                    Directory.Delete(systemPath, true);
+                Directory.Delete(extractedPath, true);
             }
+            ZipFile.ExtractToDirectory(filePath, extractedPath);
+            var systemPath = Path.Combine(extractedPath, "content", ".template.config");
+            if (Directory.Exists(systemPath))
+                Directory.Delete(systemPath, true);
 
             return Path.Combine(extractedPath, "content");
         }
