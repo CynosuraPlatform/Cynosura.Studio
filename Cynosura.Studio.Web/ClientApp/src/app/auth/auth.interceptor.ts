@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from "@angular/common/http";
-import { Router } from '@angular/router';
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { tap } from "rxjs/operators/tap";
-import { catchError } from "rxjs/operators/catchError";
+import { Router } from "@angular/router";
+import { throwError as observableThrowError, Observable, BehaviorSubject } from "rxjs";
+import { tap, catchError, switchMap, finalize, filter, take } from "rxjs/operators";
 
 import { AuthService } from "./auth.service";
 import { AuthTokenModel } from "./auth-tokens.model";
@@ -12,7 +10,7 @@ import { AuthTokenModel } from "./auth-tokens.model";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    isRefreshingToken: boolean = false;
+    isRefreshingToken = false;
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(private authService: AuthService,
@@ -43,7 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             return this.handle401Error(request, next);
                         }
                     }
-                    return Observable.throw(err);
+                    return observableThrowError(err);
                 })
             );
     }
@@ -57,7 +55,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.tokenSubject.next(null);
 
             return this.authService.refreshTokens()
-                .switchMap((newTokens: AuthTokenModel) => {
+                .pipe(switchMap((newTokens: AuthTokenModel) => {
                     if (newTokens) {
                         this.tokenSubject.next(newTokens.access_token);
                         return next.handle(this.addToken(request, newTokens.access_token));
@@ -65,21 +63,21 @@ export class AuthInterceptor implements HttpInterceptor {
 
                     // If we don't get a new token, we are in trouble so logout.
                     return this.logoutUser();
-                })
-                .catch(error => {
+                }))
+                .pipe(catchError((error) => {
                     // If there is an exception calling 'refreshToken', bad news so logout.
                     return this.logoutUser();
-                })
-                .finally(() => {
+                }))
+                .pipe(finalize(() => {
                     this.isRefreshingToken = false;
-                });
+                }));
         } else {
             return this.tokenSubject
-                .filter(token => token != null)
-                .take(1)
-                .switchMap(token => {
+                .pipe(filter(token => token != null))
+                .pipe(take(1))
+                .pipe(switchMap((token) => {
                     return next.handle(this.addToken(request, token));
-                });
+                }));
         }
     }
 
@@ -87,7 +85,7 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authService.logout();
         this.router.navigate(["/"]);
 
-        return Observable.throw("");
+        return observableThrowError("");
     }
 
     handle400Error(error) {
@@ -96,6 +94,6 @@ export class AuthInterceptor implements HttpInterceptor {
             return this.logoutUser();
         }
 
-        return Observable.throw(error);
+        return observableThrowError(error);
     }
 }

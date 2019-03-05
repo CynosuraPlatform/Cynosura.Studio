@@ -8,6 +8,22 @@ export class TimeEditComponent {
     @Input()
     value: string;
 
+    private formattedDateLocal: Date;
+
+    get formattedDate(): Date {
+        if (this.value && !this.formattedDateLocal) {
+            this.formattedDateLocal = new Date(`2000-01-01T${this.value}`);
+        }
+        return this.formattedDateLocal;
+    }
+    set formattedDate(value: Date) {
+        this.formattedDateLocal = value;
+        if (value)
+            this.value = value.toTimeString().substring(0, 5);
+        else
+            this.value = null;
+    }
+
     @Output()
     valueChange = new EventEmitter<string>();
 
@@ -17,8 +33,8 @@ export class TimeEditComponent {
     @Input()
     label: string;
 
-    onValueChange(value: string) {
-        this.value = value;
-        this.valueChange.emit(value);
+    onFormattedDateChange(value: Date) {
+        this.formattedDate = value;
+        this.valueChange.emit(this.value);
     }
 }

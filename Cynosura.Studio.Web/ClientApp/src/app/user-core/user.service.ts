@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import "rxjs/add/operator/toPromise";
 
 import { User } from "./user.model";
 import { Page } from "../core/page.model";
 
 @Injectable()
 export class UserService {
-    private userUrl = "/api/user"; 
+    private userUrl = "/api/user";
     private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient) { }

@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { Menu } from '../models/menu.model';
 
-import 'rxjs/add/operator/toPromise';
-
 @Injectable()
 export class MenuService {
     private menuUrl = '/api/menu';  

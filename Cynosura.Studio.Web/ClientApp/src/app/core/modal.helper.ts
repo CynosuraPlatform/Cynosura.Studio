@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
-
-import { Modal } from "ngx-modialog/plugins/bootstrap";
+import { Overlay } from "ngx-modialog";
+import { Modal, bootstrap3Mode } from "ngx-modialog/plugins/bootstrap";
 
 @Injectable()
 export class ModalHelper {
-    constructor(private modal: Modal) { }
-
+    constructor(private modal: Modal) {
+        bootstrap3Mode();
+    }
+    
     confirmDelete(): Promise<void> {
         const dialogRef = this.modal
             .confirm()

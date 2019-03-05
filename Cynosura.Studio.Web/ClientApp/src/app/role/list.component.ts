@@ -35,13 +35,13 @@ export class RoleListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService
-        ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getRoles();
     }
 
-    getRoles(): void {        
+    getRoles(): void {
         this.roleService.getRoles(this.pageIndex, this.pageSize)
             .then(content => {
                 this.content = content;

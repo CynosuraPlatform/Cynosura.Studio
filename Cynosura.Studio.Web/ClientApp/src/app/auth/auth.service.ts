@@ -1,10 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { Observable } from "rxjs/Rx";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { filter } from "rxjs/operators/filter";
-import { map } from "rxjs/operators/map";
-import { tap } from "rxjs/operators/tap";
+import { throwError as observableThrowError, Observable, BehaviorSubject, of } from "rxjs";
+import { filter, map, tap, first, flatMap, catchError } from "rxjs/operators";
 
 import { AuthStateModel } from "./auth-state.model";
 import { AuthTokenModel } from "./auth-tokens.model";
@@ -43,11 +40,11 @@ export class AuthService {
     }
 
     refreshTokens(): Observable<AuthTokenModel> {
-        return this.state.first()
-            .map(state => state.tokens)
-            .flatMap(tokens => this.getTokens({ refresh_token: (<AuthTokenModel>tokens).refresh_token }, 'refresh_token')
-                .catch(error => Observable.throw('Session Expired'))
-            );
+        return this.state.pipe(first())
+            .pipe(map((state) => state.tokens))
+            .pipe(flatMap(tokens => this.getTokens({ refresh_token: (<AuthTokenModel>tokens).refresh_token }, "refresh_token")
+                .pipe(catchError(error => observableThrowError("Session Expired")))
+            ));
     }
 
     tokens(): AuthTokenModel {
@@ -55,7 +52,7 @@ export class AuthService {
     }
 
     private getTokens(data: RefreshGrantModel | LoginModel, grantType: string): Observable<any> {
-        const headers = new HttpHeaders({ 'Content-Type': "application/x-www-form-urlencoded" });
+        const headers = new HttpHeaders({ "Content-Type": "application/x-www-form-urlencoded" });
         const options = { headers: headers };
 
         Object.assign(data, { grant_type: grantType, scope: "openid offline_access" });
@@ -94,21 +91,21 @@ export class AuthService {
     }
 
     private startupTokenRefresh(): Observable<AuthTokenModel> {
-        return Observable.of(this.retrieveTokens())
-            .flatMap((tokens: AuthTokenModel) => {
+        return of(this.retrieveTokens())
+            .pipe(flatMap((tokens: AuthTokenModel) => {
                 if (!tokens) {
                     this.updateState({ authReady: true });
-                    return Observable.throw('No token in Storage');
+                    return observableThrowError("No token in Storage");
                 }
                 this.updateState({ tokens });
                 this.updateState({ authReady: true });
 
                 return this.refreshTokens();
-            })
-            .catch(error => {
+            }))
+            .pipe(catchError(error => {
                 this.logout();
                 this.updateState({ authReady: true });
-                return Observable.throw(error);
-            });
+                return observableThrowError(error);
+            }));
     }
 }

@@ -13,9 +13,13 @@ export class DateEditComponent {
     }
     set formattedDate(value: string) {
         if (value)
-            this.value = new Date(value);
+            this.value = this.removeTimezone(new Date(value));
         else
             this.value = null;
+    }
+
+    removeTimezone(date: Date): Date {
+        return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
     }
 
     @Output()

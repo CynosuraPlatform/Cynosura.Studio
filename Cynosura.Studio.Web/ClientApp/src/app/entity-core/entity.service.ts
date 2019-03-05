@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import "rxjs/add/operator/toPromise";
 
 import { Entity } from "./entity.model";
 import { Page } from "../core/page.model";

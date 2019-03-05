@@ -217,13 +217,6 @@
     "InsertAfter": "// ADD ROUTES HERE"
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "app.module.ts",
-    "TemplatePath": "Web\\ClientApp\\RouteImport.stg",
-    "Type": 1,
-    "InsertAfter": "// ADD MODULES HERE"
-  },
-  {
     "FilePath": "*.Core\\Enums",
     "FileName": "{Name}.cs",
     "TemplatePath": "Core\\Enum.stg",

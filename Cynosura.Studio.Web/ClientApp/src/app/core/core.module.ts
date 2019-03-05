@@ -1,7 +1,9 @@
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from "ng-pick-datetime";
 
 import { ErrorInterceptor } from "./error.interceptor";
 import { LoadingInterceptor } from "./loading.interceptor";
@@ -29,6 +31,7 @@ import { LoadingService } from "./loading.service";
 import { StoreService } from "./store.service";
 
 import { ModalHelper } from "./modal.helper";
+import { AppErrorHandler } from "./app-error.handler";
 
 @NgModule({
     declarations: [
@@ -52,9 +55,13 @@ import { ModalHelper } from "./modal.helper";
     ],
     imports: [
         CommonModule,
-        FormsModule
+        FormsModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule
     ],
     providers: [
+        {provide: ErrorHandler, useClass: AppErrorHandler},
+        //{provide: OWL_DATE_TIME_LOCALE, useValue: "ru"},
         StoreService,
         MenuService,
         LoadingService,

@@ -1,3 +1,3 @@
 main(model) ::= <<
-routes.push({ path: "$model.Entity.NameLower$", loadChildren: () => $model.Entity.Name$Module });
+            { path: "$model.Entity.NameLower$", loadChildren: "./$model.Entity.NameLower$/$model.Entity.NameLower$.module#$model.Entity.Name$Module" },
 >>

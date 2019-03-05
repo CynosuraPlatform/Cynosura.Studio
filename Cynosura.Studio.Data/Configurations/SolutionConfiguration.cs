@@ -9,7 +9,7 @@ namespace Cynosura.Studio.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Solution> builder)
         {
-
+            builder.ToTable("Solutions");
         }
     }
 }

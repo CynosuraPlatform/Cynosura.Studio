@@ -10,7 +10,7 @@ namespace $model.Solution.Namespace$.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<$model.Entity.Name$> builder)
         {
-            
+            builder.ToTable("$model.Entity.PluralName$");
         }
     }
 }
