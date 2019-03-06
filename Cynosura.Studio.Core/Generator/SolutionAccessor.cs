@@ -30,14 +30,35 @@ namespace Cynosura.Studio.Core.Generator
             var info = new FileInfo(solutionFile);
             Namespace = Regex.Replace(info.Name, "\\.sln$", "");
             Projects = GetProjects(Path);
-            Metadata = GetMetadataAsync().Result; // TODO: remove .Result
+            Metadata = GetMetadata();
+        }
+
+        private string GetMetadataPath()
+        {
+            var newLocation = System.IO.Path.Combine(Path, ".cynosura.json");
+            if (File.Exists(newLocation))
+            {
+                return newLocation;
+            }
+            var coreProject = GetProject("Core");
+            var oldLocation = System.IO.Path.Combine(coreProject.Path, "Metadata", "Solution.json");
+            if (File.Exists(oldLocation))
+            {
+                return oldLocation;
+            }
+            throw new FileNotFoundException();
         }
 
         private async Task<SolutionMetadata> GetMetadataAsync()
         {
-            var coreProject = GetProject("Core");
-            var metadataPath = System.IO.Path.Combine(coreProject.Path, "Metadata/Solution.json");
+            var metadataPath = GetMetadataPath();
             return DeserializeMetadata<SolutionMetadata>(await ReadFileAsync(metadataPath));
+        }
+
+        private SolutionMetadata GetMetadata()
+        {
+            var metadataPath = GetMetadataPath();
+            return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
         }
 
         private List<ProjectAccessor> GetProjects(string path)
