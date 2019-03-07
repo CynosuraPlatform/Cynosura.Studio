@@ -147,6 +147,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         DateTime,
         Date,
         Time,
-        Guid
+        Guid,
+        Blob
     }
 }

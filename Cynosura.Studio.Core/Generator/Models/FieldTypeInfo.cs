@@ -18,6 +18,7 @@ namespace Cynosura.Studio.Core.Generator.Models
             { FieldType.Date, new FieldTypeInfo() { NetType = typeof(DateTime), NetTypeName = "DateTime", JsTypeName = "Date"} },
             { FieldType.Time, new FieldTypeInfo() { NetType = typeof(TimeSpan), NetTypeName = "TimeSpan", JsTypeName = "string"} },
             { FieldType.Guid, new FieldTypeInfo() { NetType = typeof(Guid), NetTypeName = "Guid", JsTypeName = "string"} },
+            { FieldType.Blob, new FieldTypeInfo() { NetType = typeof(byte[]), NetTypeName = "byte[]", JsTypeName = "Uint8Array"} },
         };
 
         public Type NetType { get; set; }

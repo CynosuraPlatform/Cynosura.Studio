@@ -20,5 +20,6 @@ export enum FieldType {
     DateTime,
     Date,
     Time,
-    Guid
+    Guid,
+    Blob
 }
