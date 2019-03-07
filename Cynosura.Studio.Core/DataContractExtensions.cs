@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core
 {
-    public static class DataContractExnensions
+    public static class DataContractExtensions
     {
         public static string SerializeDataContract<T>(this T obj)
         {
