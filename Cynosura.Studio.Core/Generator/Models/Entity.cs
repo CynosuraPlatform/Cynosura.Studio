@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
     public class Entity : ISimpleTemplateProcessor
     {
+        private string _nameKebab;
+        private string _pluralNameKebab;
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string PluralName { get; set; }
@@ -28,6 +31,12 @@ namespace Cynosura.Studio.Core.Generator.Models
 
         [JsonIgnore]
         public string PluralNameLower => PluralName.ToLowerCamelCase();
+
+        [JsonIgnore]
+        public string NameKebab => _nameKebab ?? (_nameKebab = Name.ToKebabCase());
+
+        [JsonIgnore]
+        public string PluralNameKebab => _pluralNameKebab ?? (_pluralNameKebab = PluralName.ToKebabCase());
 
         [JsonIgnore]
         public Field DefaultField
@@ -93,6 +102,8 @@ namespace Cynosura.Studio.Core.Generator.Models
             template = template.Replace("{PluralName}", PluralName);
             template = template.Replace("{NameLower}", NameLower);
             template = template.Replace("{PluralNameLower}", PluralNameLower);
+            template = template.Replace("{NameKebab}", NameKebab);
+            template = template.Replace("{PluralNameKebab}", PluralNameKebab);
             return template;
         }
     }
