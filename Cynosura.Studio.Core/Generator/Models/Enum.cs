@@ -7,6 +7,7 @@ namespace Cynosura.Studio.Core.Generator.Models
 {
     public class Enum : ISimpleTemplateProcessor
     {
+        private string _nameKebab;
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
@@ -15,10 +16,14 @@ namespace Cynosura.Studio.Core.Generator.Models
         [JsonIgnore]
         public string NameLower => Name.ToLowerCamelCase();
 
+        [JsonIgnore]
+        public string NameKebab => _nameKebab ?? (_nameKebab = Name.ToKebabCase());
+
         public string ProcessTemplate(string template)
         {
             template = template.Replace("{Name}", Name);
             template = template.Replace("{NameLower}", NameLower);
+            template = template.Replace("{NameKebab}", NameKebab);
             return template;
         }
     }
