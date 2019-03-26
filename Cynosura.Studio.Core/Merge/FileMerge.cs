@@ -57,12 +57,23 @@ namespace Cynosura.Studio.Core.Merge
             return Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
         }
 
-        private IList<FileCompare> Compare(string leftPath, string rightPath)
+        private string GetPathAfterRename(string path, IList<(string Left, string Right)> renames)
+        {
+            foreach (var (left, right) in renames)
+            {
+                if (path == left)
+                    return right;
+            }
+            return path;
+        }
+
+        private IList<FileCompare> Compare(string leftPath, string rightPath, IList<(string Left, string Right)> renames)
         {
             var leftFiles = GetFiles(leftPath)
                 .Select(f => new FileCompare()
                 {
-                    Name = Path.GetRelativePath(leftPath, f),
+                    OriginalName = Path.GetRelativePath(leftPath, f),
+                    Name = GetPathAfterRename(Path.GetRelativePath(leftPath, f), renames),
                     LeftPath = f,
                 });
             var rightFiles = GetFiles(rightPath)
@@ -76,18 +87,20 @@ namespace Cynosura.Studio.Core.Merge
                 .Select(g => new FileCompare()
                 {
                     Name = g.Key,
+                    OriginalName = g.Select(i => i.OriginalName).FirstOrDefault(i => i != null) ?? g.Key,
                     LeftPath = g.Select(i => i.LeftPath).FirstOrDefault(i => i != null),
                     RightPath = g.Select(i => i.RightPath).FirstOrDefault(i => i != null),
                 })
                 .ToList();
         }
 
-        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath)
+        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)> renames = null)
         {
-            var compareFiles = Compare(originalDirectoryPath, theirDirectoryPath);
+            var renameList = renames != null ? renames.ToList() : new List<(string, string)>();
+            var compareFiles = Compare(originalDirectoryPath, theirDirectoryPath, renameList);
             foreach (var compareFile in compareFiles)
             {
-                var myFilePath = Path.Combine(myDirectoryPath, compareFile.Name);
+                var myFilePath = Path.Combine(myDirectoryPath, compareFile.OriginalName);
                 if (compareFile.LeftPath == null)
                 {
                     var rightFileContent = await ReadFileAsync(compareFile.RightPath);
@@ -102,13 +115,23 @@ namespace Cynosura.Studio.Core.Merge
                 else
                 {
                     if (File.Exists(myFilePath))
+                    {
+                        if (compareFile.Name != compareFile.OriginalName)
+                        {
+                            var newMyFilePath = Path.Combine(myDirectoryPath, compareFile.Name);
+                            EnsureDirectoryExists(newMyFilePath);
+                            File.Move(myFilePath, newMyFilePath);
+                            myFilePath = newMyFilePath;
+                        }
                         await MergeFileAsync(compareFile.LeftPath, compareFile.RightPath, myFilePath);
+                    }
                 }
             }
         }
 
         class FileCompare
         {
+            public string OriginalName { get; set; }
             public string Name { get; set; }
             public string LeftPath { get; set; }
             public string RightPath { get; set; }
