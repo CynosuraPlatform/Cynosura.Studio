@@ -233,9 +233,65 @@ namespace Cynosura.Studio.Core.Generator
             await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);
 
+            var renames = await GetTemplateResultRenames(currentPackageSolution, latestPackageSolution);
+
             _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path);
+            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path, 
+                renames);
             _logger.LogInformation($"Completed");
+        }
+
+        private async Task<IList<(string, string)>> GetTemplateResultRenames(SolutionAccessor sourceSolution, SolutionAccessor destinationSolution)
+        {
+            var renames = new List<(string, string)>();
+
+            var sourceTemplates = (await sourceSolution.LoadTemplatesAsync()).ToList();
+            var destinationTemplates = (await destinationSolution.LoadTemplatesAsync()).ToList();
+
+            var sourceEntities = await sourceSolution.GetEntitiesAsync();
+            var destinationEntities = await destinationSolution.GetEntitiesAsync();
+
+            var sourceEnums = await sourceSolution.GetEnumsAsync();
+            var destinationEnums = await destinationSolution.GetEnumsAsync();
+
+            foreach (var sourceTemplate in sourceTemplates)
+            {
+                var destinationTemplate = destinationTemplates.FirstOrDefault(t => t.TemplatePath == sourceTemplate.TemplatePath);
+                if (destinationTemplate == null)
+                    continue;
+                if (sourceTemplate.Type == TemplateType.Entity || sourceTemplate.Type == TemplateType.View)
+                {
+                    foreach (var sourceEntity in sourceEntities)
+                    {
+                        var destinationEntity = destinationEntities.FirstOrDefault(e => e.Id == sourceEntity.Id);
+                        if (destinationEntity == null)
+                            continue;
+                        var sourceFilePath = GetTemplateFilePath(sourceTemplate, sourceSolution, sourceEntity);
+                        var destinationFilePath = GetTemplateFilePath(destinationTemplate, destinationSolution, destinationEntity);
+                        sourceFilePath = Path.GetRelativePath(sourceSolution.Path, sourceFilePath);
+                        destinationFilePath = Path.GetRelativePath(destinationSolution.Path, destinationFilePath);
+                        if (sourceFilePath != destinationFilePath)
+                            renames.Add((sourceFilePath, destinationFilePath));
+                    }
+                }
+                else if (sourceTemplate.Type == TemplateType.Enum || sourceTemplate.Type == TemplateType.EnumView)
+                {
+                    foreach (var sourceEnum in sourceEnums)
+                    {
+                        var destinationEnum = destinationEnums.FirstOrDefault(e => e.Id == sourceEnum.Id);
+                        if (destinationEnum == null)
+                            continue;
+                        var sourceFilePath = GetTemplateFilePath(sourceTemplate, sourceSolution, sourceEnum);
+                        var destinationFilePath = GetTemplateFilePath(destinationTemplate, destinationSolution, destinationEnum);
+                        sourceFilePath = Path.GetRelativePath(sourceSolution.Path, sourceFilePath);
+                        destinationFilePath = Path.GetRelativePath(destinationSolution.Path, destinationFilePath);
+                        if (sourceFilePath != destinationFilePath)
+                            renames.Add((sourceFilePath, destinationFilePath));
+                    }
+                }
+            }
+
+            return renames;
         }
 
         private void CopyDirectory(string fromPath, string toPath)
