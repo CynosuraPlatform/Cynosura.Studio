@@ -96,6 +96,18 @@ namespace Cynosura.Studio.Core.Generator.Models
             }
         }
 
+        [JsonIgnore]
+        public IDictionary<string, List<Field>> FieldsByType
+        {
+            get
+            {
+                return Fields
+                    .GroupBy(f => f.Type)
+                    .Where(g => g.Key != null)
+                    .ToDictionary(g => g.Key.Value.ToString("g"), g => g.ToList());
+            }
+        }
+
         public string ProcessTemplate(string template)
         {
             template = template.Replace("{Name}", Name);
