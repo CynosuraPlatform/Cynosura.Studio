@@ -3,11 +3,13 @@ import { NgModule } from "@angular/core";
 import { CoreModule } from "../core/core.module";
 
 import { RoleService } from "./role.service";
-import { RoleSelectComponent } from "./select.component";
+import { RoleSelectComponent } from "./role-select.component";
+import { RoleShowComponent } from "./role-show.component";
 
 @NgModule({
     declarations: [
-        RoleSelectComponent
+        RoleSelectComponent,
+        RoleShowComponent
     ],
     imports: [
         CoreModule
@@ -16,7 +18,8 @@ import { RoleSelectComponent } from "./select.component";
         RoleService
     ],
     exports: [
-        RoleSelectComponent
+        RoleSelectComponent,
+        RoleShowComponent
     ]
 })
 export class RoleCoreModule {

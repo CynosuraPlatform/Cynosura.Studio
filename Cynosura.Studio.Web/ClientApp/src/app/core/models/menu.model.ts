@@ -1,4 +1,4 @@
-﻿export class Menu {
+export class Menu {
     items: MenuItem[];
 }
 

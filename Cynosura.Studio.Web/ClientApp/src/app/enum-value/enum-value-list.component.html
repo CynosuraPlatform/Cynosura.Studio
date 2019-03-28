@@ -1,0 +1,35 @@
+<h2>Enum Values</h2>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<app-error-handler [error]="error"></app-error-handler>
+
+<table *ngIf="enumValues" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Display Name</th>
+            <th>Value</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let enumValue of enumValues">
+            <td>
+                <app-text-view [value]="enumValue.name"></app-text-view>
+            </td>
+            <td>
+                <app-text-view [value]="enumValue.displayName"></app-text-view>
+            </td>
+            <td>
+                <app-number-view [value]="enumValue.value"></app-number-view>
+            </td>
+            <td>
+                <button class="btn btn-default" (click)="edit(enumValue.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(enumValue.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-enum-value-edit *ngIf="enumValue" [enumValue]="enumValue" [solutionId]="solutionId" (enumValueSave)="enumValueSave($event)"></app-enum-value-edit>

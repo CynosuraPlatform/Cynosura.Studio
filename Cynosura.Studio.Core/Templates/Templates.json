@@ -141,70 +141,84 @@
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}-core\\{NameLower}.model.ts",
+    "FileName": "{NameKebab}-core\\{NameKebab}.model.ts",
     "TemplatePath": "Web\\ClientApp\\Model.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}-core\\{NameLower}.service.ts",
+    "FileName": "{NameKebab}-core\\{NameKebab}.service.ts",
     "TemplatePath": "Web\\ClientApp\\Service.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}-core\\select.component.ts",
+    "FileName": "{NameKebab}-core\\{NameKebab}-select.component.ts",
     "TemplatePath": "Web\\ClientApp\\SelectComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}-core\\select.component.html",
+    "FileName": "{NameKebab}-core\\{NameKebab}-select.component.html",
     "TemplatePath": "Web\\ClientApp\\SelectView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}-core\\{NameLower}-core.module.ts",
+    "FileName": "{NameKebab}-core\\{NameKebab}-show.component.ts",
+    "TemplatePath": "Web\\ClientApp\\ShowComponent.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameKebab}-core\\{NameKebab}-show.component.html",
+    "TemplatePath": "Web\\ClientApp\\ShowView.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FileName": "{NameKebab}-core\\{NameKebab}-core.module.ts",
     "TemplatePath": "Web\\ClientApp\\CoreModule.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\list.component.ts",
+    "FileName": "{NameKebab}\\{NameKebab}-list.component.ts",
     "TemplatePath": "Web\\ClientApp\\ListComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\list.component.html",
+    "FileName": "{NameKebab}\\{NameKebab}-list.component.html",
     "TemplatePath": "Web\\ClientApp\\ListView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\edit.component.ts",
+    "FileName": "{NameKebab}\\{NameKebab}-edit.component.ts",
     "TemplatePath": "Web\\ClientApp\\EditComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\edit.component.html",
+    "FileName": "{NameKebab}\\{NameKebab}-edit.component.html",
     "TemplatePath": "Web\\ClientApp\\EditView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\{NameLower}.module.ts",
+    "FileName": "{NameKebab}\\{NameKebab}.module.ts",
     "TemplatePath": "Web\\ClientApp\\Module.stg",
     "Type": 1,
     "InsertAfter": null
@@ -225,42 +239,42 @@
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\{NameLower}.model.ts",
+    "FileName": "{NameKebab}\\{NameKebab}.model.ts",
     "TemplatePath": "Web\\ClientApp\\Enum.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\select.component.ts",
+    "FileName": "{NameKebab}\\{NameKebab}-select.component.ts",
     "TemplatePath": "Web\\ClientApp\\EnumSelectComponent.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\select.component.html",
+    "FileName": "{NameKebab}\\{NameKebab}-select.component.html",
     "TemplatePath": "Web\\ClientApp\\EnumSelectView.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\view.component.ts",
+    "FileName": "{NameKebab}\\{NameKebab}-view.component.ts",
     "TemplatePath": "Web\\ClientApp\\EnumViewComponent.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\view.component.html",
+    "FileName": "{NameKebab}\\{NameKebab}-view.component.html",
     "TemplatePath": "Web\\ClientApp\\EnumViewView.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
     "FilePath": "*.Web\\ClientApp\\src\\app",
-    "FileName": "{NameLower}\\{NameLower}.module.ts",
+    "FileName": "{NameKebab}\\{NameKebab}.module.ts",
     "TemplatePath": "Web\\ClientApp\\EnumModule.stg",
     "Type": 3,
     "InsertAfter": null

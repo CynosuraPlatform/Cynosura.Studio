@@ -18,11 +18,13 @@ export class EnumService {
 
         params = params.set("solutionId", solutionId.toString());
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<Enum>>(url, {
             params: params
@@ -43,6 +45,7 @@ export class EnumService {
             params: { "solutionId": solutionId.toString() }
         }).toPromise();
     }
+
 
     createEnum(solutionId: number, enumModel: Enum): Promise<Enum> {
         return this.httpClient.post<Enum>(this.enumUrl, JSON.stringify(enumModel), {

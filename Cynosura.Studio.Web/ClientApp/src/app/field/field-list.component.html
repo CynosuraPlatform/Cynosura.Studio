@@ -1,0 +1,43 @@
+<h2>Fields</h2>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<app-error-handler [error]="error"></app-error-handler>
+
+<table *ngIf="fields" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Display Name</th>
+            <th>Type</th>
+            <th>Entity</th>
+            <th>Enum</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let field of fields">
+            <td>
+                <app-text-view [value]="field.name"></app-text-view>
+            </td>
+            <td>
+                <app-text-view [value]="field.displayName"></app-text-view>
+            </td>
+            <td>
+                {{FieldType[field.type]}}
+            </td>
+            <td>
+                {{field.entity?.name}}
+            </td>
+            <td>
+                <app-entity-show [value]="field.entity"></app-entity-show>
+            </td>
+            <td>
+                <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(field.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-field-edit *ngIf="field" [field]="field" [solutionId]="solutionId" (fieldSave)="fieldSave($event)"></app-field-edit>

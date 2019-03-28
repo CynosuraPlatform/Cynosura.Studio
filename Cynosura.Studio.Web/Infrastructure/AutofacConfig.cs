@@ -34,10 +34,11 @@ namespace Cynosura.Studio.Web.Infrastructure
 
         private static Assembly[] GetPlatformAndAppAssemblies()
         {
-            var platformName = "Cynosura";
+            var platformAndAppNames = new[] { "Cynosura", "Cynosura.Studio" };
             return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.FullName.Contains(platformName) ||
-                            a.GetReferencedAssemblies().Any(ra => ra.FullName.Contains(platformName)))
+                .Where(a => platformAndAppNames.Any(n => a.FullName.Contains(n)) ||
+                            a.GetReferencedAssemblies()
+                                .Any(ra => platformAndAppNames.Any(n => ra.FullName.Contains(n))))
                 .ToArray();
         }
     }

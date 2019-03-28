@@ -3,9 +3,10 @@ export enum $model.Enum.Name$ {
 $model.Enum.Values:enumValue(); separator=",\n"$
 }
 
-let $model.Enum.Name$Display: { [index: number]: string } = {};
+const $model.Enum.Name$Display: { [index: number]: string } = {};
 $model.Enum.Values:enumDisplay(); separator="\n"$
 export { $model.Enum.Name$Display };
+
 >>
 
 enumValue(value) ::= <<

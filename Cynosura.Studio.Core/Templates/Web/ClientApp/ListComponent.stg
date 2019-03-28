@@ -2,8 +2,8 @@ main(model) ::= <<
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { $model.Entity.Name$ } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.model";
-import { $model.Entity.Name$Service } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.service";
+import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
+import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
 
 import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
@@ -11,22 +11,22 @@ import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
 @Component({
-    selector: "$model.Entity.NameLower$-list",
-    templateUrl: "./list.component.html"
+    selector: "app-$model.Entity.NameKebab$-list",
+    templateUrl: "./$model.Entity.NameKebab$-list.component.html"
 })
 export class $model.Entity.Name$ListComponent implements OnInit {
     content: Page<$model.Entity.Name$>;
     error: Error;
     pageSize = 10;
-    private _pageIndex: number;
+    private innerPageIndex: number;
     get pageIndex(): number {
-        if (!this._pageIndex) {
-            this._pageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex") | 0;
+        if (!this.innerPageIndex) {
+            this.innerPageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex", 0);
         }
-        return this._pageIndex;
+        return this.innerPageIndex;
     }
     set pageIndex(value: number) {
-        this._pageIndex = value;
+        this.innerPageIndex = value;
         this.storeService.set("$model.Entity.PluralNameLower$PageIndex", value);
     }
 
@@ -42,7 +42,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         this.get$model.Entity.PluralName$();
     }
 
-    get$model.Entity.PluralName$(): void {        
+    get$model.Entity.PluralName$(): void {
         this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(this.pageIndex, this.pageSize)
             .then(content => {
                 this.content = content;
@@ -81,5 +81,6 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         this.get$model.Entity.PluralName$();
     }
 }
+
 >>
 

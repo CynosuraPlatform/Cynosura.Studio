@@ -1,11 +1,11 @@
 main(model) ::= <<
 import { Component, Input } from "@angular/core";
 
-import { $model.Enum.Name$, $model.Enum.Name$Display } from "./$model.Enum.NameLower$.model";
+import { $model.Enum.Name$, $model.Enum.Name$Display } from "./$model.Enum.NameKebab$.model";
 
 @Component({
-    selector: "$model.Enum.NameLower$-view",
-    templateUrl: "./view.component.html"
+    selector: "app-$model.Enum.NameKebab$-view",
+    templateUrl: "./$model.Enum.NameKebab$-view.component.html"
 })
 
 export class $model.Enum.Name$ViewComponent {
@@ -16,4 +16,5 @@ export class $model.Enum.Name$ViewComponent {
     @Input()
     value: $model.Enum.Name$;
 }
+
 >>

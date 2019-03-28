@@ -5,6 +5,7 @@ export class $model.Entity.Name$ {
     $model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$;
 $model.Entity.Fields:field(); separator="\n"$
 }
+
 >>
 
 field(field) ::= <<
@@ -24,5 +25,5 @@ Enum(field) ::= <<
 >>
 
 enumImport(enum) ::= <<
-import { $enum.Name$ } from "../$enum.NameLower$/$enum.NameLower$.model";
+import { $enum.Name$ } from "../$enum.NameKebab$/$enum.NameKebab$.model";
 >>

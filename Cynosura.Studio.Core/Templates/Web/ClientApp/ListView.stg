@@ -3,7 +3,7 @@ main(model) ::= <<
 
 <button type="button" class="btn btn-default" (click)="add()">Create</button>
 
-<error-handler [error]="error"></error-handler>
+<app-error-handler [error]="error"></app-error-handler>
 
 <table *ngIf="content" class="table table-bordered table-striped">
     <thead>
@@ -23,12 +23,13 @@ $model.Entity.Fields:field(); separator="\n"$
     </tbody>
 </table>
 
-<pager *ngIf="content"
+<app-pager *ngIf="content"
        [currentPage]="content.currentPageIndex"
        [pageSize]="pageSize"
        [totalItems]="content.totalItems"
        (currentPageChange)="onPageSelected(\$event)">
-</pager>
+</app-pager>
+
 >>
 
 fieldHeader(field) ::= <<
@@ -46,51 +47,55 @@ $field:(field.TypeTemplate)()$
 >>
 
 Entity(field) ::= <<
-            <td>{{$model.Entity.NameLower$.$field.NameLower$?.$field.Entity.DefaultField.NameLower$}}</td>
+            <td>
+                <app-$field.Entity.NameKebab$-show [value]="$model.Entity.NameLower$.$field.NameLower$"></app-$field.Entity.NameKebab$-show>
+            </td>
 >>
 
 Enum(field) ::= <<
             <td>
-                <$field.Enum.NameLower$-view [value]="$model.Entity.NameLower$.$field.NameLower$"></$field.Enum.NameLower$-view>
+                <app-$field.Enum.NameKebab$-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-$field.Enum.NameKebab$-view>
             </td>
 >>
 
 String(field) ::= <<
-                <text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></text-view>
+                <app-text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-text-view>
 >>
 
 Int32(field) ::= <<
-                <number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></number-view>
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
 >>
 
 Int64(field) ::= <<
-                <number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></number-view>
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
 >>
 
 Decimal(field) ::= <<
-                <number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></number-view>
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
 >>
 
 Double(field) ::= <<
-                <number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></number-view>
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
 >>
 
 Boolean(field) ::= <<
-                <bool-view [value]="$model.Entity.NameLower$.$field.NameLower$"></bool-view>
+                <app-bool-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-bool-view>
 >>
 
 DateTime(field) ::= <<
-                <datetime-view [value]="$model.Entity.NameLower$.$field.NameLower$"></datetime-view>
+                <app-datetime-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-datetime-view>
 >>
 
 Date(field) ::= <<
-                <date-view [value]="$model.Entity.NameLower$.$field.NameLower$"></date-view>
+                <app-date-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-date-view>
 >>
 
 Time(field) ::= <<
-                <time-view [value]="$model.Entity.NameLower$.$field.NameLower$"></time-view>
+                <app-time-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-time-view>
 >>
 
 Guid(field) ::= <<
-                <text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></text-view>
+                <app-text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-text-view>
+>>
+Blob(field) ::= <<
 >>

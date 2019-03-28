@@ -1,6 +1,6 @@
 <div class="container">
     
-    <div *ngIf="error" class="alert alert-danger" role="alert">{{error.error_description}}</div>
+    <div *ngIf="error" class="alert alert-danger" role="alert">{{ error.error_description }}</div>
 
     <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <h2 class="form-signin-heading">Log In</h2>

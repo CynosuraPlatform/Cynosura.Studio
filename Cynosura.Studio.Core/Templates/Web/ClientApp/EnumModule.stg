@@ -3,8 +3,8 @@ import { NgModule } from "@angular/core";
 
 import { CoreModule } from "../core/core.module";
 
-import { $model.Enum.Name$SelectComponent } from "./select.component";
-import { $model.Enum.Name$ViewComponent } from "./view.component";
+import { $model.Enum.Name$SelectComponent } from "./$model.Enum.NameKebab$-select.component";
+import { $model.Enum.Name$ViewComponent } from "./$model.Enum.NameKebab$-view.component";
 
 @NgModule({
     declarations: [
@@ -24,4 +24,5 @@ import { $model.Enum.Name$ViewComponent } from "./view.component";
 export class $model.Enum.Name$Module {
     
 }
+
 >>

@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-    selector: "model-validator",
+    selector: "app-model-validator",
     templateUrl: "./model-validator.component.html"
 })
 

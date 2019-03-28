@@ -7,7 +7,7 @@ export class ModalHelper {
     constructor(private modal: Modal) {
         bootstrap3Mode();
     }
-    
+
     confirmDelete(): Promise<void> {
         const dialogRef = this.modal
             .confirm()

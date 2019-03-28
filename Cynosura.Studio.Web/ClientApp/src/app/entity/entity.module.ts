@@ -6,8 +6,8 @@ import { EntityCoreModule } from "../entity-core/entity-core.module";
 import { SolutionCoreModule } from "../solution-core/solution-core.module";
 import { FieldModule } from "../field/field.module";
 
-import { EntityListComponent } from "./list.component";
-import { EntityEditComponent } from "./edit.component";
+import { EntityListComponent } from "./entity-list.component";
+import { EntityEditComponent } from "./entity-edit.component";
 
 @NgModule({
     declarations: [
@@ -34,3 +34,4 @@ import { EntityEditComponent } from "./edit.component";
 export class EntityModule {
 
 }
+

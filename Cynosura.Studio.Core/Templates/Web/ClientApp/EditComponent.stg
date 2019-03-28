@@ -2,28 +2,28 @@ main(model) ::= <<
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
-import { $model.Entity.Name$ } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.model";
-import { $model.Entity.Name$Service } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$.service";
+import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
+import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
 
 import { Error } from "../core/error.model";
 
 
 @Component({
-    selector: "$model.Entity.NameLower$-edit",
-    templateUrl: "./edit.component.html"
+    selector: "app-$model.Entity.NameKebab$-edit",
+    templateUrl: "./$model.Entity.NameKebab$-edit.component.html"
 })
 export class $model.Entity.Name$EditComponent implements OnInit {
     $model.Entity.NameLower$: $model.Entity.Name$;
     error: Error;
 
     constructor(private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
-        private route: ActivatedRoute,
-        private router: Router) {
+                private route: ActivatedRoute,
+                private router: Router) {
     }
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            let id = +params["id"];
+            const id = +params.id;
             this.get$model.Entity.Name$(id);
         });
     }

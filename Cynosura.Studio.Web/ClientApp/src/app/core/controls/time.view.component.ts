@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-    selector: "time-view",
+    selector: "app-time-view",
     templateUrl: "./time.view.component.html"
 })
 export class TimeViewComponent {
@@ -9,8 +9,9 @@ export class TimeViewComponent {
     value: string;
 
     get valueWithDate(): string {
-        if (this.value)
+        if (this.value) {
             return `0000-00-00T${this.value}`;
+        }
         return null;
     }
 }

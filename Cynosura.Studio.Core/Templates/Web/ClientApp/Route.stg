@@ -1,3 +1,3 @@
 main(model) ::= <<
-            { path: "$model.Entity.NameLower$", loadChildren: "./$model.Entity.NameLower$/$model.Entity.NameLower$.module#$model.Entity.Name$Module" },
+            { path: "$model.Entity.NameKebab$", loadChildren: "./$model.Entity.NameKebab$/$model.Entity.NameKebab$.module#$model.Entity.Name$Module" },
 >>

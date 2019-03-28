@@ -16,11 +16,13 @@ export class SolutionService {
 
         let params = new HttpParams();
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<Solution>>(url, {
             params: params
@@ -49,6 +51,7 @@ export class SolutionService {
         return this.httpClient.delete(url)
             .toPromise();
     }
+
 
     generateSolution(id: number): Promise<{}> {
         const url = `${this.solutionUrl}/${id}/generate`;

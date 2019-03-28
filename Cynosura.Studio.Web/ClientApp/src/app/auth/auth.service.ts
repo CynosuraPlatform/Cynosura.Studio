@@ -69,7 +69,7 @@ export class AuthService {
 
     private storeToken(tokens: AuthTokenModel): void {
         const previousTokens = this.retrieveTokens();
-        if (previousTokens != null && tokens.refresh_token == null) {
+        if (previousTokens && !tokens.refresh_token) {
             tokens.refresh_token = previousTokens.refresh_token;
         }
         localStorage.setItem("auth-tokens", JSON.stringify(tokens));
@@ -77,7 +77,7 @@ export class AuthService {
 
     private retrieveTokens(): AuthTokenModel {
         const tokensString = localStorage.getItem("auth-tokens");
-        const tokensModel: AuthTokenModel = tokensString == null ? null : JSON.parse(tokensString);
+        const tokensModel: AuthTokenModel = tokensString === null ? null : JSON.parse(tokensString);
         return tokensModel;
     }
 

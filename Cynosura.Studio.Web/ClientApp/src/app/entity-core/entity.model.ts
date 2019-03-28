@@ -6,6 +6,7 @@ export class Entity {
 	name: string;
 	pluralName: string;
 	displayName: string;
+
     pluralDisplayName: string;
     fields: Field[];
 

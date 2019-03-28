@@ -18,11 +18,13 @@ export class EntityService {
 
         params = params.set("solutionId", solutionId.toString());
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<Entity>>(url,
             {
@@ -50,6 +52,7 @@ export class EntityService {
             })
             .toPromise();
     }
+
 
     createEntity(solutionId: number, entity: Entity): Promise<Entity> {
         return this.httpClient.post<Entity>(this.entityUrl, JSON.stringify(entity),

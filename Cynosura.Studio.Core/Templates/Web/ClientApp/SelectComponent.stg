@@ -1,24 +1,48 @@
 main(model) ::= <<
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, OnInit, forwardRef } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
-import { $model.Entity.Name$Service } from "./$model.Entity.NameLower$.service";
+import { $model.Entity.Name$ } from "./$model.Entity.NameKebab$.model";
+import { $model.Entity.Name$Service } from "./$model.Entity.NameKebab$.service";
 
 @Component({
-    selector: "$model.Entity.NameLower$-select",
-    templateUrl: "./select.component.html"
+    selector: "app-$model.Entity.NameKebab$-select",
+    templateUrl: "./$model.Entity.NameKebab$-select.component.html",
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => $model.Entity.Name$SelectComponent),
+            multi: true
+        }
+    ]
 })
 
-export class $model.Entity.Name$SelectComponent implements OnInit {
+export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueAccessor {
     constructor(private $model.Entity.NameLower$Service: $model.Entity.Name$Service) { }
 
     $model.Entity.PluralNameLower$: $model.Entity.Name$[] = [];
 
-    @Input()
-    selected$model.Entity.Name$Id: number | null = null;
+    onChange: any = () => { };
+    onTouched: any = () => { };
 
-    @Output()
-    selected$model.Entity.Name$IdChange = new EventEmitter<number>();
+    @Input("value")
+    val: number | null = null;
+
+    get value() {
+        return this.val;
+    }
+
+    set value(val) {
+        this.val = val;
+        this.onChange(val);
+        this.onTouched();
+    }
+
+    @Input()
+    name: string;
+
+    @Input()
+    label: string;
 
     @Input()
     readonly = false;
@@ -26,5 +50,18 @@ export class $model.Entity.Name$SelectComponent implements OnInit {
     ngOnInit(): void {
         this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$().then($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
     }
+
+    registerOnChange(fn) {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn) {
+        this.onTouched = fn;
+    }
+
+    writeValue(value) {
+        this.value = value;
+    }
 }
+
 >>

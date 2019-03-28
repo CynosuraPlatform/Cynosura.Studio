@@ -1,0 +1,25 @@
+<h2>Enum</h2>
+<form class="form-horizontal" *ngIf="enum" (ngSubmit)="onSubmit()">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">Back</button>
+    <button type="button" class="btn btn-default" (click)="generate()" *ngIf="enum.id">Generate</button>
+    <app-error-handler [error]="error"></app-error-handler>
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <app-text-edit [(ngModel)]="enum.name" name="name" label="Name"></app-text-edit>
+            <app-model-validator [model]="error?.modelState?.name"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="displayName" class="col-sm-2 control-label">Display Name</label>
+        <div class="col-sm-10">
+            <app-text-edit [(ngModel)]="enum.displayName" name="displayName" label="Display Name"></app-text-edit>
+            <app-model-validator [model]="error?.modelState?.displayName"></app-model-validator>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="enum">
+    <app-enum-value-list [enumValues]="enum.values" [solutionId]="solutionId"></app-enum-value-list>
+</div>

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
-import { Menu } from '../models/menu.model';
+import { Menu } from "../models/menu.model";
 
 @Injectable()
 export class MenuService {
-    private menuUrl = '/api/menu';  
+    private menuUrl = "/api/menu";
 
     constructor(private httpClient: HttpClient) { }
 

@@ -16,11 +16,13 @@ export class UserService {
 
         let params = new HttpParams();
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<User>>(url, {
             params: params
@@ -35,8 +37,9 @@ export class UserService {
 
     updateUser(user: User): Promise<User> {
         const url = `${this.userUrl}/${user.id}`;
-        if (!user.password)
+        if (!user.password) {
             user.password = null;
+        }
 
         return this.httpClient.put<User>(url, JSON.stringify(user), { headers: this.headers })
             .toPromise();

@@ -5,8 +5,8 @@ import { CoreModule } from "../core/core.module";
 import { UserCoreModule } from "../user-core/user-core.module";
 import { RoleCoreModule } from "../role-core/role-core.module";
 
-import { UserListComponent } from "./list.component";
-import { UserEditComponent } from "./edit.component";
+import { UserListComponent } from "./user-list.component";
+import { UserEditComponent } from "./user-edit.component";
 
 @NgModule({
     declarations: [

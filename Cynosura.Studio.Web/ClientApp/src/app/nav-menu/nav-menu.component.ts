@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 
 import { AuthService } from "../auth/auth.service";
 import { MenuService } from "../core/services/menu.service";
@@ -18,9 +18,9 @@ export class NavMenuComponent implements OnInit {
     isLoading = false;
 
     constructor(private menuService: MenuService,
-        private authService: AuthService,
-        private loadingService: LoadingService,
-        private router: Router) {
+                private authService: AuthService,
+                private loadingService: LoadingService,
+                private router: Router) {
         loadingService
             .onLoadingChanged
             .subscribe(isLoading => this.isLoading = isLoading);

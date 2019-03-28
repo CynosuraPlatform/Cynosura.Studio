@@ -1,6 +1,6 @@
-﻿<ul *ngIf="pages?.length" class="pagination">
+<ul *ngIf="pages?.length" class="pagination">
     <li *ngFor="let page of pages" [ngClass]="{active:currentPage === page}">
-        <a *ngIf="page != null" (click)="onChangeObj(page)">{{page + 1}}</a>
+        <a *ngIf="page != null" (click)="onChangeObj(page)">{{ page + 1 }}</a>
         <a *ngIf="page == null">...</a>
     </li>
 </ul>

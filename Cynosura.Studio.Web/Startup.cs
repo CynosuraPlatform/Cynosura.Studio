@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -42,7 +42,6 @@ namespace Cynosura.Studio.Web
             configurationBuilder.AddEnvironmentVariables();
 
             Configuration = configurationBuilder.Build();
-            ;
         }
 
         public IConfiguration Configuration { get; }

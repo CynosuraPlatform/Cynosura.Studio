@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(private authService: AuthService,
-        private router: Router) { }
+                private router: Router) { }
 
     addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
         return request.clone({
@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const tokens = this.authService.tokens();
-        if (tokens != null) {
+        if (tokens) {
             request = this.addToken(request, tokens.access_token);
         }
         return next.handle(request)
@@ -34,7 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 (err: any) => {
                     if (err instanceof HttpErrorResponse) {
                         const httpError = err as HttpErrorResponse;
-                        if (httpError.status === 400 && tokens != null) {
+                        if (httpError.status === 400 && tokens) {
                             return this.handle400Error(err);
                         }
                         if (httpError.status === 401) {
@@ -73,7 +73,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 }));
         } else {
             return this.tokenSubject
-                .pipe(filter(token => token != null))
+                .pipe(filter(token => token !== null && token !== undefined))
                 .pipe(take(1))
                 .pipe(switchMap((token) => {
                     return next.handle(this.addToken(request, token));

@@ -16,11 +16,13 @@ export class RoleService {
 
         let params = new HttpParams();
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<Role>>(url, {
             params: params

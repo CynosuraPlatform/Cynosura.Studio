@@ -3,11 +3,13 @@ import { NgModule } from "@angular/core";
 import { CoreModule } from "../core/core.module";
 
 import { SolutionService } from "./solution.service";
-import { SolutionSelectComponent } from "./select.component";
+import { SolutionSelectComponent } from "./solution-select.component";
+import { SolutionShowComponent } from "./solution-show.component";
 
 @NgModule({
     declarations: [
-        SolutionSelectComponent
+        SolutionSelectComponent,
+        SolutionShowComponent
     ],
     imports: [
         CoreModule
@@ -16,7 +18,8 @@ import { SolutionSelectComponent } from "./select.component";
         SolutionService
     ],
     exports: [
-        SolutionSelectComponent
+        SolutionSelectComponent,
+        SolutionShowComponent
     ]
 })
 export class SolutionCoreModule {

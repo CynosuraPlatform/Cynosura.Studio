@@ -13,7 +13,7 @@ namespace $model.Solution.Namespace$.Web.Infrastructure.Menu
         {
             return new List<MenuItem>()
             {
-                new MenuItem("./$model.Entity.NameLower$", "$model.Entity.PluralDisplayName$", "glyphicon-folder-close", new List<string>() {"Administrator"})
+                new MenuItem("./$model.Entity.NameKebab$", "$model.Entity.PluralDisplayName$", "glyphicon-folder-close", new List<string>() {"Administrator"})
             };
         }
     }

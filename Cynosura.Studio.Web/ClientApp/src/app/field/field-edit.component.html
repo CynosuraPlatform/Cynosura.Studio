@@ -1,0 +1,57 @@
+<h2>Field</h2>
+<form class="form-horizontal" *ngIf="innerField" (ngSubmit)="onSubmit()">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <app-error-handler [error]="error"></app-error-handler>
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <app-text-edit [(ngModel)]="innerField.name" name="name" label="Name"></app-text-edit>
+            <app-model-validator [model]="error?.modelState?.name"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="displayName" class="col-sm-2 control-label">Display Name</label>
+        <div class="col-sm-10">
+            <app-text-edit [(ngModel)]="innerField.displayName" name="displayName" label="Display Name"></app-text-edit>
+            <app-model-validator [model]="error?.modelState?.displayName"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="type" class="col-sm-2 control-label">Type</label>
+        <div class="col-sm-10">
+            <select class="form-control" id="type" name="type" [(ngModel)]="innerField.type">
+                <option [ngValue]="null">Select Type</option>
+                <option *ngFor="let item of FieldType | enumkeys" [ngValue]="item.key">{{item.value}}</option>
+            </select>
+            <app-model-validator [model]="error?.modelState?.type"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="size" class="col-sm-2 control-label">Size</label>
+        <div class="col-sm-10">
+            <app-number-edit [(ngModel)]="innerField.size" name="size" label="Size"></app-number-edit>
+            <app-model-validator [model]="error?.modelState?.size"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="entityId" class="col-sm-2 control-label">Entity</label>
+        <div class="col-sm-10">
+            <app-entity-select [(ngModel)]="innerField.entityId" [solutionId]="solutionId" name="entityId" label="Entity"></app-entity-select>
+            <app-model-validator [model]="error?.modelState?.entityId"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="enumId" class="col-sm-2 control-label">Enum</label>
+        <div class="col-sm-10">
+            <app-enum-select [(ngModel)]="innerField.enumId" [solutionId]="solutionId" name="enumId" label="Enum"></app-enum-select>
+            <app-model-validator [model]="error?.modelState?.enumId"></app-model-validator>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="isRequired" class="col-sm-2 control-label">Required</label>
+        <div class="col-sm-10">
+            <app-bool-edit [(ngModel)]="innerField.isRequired" name="isRequired" label="Required"></app-bool-edit>
+            <app-model-validator [model]="error?.modelState?.isRequired"></app-model-validator>
+        </div>
+    </div>
+</form>

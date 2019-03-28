@@ -2,7 +2,7 @@ main(model) ::= <<
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 
-import { $model.Entity.Name$ } from "./$model.Entity.NameLower$.model";
+import { $model.Entity.Name$ } from "./$model.Entity.NameKebab$.model";
 import { Page } from "../core/page.model";
 
 @Injectable()
@@ -17,11 +17,13 @@ export class $model.Entity.Name$Service {
 
         let params = new HttpParams();
 
-        if (pageIndex != undefined)
+        if (pageIndex !== undefined && pageIndex !== null) {
             params = params.set("pageIndex", pageIndex.toString());
+        }
 
-        if (pageSize != undefined)
+        if (pageSize !== undefined && pageSize !== null) {
             params = params.set("pageSize", pageSize.toString());
+        }
 
         return this.httpClient.get<Page<$model.Entity.Name$>\>(url, {
             params: params
@@ -51,5 +53,6 @@ export class $model.Entity.Name$Service {
             .toPromise();
     }
 }
+
 >>
 

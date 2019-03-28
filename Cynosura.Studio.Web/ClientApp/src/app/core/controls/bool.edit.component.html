@@ -1,1 +1,1 @@
-<input type="checkbox" [id]="name" [name]="name" [ngModel]="value" (ngModelChange)="onValueChange($event)" [placeholder]="label">
+<input type="checkbox" [id]="name" [name]="name" [(ngModel)]="value" [placeholder]="label" [disabled]="readonly">

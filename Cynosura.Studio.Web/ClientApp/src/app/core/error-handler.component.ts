@@ -1,15 +1,15 @@
 import { Component, Input, isDevMode, OnInit } from "@angular/core";
 
 @Component({
-    selector: "error-handler",
+    selector: "app-error-handler",
     templateUrl: "./error-handler.component.html"
 })
 
-export class ErrorHandlerComponent implements OnInit{
-    isDev: boolean = false;
+export class ErrorHandlerComponent implements OnInit {
+    isDev = false;
 
     @Input()
-    error: Object | null = null;
+    error: object | null = null;
 
     ngOnInit(): void {
         this.isDev = isDevMode();

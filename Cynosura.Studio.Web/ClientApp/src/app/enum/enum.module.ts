@@ -4,10 +4,10 @@ import { RouterModule } from "@angular/router";
 import { CoreModule } from "../core/core.module";
 import { EnumCoreModule } from "../enum-core/enum-core.module";
 import { SolutionCoreModule } from "../solution-core/solution-core.module";
-import { EnumValueModule } from "../enumValue/enumValue.module";
+import { EnumValueModule } from "../enum-value/enum-value.module";
 
-import { EnumListComponent } from "./list.component";
-import { EnumEditComponent } from "./edit.component";
+import { EnumListComponent } from "./enum-list.component";
+import { EnumEditComponent } from "./enum-edit.component";
 
 @NgModule({
     declarations: [
@@ -30,3 +30,4 @@ import { EnumEditComponent } from "./edit.component";
 export class EnumModule {
 
 }
+

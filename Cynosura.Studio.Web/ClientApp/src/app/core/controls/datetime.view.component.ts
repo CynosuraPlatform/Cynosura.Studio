@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-    selector: "datetime-view",
+    selector: "app-datetime-view",
     templateUrl: "./datetime.view.component.html"
 })
 export class DateTimeViewComponent {

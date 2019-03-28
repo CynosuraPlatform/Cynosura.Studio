@@ -31,7 +31,7 @@ import { HomeComponent } from "./home/home.component";
 // ADD ROUTES HERE
             { path: "entity", loadChildren: "./entity/entity.module#EntityModule" },
             { path: "enum", loadChildren: "./enum/enum.module#EnumModule" },
-            { path: "solution", loadChildren: "./solution/solution.module#SolutionModule" },
+            { path: "solution", loadChildren: "./solution/solution.module#SolutionModule" }
         ]),
         ModalModule.forRoot(),
         BootstrapModalModule,

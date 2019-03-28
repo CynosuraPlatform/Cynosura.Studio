@@ -4,8 +4,8 @@ import { RouterModule } from "@angular/router";
 import { CoreModule } from "../core/core.module";
 import { SolutionCoreModule } from "../solution-core/solution-core.module";
 
-import { SolutionListComponent } from "./list.component";
-import { SolutionEditComponent } from "./edit.component";
+import { SolutionListComponent } from "./solution-list.component";
+import { SolutionEditComponent } from "./solution-edit.component";
 
 @NgModule({
     declarations: [

@@ -1,31 +1,43 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, forwardRef } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
-    selector: "time-edit",
-    templateUrl: "./time.edit.component.html"
-})
-export class TimeEditComponent {
-    @Input()
-    value: string;
-
-    private formattedDateLocal: Date;
-
-    get formattedDate(): Date {
-        if (this.value && !this.formattedDateLocal) {
-            this.formattedDateLocal = new Date(`2000-01-01T${this.value}`);
+    selector: "app-time-edit",
+    templateUrl: "./time.edit.component.html",
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => TimeEditComponent),
+            multi: true
         }
-        return this.formattedDateLocal;
-    }
-    set formattedDate(value: Date) {
-        this.formattedDateLocal = value;
-        if (value)
-            this.value = value.toTimeString().substring(0, 5);
-        else
-            this.value = null;
-    }
+    ]
+})
+export class TimeEditComponent implements ControlValueAccessor {
 
-    @Output()
-    valueChange = new EventEmitter<string>();
+    onChange: any = () => { };
+    onTouched: any = () => { };
+
+    @Input("value")
+    val: string;
+
+    private valueLocal: Date;
+
+    get value(): Date {
+        if (this.val && !this.valueLocal) {
+            this.valueLocal = new Date(`2000-01-01T${this.val}`);
+        }
+        return this.valueLocal;
+    }
+    set value(val: Date) {
+        this.valueLocal = val;
+        if (val) {
+            this.val = val.toTimeString().substring(0, 5);
+        } else {
+            this.val = null;
+        }
+        this.onChange(this.val);
+        this.onTouched();
+    }
 
     @Input()
     name: string;
@@ -33,8 +45,20 @@ export class TimeEditComponent {
     @Input()
     label: string;
 
-    onFormattedDateChange(value: Date) {
-        this.formattedDate = value;
-        this.valueChange.emit(this.value);
+    @Input()
+    readonly = false;
+
+    registerOnChange(fn) {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn) {
+        this.onTouched = fn;
+    }
+
+    writeValue(value) {
+        this.val = value;
+        this.valueLocal = null;
+        this.value = this.value;
     }
 }

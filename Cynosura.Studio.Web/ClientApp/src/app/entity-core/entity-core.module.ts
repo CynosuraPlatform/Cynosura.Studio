@@ -3,11 +3,13 @@ import { NgModule } from "@angular/core";
 import { CoreModule } from "../core/core.module";
 
 import { EntityService } from "./entity.service";
-import { EntitySelectComponent } from "./select.component";
+import { EntitySelectComponent } from "./entity-select.component";
+import { EntityShowComponent } from "./entity-show.component";
 
 @NgModule({
     declarations: [
-        EntitySelectComponent
+        EntitySelectComponent,
+        EntityShowComponent
     ],
     imports: [
         CoreModule
@@ -16,7 +18,8 @@ import { EntitySelectComponent } from "./select.component";
         EntityService
     ],
     exports: [
-        EntitySelectComponent
+        EntitySelectComponent,
+        EntityShowComponent
     ]
 })
 export class EntityCoreModule {

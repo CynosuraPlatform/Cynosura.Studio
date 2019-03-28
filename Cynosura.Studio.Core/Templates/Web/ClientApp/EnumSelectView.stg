@@ -1,5 +1,5 @@
 main(model) ::= <<
-<select class="form-control" [ngModel]="selected$model.Enum.Name$" [disabled]="readonly" (ngModelChange)="selected$model.Enum.Name$Change.emit(\$event!='0: null' ? \$event : null)">
+<select class="form-control" [(ngModel)]="value" [disabled]="readonly">
     <option [ngValue]="null" selected="selected">Select $model.Enum.DisplayName$</option>
     <option [ngValue]="$model.Enum.NameLower$.key" *ngFor="let $model.Enum.NameLower$ of $model.Enum.Name$ | enumkeys">{{ $model.Enum.Name$Display[$model.Enum.NameLower$.key] }}</option>
 </select>

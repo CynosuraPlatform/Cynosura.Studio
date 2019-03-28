@@ -3,12 +3,12 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { CoreModule } from "../core/core.module";
-import { $model.Entity.Name$CoreModule } from "../$model.Entity.NameLower$-core/$model.Entity.NameLower$-core.module";
+import { $model.Entity.Name$CoreModule } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-core.module";
 $model.Entity.DependentEntities:declareEntity(); separator="\n"$
 $model.Entity.DependentEnums:declareEnum(); separator="\n"$
 
-import { $model.Entity.Name$ListComponent } from "./list.component";
-import { $model.Entity.Name$EditComponent } from "./edit.component";
+import { $model.Entity.Name$ListComponent } from "./$model.Entity.NameKebab$-list.component";
+import { $model.Entity.Name$EditComponent } from "./$model.Entity.NameKebab$-edit.component";
 
 @NgModule({
     declarations: [
@@ -31,10 +31,11 @@ $model.Entity.DependentEnums:importEnum(); separator="\n"$
 export class $model.Entity.Name$Module {
     
 }
+
 >>
 
 declareEntity(entity) ::= <<
-import { $entity.Name$CoreModule } from "../$entity.NameLower$-core/$entity.NameLower$-core.module";
+import { $entity.Name$CoreModule } from "../$entity.NameKebab$-core/$entity.NameKebab$-core.module";
 >>
 
 importEntity(entity) ::= <<
@@ -42,7 +43,7 @@ importEntity(entity) ::= <<
 >>
 
 declareEnum(enum) ::= <<
-import { $enum.Name$Module } from "../$enum.NameLower$/$enum.NameLower$.module";
+import { $enum.Name$Module } from "../$enum.NameKebab$/$enum.NameKebab$.module";
 >>
 
 importEnum(enum) ::= <<

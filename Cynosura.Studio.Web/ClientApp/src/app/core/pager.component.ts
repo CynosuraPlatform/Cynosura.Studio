@@ -1,32 +1,32 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-    selector: "pager",
+    selector: "app-pager",
     templateUrl: "./pager.component.html"
 })
 
 export class PagerComponent {
     pages: number[] = [0];
-    _totalItems = 0;
-    _pageSize = 10;
-    _currentPage = 0;
-    _buttonsMaxRange = 3;
+    innerTotalItems = 0;
+    innerPageSize = 10;
+    innerCurrentPage = 0;
+    innerButtonsMaxRange = 3;
 
     @Input()
     set currentPage(currentPage: number) {
-        this._currentPage = currentPage;
+        this.innerCurrentPage = currentPage;
         this.updatePages();
     }
 
-    get currentPage() { return this._currentPage; }
+    get currentPage() { return this.innerCurrentPage; }
 
     @Input()
     set buttonsMaxRange(buttonsMaxRange: number) {
-        this._buttonsMaxRange = buttonsMaxRange;
+        this.innerButtonsMaxRange = buttonsMaxRange;
         this.updatePages();
     }
 
-    get buttonsMaxRange() { return this._buttonsMaxRange; }
+    get buttonsMaxRange() { return this.innerButtonsMaxRange; }
 
     @Output()
     currentPageChange = new EventEmitter<number>();
@@ -38,41 +38,41 @@ export class PagerComponent {
 
     @Input()
     set pageSize(pageSize: number) {
-        this._pageSize = pageSize;
+        this.innerPageSize = pageSize;
         this.updatePages();
     }
 
-    get pageSize() { return this._pageSize; }
+    get pageSize() { return this.innerPageSize; }
 
     @Input()
     set totalItems(totalItems: number) {
-        this._totalItems = totalItems;
+        this.innerTotalItems = totalItems;
         this.updatePages();
     }
 
-    get totalItems() { return this._totalItems; }
+    get totalItems() { return this.innerTotalItems; }
 
     private updatePages() {
-        const totalPages = Math.ceil(this._totalItems / this._pageSize);
+        const totalPages = Math.ceil(this.innerTotalItems / this.innerPageSize);
 
-        if (this._currentPage >= totalPages && totalPages > 0) {
+        if (this.innerCurrentPage >= totalPages && totalPages > 0) {
             this.onChangeObj(totalPages - 1);
             return;
         }
 
-        let temp: number[] = [];
+        const temp: number[] = [];
         this.pages = [];
 
         temp[0] = 0;
         temp[totalPages - 1] = totalPages - 1;
 
-        for (let i = this._currentPage - this._buttonsMaxRange; i <= this._currentPage + this._buttonsMaxRange; i++) {
+        for (let i = this.innerCurrentPage - this.innerButtonsMaxRange; i <= this.innerCurrentPage + this.innerButtonsMaxRange; i++) {
             temp[i] = i;
         }
 
         let k = 0;
         for (let i = 0; i < temp.length; i++) {
-            if ((temp[i] >= 0 && temp[i] < totalPages || temp[i] == null) && !(temp[i] == null && temp[i - 1] == null)) {
+            if ((temp[i] >= 0 && temp[i] < totalPages || temp[i] === null) && !(temp[i] === null && temp[i - 1] === null)) {
                 this.pages[k] = temp[i];
                 k++;
             }

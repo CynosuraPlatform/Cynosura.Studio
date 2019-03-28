@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Data", "Cyn
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{495F991E-D5D7-4E7D-868E-4963CE8E7CEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.Core.Tests", "Tests\Cynosura.Studio.Core.Tests\Cynosura.Studio.Core.Tests.csproj", "{3938638C-0A1B-4D4A-8105-9643FFCDC947}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Core.Tests", "Tests\Cynosura.Studio.Core.Tests\Cynosura.Studio.Core.Tests.csproj", "{3938638C-0A1B-4D4A-8105-9643FFCDC947}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Worker", "Cynosura.Studio.Worker\Cynosura.Studio.Worker.csproj", "{813C4C98-752C-4A1F-824D-2C93B9BA5A2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{3938638C-0A1B-4D4A-8105-9643FFCDC947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3938638C-0A1B-4D4A-8105-9643FFCDC947}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3938638C-0A1B-4D4A-8105-9643FFCDC947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{813C4C98-752C-4A1F-824D-2C93B9BA5A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{813C4C98-752C-4A1F-824D-2C93B9BA5A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{813C4C98-752C-4A1F-824D-2C93B9BA5A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{813C4C98-752C-4A1F-824D-2C93B9BA5A2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

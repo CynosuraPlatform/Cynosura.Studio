@@ -1,12 +1,12 @@
-﻿export class Error {
+export class Error {
     constructor(message?: string) {
         this.message = message;
     }
     message?: string;
-    modelState: Object;
+    modelState: object;
     exceptionMessage: string;
     exceptionType: string;
-    errors: Object[];
+    errors: object[];
 
     httpStatus: number;
 }

@@ -1,4 +1,0 @@
-<select class="form-control" [ngModel]="selectedEntityId" [disabled]="readonly" (ngModelChange)="selectedEntityIdChange.emit($event!='0: null' ? $event : null)">
-    <option [ngValue]="null" selected="selected">Select Entity</option>
-    <option [ngValue]="entity.id" *ngFor="let entity of entities">{{ entity.name }}</option>
-</select>

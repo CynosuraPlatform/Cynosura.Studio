@@ -3,11 +3,13 @@ import { NgModule } from "@angular/core";
 import { CoreModule } from "../core/core.module";
 
 import { UserService } from "./user.service";
-import { UserSelectComponent } from "./select.component";
+import { UserSelectComponent } from "./user-select.component";
+import { UserShowComponent } from "./user-show.component";
 
 @NgModule({
     declarations: [
-        UserSelectComponent
+        UserSelectComponent,
+        UserShowComponent
     ],
     imports: [
         CoreModule
@@ -16,7 +18,8 @@ import { UserSelectComponent } from "./select.component";
         UserService
     ],
     exports: [
-        UserSelectComponent
+        UserSelectComponent,
+        UserShowComponent
     ]
 })
 export class UserCoreModule {

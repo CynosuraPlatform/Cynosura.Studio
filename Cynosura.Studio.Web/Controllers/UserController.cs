@@ -12,7 +12,6 @@ namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]
-    [ValidateModel]
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -26,13 +25,13 @@ namespace Cynosura.Studio.Web.Controllers
         [HttpGet("")]
         public async Task<PageModel<UserModel>> GetUsersAsync(int? pageIndex, int? pageSize)
         {
-            return await _mediator.Send(new GetUsers() {PageIndex = pageIndex, PageSize = pageSize});
+            return await _mediator.Send(new GetUsers() { PageIndex = pageIndex, PageSize = pageSize });
         }
 
         [HttpGet("{id:int}")]
         public async Task<UserModel> GetUserAsync(int id)
         {
-            return await _mediator.Send(new GetUser() {Id = id});
+            return await _mediator.Send(new GetUser() { Id = id });
         }
 
         [HttpPut("{id:int}")]
@@ -52,7 +51,7 @@ namespace Cynosura.Studio.Web.Controllers
         [HttpDelete("{id:int}")]
         public async Task<StatusViewModel> DeleteUserAsync(int id)
         {
-            await _mediator.Send(new DeleteUser() {Id = id});
+            await _mediator.Send(new DeleteUser() { Id = id });
             return new StatusViewModel();
         }
     }

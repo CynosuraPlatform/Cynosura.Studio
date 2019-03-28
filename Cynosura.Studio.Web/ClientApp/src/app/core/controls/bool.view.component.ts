@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-    selector: "bool-view",
+    selector: "app-bool-view",
     templateUrl: "./bool.view.component.html"
 })
 export class BoolViewComponent {

@@ -6,8 +6,8 @@ import { FieldCoreModule } from "../field-core/field-core.module";
 import { EntityCoreModule } from "../entity-core/entity-core.module";
 import { EnumCoreModule } from "../enum-core/enum-core.module";
 
-import { FieldListComponent } from "./list.component";
-import { FieldEditComponent } from "./edit.component";
+import { FieldListComponent } from "./field-list.component";
+import { FieldEditComponent } from "./field-edit.component";
 
 @NgModule({
     declarations: [
@@ -29,3 +29,4 @@ import { FieldEditComponent } from "./edit.component";
 export class FieldModule {
 
 }
+

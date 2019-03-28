@@ -1,26 +1,26 @@
-<div class='main-nav'>
-    <div class='navbar navbar-inverse'>
-        <div class='navbar-header'>
-            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
+<div class="main-nav">
+    <div class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
-            <a class='navbar-brand' [routerLink]='["/"]'>Cynosura.Studio</a>
+            <a class="navbar-brand" [routerLink]="['/']">Cynosura.Studio</a>
             <span class="loader glyphicon glyphicon-repeat pull-right" *ngIf="isLoading"></span>
         </div>
-        <div class='clearfix'></div>
-        <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }' *ngIf="menu">
-            <ul class='nav navbar-nav'>
-                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-                    <a [routerLink]='["/"]' (click)='collapse()'>
-                        <span class='glyphicon glyphicon-home'></span> Home
+        <div class="clearfix"></div>
+        <div class="navbar-collapse collapse" [class.in]="isExpanded" *ngIf="menu">
+            <ul class="nav navbar-nav">
+                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
+                    <a [routerLink]="['/']" (click)="collapse()">
+                        <span class="glyphicon glyphicon-home"></span> Home
                     </a>
                 </li>
                 <li *ngFor="let item of menu.items" [routerLinkActive]="['link-active']">
                     <a [routerLink]="[item.route]">
-                        <span class="glyphicon" [ngClass]="item.cssClass"></span> {{item.name}}
+                        <span class="glyphicon" [ngClass]="item.cssClass"></span> {{ item.name }}
                     </a>
                 </li>
             </ul>
