@@ -1,5 +1,5 @@
 
-import { EnumValue } from "../enumValue-core/enumValue.model";
+import { EnumValue } from "../enum-value-core/enum-value.model";
 
 export class Enum {
     id: string;
