@@ -236,14 +236,16 @@ namespace Cynosura.Studio.Core.Generator
             var templates = DeserializeMetadata<List<CodeTemplate>>(templatesJson);
             templates.ForEach(f =>
                 {
-                    f.TemplatePath = string.Join(System.IO.Path.DirectorySeparatorChar,
-                        f.TemplatePath.Split('\\', '/'));
-                    f.FilePath = string.Join(System.IO.Path.DirectorySeparatorChar,
-                        f.FilePath.Split('\\', '/'));
-                    f.FileName = string.Join(System.IO.Path.DirectorySeparatorChar,
-                        f.FileName.Split('\\', '/'));
+                    f.TemplatePath = NormalizePath(f.TemplatePath);
+                    f.FilePath = NormalizePath(f.FilePath);
+                    f.FileName = NormalizePath(f.FileName);
                 });
             return templates;
+        }
+
+        private string NormalizePath(string path)
+        {
+            return string.Join(System.IO.Path.DirectorySeparatorChar, path.Split('\\', '/'));
         }
 
         public string GetTemplatePath(CodeTemplate template)
@@ -251,6 +253,31 @@ namespace Cynosura.Studio.Core.Generator
             var coreProject = GetProject("Core");
             var templatesPath = coreProject.GetPath("Templates");
             return System.IO.Path.Combine(templatesPath, template.TemplatePath);
+        }
+
+        public async Task<UpgradeMetadata> GetUpgradeMetadataAsync()
+        {
+            var upgradePath = System.IO.Path.Combine(Path, "upgrade.json");
+            if (!File.Exists(upgradePath))
+            {
+                return new UpgradeMetadata()
+                {
+                    Version = 0,
+                    Upgrades = new List<UpgradeItem>(),
+                };
+            }
+            var upgradeMetadata = DeserializeMetadata<UpgradeMetadata>(await ReadFileAsync(upgradePath));
+            foreach (var upgrade in upgradeMetadata.Upgrades)
+            {
+                if (upgrade.Renames == null)
+                    continue;
+                foreach (var upgradeRename in upgrade.Renames)
+                {
+                    upgradeRename.Left = NormalizePath(upgradeRename.Left);
+                    upgradeRename.Right = NormalizePath(upgradeRename.Right);
+                }
+            }
+            return upgradeMetadata;
         }
     }
 }

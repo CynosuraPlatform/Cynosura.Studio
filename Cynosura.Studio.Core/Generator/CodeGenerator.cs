@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Cynosura.Core.Services;
 using Cynosura.Studio.Core.Generator.Models;
 using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
@@ -233,12 +234,56 @@ namespace Cynosura.Studio.Core.Generator
             await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);
 
-            var renames = await GetTemplateResultRenames(currentPackageSolution, latestPackageSolution);
+            var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, latestPackageSolution);
+            RenameInSolution(solution, upgradeRenames);
+
+            var templateResultRenames = await GetTemplateResultRenames(currentPackageSolution, latestPackageSolution);
+            var renames = upgradeRenames.Concat(templateResultRenames).ToList();
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
             await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path, 
                 renames);
             _logger.LogInformation($"Completed");
+        }
+
+        private void RenameInSolution(SolutionAccessor solution, IList<(string Left, string Right)> renames)
+        {
+            foreach (var rename in renames)
+            {
+                var left = Path.Combine(solution.Path, rename.Left);
+                var path = Path.Combine(solution.Path, rename.Right);
+                Directory.Move(left, path);
+            }
+        }
+
+        private async Task<IList<(string, string)>> GetUpgradeRenames(SolutionAccessor sourceSolution, SolutionAccessor destinationSolution)
+        {
+            var renames = new List<(string, string)>();
+
+            var sourceUpgrade = await sourceSolution.GetUpgradeMetadataAsync();
+            var destinationUpgrade = await destinationSolution.GetUpgradeMetadataAsync();
+            var sourceVersion = sourceUpgrade.Version;
+
+            while (true)
+            {
+                if (sourceVersion == destinationUpgrade.Version)
+                    break;
+                var version = sourceVersion;
+                var upgrade = destinationUpgrade.Upgrades.FirstOrDefault(u => u.From == version);
+                if (upgrade == null)
+                    throw new ServiceException("Can't upgrade template");
+                foreach (var upgradeRename in upgrade.Renames)
+                {
+                    var left = FindDirectory(destinationSolution.Path, upgradeRename.Left);
+                    left = Path.GetRelativePath(destinationSolution.Path, left);
+                    var right = FindDirectory(destinationSolution.Path, upgradeRename.Right);
+                    right = Path.GetRelativePath(destinationSolution.Path, right);
+                    renames.Add((left, right));
+                }
+                sourceVersion = upgrade.To;
+            }
+
+            return renames;
         }
 
         private async Task<IList<(string, string)>> GetTemplateResultRenames(SolutionAccessor sourceSolution, SolutionAccessor destinationSolution)

@@ -125,6 +125,54 @@ namespace Cynosura.Studio.Core.Tests
         }
 
         [Test]
+        public async Task MergeDirectoryAsync_MergeWithAlreadyRenamed()
+        {
+            var dir1 = InitDirectory(new[] { new FileInfo("file.txt", "abd def ghi") });
+            var dir2 = InitDirectory(new[] { new FileInfo("file2.txt", "abd def tyu ghi") });
+            var dir3 = InitDirectory(new[] { new FileInfo("file2.txt", "abd plk def ghi") });
+            try
+            {
+                var fileMerge = new FileMerge(new DmpMerge());
+                await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
+                    new[] { ("file.txt", "file2.txt") });
+                var files = ReadDirectory(dir3).ToList();
+                Assert.That(files.Count, Is.EqualTo(1));
+                Assert.That(files[0].Path, Is.EqualTo("file2.txt"));
+                Assert.That(files[0].Content, Is.EqualTo("abd plk def tyu ghi"));
+            }
+            finally
+            {
+                Directory.Delete(dir1, true);
+                Directory.Delete(dir2, true);
+                Directory.Delete(dir3, true);
+            }
+        }
+
+        [Test]
+        public async Task MergeDirectoryAsync_RenameWithoutChange()
+        {
+            var dir1 = InitDirectory(new[] { new FileInfo("file.txt", "abd def ghi") });
+            var dir2 = InitDirectory(new[] { new FileInfo("file2.txt", "abd def ghi") });
+            var dir3 = InitDirectory(new[] { new FileInfo("file.txt", "abd plk def ghi") });
+            try
+            {
+                var fileMerge = new FileMerge(new DmpMerge());
+                await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
+                    new[] { ("file.txt", "file2.txt") });
+                var files = ReadDirectory(dir3).ToList();
+                Assert.That(files.Count, Is.EqualTo(1));
+                Assert.That(files[0].Path, Is.EqualTo("file2.txt"));
+                Assert.That(files[0].Content, Is.EqualTo("abd plk def ghi"));
+            }
+            finally
+            {
+                Directory.Delete(dir1, true);
+                Directory.Delete(dir2, true);
+                Directory.Delete(dir3, true);
+            }
+        }
+
+        [Test]
         public async Task MergeDirectoryAsync_MergeWithRenameDirectory()
         {
             var dir1 = InitDirectory(new[] { new FileInfo("path1/file.txt", "abd def ghi") });
