@@ -61,8 +61,8 @@ namespace Cynosura.Studio.Core.Merge
         {
             foreach (var (left, right) in renames)
             {
-                if (path == left)
-                    return right;
+                if (path.StartsWith(left))
+                    return right + path.Substring(left.Length);
             }
             return path;
         }
