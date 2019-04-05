@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Fields;
 using MediatR;
 
@@ -16,5 +17,6 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public string DisplayName { get; set; }
         public string PluralDisplayName { get; set; }
         public IList<UpdateField> Fields { get; set; }
+        public PropertyCollection Properties { get; set; }
     }
 }

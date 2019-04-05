@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Cynosura.Studio.Core.Requests.EnumValues.Models
@@ -10,5 +10,6 @@ namespace Cynosura.Studio.Core.Requests.EnumValues.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public int? Value { get; set; }
+        public Dictionary<string, object> Properties { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator
@@ -77,9 +78,9 @@ namespace Cynosura.Studio.Core.Generator
             return projects;
         }
 
-        private static T DeserializeMetadata<T>(string content) where T : new()
+        private static T DeserializeMetadata<T>(string content, params JsonConverter[] converters) where T : new()
         {
-            return content.DeserializeFromJson<T>();
+            return content.DeserializeFromJson<T>(converters);
         }
 
         private static string SerializeMetadata<T>(T data)
@@ -99,7 +100,7 @@ namespace Cynosura.Studio.Core.Generator
             var entities = new List<Entity>();
             foreach (var file in files)
             {
-                var entity = DeserializeMetadata<Entity>(await ReadFileAsync(file));
+                var entity = DeserializeMetadata<Entity>(await ReadFileAsync(file), new EntityTypeHandler(Metadata));
                 entities.Add(entity);
             }
 

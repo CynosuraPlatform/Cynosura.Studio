@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -26,5 +26,7 @@ namespace Cynosura.Studio.Core.Entities
 		public string PluralDisplayName { get; set; }
 
         public IList<Field> Fields { get; set; }
+
+        public Dictionary<string, object> Properties { get; set; }
     }
 }

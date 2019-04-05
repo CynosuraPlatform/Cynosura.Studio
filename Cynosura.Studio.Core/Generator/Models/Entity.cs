@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
@@ -16,6 +17,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string DisplayName { get; set; }
         public string PluralDisplayName { get; set; }
         public IList<Field> Fields { get; set; }
+        public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
         public Field IdField { get; } = new Field()

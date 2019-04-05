@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
@@ -16,6 +17,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
         public Guid? EnumId { get; set; }
+        public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
         public Entity Entity { get; set; }

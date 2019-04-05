@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
@@ -12,6 +13,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public IList<EnumValue> Values { get; set; }
+        public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
         public string NameLower => Name.ToLowerCamelCase();

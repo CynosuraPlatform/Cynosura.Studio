@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Fields
@@ -17,5 +18,6 @@ namespace Cynosura.Studio.Core.Requests.Fields
         public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
         public Guid? EnumId { get; set; }
+        public PropertyCollection Properties { get; set; }
     }
 }
