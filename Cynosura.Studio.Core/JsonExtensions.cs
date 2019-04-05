@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Cynosura.Studio.Core
@@ -8,6 +8,13 @@ namespace Cynosura.Studio.Core
         public static JsonSerializerSettings Settings => new JsonSerializerSettings()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+                {
+                    ProcessDictionaryKeys = false,
+                    OverrideSpecifiedNames = true
+                }
+            },
         };
 
         public static string SerializeToJson<T>(this T obj)
