@@ -16,15 +16,15 @@ export class EnumValueEditComponent implements OnInit {
 
     innerEnumValue: EnumValue;
 
-    private _enumValue: EnumValue;
+    private localEnumValue: EnumValue;
 
     get enumValue(): EnumValue {
-        return this._enumValue;
+        return this.localEnumValue;
     }
 
     @Input()
     set enumValue(value: EnumValue) {
-        this._enumValue = value;
+        this.localEnumValue = value;
         this.innerEnumValue = { ...value };
     }
 

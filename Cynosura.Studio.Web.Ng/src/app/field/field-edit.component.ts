@@ -18,15 +18,15 @@ export class FieldEditComponent implements OnInit {
 
     innerField: Field;
 
-    private _field: Field;
+    private localField: Field;
 
     get field(): Field {
-        return this._field;
+        return this.localField;
     }
 
     @Input()
     set field(value: Field) {
-        this._field = value;
+        this.localField = value;
         this.innerField = { ...value };
     }
 
