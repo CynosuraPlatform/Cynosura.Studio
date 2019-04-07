@@ -1,0 +1,46 @@
+<h2>Users</h2>
+
+<div class="form-inline">
+    <div class="form-group">
+        <label for="text">Text</label>
+        <input id="text" type="text" class="form-control" placeholder="Text" [(ngModel)]="filter.text" />
+    </div>
+
+    <button class="btn btn-default" type="button" (click)="getUsers()">Search</button>
+    <button class="btn btn-default" type="reset" (click)="reset()">Reset</button>
+</div>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<app-error-handler [error]="error"></app-error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of content.pageItems">
+            <td>
+                <app-text-view [value]="user.userName"></app-text-view>
+            </td>
+            <td>
+                <app-text-view [value]="user.email"></app-text-view>
+            </td>
+            <td>
+                <button class="btn btn-default" (click)="edit(user.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(user.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected($event)">
+</app-pager>

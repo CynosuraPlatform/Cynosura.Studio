@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
+    [ValidateModel]
     [Route("api/[controller]")]
     public class SolutionController : Controller
     {
@@ -22,9 +23,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpGet("")]
-        public async Task<PageModel<SolutionModel>> GetSolutionsAsync(int? pageIndex, int? pageSize)
+        public async Task<PageModel<SolutionModel>> GetSolutionsAsync(int? pageIndex, int? pageSize, SolutionFilter filter)
         {
-            return await _mediator.Send(new GetSolutions() { PageIndex = pageIndex, PageSize = pageSize });
+            return await _mediator.Send(new GetSolutions() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
         }
 
         [HttpGet("{id:int}")]

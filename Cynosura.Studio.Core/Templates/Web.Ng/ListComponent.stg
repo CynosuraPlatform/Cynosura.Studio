@@ -1,0 +1,87 @@
+main(model) ::= <<
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+
+import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
+import { $model.Entity.Name$Filter } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model";
+import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
+
+import { ModalHelper } from "../core/modal.helper";
+import { StoreService } from "../core/store.service";
+import { Error } from "../core/error.model";
+import { Page } from "../core/page.model";
+
+@Component({
+    selector: "app-$model.Entity.NameKebab$-list",
+    templateUrl: "./$model.Entity.NameKebab$-list.component.html"
+})
+export class $model.Entity.Name$ListComponent implements OnInit {
+    content: Page<$model.Entity.Name$>;
+    error: Error;
+    pageSize = 10;
+    filter = new $model.Entity.Name$Filter();
+    private innerPageIndex: number;
+    get pageIndex(): number {
+        if (!this.innerPageIndex) {
+            this.innerPageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex", 0);
+        }
+        return this.innerPageIndex;
+    }
+    set pageIndex(value: number) {
+        this.innerPageIndex = value;
+        this.storeService.set("$model.Entity.PluralNameLower$PageIndex", value);
+    }
+
+    constructor(
+        private modalHelper: ModalHelper,
+        private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
+        private router: Router,
+        private route: ActivatedRoute,
+        private storeService: StoreService
+        ) {}
+
+    ngOnInit(): void {
+        this.get$model.Entity.PluralName$();
+    }
+
+    get$model.Entity.PluralName$(): void {
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(this.pageIndex, this.pageSize, this.filter)
+            .then(content => {
+                this.content = content;
+            })
+            .catch(error => this.error = error);
+    }
+
+    reset(): void {
+        this.filter.text = null;
+        this.get$model.Entity.PluralName$();
+    }
+
+    edit($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
+        this.router.navigate([id], { relativeTo: this.route });
+    }
+
+    add(): void {
+        this.router.navigate([0], { relativeTo: this.route });
+    }
+
+    delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
+        this.modalHelper.confirmDelete()
+            .then(() => {
+                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
+                    .then(() => {
+                        this.get$model.Entity.PluralName$();
+                    })
+                    .catch(error => this.error = error);
+            })
+            .catch(() => { });
+    }
+
+    onPageSelected(pageIndex: number) {
+        this.pageIndex = pageIndex;
+        this.get$model.Entity.PluralName$();
+    }
+}
+
+>>
+

@@ -9,5 +9,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public int SolutionId { get; set; }
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
+
+        public EntityFilter Filter { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace $model.Solution.Namespace$.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]
+    [ValidateModel]
     [Route("api/[controller]")]
     public class $model.Entity.Name$Controller : Controller
     {
@@ -24,9 +25,9 @@ namespace $model.Solution.Namespace$.Web.Controllers
         }
 
         [HttpGet("")]
-        public async Task<PageModel<$model.Entity.Name$Model>\> Get$model.Entity.PluralName$Async(int? pageIndex, int? pageSize)
+        public async Task<PageModel<$model.Entity.Name$Model>\> Get$model.Entity.PluralName$Async(int? pageIndex, int? pageSize, $model.Entity.Name$Filter filter)
         {
-            return await _mediator.Send(new Get$model.Entity.PluralName$() { PageIndex = pageIndex, PageSize = pageSize });
+            return await _mediator.Send(new Get$model.Entity.PluralName$() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
         }
 
         [HttpGet("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]

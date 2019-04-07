@@ -1,3 +1,4 @@
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +32,13 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entities = await solutionAccessor.GetEntitiesAsync();
+            if (!string.IsNullOrEmpty(request.Filter?.Text))
+            {
+                entities = entities.Where(e => e.Name.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
+                                               e.PluralName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
+                                               e.DisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
+                                               e.PluralDisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
             return entities.ToPagedList(request.PageIndex, request.PageSize)
                 .Map<Generator.Models.Entity, EntityModel>(_mapper);
         }

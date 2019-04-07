@@ -22,6 +22,13 @@
   },
   {
     "FilePath": "*.Core\\Requests",
+    "FileName": "{PluralName}\\Models\\{Name}Filter.cs",
+    "TemplatePath": "Core\\Filter.stg",
+    "Type": 0,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Core\\Requests",
     "FileName": "{PluralName}\\Create{Name}.cs",
     "TemplatePath": "Core\\CreateRequest.stg",
     "Type": 0,
@@ -140,93 +147,100 @@
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}.model.ts",
-    "TemplatePath": "Web\\ClientApp\\Model.stg",
+    "TemplatePath": "Web.Ng\\Model.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
+    "FileName": "{NameKebab}-core\\{NameKebab}-filter.model.ts",
+    "TemplatePath": "Web.Ng\\Filter.stg",
+    "Type": 1,
+    "InsertAfter": null
+  },
+  {
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}.service.ts",
-    "TemplatePath": "Web\\ClientApp\\Service.stg",
+    "TemplatePath": "Web.Ng\\Service.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}-select.component.ts",
-    "TemplatePath": "Web\\ClientApp\\SelectComponent.stg",
+    "TemplatePath": "Web.Ng\\SelectComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}-select.component.html",
-    "TemplatePath": "Web\\ClientApp\\SelectView.stg",
+    "TemplatePath": "Web.Ng\\SelectView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}-show.component.ts",
-    "TemplatePath": "Web\\ClientApp\\ShowComponent.stg",
+    "TemplatePath": "Web.Ng\\ShowComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}-show.component.html",
-    "TemplatePath": "Web\\ClientApp\\ShowView.stg",
+    "TemplatePath": "Web.Ng\\ShowView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}-core\\{NameKebab}-core.module.ts",
-    "TemplatePath": "Web\\ClientApp\\CoreModule.stg",
+    "TemplatePath": "Web.Ng\\CoreModule.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-list.component.ts",
-    "TemplatePath": "Web\\ClientApp\\ListComponent.stg",
+    "TemplatePath": "Web.Ng\\ListComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-list.component.html",
-    "TemplatePath": "Web\\ClientApp\\ListView.stg",
+    "TemplatePath": "Web.Ng\\ListView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-edit.component.ts",
-    "TemplatePath": "Web\\ClientApp\\EditComponent.stg",
+    "TemplatePath": "Web.Ng\\EditComponent.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-edit.component.html",
-    "TemplatePath": "Web\\ClientApp\\EditView.stg",
+    "TemplatePath": "Web.Ng\\EditView.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}.module.ts",
-    "TemplatePath": "Web\\ClientApp\\Module.stg",
+    "TemplatePath": "Web.Ng\\Module.stg",
     "Type": 1,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "app.module.ts",
-    "TemplatePath": "Web\\ClientApp\\Route.stg",
+    "TemplatePath": "Web.Ng\\Route.stg",
     "Type": 1,
     "InsertAfter": "// ADD ROUTES HERE"
   },
@@ -238,44 +252,44 @@
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}.model.ts",
-    "TemplatePath": "Web\\ClientApp\\Enum.stg",
+    "TemplatePath": "Web.Ng\\Enum.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-select.component.ts",
-    "TemplatePath": "Web\\ClientApp\\EnumSelectComponent.stg",
+    "TemplatePath": "Web.Ng\\EnumSelectComponent.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-select.component.html",
-    "TemplatePath": "Web\\ClientApp\\EnumSelectView.stg",
+    "TemplatePath": "Web.Ng\\EnumSelectView.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-view.component.ts",
-    "TemplatePath": "Web\\ClientApp\\EnumViewComponent.stg",
+    "TemplatePath": "Web.Ng\\EnumViewComponent.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}-view.component.html",
-    "TemplatePath": "Web\\ClientApp\\EnumViewView.stg",
+    "TemplatePath": "Web.Ng\\EnumViewView.stg",
     "Type": 3,
     "InsertAfter": null
   },
   {
-    "FilePath": "*.Web\\ClientApp\\src\\app",
+    "FilePath": "*.Web.Ng\\src\\app",
     "FileName": "{NameKebab}\\{NameKebab}.module.ts",
-    "TemplatePath": "Web\\ClientApp\\EnumModule.stg",
+    "TemplatePath": "Web.Ng\\EnumModule.stg",
     "Type": 3,
     "InsertAfter": null
   }

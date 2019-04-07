@@ -1,3 +1,4 @@
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +32,11 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var enums = await solutionAccessor.GetEnumsAsync();
+            if (!string.IsNullOrEmpty(request.Filter?.Text))
+            {
+                enums = enums.Where(e => e.Name.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
+                                         e.DisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
             return enums.ToPagedList(request.PageIndex, request.PageSize)
                 .Map<Generator.Models.Enum, EnumModel>(_mapper);
         }

@@ -1,0 +1,49 @@
+<h2>Enums</h2>
+
+<app-solution-select [(ngModel)]="solutionId" name="solutionId"></app-solution-select>
+
+<div class="form-inline">
+    <div class="form-group">
+        <label for="text">Text</label>
+        <input id="text" type="text" class="form-control" placeholder="Text" [(ngModel)]="filter.text" />
+    </div>
+
+    <button class="btn btn-default" type="button" (click)="getEnums()">Search</button>
+    <button class="btn btn-default" type="reset" (click)="reset()">Reset</button>
+</div>
+
+<button *ngIf="solutionId" type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<app-error-handler [error]="error"></app-error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Display Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let enum of content.pageItems">
+            <td>
+                <app-text-view [value]="enum.name"></app-text-view>
+            </td>
+            <td>
+                <app-text-view [value]="enum.displayName"></app-text-view>
+            </td>
+            <td>
+                <button class="btn btn-default" (click)="edit(enum.id)">Edit</button>
+                <button class="btn btn-default" (click)="delete(enum.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected($event)">
+</app-pager>
+

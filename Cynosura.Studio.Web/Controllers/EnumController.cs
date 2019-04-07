@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
+    [ValidateModel]
     [Route("api/[controller]")]
     public class EnumController : Controller
     {
@@ -23,9 +24,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpGet("")]
-        public async Task<PageModel<EnumModel>> GetEnumsAsync(int solutionId, int? pageIndex, int? pageSize)
+        public async Task<PageModel<EnumModel>> GetEnumsAsync(int solutionId, int? pageIndex, int? pageSize, EnumFilter filter)
         {
-            return await _mediator.Send(new GetEnums() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize });
+            return await _mediator.Send(new GetEnums() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
         }
 
         [HttpGet("{id:Guid}")]
