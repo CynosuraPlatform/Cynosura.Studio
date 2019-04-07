@@ -45,7 +45,7 @@ export class EnumService {
     getEnum(solutionId: number, id: string): Promise<Enum> {
         const url = `${this.enumUrl}/${id}`;
         return this.httpClient.get<Enum>(url, {
-            params: { "solutionId": solutionId.toString() }
+            params: { solutionId: solutionId.toString() }
         }).toPromise();
     }
 
@@ -53,7 +53,7 @@ export class EnumService {
         const url = `${this.enumUrl}/${enumModel.id}`;
         return this.httpClient.put<Enum>(url, JSON.stringify(enumModel), {
             headers: this.headers,
-            params: { "solutionId": solutionId.toString() }
+            params: { solutionId: solutionId.toString() }
         }).toPromise();
     }
 
@@ -61,21 +61,21 @@ export class EnumService {
     createEnum(solutionId: number, enumModel: Enum): Promise<Enum> {
         return this.httpClient.post<Enum>(this.enumUrl, JSON.stringify(enumModel), {
             headers: this.headers,
-            params: { "solutionId": solutionId.toString() }
+            params: { solutionId: solutionId.toString() }
         }).toPromise();
     }
 
     deleteEnum(solutionId: number, id: number): Promise<{}> {
         const url = `${this.enumUrl}/${id}`;
         return this.httpClient.delete(url, {
-            params: { "solutionId": solutionId.toString() }
+            params: { solutionId: solutionId.toString() }
         }).toPromise();
     }
 
     generateEnum(solutionId: number, id: string): Promise<{}> {
         const url = `${this.enumUrl}/${id}/generate`;
         return this.httpClient.post(url, null, {
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }

@@ -48,7 +48,7 @@ export class EntityService {
         const url = `${this.entityUrl}/${id}`;
         return this.httpClient.get<Entity>(url,
             {
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }
@@ -59,7 +59,7 @@ export class EntityService {
             JSON.stringify(entity),
             {
                 headers: this.headers,
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }
@@ -69,7 +69,7 @@ export class EntityService {
         return this.httpClient.post<Entity>(this.entityUrl, JSON.stringify(entity),
             {
                 headers: this.headers,
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }
@@ -78,7 +78,7 @@ export class EntityService {
         const url = `${this.entityUrl}/${id}`;
         return this.httpClient.delete(url,
             {
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }
@@ -86,7 +86,7 @@ export class EntityService {
     generateEntity(solutionId: number, id: string): Promise<{}> {
         const url = `${this.entityUrl}/${id}/generate`;
         return this.httpClient.post(url, null, {
-                params: { "solutionId": solutionId.toString() }
+                params: { solutionId: solutionId.toString() }
             })
             .toPromise();
     }

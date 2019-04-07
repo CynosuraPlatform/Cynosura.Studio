@@ -15,7 +15,7 @@ import { EntityEditComponent } from "./entity-edit.component";
         EntityEditComponent
     ],
     imports: [
-		RouterModule.forChild([
+        RouterModule.forChild([
             { path: "", component: EntityListComponent },
             { path: ":id", component: EntityEditComponent }
         ]),
@@ -25,10 +25,10 @@ import { EntityEditComponent } from "./entity-edit.component";
         FieldModule
     ],
     providers: [
-        
+
     ],
     exports: [
-        
+
     ]
 })
 export class EntityModule {

@@ -21,7 +21,7 @@ export class FieldEditComponent implements OnInit {
     private _field: Field;
 
     get field(): Field {
-                return this._field;
+        return this._field;
     }
 
     @Input()
@@ -40,7 +40,7 @@ export class FieldEditComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
+
     }
 
     cancel(): void {

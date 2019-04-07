@@ -24,7 +24,7 @@ export class EnumEditComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             const id = params.id;
-            this.solutionId = this.route.snapshot.queryParams["solutionId"];
+            this.solutionId = this.route.snapshot.queryParams.solutionId;
             this.getEnum(id);
         });
     }

@@ -30,16 +30,16 @@ export class EntityListComponent implements OnInit {
         this.innerPageIndex = value;
         this.storeService.set("entitiesPageIndex", value);
     }
-    private _solutionId: number;
+    private innerSolutionId: number;
     get solutionId(): number {
-        if (!this._solutionId) {
-            this._solutionId = this.storeService.get("entitiesSolutionId") | 0;
+        if (!this.innerSolutionId) {
+            this.innerSolutionId = this.storeService.get("entitiesSolutionId", 0);
         }
-        return this._solutionId;
+        return this.innerSolutionId;
     }
     set solutionId(val: number) {
-        this._solutionId = val;
-        this.storeService.set("entitiesSolutionId", this._solutionId);
+        this.innerSolutionId = val;
+        this.storeService.set("entitiesSolutionId", this.innerSolutionId);
         this.getEntities();
     }
 
