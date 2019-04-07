@@ -80,13 +80,12 @@ namespace Cynosura.Studio.Core.PackageFeed
                 }
             }
             var extractedPath = Path.Combine(path, $"{packageName}.{version}");
-            if (!Directory.Exists(extractedPath))
-            {
-                Extract(filePath, extractedPath);
-                var systemPath = Path.Combine(extractedPath, "content", ".template.config");
-                if (Directory.Exists(systemPath))
-                    Directory.Delete(systemPath, true);
-            }
+            if (Directory.Exists(extractedPath))
+                Directory.Delete(extractedPath, true);
+            Extract(filePath, extractedPath);
+            var systemPath = Path.Combine(extractedPath, "content", ".template.config");
+            if (Directory.Exists(systemPath))
+                Directory.Delete(systemPath, true);
             return Path.Combine(extractedPath, "content");
         }
 
