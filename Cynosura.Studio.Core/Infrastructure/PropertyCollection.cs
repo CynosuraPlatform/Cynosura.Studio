@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Cynosura.Studio.Core.Infrastructure
 {
@@ -16,7 +17,7 @@ namespace Cynosura.Studio.Core.Infrastructure
 
         public new object this[string key]
         {
-            get => ContainsKey(key) ? base[key] : Defaults[key];
+            get => (ContainsKey(key) ? base[key] : Defaults[key]) ?? new object();
             set => base[key] = value;
         }
     }

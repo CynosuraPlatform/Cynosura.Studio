@@ -11,6 +11,11 @@ namespace Cynosura.Studio.Core.Generator.Models
     {
         private string _nameKebab;
         private string _pluralNameKebab;
+
+        public Entity()
+        {
+        }
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string PluralName { get; set; }

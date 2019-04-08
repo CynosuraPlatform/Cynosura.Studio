@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cynosura.Core.Services;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Merge;
 using Cynosura.Studio.Core.PackageFeed;
 using Cynosura.Studio.Core.TemplateEngine;
@@ -22,8 +23,7 @@ namespace Cynosura.Studio.Core.Generator
         private readonly IMerge _merge;
         private readonly FileMerge _fileMerge;
         private readonly ILogger<CodeGenerator> _logger;
-
-        public CodeGenerator(ITemplateEngine templateEngine, 
+        public CodeGenerator(ITemplateEngine templateEngine,
             IPackageFeed packageFeed,
             IMerge merge,
             FileMerge fileMerge,
@@ -159,8 +159,8 @@ namespace Cynosura.Studio.Core.Generator
                     await toSolution.CreateEntityAsync(entity);
                     var newEntity = (await toSolution.GetEntitiesAsync())
                         .FirstOrDefault(e => e.Id == entity.Id);
-                    await GenerateEntityAsync(toSolution, newEntity);
-                    await GenerateViewAsync(toSolution, new View(), newEntity);
+                    await GenerateAsync(toSolution, newEntity, new EntityModel(newEntity, toSolution), TemplateType.Entity);
+                    await GenerateAsync(toSolution, newEntity, new ViewModel(new View(), newEntity, toSolution), TemplateType.View);
                 }
                 else
                 {
@@ -185,8 +185,8 @@ namespace Cynosura.Studio.Core.Generator
                     await toSolution.CreateEnumAsync(@enum);
                     var newEnum = (await toSolution.GetEnumsAsync())
                         .FirstOrDefault(e => e.Id == @enum.Id);
-                    await GenerateEnumAsync(toSolution, newEnum);
-                    await GenerateEnumViewAsync(toSolution, new View(), newEnum);
+                    await GenerateAsync(toSolution, newEnum, new EnumModel(newEnum, toSolution), TemplateType.Enum);
+                    await GenerateAsync(toSolution, newEnum, new EnumViewModel(new View(), newEnum, toSolution), TemplateType.EnumView);
                 }
                 else
                 {
@@ -241,7 +241,7 @@ namespace Cynosura.Studio.Core.Generator
             var renames = upgradeRenames.Concat(templateResultRenames).ToList();
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path, 
+            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path,
                 renames);
             _logger.LogInformation($"Completed");
         }
@@ -401,73 +401,30 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task GenerateEntityAsync(SolutionAccessor solution, Entity entity)
-        {
-            var model = new EntityModel()
-            {
-                Entity = entity,
-                Solution = solution,
-            };
-
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.Entity))
-            {
-                await CreateFileAsync(template, model, solution, entity);
-            }
-        }
-
         public async Task UpgradeEntityAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
-            var oldModel = new EntityModel()
-            {
-                Entity = oldEntity,
-                Solution = solution,
-            };
-
-            var newModel = new EntityModel()
-            {
-                Entity = newEntity,
-                Solution = solution,
-            };
+            var oldModel = new EntityModel(oldEntity, solution);
+            var newModel = new EntityModel(newEntity, solution);
 
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.Entity))
+            foreach (var template in templates
+                .Where(t => t.Type == TemplateType.Entity))
             {
-                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
-            }
-        }
-
-        public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
-        {
-            var model = new ViewModel()
-            {
-                View = view,
-                Entity = entity,
-                Solution = solution,
-            };
-
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.View))
-            {
-                await CreateFileAsync(template, model, solution, entity);
+                if (CheckFileTargets(template.Targets, newEntity.Properties))
+                {
+                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
+                }
+                else
+                {
+                    RemoveFile(template, oldEntity, solution);
+                }
             }
         }
 
         public async Task UpgradeViewAsync(SolutionAccessor solution, View view, Entity oldEntity, Entity newEntity)
         {
-            var oldModel = new ViewModel()
-            {
-                View = view,
-                Entity = oldEntity,
-                Solution = solution,
-            };
-
-            var newModel = new ViewModel()
-            {
-                View = view,
-                Entity = newEntity,
-                Solution = solution,
-            };
+            var oldModel = new ViewModel(view, oldEntity, solution);
+            var newModel = new ViewModel(view, newEntity, solution);
 
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Type == TemplateType.View))
@@ -476,73 +433,40 @@ namespace Cynosura.Studio.Core.Generator
             }
         }
 
-        public async Task GenerateEnumAsync(SolutionAccessor solution, Models.Enum @enum)
-        {
-            var model = new EnumModel()
-            {
-                Enum = @enum,
-                Solution = solution,
-            };
-
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.Enum))
-            {
-                await CreateFileAsync(template, model, solution, @enum);
-            }
-        }
-
         public async Task UpgradeEnumAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
         {
-            var oldModel = new EnumModel()
-            {
-                Enum = oldEnum,
-                Solution = solution,
-            };
-
-            var newModel = new EnumModel()
-            {
-                Enum = newEnum,
-                Solution = solution,
-            };
+            var oldModel = new EnumModel(oldEnum, solution);
+            var newModel = new EnumModel(newEnum, solution);
 
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Type == TemplateType.Enum))
             {
-                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+                if (CheckFileTargets(template.Targets, newEnum.Properties))
+                {
+                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+                }
+                else
+                {
+                    RemoveFile(template, oldEnum, solution);
+                }
             }
         }
 
-        public async Task GenerateEnumViewAsync(SolutionAccessor solution, View view, Models.Enum @enum)
+        public async Task GenerateAsync(SolutionAccessor solution, ISimpleTemplateProcessor processor, object model, TemplateType type)
         {
-            var model = new EnumViewModel()
-            {
-                View = view,
-                Enum = @enum,
-                Solution = solution,
-            };
-
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.EnumView))
+            foreach (var template in templates
+                .Where(t => t.Type == type)
+                .Where(w => CheckFileTargets(w.Targets, processor.Properties)))
             {
-                await CreateFileAsync(template, model, solution, @enum);
+                await CreateFileAsync(template, model, solution, processor);
             }
         }
 
         public async Task UpgradeEnumViewAsync(SolutionAccessor solution, View view, Models.Enum oldEnum, Models.Enum newEnum)
         {
-            var oldModel = new EnumViewModel()
-            {
-                View = view,
-                Enum = oldEnum,
-                Solution = solution,
-            };
-
-            var newModel = new EnumViewModel()
-            {
-                View = view,
-                Enum = newEnum,
-                Solution = solution,
-            };
+            var oldModel = new EnumViewModel(view, oldEnum, solution);
+            var newModel = new EnumViewModel(view, newEnum, solution);
 
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Type == TemplateType.EnumView))
@@ -558,7 +482,7 @@ namespace Cynosura.Studio.Core.Generator
 
         private string FindDirectory(string path, string templatePath)
         {
-            var ignoreList = new [] {"AebIt.Platform.Common"};
+            var ignoreList = new[] { "AebIt.Platform.Common" };
             var templatePathItems = templatePath.Split(Path.DirectorySeparatorChar);
             foreach (var templatePathItem in templatePathItems)
             {
@@ -576,6 +500,23 @@ namespace Cynosura.Studio.Core.Generator
             }
 
             return path;
+        }
+
+        private bool CheckFileTargets(IEnumerable<string> targets, PropertyCollection properties)
+        {
+            var enumerable = targets as string[] ?? targets.ToArray();
+            return enumerable.Length == 0 ||
+                   enumerable.All(a => properties[a] is bool val && val);
+        }
+
+        private void RemoveFile(CodeTemplate template, ISimpleTemplateProcessor entity, SolutionAccessor solution)
+        {
+            var path = GetTemplateFilePath(template, solution, entity);
+            if (File.Exists(path))
+            {
+                // TODO: move file to backup archive
+                File.Delete(path);
+            }
         }
     }
 }
