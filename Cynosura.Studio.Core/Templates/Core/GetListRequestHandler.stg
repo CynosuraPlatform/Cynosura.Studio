@@ -26,7 +26,11 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 
         public async Task<PageModel<$model.Entity.Name$Model>\> Handle(Get$model.Entity.PluralName$ request, CancellationToken cancellationToken)
         {
-            IQueryable<$model.Entity.Name$> query = _$model.Entity.NameLower$Repository.GetEntities()$model.Entity.EntityFields:include(); separator=""$;
+            IQueryable<$model.Entity.Name$> query = _$model.Entity.NameLower$Repository.GetEntities()$model.Entity.EntityFields:include(); separator=""$;            
+            if (!string.IsNullOrEmpty(request.Filter?.Text))
+            {
+                $if(model.Entity.FieldsByType.String)$query = query.Where(e => $model.Entity.FieldsByType.String:textFilter(); separator=" || "$);$endif$
+            }
             query = query.OrderBy(e => e.Id);
             var $model.Entity.PluralNameLower$ = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
             return $model.Entity.PluralNameLower$.Map<$model.Entity.Name$, $model.Entity.Name$Model>(_mapper);
@@ -40,4 +44,8 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 include(field) ::= <<
 
                 .Include(e => e.$field.Name$)
+>>
+
+textFilter(field) ::= <<
+e.$field.Name$.Contains(request.Filter.Text)
 >>

@@ -1,0 +1,12 @@
+main(model) ::= <<
+using $model.Solution.Namespace$.Core.Infrastructure;
+
+namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models
+{
+    public class $model.Entity.Name$Filter : EntityFilter
+    {
+
+    }
+}
+
+>>

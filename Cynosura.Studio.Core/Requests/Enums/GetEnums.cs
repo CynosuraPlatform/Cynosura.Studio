@@ -9,5 +9,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
         public int SolutionId { get; set; }
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
+
+        public EnumFilter Filter { get; set; }
     }
 }

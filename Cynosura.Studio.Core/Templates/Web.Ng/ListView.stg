@@ -1,0 +1,111 @@
+main(model) ::= <<
+<h2>$model.Entity.PluralDisplayName$</h2>
+
+<div class="form-inline">
+    <div class="form-group">
+        <label for="text">Text</label>
+        <input id="text" type="text" class="form-control" placeholder="Text" [(ngModel)]="filter.text" />
+    </div>
+
+    <button class="btn btn-default" type="button" (click)="get$model.Entity.PluralName$()">Search</button>
+    <button class="btn btn-default" type="reset" (click)="reset()">Reset</button>
+</div>
+
+<button type="button" class="btn btn-default" (click)="add()">Create</button>
+
+<app-error-handler [error]="error"></app-error-handler>
+
+<table *ngIf="content" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+$model.Entity.Fields:fieldHeader(); separator="\n"$
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let $model.Entity.NameLower$ of content.pageItems">
+$model.Entity.Fields:field(); separator="\n"$
+            <td>
+                <button class="btn btn-default" (click)="edit($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Edit</button>
+                <button class="btn btn-default" (click)="delete($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<app-pager *ngIf="content"
+       [currentPage]="content.currentPageIndex"
+       [pageSize]="pageSize"
+       [totalItems]="content.totalItems"
+       (currentPageChange)="onPageSelected(\$event)">
+</app-pager>
+
+>>
+
+fieldHeader(field) ::= <<
+            <th>$field.DisplayName$</th>
+>>
+
+field(field) ::= <<
+$field:(field.Template)()$
+>>
+
+Type(field) ::= <<
+            <td>
+$field:(field.TypeTemplate)()$
+            </td>
+>>
+
+Entity(field) ::= <<
+            <td>
+                <app-$field.Entity.NameKebab$-show [value]="$model.Entity.NameLower$.$field.NameLower$"></app-$field.Entity.NameKebab$-show>
+            </td>
+>>
+
+Enum(field) ::= <<
+            <td>
+                <app-$field.Enum.NameKebab$-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-$field.Enum.NameKebab$-view>
+            </td>
+>>
+
+String(field) ::= <<
+                <app-text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-text-view>
+>>
+
+Int32(field) ::= <<
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
+>>
+
+Int64(field) ::= <<
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
+>>
+
+Decimal(field) ::= <<
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
+>>
+
+Double(field) ::= <<
+                <app-number-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-number-view>
+>>
+
+Boolean(field) ::= <<
+                <app-bool-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-bool-view>
+>>
+
+DateTime(field) ::= <<
+                <app-datetime-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-datetime-view>
+>>
+
+Date(field) ::= <<
+                <app-date-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-date-view>
+>>
+
+Time(field) ::= <<
+                <app-time-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-time-view>
+>>
+
+Guid(field) ::= <<
+                <app-text-view [value]="$model.Entity.NameLower$.$field.NameLower$"></app-text-view>
+>>
+Blob(field) ::= <<
+>>

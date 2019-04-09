@@ -8,5 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
     {
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
+
+        public SolutionFilter Filter { get; set; }
     }
 }

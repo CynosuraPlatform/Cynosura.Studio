@@ -25,7 +25,11 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 
         public async Task<PageModel<SolutionModel>> Handle(GetSolutions request, CancellationToken cancellationToken)
         {
-            IQueryable<Solution> query = _solutionRepository.GetEntities();
+            IQueryable<Solution> query = _solutionRepository.GetEntities();            
+            if (!string.IsNullOrEmpty(request.Filter?.Text))
+            {
+                query = query.Where(e => e.Name.Contains(request.Filter.Text) || e.Path.Contains(request.Filter.Text));
+            }
             query = query.OrderBy(e => e.Id);
             var solutions = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
             return solutions.Map<Solution, SolutionModel>(_mapper);

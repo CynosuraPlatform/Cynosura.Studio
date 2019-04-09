@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
+    [ValidateModel]
     [Route("api/[controller]")]
     public class EntityController : Controller
     {
@@ -23,9 +24,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpGet("")]
-        public async Task<PageModel<EntityModel>> GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize)
+        public async Task<PageModel<EntityModel>> GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize, EntityFilter filter)
         {
-            return await _mediator.Send(new GetEntities() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize });
+            return await _mediator.Send(new GetEntities() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
         }
 
         [HttpGet("{id:Guid}")]

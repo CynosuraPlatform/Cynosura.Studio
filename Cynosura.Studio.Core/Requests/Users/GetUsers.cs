@@ -8,5 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Users
     {
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
+
+        public UserFilter Filter { get; set; }
     }
 }

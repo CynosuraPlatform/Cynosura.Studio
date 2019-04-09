@@ -12,7 +12,7 @@ namespace Cynosura.Studio.Web.Controllers
     [Route("api/[controller]")]
     public class PropertiesController: ControllerBase
     {
-        [HttpGet]
+        [HttpGet("")]
         public Dictionary<string, object> GetDefaults()
         {
             return PropertyCollection.Defaults;

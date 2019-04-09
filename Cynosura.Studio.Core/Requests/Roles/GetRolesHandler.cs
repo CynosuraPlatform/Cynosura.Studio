@@ -26,8 +26,12 @@ namespace Cynosura.Studio.Core.Requests.Roles
 
         public async Task<PageModel<RoleModel>> Handle(GetRoles request, CancellationToken cancellationToken)
         {
-            var roles = await _roleManager.Roles
-                .OrderBy(e => e.Id)
+            IQueryable<Role> query = _roleManager.Roles;
+            if (!string.IsNullOrEmpty(request.Filter?.Text))
+            {
+                query = query.Where(e => e.Name.Contains(request.Filter.Text));
+            }
+            var roles = await query.OrderBy(e => e.Id)
                 .ToPagedListAsync(_roleRepository, request.PageIndex, request.PageSize);
             return roles.Map<Role, RoleModel>(_mapper);
         }
