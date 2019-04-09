@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
-    public class Enum : ISimpleTemplateProcessor
+    public class Enum : IGenerationObject
     {
         private string _nameKebab;
         public Guid Id { get; set; }

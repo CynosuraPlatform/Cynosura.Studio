@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
-    public class Entity : ISimpleTemplateProcessor
+    public class Entity : IGenerationObject
     {
         private string _nameKebab;
         private string _pluralNameKebab;

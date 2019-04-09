@@ -39,9 +39,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
             // reload Entity from Solution
             entity = (await solutionAccessor.GetEntitiesAsync())
                 .First(e => e.Id == entity.Id);
-            await _codeGenerator.GenerateAsync(solutionAccessor, entity, new EntityModel(entity, solutionAccessor), TemplateType.Entity);
-            await _codeGenerator.GenerateAsync(solutionAccessor, entity,
-                new ViewModel(new Generator.Models.View(), entity, solutionAccessor), TemplateType.View);
+            await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
+            await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
             return entity.Id;
         }
 
