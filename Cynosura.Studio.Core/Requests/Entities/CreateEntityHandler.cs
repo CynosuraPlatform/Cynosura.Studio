@@ -6,7 +6,6 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Generator;
-using Cynosura.Studio.Core.Generator.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
