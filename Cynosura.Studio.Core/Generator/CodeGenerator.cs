@@ -429,7 +429,14 @@ namespace Cynosura.Studio.Core.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Type == TemplateType.View))
             {
-                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
+                if (CheckFileTargets(template.Targets, newEntity.Properties))
+                {
+                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
+                }
+                else
+                {
+                    RemoveFile(template, oldEntity, solution);
+                }
             }
         }
 
