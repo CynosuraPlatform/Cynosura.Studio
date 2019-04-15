@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Generator;
-using Cynosura.Studio.Core.Generator.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,8 +28,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
-            await _codeGenerator.GenerateAsync(solutionAccessor, entity, new EntityModel(entity, solutionAccessor), TemplateType.Entity);
-            await _codeGenerator.GenerateAsync(solutionAccessor, entity, new ViewModel(new View(), entity, solutionAccessor), TemplateType.View);
+            await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
+            await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
             return Unit.Value;
         }
 
