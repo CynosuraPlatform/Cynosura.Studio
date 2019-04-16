@@ -75,4 +75,10 @@ export class SolutionService {
         return this.httpClient.post(url, null)
             .toPromise();
     }
+
+    openSolution(solution: Solution): Promise<Solution> {
+        const url = `${this.solutionUrl}/open`;
+        return this.httpClient.post<Solution>(url, JSON.stringify(solution), { headers: this.headers })
+            .toPromise();
+    }
 }

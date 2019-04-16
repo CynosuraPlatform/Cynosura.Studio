@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Requests.Solutions;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
@@ -67,6 +67,13 @@ namespace Cynosura.Studio.Web.Controllers
         {
             await _mediator.Send(new UpgradeSolution() { Id = id });
             return new StatusViewModel();
+        }
+
+        [HttpPost("open")]
+        public async Task<StatusViewModel> OpenSolutionAsync([FromBody] OpenSolution createSolution)
+        {
+            var id = await _mediator.Send(createSolution);
+            return new CreationStatusViewModel(id);
         }
     }
 }
