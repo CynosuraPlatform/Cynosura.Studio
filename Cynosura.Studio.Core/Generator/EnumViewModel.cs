@@ -7,6 +7,17 @@ namespace Cynosura.Studio.Core.Generator
 {
     public class EnumViewModel
     {
+        public EnumViewModel()
+        {
+        }
+
+        public EnumViewModel(View view, Models.Enum @enum, SolutionAccessor solution)
+        {
+            View = view;
+            Enum = @enum;
+            Solution = solution;
+        }
+
         public View View { get; set; }
         public Models.Enum Enum { get; set; }
         public SolutionAccessor Solution { get; set; }

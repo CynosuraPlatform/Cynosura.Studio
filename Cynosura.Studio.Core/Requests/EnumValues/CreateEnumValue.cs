@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.EnumValues
@@ -16,5 +17,6 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
         public string DisplayName { get; set; }
         [DisplayName("Value")]
         public int? Value { get; set; }
+        public PropertyCollection Properties { get; set; }
     }
 }

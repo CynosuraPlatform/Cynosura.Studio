@@ -14,6 +14,7 @@ namespace Cynosura.Studio.Core.TemplateEngine
             var stg = new CustomTemplateGroupFile(templateFile);
             stg.RegisterRenderer(typeof(Decimal), new DecimalRenderer());
             stg.RegisterRenderer(typeof(DateTime), new DateTimeRenderer());
+            stg.RegisterModelAdaptor(typeof(PropertyCollection), new PropertyCollectionAdapter());
             var st = stg.GetInstanceOf("main");
             if (st == null)
             {
@@ -47,6 +48,19 @@ namespace Cynosura.Studio.Core.TemplateEngine
                 if (string.IsNullOrEmpty(formatString))
                     formatString = "dd.MM.yyyy HH:mm:ss";
                 return date.ToString(formatString, culture);
+            }
+        }
+
+        class PropertyCollectionAdapter : IModelAdaptor
+        {
+            public object GetProperty(Interpreter interpreter, TemplateFrame frame, object obj, object property, string propertyName)
+            {
+                if (obj is PropertyCollection collection)
+                {
+                    return collection[propertyName];
+                }
+
+                return "";
             }
         }
     }

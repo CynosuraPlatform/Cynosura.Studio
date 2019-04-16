@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Fields
@@ -24,5 +25,6 @@ namespace Cynosura.Studio.Core.Requests.Fields
         public bool IsRequired { get; set; }
         [DisplayName("Enum")]
         public Guid? EnumId { get; set; }
+        public PropertyCollection Properties { get; set; }
     }
 }

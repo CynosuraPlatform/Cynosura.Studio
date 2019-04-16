@@ -18,6 +18,12 @@
             <app-model-validator [model]="error?.modelState?.displayName"></app-model-validator>
         </div>
     </div>
+    <div class="form-group">
+        <label for="properties" class="col-sm-2 control-label">Properties</label>
+        <div class="col-sm-10">
+            <app-properties [target]="enum.name" [properties]="enum.properties"></app-properties>
+        </div>
+    </div>
 </form>
 
 <div *ngIf="enum">

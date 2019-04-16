@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +23,7 @@ namespace Cynosura.Studio.Core.Entities
         [Required()]
         public Guid EnumId { get; set; }
         public Enum Enum { get; set; }
-        
+
+        public Dictionary<string, object> Properties { get; set; }
     }
 }

@@ -7,8 +7,9 @@ export class Enum {
     name: string;
     displayName: string;
     values: EnumValue[];
-
+    properties: { [k: string]: any };
     constructor() {
         this.values = new Array<EnumValue>();
+        this.properties = {};
     }
 }

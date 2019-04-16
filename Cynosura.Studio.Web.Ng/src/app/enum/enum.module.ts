@@ -5,6 +5,7 @@ import { CoreModule } from "../core/core.module";
 import { EnumCoreModule } from "../enum-core/enum-core.module";
 import { SolutionCoreModule } from "../solution-core/solution-core.module";
 import { EnumValueModule } from "../enum-value/enum-value.module";
+import { PropertiesModule } from "../properties/properties.module";
 
 import { EnumListComponent } from "./enum-list.component";
 import { EnumEditComponent } from "./enum-edit.component";
@@ -22,7 +23,8 @@ import { EnumEditComponent } from "./enum-edit.component";
         CoreModule,
         EnumCoreModule,
         SolutionCoreModule,
-        EnumValueModule
+        EnumValueModule,
+        PropertiesModule
     ],
     providers: [
     ]

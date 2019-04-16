@@ -7,10 +7,14 @@ export class Entity {
     pluralName: string;
     displayName: string;
 
+
+    properties: { [k: string]: any};
+
     pluralDisplayName: string;
     fields: Field[];
 
     constructor() {
         this.fields = new Array<Field>();
+        this.properties = {};
     }
 }

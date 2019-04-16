@@ -1,0 +1,30 @@
+<button type="button" class="btn btn-default" data-toggle="modal" [attr.data-target]="'#'+id">Open Properties</button>
+
+<div [id]="id" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Properties ({{ target }})</h4>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let item of boolProperties | keyvalue" [class.defaults]="defaults[item.key] == boolProperties[item.key]">
+          <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="boolProperties[item.key]" 
+            (ngModelChange)="handleChange(item.key, $event)">{{ item.key }}</label>
+        </div>
+        <div class="input-group">
+          <input [(ngModel)]="newProperty" type="text" class="form-control" placeholder="new property">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" (click)="addBool()">Add</button>
+          </span>
+        </div>
+        <div style="clear: both"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

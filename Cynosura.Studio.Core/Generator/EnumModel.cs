@@ -6,6 +6,16 @@ namespace Cynosura.Studio.Core.Generator
 {
     public class EnumModel
     {
+        public EnumModel()
+        {
+        }
+
+        public EnumModel(Models.Enum @enum, SolutionAccessor solution)
+        {
+            Enum = @enum;
+            Solution = solution;
+        }
+
         public Models.Enum Enum { get; set; }
         public SolutionAccessor Solution { get; set; }
     }

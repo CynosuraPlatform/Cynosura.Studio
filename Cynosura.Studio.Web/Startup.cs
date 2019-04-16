@@ -149,7 +149,14 @@ namespace Cynosura.Studio.Web
                 })
                 .AddJsonOptions(options =>
                     {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        {
+                            NamingStrategy = new CamelCaseNamingStrategy()
+                            {
+                                ProcessDictionaryKeys = false,
+                                OverrideSpecifiedNames = true
+                            }
+                        };
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                     }

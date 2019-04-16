@@ -32,6 +32,7 @@
     "ngx-modialog": "^5.0.1",
     "rxjs": "^6.4.0",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.2",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {

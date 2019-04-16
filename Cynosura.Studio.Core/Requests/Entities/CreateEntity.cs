@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Fields;
 using MediatR;
 
@@ -19,5 +20,6 @@ namespace Cynosura.Studio.Core.Requests.Entities
         [DisplayName("Plural Display Name")]
         public string PluralDisplayName { get; set; }
         public IList<CreateField> Fields { get; set; }
+        public PropertyCollection Properties { get; set; }
     }
 }

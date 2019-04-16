@@ -9,6 +9,12 @@ export class Field {
 
     isRequired: boolean;
     enumId: string;
+
+    properties: { [k: string]: any};
+
+    constructor() {
+        this.properties = {};
+    }
 }
 
 export enum FieldType {

@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
-    public class Entity : ISimpleTemplateProcessor
+    public class Entity : IGenerationObject
     {
         private string _nameKebab;
         private string _pluralNameKebab;
+
+        public Entity()
+        {
+        }
+
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string PluralName { get; set; }
         public string DisplayName { get; set; }
         public string PluralDisplayName { get; set; }
         public IList<Field> Fields { get; set; }
+        public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
         public Field IdField { get; } = new Field()
