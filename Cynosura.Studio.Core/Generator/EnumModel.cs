@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Enum = Cynosura.Studio.Core.Generator.Models.Enum;
 
 namespace Cynosura.Studio.Core.Generator
 {
@@ -11,7 +10,7 @@ namespace Cynosura.Studio.Core.Generator
         {
         }
 
-        public EnumModel(Enum @enum, SolutionAccessor solution)
+        public EnumModel(Models.Enum @enum, SolutionAccessor solution)
         {
             Enum = @enum;
             Solution = solution;
