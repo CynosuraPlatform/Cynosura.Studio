@@ -87,6 +87,7 @@ export class SolutionListComponent implements OnInit {
             path: this.openLocation
         } as Solution;
         this.solutionService.openSolution(solution)
-            .then((result) => this.edit(result.id));
+            .then((result) => this.edit(result.id))
+            .catch((error) => console.log(this.error = error));
     }
 }

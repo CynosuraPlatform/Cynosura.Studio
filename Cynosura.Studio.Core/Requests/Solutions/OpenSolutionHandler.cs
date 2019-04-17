@@ -4,6 +4,7 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Generator;
+using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
@@ -25,7 +26,16 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 
         public async Task<int> Handle(OpenSolution request, CancellationToken cancellationToken)
         {
-            var accessor = new SolutionAccessor(request.Path);
+            SolutionAccessor accessor;
+            try
+            {
+                accessor = new SolutionAccessor(request.Path);
+            }
+            catch
+            {
+                throw new StudioException("Path does not contain solution or metadata", "NOT_FOUND");
+            }
+
             var solution = _mapper.Map<Solution>(request);
             if (string.IsNullOrEmpty(solution.Name))
             {
