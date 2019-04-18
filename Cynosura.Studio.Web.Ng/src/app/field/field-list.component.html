@@ -27,10 +27,10 @@
                 {{FieldType[field.type]}}
             </td>
             <td>
-                {{field.entity?.name}}
+                <app-entity-show [value]="field.entity"></app-entity-show>
             </td>
             <td>
-                <app-entity-show [value]="field.entity"></app-entity-show>
+                <app-enum-show [value]="field.enum"></app-enum-show>
             </td>
             <td>
                 <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
