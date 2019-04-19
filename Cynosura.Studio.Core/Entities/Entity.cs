@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -30,6 +30,10 @@ namespace Cynosura.Studio.Core.Entities
         public Dictionary<string, object> Properties { get; set; }
         [Required()]
         public bool IsAbstract { get; set; }
+        
+
+        public Guid? BaseEntityId { get; set; }
+        public Entity BaseEntity { get; set; }
         
     }
 }

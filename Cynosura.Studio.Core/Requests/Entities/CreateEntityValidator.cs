@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             RuleFor(x => x.PluralName).MaximumLength(100).NotEmpty();
             RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty();
             RuleFor(x => x.PluralDisplayName).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.BaseEntityId);
             RuleFor(x => x.IsAbstract);
         }
 

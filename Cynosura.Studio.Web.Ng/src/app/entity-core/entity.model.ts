@@ -7,6 +7,7 @@ export class Entity {
     pluralName: string;
     displayName: string;
     isAbstract: boolean;
+    baseEntityId: string;
 
 
     properties: { [k: string]: any};

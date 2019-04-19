@@ -59,6 +59,17 @@
       "isRequired": true,
       "enumId": null,
       "properties": {}
+    },
+    {
+      "id": "548d60b7-b037-4377-adff-b6aa94e88622",
+      "name": "BaseEntity",
+      "displayName": "Base Entity",
+      "type": null,
+      "size": null,
+      "entityId": "4018a0cd-b020-4836-a9ef-ba432a553a0f",
+      "isRequired": false,
+      "enumId": null,
+      "properties": {}
     }
   ],
   "properties": {}

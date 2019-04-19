@@ -22,17 +22,44 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string DisplayName { get; set; }
         public string PluralDisplayName { get; set; }
         public bool IsAbstract { get; set; }
+        public Guid? BaseEntityId { get; set; }
         public IList<Field> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
-        public Field IdField { get; } = new Field()
+        public Entity BaseEntity { get; set; }
+
+        [JsonIgnore]
+        public Field IdField {
+            get
+            {
+                var idField = AllFields.FirstOrDefault(f => f.Name == "Id");
+                if (idField == null)
+                {
+                    idField = new Field()
+                    {
+                        Name = "Id",
+                        DisplayName = "Id",
+                        IsRequired = true,
+                        Type = FieldType.Int32,
+                    };
+                }
+                return idField;
+            }
+        }
+
+        [JsonIgnore]
+        public IList<Field> AllFields
         {
-            Name = "Id",
-            DisplayName = "Id",
-            IsRequired = true,
-            Type = FieldType.Int32,
-        };
+            get
+            {
+                var allFields = new List<Field>();
+                if (BaseEntity != null)
+                    allFields.AddRange(BaseEntity.AllFields);
+                allFields.AddRange(Fields);
+                return allFields;
+            }
+        }
 
         [JsonIgnore]
         public string NameLower => Name.ToLowerCamelCase();

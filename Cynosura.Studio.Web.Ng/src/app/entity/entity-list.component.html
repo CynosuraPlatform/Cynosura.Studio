@@ -24,6 +24,7 @@
             <th>Display Name</th>
             <th>Plural Display Name</th>
             <th>Abstract</th>
+            <th>Base Entity</th>
             <th></th>
         </tr>
     </thead>
@@ -43,6 +44,9 @@
             </td>
             <td>
                 <app-bool-view [value]="entity.isAbstract"></app-bool-view>
+            </td>
+            <td>
+                <app-entity-show [value]="entity.baseEntity"></app-entity-show>
             </td>
             <td>
                 <button class="btn btn-default" (click)="edit(entity.id)">Edit</button>
