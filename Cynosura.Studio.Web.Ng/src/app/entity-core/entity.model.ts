@@ -6,6 +6,7 @@ export class Entity {
     name: string;
     pluralName: string;
     displayName: string;
+    isAbstract: boolean;
 
 
     properties: { [k: string]: any};

@@ -98,6 +98,25 @@ namespace Cynosura.Studio.Core.Generator
             await WriteFileAsync(newFilePath, newFileContent);
         }
 
+        private async Task RemoveFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject)
+        {
+            var filePath = GetTemplateFilePath(template, solution, generationObject);
+            if (!File.Exists(filePath))
+                return;
+            var content = ProcessTemplate(template, solution, model);
+            if (!string.IsNullOrEmpty(template.InsertAfter))
+            {
+                var fileContent = await ReadFileAsync(filePath);
+                fileContent = fileContent.Replace(content + Environment.NewLine, "");
+
+                await WriteFileAsync(filePath, fileContent);
+            }
+            else
+            {
+                File.Delete(filePath);
+            }
+        }
+
         public async Task GenerateSolutionAsync(string path, string name)
         {
             _logger.LogInformation("GenerateSolution");
@@ -403,7 +422,8 @@ namespace Cynosura.Studio.Core.Generator
 
         public async Task GenerateEntityAsync(SolutionAccessor solution, Entity entity)
         {
-            await GenerateAsync(solution, entity, new EntityModel(entity, solution), TemplateType.Entity);
+            var types = entity.GetTemplateTypes();
+            await GenerateAsync(solution, entity, new EntityModel(entity, solution), types);
         }
 
         public async Task UpgradeEntityAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)
@@ -411,29 +431,16 @@ namespace Cynosura.Studio.Core.Generator
             var oldModel = new EntityModel(oldEntity, solution);
             var newModel = new EntityModel(newEntity, solution);
 
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Entity)))
-            {
-                var oldExists = CheckFileTargets(template.Targets, oldEntity.Properties);
-                var newExists = CheckFileTargets(template.Targets, newEntity.Properties);
-                if (oldExists && newExists)
-                {
-                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
-                }
-                else if (oldExists)
-                {
-                    RemoveFile(template, oldEntity, solution);
-                }
-                else if (newExists)
-                {
-                    await CreateFileAsync(template, newModel, solution, newEntity);
-                }
-            }
+            var oldTypes = oldEntity.GetTemplateTypes();
+            var newTypes = newEntity.GetTemplateTypes();
+
+            await UpgradeAsync(solution, oldEntity, newEntity, oldModel, newModel, oldTypes, newTypes);
         }
 
         public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
         {
-            await GenerateAsync(solution, entity, new ViewModel(view, entity, solution), TemplateType.View);
+            var types = entity.GetViewTemplateTypes();
+            await GenerateAsync(solution, entity, new ViewModel(view, entity, solution), types);
         }
 
         public async Task UpgradeViewAsync(SolutionAccessor solution, View view, Entity oldEntity, Entity newEntity)
@@ -441,28 +448,15 @@ namespace Cynosura.Studio.Core.Generator
             var oldModel = new ViewModel(view, oldEntity, solution);
             var newModel = new ViewModel(view, newEntity, solution);
 
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.View)))
-            {
-                var oldExists = CheckFileTargets(template.Targets, oldEntity.Properties);
-                var newExists = CheckFileTargets(template.Targets, newEntity.Properties);
-                if (oldExists && newExists)
-                {
-                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
-                }
-                else if (oldExists)
-                {
-                    RemoveFile(template, oldEntity, solution);
-                }
-                else if (newExists)
-                {
-                    await CreateFileAsync(template, newModel, solution, newEntity);
-                }
-            }
+            var oldTypes = oldEntity.GetViewTemplateTypes();
+            var newTypes = newEntity.GetViewTemplateTypes();
+
+            await UpgradeAsync(solution, oldEntity, newEntity, oldModel, newModel, oldTypes, newTypes);
         }
+
         public async Task GenerateEnumAsync(SolutionAccessor solution, Models.Enum @enum)
         {
-            await GenerateAsync(solution, @enum, new EnumModel(@enum, solution), TemplateType.Enum);
+            await GenerateAsync(solution, @enum, new EnumModel(@enum, solution), @enum.GetTemplateTypes());
         }
 
         public async Task UpgradeEnumAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
@@ -470,29 +464,15 @@ namespace Cynosura.Studio.Core.Generator
             var oldModel = new EnumModel(oldEnum, solution);
             var newModel = new EnumModel(newEnum, solution);
 
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Enum)))
-            {
-                var oldExists = CheckFileTargets(template.Targets, oldEnum.Properties);
-                var newExists = CheckFileTargets(template.Targets, newEnum.Properties);
-                if (oldExists && newExists)
-                {
-                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
-                }
-                else if (oldExists)
-                {
-                    RemoveFile(template, oldEnum, solution);
-                }
-                else if (newExists)
-                {
-                    await CreateFileAsync(template, newModel, solution, newEnum);
-                }
-            }
+            var oldTypes = oldEnum.GetTemplateTypes();
+            var newTypes = newEnum.GetTemplateTypes();
+
+            await UpgradeAsync(solution, oldEnum, newEnum, oldModel, newModel, oldTypes, newTypes);
         }
 
         public async Task GenerateEnumViewAsync(SolutionAccessor solution, View view, Models.Enum @enum)
         {
-            await GenerateAsync(solution, @enum, new EnumViewModel(view, @enum, solution), TemplateType.EnumView);
+            await GenerateAsync(solution, @enum, new EnumViewModel(view, @enum, solution), @enum.GetViewTemplateTypes());
         }
 
         public async Task UpgradeEnumViewAsync(SolutionAccessor solution, View view, Models.Enum oldEnum, Models.Enum newEnum)
@@ -500,33 +480,44 @@ namespace Cynosura.Studio.Core.Generator
             var oldModel = new EnumViewModel(view, oldEnum, solution);
             var newModel = new EnumViewModel(view, newEnum, solution);
 
+            var oldTypes = oldEnum.GetViewTemplateTypes();
+            var newTypes = newEnum.GetViewTemplateTypes();
+
+            await UpgradeAsync(solution, oldEnum, newEnum, oldModel, newModel, oldTypes, newTypes);
+        }
+
+        private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, IEnumerable<TemplateType> types)
+        {
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.EnumView)))
+            foreach (var template in templates.Where(t => t.CheckTypes(types))
+                .Where(t => t.CheckTargets(generationObject.Properties)))
             {
-                var oldExists = CheckFileTargets(template.Targets, oldEnum.Properties);
-                var newExists = CheckFileTargets(template.Targets, newEnum.Properties);
-                if (oldExists && newExists)
-                {
-                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
-                }
-                else if (oldExists)
-                {
-                    RemoveFile(template, oldEnum, solution);
-                }
-                else if (newExists)
-                {
-                    await CreateFileAsync(template, newModel, solution, newEnum);
-                }
+                await CreateFileAsync(template, model, solution, generationObject);
             }
         }
 
-        private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, TemplateType type)
+        private async Task UpgradeAsync(SolutionAccessor solution, 
+            IGenerationObject oldGenerationObject, IGenerationObject newGenerationObject, 
+            object oldModel, object newModel, 
+            IEnumerable<TemplateType> oldTypes, IEnumerable<TemplateType> newTypes)
         {
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Types.Contains(type))
-                .Where(w => CheckFileTargets(w.Targets, generationObject.Properties)))
+            foreach (var template in templates.Where(t => t.CheckTypes(oldTypes) || t.CheckTypes(newTypes)))
             {
-                await CreateFileAsync(template, model, solution, generationObject);
+                var oldExists = template.CheckTypes(oldTypes) && template.CheckTargets(oldGenerationObject.Properties);
+                var newExists = template.CheckTypes(newTypes) && template.CheckTargets(newGenerationObject.Properties);
+                if (oldExists && newExists)
+                {
+                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldGenerationObject, newGenerationObject);
+                }
+                else if (oldExists)
+                {
+                    await RemoveFileAsync(template, oldModel, solution, oldGenerationObject);
+                }
+                else if (newExists)
+                {
+                    await CreateFileAsync(template, newModel, solution, newGenerationObject);
+                }
             }
         }
 
@@ -555,23 +546,6 @@ namespace Cynosura.Studio.Core.Generator
             }
 
             return path;
-        }
-
-        private bool CheckFileTargets(IEnumerable<string> targets, PropertyCollection properties)
-        {
-            var enumerable = targets as string[] ?? targets.ToArray();
-            return enumerable.Length == 0 ||
-                   enumerable.All(a => properties[a] is bool val && val);
-        }
-
-        private void RemoveFile(CodeTemplate template, IGenerationObject entity, SolutionAccessor solution)
-        {
-            var path = GetTemplateFilePath(template, solution, entity);
-            if (File.Exists(path))
-            {
-                // TODO: move file to backup archive
-                File.Delete(path);
-            }
-        }
+        }        
     }
 }

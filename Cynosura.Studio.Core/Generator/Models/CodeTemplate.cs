@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -29,6 +30,23 @@ namespace Cynosura.Studio.Core.Generator.Models
         {
             return false;
         }
+
+        public bool CheckTargets(PropertyCollection properties)
+        {
+            if (Targets == null)
+                return true;
+            var targets = Targets.ToList();
+            return targets.Count == 0 ||
+                   targets.All(a => properties[a] is bool val && val);
+        }
+
+        public bool CheckTypes(IEnumerable<TemplateType> templateTypes)
+        {
+            if (templateTypes == null)
+                return false;
+            var templateTypeList = templateTypes.ToList();
+            return Types.Any(t => templateTypeList.Contains(t));
+        }
     }
 
     public enum TemplateType
@@ -37,5 +55,6 @@ namespace Cynosura.Studio.Core.Generator.Models
         View,
         Enum,
         EnumView,
+        AbstractEntity,
     }
 }

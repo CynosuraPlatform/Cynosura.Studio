@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -28,5 +28,8 @@ namespace Cynosura.Studio.Core.Entities
         public IList<Field> Fields { get; set; }
 
         public Dictionary<string, object> Properties { get; set; }
+        [Required()]
+        public bool IsAbstract { get; set; }
+        
     }
 }

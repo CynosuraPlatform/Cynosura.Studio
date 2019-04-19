@@ -21,6 +21,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public string PluralName { get; set; }
         public string DisplayName { get; set; }
         public string PluralDisplayName { get; set; }
+        public bool IsAbstract { get; set; }
         public IList<Field> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
 
@@ -124,6 +125,20 @@ namespace Cynosura.Studio.Core.Generator.Models
             template = template.Replace("{NameKebab}", NameKebab);
             template = template.Replace("{PluralNameKebab}", PluralNameKebab);
             return template;
+        }
+
+        public IEnumerable<TemplateType> GetTemplateTypes()
+        {
+            if (IsAbstract)
+                return new[] { TemplateType.AbstractEntity };
+            return new[] { TemplateType.Entity };
+        }
+
+        public IEnumerable<TemplateType> GetViewTemplateTypes()
+        {
+            if (IsAbstract)
+                return new TemplateType[] { };
+            return new[] { TemplateType.View };
         }
     }
 }

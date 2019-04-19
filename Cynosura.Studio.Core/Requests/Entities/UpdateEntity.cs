@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -23,5 +23,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public string PluralDisplayName { get; set; }
         public IList<UpdateField> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
+        [DisplayName("Abstract")]
+        public bool IsAbstract { get; set; }
     }
 }
