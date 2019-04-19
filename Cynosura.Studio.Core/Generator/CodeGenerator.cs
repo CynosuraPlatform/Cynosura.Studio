@@ -414,13 +414,19 @@ namespace Cynosura.Studio.Core.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Entity)))
             {
-                if (CheckFileTargets(template.Targets, newEntity.Properties))
+                var oldExists = CheckFileTargets(template.Targets, oldEntity.Properties);
+                var newExists = CheckFileTargets(template.Targets, newEntity.Properties);
+                if (oldExists && newExists)
                 {
                     await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
                 }
-                else
+                else if (oldExists)
                 {
                     RemoveFile(template, oldEntity, solution);
+                }
+                else if (newExists)
+                {
+                    await CreateFileAsync(template, newModel, solution, newEntity);
                 }
             }
         }
@@ -438,13 +444,19 @@ namespace Cynosura.Studio.Core.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.View)))
             {
-                if (CheckFileTargets(template.Targets, newEntity.Properties))
+                var oldExists = CheckFileTargets(template.Targets, oldEntity.Properties);
+                var newExists = CheckFileTargets(template.Targets, newEntity.Properties);
+                if (oldExists && newExists)
                 {
                     await UpgradeFileAsync(template, oldModel, newModel, solution, oldEntity, newEntity);
                 }
-                else
+                else if (oldExists)
                 {
                     RemoveFile(template, oldEntity, solution);
+                }
+                else if (newExists)
+                {
+                    await CreateFileAsync(template, newModel, solution, newEntity);
                 }
             }
         }
@@ -461,13 +473,19 @@ namespace Cynosura.Studio.Core.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Enum)))
             {
-                if (CheckFileTargets(template.Targets, newEnum.Properties))
+                var oldExists = CheckFileTargets(template.Targets, oldEnum.Properties);
+                var newExists = CheckFileTargets(template.Targets, newEnum.Properties);
+                if (oldExists && newExists)
                 {
                     await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
                 }
-                else
+                else if (oldExists)
                 {
                     RemoveFile(template, oldEnum, solution);
+                }
+                else if (newExists)
+                {
+                    await CreateFileAsync(template, newModel, solution, newEnum);
                 }
             }
         }
@@ -485,7 +503,20 @@ namespace Cynosura.Studio.Core.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.EnumView)))
             {
-                await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+                var oldExists = CheckFileTargets(template.Targets, oldEnum.Properties);
+                var newExists = CheckFileTargets(template.Targets, newEnum.Properties);
+                if (oldExists && newExists)
+                {
+                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
+                }
+                else if (oldExists)
+                {
+                    RemoveFile(template, oldEnum, solution);
+                }
+                else if (newExists)
+                {
+                    await CreateFileAsync(template, newModel, solution, newEnum);
+                }
             }
         }
 
