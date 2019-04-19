@@ -304,7 +304,7 @@ namespace Cynosura.Studio.Core.Generator
                 var destinationTemplate = destinationTemplates.FirstOrDefault(t => t.TemplatePath == sourceTemplate.TemplatePath);
                 if (destinationTemplate == null)
                     continue;
-                if (sourceTemplate.Type == TemplateType.Entity || sourceTemplate.Type == TemplateType.View)
+                if (sourceTemplate.Types.Contains(TemplateType.Entity) || sourceTemplate.Types.Contains(TemplateType.View))
                 {
                     foreach (var sourceEntity in sourceEntities)
                     {
@@ -319,7 +319,7 @@ namespace Cynosura.Studio.Core.Generator
                             renames.Add((sourceFilePath, destinationFilePath));
                     }
                 }
-                else if (sourceTemplate.Type == TemplateType.Enum || sourceTemplate.Type == TemplateType.EnumView)
+                else if (sourceTemplate.Types.Contains(TemplateType.Enum) || sourceTemplate.Types.Contains(TemplateType.EnumView))
                 {
                     foreach (var sourceEnum in sourceEnums)
                     {
@@ -412,8 +412,7 @@ namespace Cynosura.Studio.Core.Generator
             var newModel = new EntityModel(newEntity, solution);
 
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates
-                .Where(t => t.Type == TemplateType.Entity))
+            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Entity)))
             {
                 if (CheckFileTargets(template.Targets, newEntity.Properties))
                 {
@@ -437,7 +436,7 @@ namespace Cynosura.Studio.Core.Generator
             var newModel = new ViewModel(view, newEntity, solution);
 
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.View))
+            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.View)))
             {
                 if (CheckFileTargets(template.Targets, newEntity.Properties))
                 {
@@ -460,7 +459,7 @@ namespace Cynosura.Studio.Core.Generator
             var newModel = new EnumModel(newEnum, solution);
 
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.Enum))
+            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.Enum)))
             {
                 if (CheckFileTargets(template.Targets, newEnum.Properties))
                 {
@@ -484,7 +483,7 @@ namespace Cynosura.Studio.Core.Generator
             var newModel = new EnumViewModel(view, newEnum, solution);
 
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.Type == TemplateType.EnumView))
+            foreach (var template in templates.Where(t => t.Types.Contains(TemplateType.EnumView)))
             {
                 await UpgradeFileAsync(template, oldModel, newModel, solution, oldEnum, newEnum);
             }
@@ -493,8 +492,7 @@ namespace Cynosura.Studio.Core.Generator
         private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, TemplateType type)
         {
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates
-                .Where(t => t.Type == type)
+            foreach (var template in templates.Where(t => t.Types.Contains(type))
                 .Where(w => CheckFileTargets(w.Targets, generationObject.Properties)))
             {
                 await CreateFileAsync(template, model, solution, generationObject);
