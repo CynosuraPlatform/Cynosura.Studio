@@ -33,7 +33,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public Field IdField {
             get
             {
-                var idField = AllFields.FirstOrDefault(f => f.Name == "Id");
+                var idField = AllSystemFields.FirstOrDefault(f => f.Name == "Id");
                 if (idField == null)
                 {
                     idField = new Field()
@@ -56,7 +56,20 @@ namespace Cynosura.Studio.Core.Generator.Models
                 var allFields = new List<Field>();
                 if (BaseEntity != null)
                     allFields.AddRange(BaseEntity.AllFields);
-                allFields.AddRange(Fields);
+                allFields.AddRange(Fields.Where(f => !f.IsSystem));
+                return allFields;
+            }
+        }
+
+        [JsonIgnore]
+        public IList<Field> AllSystemFields
+        {
+            get
+            {
+                var allFields = new List<Field>();
+                if (BaseEntity != null)
+                    allFields.AddRange(BaseEntity.AllSystemFields);
+                allFields.AddRange(Fields.Where(f => f.IsSystem));
                 return allFields;
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -29,6 +29,9 @@ namespace Cynosura.Studio.Core.Entities
 
         [Required()]
         public bool IsRequired { get; set; }
+        
+        [Required()]
+        public bool IsSystem { get; set; }
         
         public Guid? EnumId { get; set; }
 

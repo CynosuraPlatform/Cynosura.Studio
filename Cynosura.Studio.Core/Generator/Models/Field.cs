@@ -19,6 +19,7 @@ namespace Cynosura.Studio.Core.Generator.Models
         public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
         public Guid? EnumId { get; set; }
+        public bool IsSystem { get; set; }
         public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]

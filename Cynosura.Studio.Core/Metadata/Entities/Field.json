@@ -12,7 +12,9 @@
       "type": 0,
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "properties": {}
     },
     {
       "id": "23528c92-f8a8-42f4-8b51-4c6f4bdd7fe1",
@@ -21,7 +23,9 @@
       "type": 0,
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "properties": {}
     },
     {
       "id": "8a5eca27-8b39-42e9-9f7c-5f64656e17c2",
@@ -30,7 +34,9 @@
       "type": 1,
       "size": null,
       "entityId": null,
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "properties": {}
     },
     {
       "id": "ea3a023a-9891-4d95-9257-1b795c68b3a1",
@@ -39,7 +45,9 @@
       "type": null,
       "size": null,
       "entityId": "4018a0cd-b020-4836-a9ef-ba432a553a0f",
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "properties": {}
     },
     {
       "id": "2b843756-acb6-4ee0-95b2-a44507673712",
@@ -48,7 +56,9 @@
       "type": 5,
       "size": null,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "properties": {}
     },
     {
       "id": "cc4344cc-ae56-48cc-9a67-d88ccff5d6f6",
@@ -57,7 +67,21 @@
       "type": null,
       "size": null,
       "entityId": "14c4ab08-5b37-4387-adaa-4effd866c34d",
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "properties": {}
+    },
+    {
+      "id": "5abed89f-4108-47e0-946e-ca81f8356532",
+      "name": "IsSystem",
+      "displayName": "System",
+      "type": 5,
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "properties": {}
     }
-  ]
+  ],
+  "properties": {}
 }
