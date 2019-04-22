@@ -9,7 +9,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
     {
         public Update$model.Entity.Name$Validator()
         {
-$model.Entity.Fields:fieldValidator(); separator="\n"$
+$model.Entity.AllFields:fieldValidator(); separator="\n"$
         }
 
     }

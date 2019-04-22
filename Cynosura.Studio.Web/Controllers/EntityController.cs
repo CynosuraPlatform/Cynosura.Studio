@@ -1,6 +1,8 @@
+﻿using System;
 using System;
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Entities;
 using Cynosura.Studio.Core.Requests.Entities.Models;
 using Cynosura.Studio.Web.Models;
@@ -13,7 +15,7 @@ namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class EntityController : Controller
     {
         private readonly IMediator _mediator;
@@ -23,46 +25,40 @@ namespace Cynosura.Studio.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<EntityModel>> GetEntitiesAsync(int solutionId, int? pageIndex, int? pageSize, EntityFilter filter)
+        [HttpPost("GetEntities")]
+        public async Task<PageModel<EntityModel>> GetEntitiesAsync(int solutionId, [FromBody] GetEntities getEntities)
         {
-            return await _mediator.Send(new GetEntities() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(getEntities);
         }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<EntityModel> GetEntityAsync(int solutionId, Guid id)
+        [HttpPost("GetEntity")]
+        public async Task<EntityModel> GetEntityAsync([FromBody] GetEntity getEntity)
         {
-            return await _mediator.Send(new GetEntity() { SolutionId = solutionId, Id = id});
+            return await _mediator.Send(getEntity);
         }
 
-        [HttpPut("{id:Guid}")]
-        public async Task<StatusViewModel> PutEntityAsync(int solutionId, Guid id, [FromBody] UpdateEntity updateEntity)
+        [HttpPost("UpdateEntity")]
+        public async Task<Unit> UpdateEntityAsync([FromBody] UpdateEntity updateEntity)
         {
-            updateEntity.SolutionId = solutionId;
-            await _mediator.Send(updateEntity);
-            return new StatusViewModel();
+            return await _mediator.Send(updateEntity);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> PostEntityAsync(int solutionId, [FromBody] CreateEntity createEntity)
+        [HttpPost("CreateEntity")]
+        public async Task<CreatedEntity<Guid>> CreateEntityAsync([FromBody] CreateEntity createEntity)
         {
-            createEntity.SolutionId = solutionId;
-            await _mediator.Send(createEntity);
-            return new StatusViewModel();
+            return await _mediator.Send(createEntity);
         }
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<StatusViewModel> DeleteEntityAsync(int solutionId, Guid id)
+        [HttpPost("DeleteEntity")]
+        public async Task<Unit> DeleteEntityAsync([FromBody] DeleteEntity deleteEntity)
         {
-            await _mediator.Send(new DeleteEntity() { SolutionId = solutionId, Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(deleteEntity);
         }
 
-        [HttpPost("{id:Guid}/generate")]
-        public async Task<StatusViewModel> GenerateEntityAsync(int solutionId, Guid id)
+        [HttpPost("GenerateEntity")]
+        public async Task<Unit> GenerateEntityAsync([FromBody] GenerateEntity generateEntity)
         {
-            await _mediator.Send(new GenerateEntity() { SolutionId = solutionId, Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(generateEntity);
         }
     }
 }

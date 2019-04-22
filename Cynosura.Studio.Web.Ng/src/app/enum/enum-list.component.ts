@@ -57,7 +57,8 @@ export class EnumListComponent implements OnInit {
 
     getEnums(): void {
         if (this.solutionId) {
-            this.enumService.getEnums(this.solutionId, this.pageIndex, this.pageSize, this.filter)
+            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.pageIndex, pageSize: this.pageSize,
+                filter: this.filter })
                 .then(content => {
                     this.content = content;
                 })
@@ -72,7 +73,7 @@ export class EnumListComponent implements OnInit {
         this.getEnums();
     }
 
-    edit(id: number): void {
+    edit(id: string): void {
         this.router.navigate([id], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
@@ -80,10 +81,10 @@ export class EnumListComponent implements OnInit {
         this.router.navigate([0], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
     }
 
-    delete(id: number): void {
+    delete(id: string): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.enumService.deleteEnum(this.solutionId, id)
+                this.enumService.deleteEnum({ solutionId: this.solutionId, id })
                     .then(() => {
                         this.getEnums();
                     })

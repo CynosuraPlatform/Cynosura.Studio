@@ -47,7 +47,7 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor {
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.roleService.getRoles().then(roles => this.roles = roles.pageItems);
+        this.roleService.getRoles({}).then(roles => this.roles = roles.pageItems);
     }
 
     registerOnChange(fn) {

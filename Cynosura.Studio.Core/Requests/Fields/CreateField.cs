@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Fields
 {
-    public class CreateField : IRequest<int>
+    public class CreateField : IRequest<CreatedEntity<Guid>>
     {
         public Guid Id { get; set; }
         [DisplayName("Name")]

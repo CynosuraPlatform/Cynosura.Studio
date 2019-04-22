@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using $model.Solution.Namespace$.Core.Infrastructure;
 using MediatR;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
-    public class Create$model.Entity.Name$ : IRequest<$model.Entity.IdField.TypeName$>
+    public class Create$model.Entity.Name$ : IRequest<CreatedEntity<$model.Entity.IdField.TypeName$>\>
     {
-$model.Entity.Fields:field(); separator="\n"$
+$model.Entity.AllFields:field(); separator="\n"$
     }
 }
 

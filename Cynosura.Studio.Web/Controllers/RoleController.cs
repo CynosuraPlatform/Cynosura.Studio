@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Roles;
 using Cynosura.Studio.Core.Requests.Roles.Models;
 using Cynosura.Studio.Web.Models;
@@ -13,7 +14,7 @@ namespace Cynosura.Studio.Web.Controllers
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class RoleController : Controller
     {
         private readonly IMediator _mediator;
@@ -23,37 +24,34 @@ namespace Cynosura.Studio.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<RoleModel>> GetRolesAsync(int? pageIndex, int? pageSize, RoleFilter filter)
+        [HttpPost("GetRoles")]
+        public async Task<PageModel<RoleModel>> GetRolesAsync([FromBody] GetRoles getRoles)
         {
-            return await _mediator.Send(new GetRoles() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(getRoles);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<RoleModel> GetRoleAsync(int id)
+        [HttpPost("GetRole")]
+        public async Task<RoleModel> GetRoleAsync([FromBody] GetRole getRole)
         {
-            return await _mediator.Send(new GetRole() { Id = id });
+            return await _mediator.Send(getRole);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> PutRoleAsync(int id, [FromBody] UpdateRole updateRole)
+        [HttpPost("UpdateRole")]
+        public async Task<Unit> UpdateRoleAsync([FromBody] UpdateRole updateRole)
         {
-            await _mediator.Send(updateRole);
-            return new StatusViewModel();
+            return await _mediator.Send(updateRole);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> PostRoleAsync([FromBody] CreateRole createRole)
+        [HttpPost("CreateRole")]
+        public async Task<CreatedEntity<int>> CreateRoleAsync([FromBody] CreateRole createRole)
         {
-            var id = await _mediator.Send(createRole);
-            return new CreationStatusViewModel(id);
+            return await _mediator.Send(createRole);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<StatusViewModel> DeleteRoleAsync(int id)
+        [HttpPost("DeleteRole")]
+        public async Task<Unit> DeleteRoleAsync([FromBody] DeleteRole deleteRole)
         {
-            await _mediator.Send(new DeleteRole() { Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(deleteRole);
         }
     }
 }

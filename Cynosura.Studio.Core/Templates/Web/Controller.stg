@@ -1,6 +1,8 @@
 main(model) ::= <<
+using System;
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using $model.Solution.Namespace$.Core.Infrastructure;
 using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$;
 using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
 using $model.Solution.Namespace$.Web.Models;
@@ -14,7 +16,7 @@ namespace $model.Solution.Namespace$.Web.Controllers
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class $model.Entity.Name$Controller : Controller
     {
         private readonly IMediator _mediator;
@@ -24,37 +26,34 @@ namespace $model.Solution.Namespace$.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<$model.Entity.Name$Model>\> Get$model.Entity.PluralName$Async(int? pageIndex, int? pageSize, $model.Entity.Name$Filter filter)
+        [HttpPost("Get$model.Entity.PluralName$")]
+        public async Task<PageModel<$model.Entity.Name$Model>\> Get$model.Entity.PluralName$Async([FromBody] Get$model.Entity.PluralName$ get$model.Entity.PluralName$)
         {
-            return await _mediator.Send(new Get$model.Entity.PluralName$() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(get$model.Entity.PluralName$);
         }
 
-        [HttpGet("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
-        public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$)
+        [HttpPost("Get$model.Entity.Name$")]
+        public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async([FromBody] Get$model.Entity.Name$ get$model.Entity.Name$)
         {
-            return await _mediator.Send(new Get$model.Entity.Name$() { $model.Entity.IdField.Name$ = $model.Entity.IdField.NameLower$ });
+            return await _mediator.Send(get$model.Entity.Name$);
         }
 
-        [HttpPut("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
-        public async Task<StatusViewModel> Put$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$, [FromBody] Update$model.Entity.Name$ update$model.Entity.Name$)
+        [HttpPost("Update$model.Entity.Name$")]
+        public async Task<Unit> Update$model.Entity.Name$Async([FromBody] Update$model.Entity.Name$ update$model.Entity.Name$)
         {
-            await _mediator.Send(update$model.Entity.Name$);
-            return new StatusViewModel();
+            return await _mediator.Send(update$model.Entity.Name$);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> Post$model.Entity.Name$Async([FromBody] Create$model.Entity.Name$ create$model.Entity.Name$)
+        [HttpPost("Create$model.Entity.Name$")]
+        public async Task<CreatedEntity<$model.Entity.IdField.TypeName$>\> Create$model.Entity.Name$Async([FromBody] Create$model.Entity.Name$ create$model.Entity.Name$)
         {
-            var $model.Entity.IdField.NameLower$ = await _mediator.Send(create$model.Entity.Name$);
-            return new CreationStatusViewModel($model.Entity.IdField.NameLower$);
+            return await _mediator.Send(create$model.Entity.Name$);
         }
 
-        [HttpDelete("{$model.Entity.IdField.NameLower$:$model.Entity.IdField.TypeName$}")]
-        public async Task<StatusViewModel> Delete$model.Entity.Name$Async($model.Entity.IdField.TypeName$ $model.Entity.IdField.NameLower$)
+        [HttpPost("Delete$model.Entity.Name$")]
+        public async Task<Unit> Delete$model.Entity.Name$Async([FromBody] Delete$model.Entity.Name$ delete$model.Entity.Name$)
         {
-            await _mediator.Send(new Delete$model.Entity.Name$() { $model.Entity.IdField.Name$ = $model.Entity.IdField.NameLower$ });
-            return new StatusViewModel();
+            return await _mediator.Send(delete$model.Entity.Name$);
         }
     }
 }

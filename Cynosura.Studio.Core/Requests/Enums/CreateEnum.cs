@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
-    public class CreateEnum : IRequest<Guid>
+    public class CreateEnum : IRequest<CreatedEntity<Guid>>
     {
         public int SolutionId { get; set; }
         [DisplayName("Name")]

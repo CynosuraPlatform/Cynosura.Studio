@@ -27,11 +27,8 @@ namespace Cynosura.Studio.Core.Requests.Users
         public async Task<PageModel<UserModel>> Handle(GetUsers request, CancellationToken cancellationToken)
         {
             IQueryable<User> query = _userManager.Users;
-            if (!string.IsNullOrEmpty(request.Filter?.Text))
-            {
-                query = query.Where(e => e.UserName.Contains(request.Filter.Text) || e.Email.Contains(request.Filter.Text));
-            }
-            query = query.OrderBy(e => e.Id);
+            query = query.Filter(request.Filter);
+            query = query.OrderBy(request.OrderBy, request.OrderDirection);
             var users = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
             return users.Map<User, UserModel>(_mapper);
         }

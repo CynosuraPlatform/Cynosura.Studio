@@ -31,7 +31,7 @@ export class RoleEditComponent implements OnInit {
         if (id === 0) {
             this.role = new Role();
         } else {
-            this.roleService.getRole(id).then(role => {
+            this.roleService.getRole({ id }).then(role => {
                 this.role = role;
             });
         }

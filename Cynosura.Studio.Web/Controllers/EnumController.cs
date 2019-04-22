@@ -1,6 +1,8 @@
+﻿using System;
 using System;
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Enums;
 using Cynosura.Studio.Core.Requests.Enums.Models;
 using Cynosura.Studio.Web.Models;
@@ -13,7 +15,7 @@ namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class EnumController : Controller
     {
         private readonly IMediator _mediator;
@@ -23,46 +25,40 @@ namespace Cynosura.Studio.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<EnumModel>> GetEnumsAsync(int solutionId, int? pageIndex, int? pageSize, EnumFilter filter)
+        [HttpPost("GetEnums")]
+        public async Task<PageModel<EnumModel>> GetEnumsAsync([FromBody] GetEnums getEnums)
         {
-            return await _mediator.Send(new GetEnums() { SolutionId = solutionId, PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(getEnums);
         }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<EnumModel> GetEnumAsync(int solutionId, Guid id)
+        [HttpPost("GetEnum")]
+        public async Task<EnumModel> GetEnumAsync([FromBody] GetEnum getEnum)
         {
-            return await _mediator.Send(new GetEnum() { SolutionId = solutionId, Id = id });
+            return await _mediator.Send(getEnum);
         }
 
-        [HttpPut("{id:Guid}")]
-        public async Task<StatusViewModel> PutEnumAsync(int solutionId, Guid id, [FromBody] UpdateEnum updateEnum)
+        [HttpPost("UpdateEnum")]
+        public async Task<Unit> UpdateEnumAsync([FromBody] UpdateEnum updateEnum)
         {
-            updateEnum.SolutionId = solutionId;
-            await _mediator.Send(updateEnum);
-            return new StatusViewModel();
+            return await _mediator.Send(updateEnum);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> PostEnumAsync(int solutionId, [FromBody] CreateEnum createEnum)
+        [HttpPost("CreateEnum")]
+        public async Task<CreatedEntity<Guid>> CreateEnumAsync([FromBody] CreateEnum createEnum)
         {
-            createEnum.SolutionId = solutionId;
-            await _mediator.Send(createEnum);
-            return new StatusViewModel();
+            return await _mediator.Send(createEnum);
         }
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<StatusViewModel> DeleteEnumAsync(int solutionId, Guid id)
+        [HttpPost("DeleteEnum")]
+        public async Task<Unit> DeleteEnumAsync([FromBody] DeleteEnum deleteEnum)
         {
-            await _mediator.Send(new DeleteEnum() { SolutionId = solutionId, Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(deleteEnum);
         }
 
-        [HttpPost("{id:Guid}/generate")]
-        public async Task<StatusViewModel> GenerateEnumAsync(int solutionId, Guid id)
+        [HttpPost("GenerateEnum")]
+        public async Task<Unit> GenerateEnumAsync([FromBody] GenerateEnum generateEnum)
         {
-            await _mediator.Send(new GenerateEnum() { SolutionId = solutionId, Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(generateEnum);
         }
     }
 }

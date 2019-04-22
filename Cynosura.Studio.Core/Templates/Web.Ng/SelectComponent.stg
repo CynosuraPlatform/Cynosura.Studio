@@ -23,7 +23,7 @@ export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueA
     $model.Entity.PluralNameLower$: $model.Entity.Name$[] = [];
 
     @Input()
-    value: number | null = null;
+    value: $model.Entity.IdField.JsTypeName$ | null = null;
 
     get innerValue() {
         return this.value;
@@ -48,7 +48,7 @@ export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueA
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$().then($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({}).then($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
     }
 
     registerOnChange(fn) {

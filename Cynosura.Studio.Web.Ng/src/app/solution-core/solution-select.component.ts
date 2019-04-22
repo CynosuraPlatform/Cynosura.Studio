@@ -47,7 +47,7 @@ export class SolutionSelectComponent implements OnInit, ControlValueAccessor {
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.solutionService.getSolutions().then(solutions => this.solutions = solutions.pageItems);
+        this.solutionService.getSolutions({}).then(solutions => this.solutions = solutions.pageItems);
     }
 
     registerOnChange(fn) {

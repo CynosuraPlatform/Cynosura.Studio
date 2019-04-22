@@ -1,4 +1,5 @@
-using Cynosura.Core.Services.Models;
+﻿using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Entities.Models;
 using MediatR;
 
@@ -10,6 +11,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
 
-        public EntityFilter Filter { get; set; }
+        public Models.EntityFilter Filter { get; set; }
+        public string OrderBy { get; set; }
+        public OrderDirection? OrderDirection { get; set; }
     }
 }

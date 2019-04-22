@@ -4,60 +4,67 @@
   "pluralName": "Entities",
   "displayName": "Entity",
   "pluralDisplayName": "Entities",
+  "isAbstract": false,
+  "baseEntityId": null,
   "fields": [
     {
       "id": "b93a0431-5082-4c9c-8b04-a2f1a644fd47",
       "name": "Name",
       "displayName": "Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
       "isRequired": true,
       "enumId": null,
+      "isSystem": false,
       "properties": {}
     },
     {
       "id": "0dd563b2-08a6-4941-b0da-bddbdccb57ec",
       "name": "PluralName",
       "displayName": "Plural Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
       "isRequired": true,
       "enumId": null,
+      "isSystem": false,
       "properties": {}
     },
     {
       "id": "f5f22299-df61-42a7-989a-62a531bf8e79",
       "name": "DisplayName",
       "displayName": "Display Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
       "isRequired": true,
       "enumId": null,
+      "isSystem": false,
       "properties": {}
     },
     {
       "id": "f4838e81-4b8e-4bd0-8565-68f0d494145a",
       "name": "PluralDisplayName",
       "displayName": "Plural Display Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
       "isRequired": true,
       "enumId": null,
+      "isSystem": false,
       "properties": {}
     },
     {
       "id": "5dc8fa0c-9ecb-4980-95f0-e2776050ab2d",
       "name": "IsAbstract",
       "displayName": "Abstract",
-      "type": 5,
+      "type": "Boolean",
       "size": null,
       "entityId": null,
       "isRequired": true,
       "enumId": null,
+      "isSystem": false,
       "properties": {}
     },
     {
@@ -69,6 +76,19 @@
       "entityId": "4018a0cd-b020-4836-a9ef-ba432a553a0f",
       "isRequired": false,
       "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    },
+    {
+      "id": "160f03d2-1478-472d-88b7-fd905bdbc313",
+      "name": "Id",
+      "displayName": "Id",
+      "type": "Guid",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": true,
       "properties": {}
     }
   ],

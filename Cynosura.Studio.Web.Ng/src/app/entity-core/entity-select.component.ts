@@ -25,7 +25,7 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor {
     solutionId: number;
 
     @Input()
-    value: number | null = null;
+    value: string | null = null;
 
     get innerValue() {
         return this.value;
@@ -50,7 +50,7 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor {
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.entityService.getEntities(this.solutionId).then(entities => this.entities = entities.pageItems);
+        this.entityService.getEntities({ solutionId: this.solutionId }).then(entities => this.entities = entities.pageItems);
     }
 
     registerOnChange(fn) {

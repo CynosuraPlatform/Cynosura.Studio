@@ -44,7 +44,7 @@ export class RoleListComponent implements OnInit {
     }
 
     getRoles(): void {
-        this.roleService.getRoles(this.pageIndex, this.pageSize, this.filter)
+        this.roleService.getRoles({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
             .then(content => {
                 this.content = content;
             })
@@ -67,7 +67,7 @@ export class RoleListComponent implements OnInit {
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.roleService.deleteRole(id)
+                this.roleService.deleteRole({ id })
                     .then(() => {
                         this.getRoles();
                     })

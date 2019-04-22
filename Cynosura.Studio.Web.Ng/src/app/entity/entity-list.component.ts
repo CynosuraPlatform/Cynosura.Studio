@@ -57,7 +57,8 @@ export class EntityListComponent implements OnInit {
 
     getEntities(): void {
         if (this.solutionId) {
-            this.entityService.getEntities(this.solutionId, this.pageIndex, this.pageSize, this.filter)
+            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.pageIndex, pageSize: this.pageSize,
+                filter: this.filter })
                 .then(content => {
                     this.content = content;
                 })
@@ -83,7 +84,7 @@ export class EntityListComponent implements OnInit {
     delete(id: string): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.entityService.deleteEntity(this.solutionId, id)
+                this.entityService.deleteEntity({ solutionId: this.solutionId, id })
                     .then(() => {
                         this.getEntities();
                     })

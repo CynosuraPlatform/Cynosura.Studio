@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
-    public class CreateEntity : IRequest<Guid>
+    public class CreateEntity : IRequest<CreatedEntity<Guid>>
     {
         public int SolutionId { get; set; }
         [DisplayName("Name")]

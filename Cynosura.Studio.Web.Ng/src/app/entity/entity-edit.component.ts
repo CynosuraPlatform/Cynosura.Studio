@@ -23,17 +23,17 @@ export class EntityEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const id = params.id;
+            const id: string = params.id === "0" ? null : params.id;
             this.solutionId = this.route.snapshot.queryParams.solutionId;
             this.getEntity(id);
         });
     }
 
     private getEntity(id: string): void {
-        if (id === "0") {
+        if (!id) {
             this.entity = new Entity();
         } else {
-            this.entityService.getEntity(this.solutionId, id).then(entity => {
+            this.entityService.getEntity({ solutionId: this.solutionId, id }).then(entity => {
                 this.entity = entity;
             });
         }
@@ -49,13 +49,13 @@ export class EntityEditComponent implements OnInit {
 
     private saveEntity(): void {
         if (this.entity.id) {
-            this.entityService.updateEntity(this.solutionId, this.entity)
+            this.entityService.updateEntity({ ...this.entity, solutionId: this.solutionId })
                 .then(
                     () => window.history.back(),
                     error => this.error = error
                 );
         } else {
-            this.entityService.createEntity(this.solutionId, this.entity)
+            this.entityService.createEntity({ ...this.entity, solutionId: this.solutionId })
                 .then(
                     () => window.history.back(),
                     error => this.error = error
@@ -64,7 +64,7 @@ export class EntityEditComponent implements OnInit {
     }
 
     generate(): void {
-        this.entityService.generateEntity(this.solutionId, this.entity.id)
+        this.entityService.generateEntity({ solutionId: this.solutionId, id: this.entity.id })
             .then(
                 () => { },
                 error => this.error = error

@@ -22,16 +22,16 @@ export class SolutionEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const id = +params.id;
+            const id: number = params.id === "0" ? null : params.id;
             this.getSolution(id);
         });
     }
 
     private getSolution(id: number): void {
-        if (id === 0) {
+        if (!id) {
             this.solution = new Solution();
         } else {
-            this.solutionService.getSolution(id).then(solution => {
+            this.solutionService.getSolution({ id }).then(solution => {
                 this.solution = solution;
             });
         }
@@ -63,7 +63,7 @@ export class SolutionEditComponent implements OnInit {
 
     generate(): void {
         this.error = null;
-        this.solutionService.generateSolution(this.solution.id)
+        this.solutionService.generateSolution({ id: this.solution.id })
             .then(
                 () => {},
                 error => this.error = error
@@ -72,7 +72,7 @@ export class SolutionEditComponent implements OnInit {
 
     upgrade(): void {
         this.error = null;
-        this.solutionService.upgradeSolution(this.solution.id)
+        this.solutionService.upgradeSolution({ id: this.solution.id })
             .then(
                 () => { },
                 error => this.error = error

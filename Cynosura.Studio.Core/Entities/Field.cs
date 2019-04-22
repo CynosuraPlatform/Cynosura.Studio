@@ -6,10 +6,8 @@ using Cynosura.Studio.Core.Generator.Models;
 
 namespace Cynosura.Studio.Core.Entities
 {
-    public class Field : BaseEntity
+    public class Field
     {
-        public Guid Id { get; set; }
-
         [Required()]
         [StringLength(100)]
         public string Name { get; set; }
@@ -32,6 +30,9 @@ namespace Cynosura.Studio.Core.Entities
         
         [Required()]
         public bool IsSystem { get; set; }
+        
+        [Required()]
+        public Guid Id { get; set; }
         
         public Guid? EnumId { get; set; }
 

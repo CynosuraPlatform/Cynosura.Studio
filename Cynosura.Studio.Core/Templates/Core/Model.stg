@@ -6,9 +6,9 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Mod
 {
     public class $model.Entity.Name$Model
     {
-        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
+$model.Entity.AllSystemFields:field(); separator="\n"$
 
-$model.Entity.Fields:field(); separator="\n"$
+$model.Entity.AllFields:field(); separator="\n"$
     }
 }
 

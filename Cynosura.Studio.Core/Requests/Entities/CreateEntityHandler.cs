@@ -1,17 +1,19 @@
 ﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
-    public class CreateEntityHandler : IRequestHandler<CreateEntity, Guid>
+    public class CreateEntityHandler : IRequestHandler<CreateEntity, CreatedEntity<Guid>>
     {
         private readonly CodeGenerator _codeGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
@@ -26,7 +28,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(CreateEntity request, CancellationToken cancellationToken)
+        public async Task<CreatedEntity<Guid>> Handle(CreateEntity request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -40,7 +42,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .First(e => e.Id == entity.Id);
             await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
             await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
-            return entity.Id;
+            return new CreatedEntity<Guid>() { Id = entity.Id };
         }
 
     }

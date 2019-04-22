@@ -2,77 +2,60 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 
 import { ConfigService } from "../config/config.service";
+import { CreatedEntity } from "../core/models/created-entity.model";
 import { Solution } from "./solution.model";
+import { GetSolutions, GetSolution, UpdateSolution, CreateSolution, DeleteSolution,
+         GenerateSolution, UpgradeSolution } from "./solution-request.model";
 import { SolutionFilter } from "./solution-filter.model";
 import { Page } from "../core/page.model";
 
 @Injectable()
 export class SolutionService {
-    private solutionUrl = this.configService.config.apiBaseUrl + "/api/solution";
+    private apiUrl = this.configService.config.apiBaseUrl + "/api";
     private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    getSolutions(pageIndex?: number, pageSize?: number, filter?: SolutionFilter): Promise<Page<Solution>> {
-        const url = this.solutionUrl;
-
-        let params = new HttpParams();
-
-        if (pageIndex !== undefined && pageIndex !== null) {
-            params = params.set("pageIndex", pageIndex.toString());
-        }
-
-        if (pageSize !== undefined && pageSize !== null) {
-            params = params.set("pageSize", pageSize.toString());
-        }
-
-        if (filter) {
-            params = Object.keys(filter).reduce((prev, cur) => {
-                if (filter[cur] !== undefined && filter[cur] !== null) {
-                    prev = prev.set(`filter.${cur}`, filter[cur]);
-                }
-                return prev;
-            }, params);
-        }
-
-        return this.httpClient.get<Page<Solution>>(url, {
-            params: params
-        }).toPromise();
-    }
-
-    getSolution(id: number): Promise<Solution> {
-        const url = `${this.solutionUrl}/${id}`;
-        return this.httpClient.get<Solution>(url)
+    getSolutions(getSolutions: GetSolutions): Promise<Page<Solution>> {
+        const url = `${this.apiUrl}/GetSolutions`;
+        return this.httpClient.post<Page<Solution>>(url, JSON.stringify(getSolutions), { headers: this.headers })
             .toPromise();
     }
 
-    updateSolution(solution: Solution): Promise<Solution> {
-        const url = `${this.solutionUrl}/${solution.id}`;
-        return this.httpClient.put<Solution>(url, JSON.stringify(solution), { headers: this.headers })
+    getSolution(getSolution: GetSolution): Promise<Solution> {
+        const url = `${this.apiUrl}/GetSolution`;
+        return this.httpClient.post<Solution>(url, JSON.stringify(getSolution), { headers: this.headers })
             .toPromise();
     }
 
-    createSolution(solution: Solution): Promise<Solution> {
-        return this.httpClient.post<Solution>(this.solutionUrl, JSON.stringify(solution), { headers: this.headers })
+    updateSolution(updateSolution: UpdateSolution): Promise<{}> {
+        const url = `${this.apiUrl}/UpdateSolution`;
+        return this.httpClient.post(url, JSON.stringify(updateSolution), { headers: this.headers })
             .toPromise();
     }
 
-    deleteSolution(id: number): Promise<{}> {
-        const url = `${this.solutionUrl}/${id}`;
-        return this.httpClient.delete(url)
+    createSolution(createSolution: CreateSolution): Promise<CreatedEntity<number>> {
+        const url = `${this.apiUrl}/CreateSolution`;
+        return this.httpClient.post<CreatedEntity<number>>(url, JSON.stringify(createSolution), { headers: this.headers })
+            .toPromise();
+    }
+
+    deleteSolution(deleteSolution: DeleteSolution): Promise<{}> {
+        const url = `${this.apiUrl}/DeleteSolution`;
+        return this.httpClient.post(url, JSON.stringify(deleteSolution), { headers: this.headers })
             .toPromise();
     }
 
 
-    generateSolution(id: number): Promise<{}> {
-        const url = `${this.solutionUrl}/${id}/generate`;
-        return this.httpClient.post(url, null)
+    generateSolution(generateSolution: GenerateSolution): Promise<{}> {
+        const url = `${this.apiUrl}/GenerateSolution`;
+        return this.httpClient.post(url, JSON.stringify(generateSolution), { headers: this.headers })
             .toPromise();
     }
 
-    upgradeSolution(id: number): Promise<{}> {
-        const url = `${this.solutionUrl}/${id}/upgrade`;
-        return this.httpClient.post(url, null)
+    upgradeSolution(upgradeSolution: UpgradeSolution): Promise<{}> {
+        const url = `${this.apiUrl}/UpgradeSolution`;
+        return this.httpClient.post(url, JSON.stringify(upgradeSolution), { headers: this.headers })
             .toPromise();
     }
 }

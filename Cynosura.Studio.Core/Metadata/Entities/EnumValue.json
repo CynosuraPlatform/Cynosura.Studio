@@ -4,33 +4,44 @@
   "pluralName": "EnumValues",
   "displayName": "Enum Value",
   "pluralDisplayName": "Enum Values",
+  "isAbstract": false,
+  "baseEntityId": null,
   "fields": [
     {
       "id": "7ad2e415-ffff-440f-83a8-fb88f1e6a43e",
       "name": "Name",
       "displayName": "Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "df9be3e4-cf88-4024-bc57-c639f35e611e",
       "name": "DisplayName",
       "displayName": "Display Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "42c96f1e-35b8-498f-82b3-a3d6dd83e95b",
       "name": "Value",
       "displayName": "Value",
-      "type": 1,
+      "type": "Int32",
       "size": null,
       "entityId": null,
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "0c519796-6268-4086-aa10-409450adb340",
@@ -39,7 +50,23 @@
       "type": null,
       "size": null,
       "entityId": "14c4ab08-5b37-4387-adaa-4effd866c34d",
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    },
+    {
+      "id": "211b29c4-221b-4fd5-8cf7-a5c6970a39bc",
+      "name": "Id",
+      "displayName": "Id",
+      "type": "Guid",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": true,
+      "properties": {}
     }
-  ]
+  ],
+  "properties": {}
 }

@@ -23,16 +23,16 @@ export class $model.Entity.Name$EditComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const id = +params.id;
+            const id: $model.Entity.IdField.JsTypeName$ = params.id === "0" ? null : params.id;
             this.get$model.Entity.Name$(id);
         });
     }
 
     private get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$): void {
-        if (id === 0) {
+        if (!id) {
             this.$model.Entity.NameLower$ = new $model.Entity.Name$();
         } else {
-            this.$model.Entity.NameLower$Service.get$model.Entity.Name$(id).then($model.Entity.NameLower$ => {
+            this.$model.Entity.NameLower$Service.get$model.Entity.Name$({ id }).then($model.Entity.NameLower$ => {
                 this.$model.Entity.NameLower$ = $model.Entity.NameLower$;
             });
         }

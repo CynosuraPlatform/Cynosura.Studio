@@ -4,24 +4,45 @@
   "pluralName": "Enums",
   "displayName": "Enum",
   "pluralDisplayName": "Enums",
+  "isAbstract": false,
+  "baseEntityId": null,
   "fields": [
     {
       "id": "eb1a071e-485e-4d35-b1a0-a210ecce5f7c",
       "name": "Name",
       "displayName": "Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "78d4e455-79a9-4818-9a52-5dbd03855b37",
       "name": "DisplayName",
       "displayName": "Display Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    },
+    {
+      "id": "2fd2ff0b-138b-4495-8c47-b2c02e0ec7f1",
+      "name": "Id",
+      "displayName": "Id",
+      "type": "Guid",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": true,
+      "properties": {}
     }
-  ]
+  ],
+  "properties": {}
 }
