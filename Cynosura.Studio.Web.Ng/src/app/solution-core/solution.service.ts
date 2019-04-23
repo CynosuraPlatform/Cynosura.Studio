@@ -60,7 +60,7 @@ export class SolutionService {
     }
 
     openSolution(solution: Solution): Promise<Solution> {
-        const url = `${this.solutionUrl}/open`;
+        const url = `${this.apiUrl}/OpenSolution`;
         return this.httpClient.post<Solution>(url, JSON.stringify(solution), { headers: this.headers })
             .toPromise();
     }
