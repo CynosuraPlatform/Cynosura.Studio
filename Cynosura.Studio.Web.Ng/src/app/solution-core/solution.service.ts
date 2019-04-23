@@ -58,4 +58,10 @@ export class SolutionService {
         return this.httpClient.post(url, JSON.stringify(upgradeSolution), { headers: this.headers })
             .toPromise();
     }
+
+    openSolution(solution: Solution): Promise<Solution> {
+        const url = `${this.apiUrl}/OpenSolution`;
+        return this.httpClient.post<Solution>(url, JSON.stringify(solution), { headers: this.headers })
+            .toPromise();
+    }
 }

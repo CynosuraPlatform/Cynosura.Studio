@@ -19,6 +19,7 @@ export class SolutionListComponent implements OnInit {
     error: Error;
     pageSize = 10;
     filter = new SolutionFilter();
+    openLocation: string;
     private innerPageIndex: number;
     get pageIndex(): number {
         if (!this.innerPageIndex) {
@@ -37,7 +38,7 @@ export class SolutionListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService
-        ) {}
+    ) { }
 
     ngOnInit(): void {
         this.getSolutions();
@@ -79,5 +80,14 @@ export class SolutionListComponent implements OnInit {
     onPageSelected(pageIndex: number) {
         this.pageIndex = pageIndex;
         this.getSolutions();
+    }
+
+    open() {
+        const solution = {
+            path: this.openLocation
+        } as Solution;
+        this.solutionService.openSolution(solution)
+            .then((result) => this.edit(result.id))
+            .catch((error) => console.log(this.error = error));
     }
 }

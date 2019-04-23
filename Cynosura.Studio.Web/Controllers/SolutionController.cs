@@ -65,5 +65,12 @@ namespace Cynosura.Studio.Web.Controllers
         {
             return await _mediator.Send(upgradeSolution);
         }
+
+        [HttpPost("OpenSolution")]
+        public async Task<StatusViewModel> OpenSolutionAsync([FromBody] OpenSolution createSolution)
+        {
+            var id = await _mediator.Send(createSolution);
+            return new CreationStatusViewModel(id);
+        }
     }
 }

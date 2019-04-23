@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
@@ -12,6 +12,7 @@ namespace Cynosura.Studio.Core.AutoMapper
             CreateMap<Solution, SolutionModel>();
             CreateMap<CreateSolution, Solution>();
             CreateMap<UpdateSolution, Solution>();
+            CreateMap<OpenSolution, Solution>();
         }
     }
 }
