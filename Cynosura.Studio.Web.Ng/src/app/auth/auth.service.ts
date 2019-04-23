@@ -4,10 +4,13 @@ import { throwError as observableThrowError, Observable, BehaviorSubject, of } f
 import { filter, map, tap, first, flatMap, catchError } from "rxjs/operators";
 
 import { ConfigService } from "../config/config.service";
+import { CustomEncoder } from "./custom-encoder";
 import { AuthStateModel } from "./auth-state.model";
 import { AuthTokenModel } from "./auth-tokens.model";
 import { LoginModel } from "./login.model";
 import { RefreshGrantModel } from "./refresh-grant.model";
+import { User } from "./user.model";
+import * as decode from "jwt-decode";
 
 @Injectable()
 export class AuthService {
@@ -17,6 +20,7 @@ export class AuthService {
     state$: Observable<AuthStateModel>;
     tokens$: Observable<AuthTokenModel>;
     loggedIn$: Observable<boolean>;
+    currentUser$: Observable<User>;
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) {
         this.state = new BehaviorSubject<AuthStateModel>(this.initalState);
@@ -25,6 +29,7 @@ export class AuthService {
         this.tokens$ = this.state.pipe(filter((state: AuthStateModel) => state.authReady))
             .pipe(map((state: AuthStateModel) => state.tokens));
         this.loggedIn$ = this.tokens$.pipe(map(tokens => !!tokens));
+        this.currentUser$ = this.tokens$.pipe(map(tokens =>  tokens ? this.getUser(tokens.access_token) : null));
     }
 
     init(): Observable<AuthTokenModel> {
@@ -55,17 +60,32 @@ export class AuthService {
     private getTokens(data: RefreshGrantModel | LoginModel, grantType: string): Observable<any> {
         const headers = new HttpHeaders({ "Content-Type": "application/x-www-form-urlencoded" });
         const options = { headers: headers };
-
-        Object.assign(data, { grant_type: grantType, scope: "openid offline_access" });
-
-        let params = new HttpParams();
-        Object.keys(data)
-            .forEach(key => params = params.set(key, (<any>data)[key]));
+        const sendData = {
+            grant_type: grantType, scope: "openid offline_access",
+            ...data
+        };
+        const params = Object.keys(sendData)
+            .reduce((prev, next) => prev.set(next, sendData[next]), new HttpParams({encoder: new CustomEncoder()}));
         return this.httpClient.post<AuthTokenModel>(`${this.configService.config.apiBaseUrl}/connect/token`, params.toString(), options)
             .pipe(tap((tokens: AuthTokenModel) => {
                 this.storeToken(tokens);
                 this.updateState({ authReady: true, tokens });
             }));
+    }
+
+    private getUser(accessToken: string): User {
+        const decodedToken = decode(accessToken);
+        const user = new User();
+        user.userName = decodedToken.name;
+        if (decodedToken.role instanceof Array) {
+            user.roles = decodedToken.role;
+        } else if (decodedToken.role) {
+            user.roles = [decodedToken.role];
+        } else {
+            user.roles = [];
+        }
+        user.initPermissions();
+        return user;
     }
 
     private storeToken(tokens: AuthTokenModel): void {

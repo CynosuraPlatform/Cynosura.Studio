@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Users;
 using Cynosura.Studio.Core.Requests.Users.Models;
 using Cynosura.Studio.Web.Models;
@@ -13,7 +14,7 @@ namespace Cynosura.Studio.Web.Controllers
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [Authorize(Roles = "Administrator")]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class UserController : Controller
     {
         private readonly IMediator _mediator;
@@ -23,37 +24,34 @@ namespace Cynosura.Studio.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<UserModel>> GetUsersAsync(int? pageIndex, int? pageSize, UserFilter filter)
+        [HttpPost("GetUsers")]
+        public async Task<PageModel<UserModel>> GetUsersAsync([FromBody] GetUsers getUsers)
         {
-            return await _mediator.Send(new GetUsers() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(getUsers);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<UserModel> GetUserAsync(int id)
+        [HttpPost("GetUser")]
+        public async Task<UserModel> GetUserAsync([FromBody] GetUser getUser)
         {
-            return await _mediator.Send(new GetUser() { Id = id });
+            return await _mediator.Send(getUser);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> PutUserAsync(int id, [FromBody] UpdateUser updateUser)
+        [HttpPost("UpdateUser")]
+        public async Task<Unit> UpdateUserAsync([FromBody] UpdateUser updateUser)
         {
-            await _mediator.Send(updateUser);
-            return new StatusViewModel();
+            return await _mediator.Send(updateUser);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> PostUserAsync([FromBody] CreateUser createUser)
+        [HttpPost("CreateUser")]
+        public async Task<CreatedEntity<int>> CreateUserAsync([FromBody] CreateUser createUser)
         {
-            var id = await _mediator.Send(createUser);
-            return new CreationStatusViewModel(id);
+            return await _mediator.Send(createUser);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<StatusViewModel> DeleteUserAsync(int id)
+        [HttpPost("DeleteUser")]
+        public async Task<Unit> DeleteUserAsync([FromBody] DeleteUser deleteUser)
         {
-            await _mediator.Send(new DeleteUser() { Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(deleteUser);
         }
     }
 }

@@ -1,6 +1,7 @@
 main(model) ::= <<
 using Autofac;
 using Cynosura.Core.Data;
+using Cynosura.EF;
 using $model.Solution.Namespace$.Core.Entities;
 
 namespace $model.Solution.Namespace$.Data.Autofac
@@ -9,9 +10,13 @@ namespace $model.Solution.Namespace$.Data.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<BaseEntityRepository<$model.Entity.Name$>\>().As<IEntityRepository<$model.Entity.Name$>\>();
+            builder.RegisterType<$if(model.Entity.BaseEntity)$$model.Entity.BaseEntity:(model.Entity.BaseEntity.Name)()$$else$Entity$endif$Repository<$model.Entity.Name$>\>().As<IEntityRepository<$model.Entity.Name$>\>();
         }
     }
 }
 
+>>
+
+BaseEntity(entity) ::= <<
+BaseEntity
 >>

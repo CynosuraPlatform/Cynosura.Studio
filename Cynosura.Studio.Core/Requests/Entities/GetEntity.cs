@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cynosura.Studio.Core.Requests.Entities.Models;
 using MediatR;
 

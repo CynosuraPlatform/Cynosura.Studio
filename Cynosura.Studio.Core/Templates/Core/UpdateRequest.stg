@@ -11,7 +11,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
     {
         public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
 
-$model.Entity.Fields:field(); separator="\n"$
+$model.Entity.AllFields:field(); separator="\n"$
     }
 }
 

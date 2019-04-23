@@ -47,7 +47,7 @@ export class UserSelectComponent implements OnInit, ControlValueAccessor {
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.userService.getUsers().then(users => this.users = users.pageItems);
+        this.userService.getUsers({}).then(users => this.users = users.pageItems);
     }
 
     registerOnChange(fn) {

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
-    public class CreateEntity : IRequest<Guid>
+    public class CreateEntity : IRequest<CreatedEntity<Guid>>
     {
         public int SolutionId { get; set; }
         [DisplayName("Name")]
@@ -21,5 +21,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public string PluralDisplayName { get; set; }
         public IList<CreateField> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
+        [DisplayName("Abstract")]
+        public bool IsAbstract { get; set; }
+        [DisplayName("Base Entity")]
+        public Guid? BaseEntityId { get; set; }
     }
 }

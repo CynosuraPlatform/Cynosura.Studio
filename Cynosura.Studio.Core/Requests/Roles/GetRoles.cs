@@ -1,4 +1,5 @@
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Roles.Models;
 using MediatR;
 
@@ -10,5 +11,7 @@ namespace Cynosura.Studio.Core.Requests.Roles
         public int? PageSize { get; set; }
 
         public RoleFilter Filter { get; set; }
+        public string OrderBy { get; set; }
+        public OrderDirection? OrderDirection { get; set; }
     }
 }

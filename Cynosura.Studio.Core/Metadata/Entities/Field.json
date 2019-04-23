@@ -4,33 +4,44 @@
   "pluralName": "Fields",
   "displayName": "Field",
   "pluralDisplayName": "Fields",
+  "isAbstract": false,
+  "baseEntityId": null,
   "fields": [
     {
       "id": "cd2d906a-02ab-4aa4-912b-a557252a1a8b",
       "name": "Name",
       "displayName": "Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "23528c92-f8a8-42f4-8b51-4c6f4bdd7fe1",
       "name": "DisplayName",
       "displayName": "Display Name",
-      "type": 0,
+      "type": "String",
       "size": 100,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "8a5eca27-8b39-42e9-9f7c-5f64656e17c2",
       "name": "Size",
       "displayName": "Size",
-      "type": 1,
+      "type": "Int32",
       "size": null,
       "entityId": null,
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "ea3a023a-9891-4d95-9257-1b795c68b3a1",
@@ -39,16 +50,22 @@
       "type": null,
       "size": null,
       "entityId": "4018a0cd-b020-4836-a9ef-ba432a553a0f",
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "2b843756-acb6-4ee0-95b2-a44507673712",
       "name": "IsRequired",
       "displayName": "Required",
-      "type": 5,
+      "type": "Boolean",
       "size": null,
       "entityId": null,
-      "isRequired": true
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
     },
     {
       "id": "cc4344cc-ae56-48cc-9a67-d88ccff5d6f6",
@@ -57,7 +74,35 @@
       "type": null,
       "size": null,
       "entityId": "14c4ab08-5b37-4387-adaa-4effd866c34d",
-      "isRequired": false
+      "isRequired": false,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    },
+    {
+      "id": "5abed89f-4108-47e0-946e-ca81f8356532",
+      "name": "IsSystem",
+      "displayName": "System",
+      "type": "Boolean",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    },
+    {
+      "id": "c52328da-8237-4ae7-b8b6-215262965f0a",
+      "name": "Id",
+      "displayName": "Id",
+      "type": "Guid",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": true,
+      "properties": {}
     }
-  ]
+  ],
+  "properties": {}
 }

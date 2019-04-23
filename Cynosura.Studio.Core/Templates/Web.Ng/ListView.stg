@@ -18,13 +18,13 @@ main(model) ::= <<
 <table *ngIf="content" class="table table-bordered table-striped">
     <thead>
         <tr>
-$model.Entity.Fields:fieldHeader(); separator="\n"$
+$model.Entity.AllFields:fieldHeader(); separator="\n"$
             <th></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let $model.Entity.NameLower$ of content.pageItems">
-$model.Entity.Fields:field(); separator="\n"$
+$model.Entity.AllFields:field(); separator="\n"$
             <td>
                 <button class="btn btn-default" (click)="edit($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Edit</button>
                 <button class="btn btn-default" (click)="delete($model.Entity.NameLower$.$model.Entity.IdField.NameLower$)">Delete</button>

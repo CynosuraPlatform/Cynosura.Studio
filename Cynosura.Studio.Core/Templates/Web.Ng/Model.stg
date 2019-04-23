@@ -2,8 +2,8 @@ main(model) ::= <<
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
 
 export class $model.Entity.Name$ {
-    $model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$;
-$model.Entity.Fields:field(); separator="\n"$
+$model.Entity.AllSystemFields:field(); separator="\n"$
+$model.Entity.AllFields:field(); separator="\n"$
 }
 
 >>
@@ -17,7 +17,7 @@ Type(field) ::= <<
 >>
 
 Entity(field) ::= <<
-    $field.NameLower$Id: number;
+    $field.NameLower$$field.Entity.IdField.Name$: $field.Entity.IdField.JsTypeName$;
 >>
 
 Enum(field) ::= <<

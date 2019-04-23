@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Cynosura.Studio.Core.Infrastructure;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Cynosura.Studio.Core.Generator.Models
 {
@@ -12,11 +13,13 @@ namespace Cynosura.Studio.Core.Generator.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public FieldType? Type { get; set; }
         public int? Size { get; set; }
         public Guid? EntityId { get; set; }
         public bool IsRequired { get; set; }
         public Guid? EnumId { get; set; }
+        public bool IsSystem { get; set; }
         public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]

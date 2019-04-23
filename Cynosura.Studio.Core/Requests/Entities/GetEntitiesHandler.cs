@@ -34,9 +34,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
             var entities = await solutionAccessor.GetEntitiesAsync();
             if (!string.IsNullOrEmpty(request.Filter?.Text))
             {
-                entities = entities.Where(e => e.Name.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
-                                               e.PluralName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
-                                               e.DisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) || 
+                entities = entities.Where(e => e.Name.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) ||
+                                               e.PluralName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) ||
+                                               e.DisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase) ||
                                                e.PluralDisplayName.Contains(request.Filter.Text, StringComparison.CurrentCultureIgnoreCase)).ToList();
             }
             return entities.ToPagedList(request.PageIndex, request.PageSize)

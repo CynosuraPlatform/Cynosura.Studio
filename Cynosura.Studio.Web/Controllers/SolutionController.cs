@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Solutions;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
 using Cynosura.Studio.Web.Models;
@@ -12,7 +14,7 @@ namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
     [ValidateModel]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class SolutionController : Controller
     {
         private readonly IMediator _mediator;
@@ -22,51 +24,46 @@ namespace Cynosura.Studio.Web.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<PageModel<SolutionModel>> GetSolutionsAsync(int? pageIndex, int? pageSize, SolutionFilter filter)
+        [HttpPost("GetSolutions")]
+        public async Task<PageModel<SolutionModel>> GetSolutionsAsync([FromBody] GetSolutions getSolutions)
         {
-            return await _mediator.Send(new GetSolutions() { PageIndex = pageIndex, PageSize = pageSize, Filter = filter });
+            return await _mediator.Send(getSolutions);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<SolutionModel> GetSolutionAsync(int id)
+        [HttpPost("GetSolution")]
+        public async Task<SolutionModel> GetSolutionAsync([FromBody] GetSolution getSolution)
         {
-            return await _mediator.Send(new GetSolution() { Id = id });
+            return await _mediator.Send(getSolution);
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<StatusViewModel> PutSolutionAsync(int id, [FromBody] UpdateSolution updateSolution)
+        [HttpPost("UpdateSolution")]
+        public async Task<Unit> UpdateSolutionAsync([FromBody] UpdateSolution updateSolution)
         {
-            await _mediator.Send(updateSolution);
-            return new StatusViewModel();
+            return await _mediator.Send(updateSolution);
         }
 
-        [HttpPost("")]
-        public async Task<StatusViewModel> PostSolutionAsync([FromBody] CreateSolution createSolution)
+        [HttpPost("CreateSolution")]
+        public async Task<CreatedEntity<int>> CreateSolutionAsync([FromBody] CreateSolution createSolution)
         {
-            var id = await _mediator.Send(createSolution);
-            return new CreationStatusViewModel(id);
+            return await _mediator.Send(createSolution);
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<StatusViewModel> DeleteSolutionAsync(int id)
+        [HttpPost("DeleteSolution")]
+        public async Task<Unit> DeleteSolutionAsync([FromBody] DeleteSolution deleteSolution)
         {
-            await _mediator.Send(new DeleteSolution() { Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(deleteSolution);
         }
 
-        [HttpPost("{id:int}/generate")]
-        public async Task<StatusViewModel> GenerateSolutionAsync(int id)
+        [HttpPost("GenerateSolution")]
+        public async Task<Unit> GenerateSolutionAsync([FromBody] GenerateSolution generateSolution)
         {
-            await _mediator.Send(new GenerateSolution() { Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(generateSolution);
         }
 
-        [HttpPost("{id:int}/upgrade")]
-        public async Task<StatusViewModel> UpgradeSolutionAsync(int id)
+        [HttpPost("UpgradeSolution")]
+        public async Task<Unit> UpgradeSolutionAsync([FromBody] UpgradeSolution upgradeSolution)
         {
-            await _mediator.Send(new UpgradeSolution() { Id = id });
-            return new StatusViewModel();
+            return await _mediator.Send(upgradeSolution);
         }
 
         [HttpPost("open")]

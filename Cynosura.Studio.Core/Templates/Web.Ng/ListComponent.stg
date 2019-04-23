@@ -45,7 +45,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     }
 
     get$model.Entity.PluralName$(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$(this.pageIndex, this.pageSize, this.filter)
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
             .then(content => {
                 this.content = content;
             })
@@ -68,7 +68,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$(id)
+                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ id })
                     .then(() => {
                         this.get$model.Entity.PluralName$();
                     })

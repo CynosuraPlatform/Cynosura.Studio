@@ -23,5 +23,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public string PluralDisplayName { get; set; }
         public IList<UpdateField> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
+        [DisplayName("Abstract")]
+        public bool IsAbstract { get; set; }
+        [DisplayName("Base Entity")]
+        public Guid? BaseEntityId { get; set; }
     }
 }

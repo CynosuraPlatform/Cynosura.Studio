@@ -4,7 +4,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 @Component({
     selector: "app-text-edit",
     templateUrl: "./text.edit.component.html",
-    styleUrls: ["text.edit.component.css"],
+    styleUrls: ["text.edit.component.scss"],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

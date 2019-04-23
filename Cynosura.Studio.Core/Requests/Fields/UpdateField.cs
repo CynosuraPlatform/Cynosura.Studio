@@ -26,5 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Fields
         [DisplayName("Enum")]
         public Guid? EnumId { get; set; }
         public PropertyCollection Properties { get; set; }
+        [DisplayName("System")]
+        public bool IsSystem { get; set; }
     }
 }

@@ -25,7 +25,7 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor {
     solutionId: number;
 
     @Input()
-    value: number | null = null;
+    value: string | null = null;
 
     get innerValue() {
         return this.value;
@@ -50,7 +50,7 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor {
     onTouched: any = () => { };
 
     ngOnInit(): void {
-        this.enumService.getEnums(this.solutionId).then(enums => this.enums = enums.pageItems);
+        this.enumService.getEnums({ solutionId: this.solutionId }).then(enums => this.enums = enums.pageItems);
     }
 
     registerOnChange(fn) {

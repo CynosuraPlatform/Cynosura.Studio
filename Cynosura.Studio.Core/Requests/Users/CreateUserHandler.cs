@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Cynosura.Studio.Core.Requests.Users
 {
-    public class CreateUserHandler : IRequestHandler<CreateUser, int>
+    public class CreateUserHandler : IRequestHandler<CreateUser, CreatedEntity<int>>
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
@@ -21,7 +22,7 @@ namespace Cynosura.Studio.Core.Requests.Users
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateUser request, CancellationToken cancellationToken)
+        public async Task<CreatedEntity<int>> Handle(CreateUser request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<CreateUser, User>(request);
             user.UserName = request.Email;
@@ -37,7 +38,7 @@ namespace Cynosura.Studio.Core.Requests.Users
                     result.CheckIfSucceeded();
                 }
             }
-            return user.Id;
+            return new CreatedEntity<int>() { Id = user.Id };
         }
 
     }

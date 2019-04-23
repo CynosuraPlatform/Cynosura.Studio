@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Fields
 {
-    public class CreateField : IRequest<int>
+    public class CreateField : IRequest<CreatedEntity<Guid>>
     {
         public Guid Id { get; set; }
         [DisplayName("Name")]
@@ -25,5 +25,7 @@ namespace Cynosura.Studio.Core.Requests.Fields
         [DisplayName("Enum")]
         public Guid? EnumId { get; set; }
         public PropertyCollection Properties { get; set; }
+        [DisplayName("System")]
+        public bool IsSystem { get; set; }
     }
 }

@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Cynosura.Studio.Core.Entities
 {
-    public class Entity : BaseEntity
+    public class Entity
     {
-        public Guid Id { get; set; }
-
 		[Required()]
 		[StringLength(100)]
 		public string Name { get; set; }
@@ -28,5 +26,15 @@ namespace Cynosura.Studio.Core.Entities
         public IList<Field> Fields { get; set; }
 
         public Dictionary<string, object> Properties { get; set; }
+        [Required()]
+        public bool IsAbstract { get; set; }
+        
+
+        public Guid? BaseEntityId { get; set; }
+        public Entity BaseEntity { get; set; }
+        
+        [Required()]
+        public Guid Id { get; set; }
+        
     }
 }

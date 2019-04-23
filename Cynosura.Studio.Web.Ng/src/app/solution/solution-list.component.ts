@@ -45,7 +45,7 @@ export class SolutionListComponent implements OnInit {
     }
 
     getSolutions(): void {
-        this.solutionService.getSolutions(this.pageIndex, this.pageSize, this.filter)
+        this.solutionService.getSolutions({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
             .then(content => {
                 this.content = content;
             })
@@ -68,7 +68,7 @@ export class SolutionListComponent implements OnInit {
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.solutionService.deleteSolution(id)
+                this.solutionService.deleteSolution({ id })
                     .then(() => {
                         this.getSolutions();
                     })

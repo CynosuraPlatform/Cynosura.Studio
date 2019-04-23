@@ -1,296 +1,443 @@
 [
   {
-    "FilePath": "*.Core\\Entities",
-    "FileName": "{Name}.cs",
-    "TemplatePath": "Core\\Entity.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Entities",
+    "fileName": "{Name}.cs",
+    "templatePath": "Core\\Entity.stg",
+    "types": [
+      "Entity",
+      "AbstractEntity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Models\\{Name}Model.cs",
-    "TemplatePath": "Core\\Model.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Models\\{Name}Model.cs",
+    "templatePath": "Core\\Model.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Models\\{Name}ShortModel.cs",
-    "TemplatePath": "Core\\ShortModel.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Models\\{Name}ShortModel.cs",
+    "templatePath": "Core\\ShortModel.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Models\\{Name}Filter.cs",
-    "TemplatePath": "Core\\Filter.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Models\\{Name}Filter.cs",
+    "templatePath": "Core\\Filter.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Create{Name}.cs",
-    "TemplatePath": "Core\\CreateRequest.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Create{Name}.cs",
+    "templatePath": "Core\\CreateRequest.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Create{Name}Handler.cs",
-    "TemplatePath": "Core\\CreateRequestHandler.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\{Name}Extensions.cs",
+    "templatePath": "Core\\Extensions.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Create{Name}Validator.cs",
-    "TemplatePath": "Core\\CreateRequestValidator.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Create{Name}Handler.cs",
+    "templatePath": "Core\\CreateRequestHandler.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Delete{Name}.cs",
-    "TemplatePath": "Core\\DeleteRequest.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Create{Name}Validator.cs",
+    "templatePath": "Core\\CreateRequestValidator.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Delete{Name}Handler.cs",
-    "TemplatePath": "Core\\DeleteRequestHandler.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Delete{Name}.cs",
+    "templatePath": "Core\\DeleteRequest.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Get{Name}.cs",
-    "TemplatePath": "Core\\GetRequest.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Delete{Name}Handler.cs",
+    "templatePath": "Core\\DeleteRequestHandler.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Get{Name}Handler.cs",
-    "TemplatePath": "Core\\GetRequestHandler.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Get{Name}.cs",
+    "templatePath": "Core\\GetRequest.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Get{PluralName}.cs",
-    "TemplatePath": "Core\\GetListRequest.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Get{Name}Handler.cs",
+    "templatePath": "Core\\GetRequestHandler.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Get{PluralName}Handler.cs",
-    "TemplatePath": "Core\\GetListRequestHandler.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Get{PluralName}.cs",
+    "templatePath": "Core\\GetListRequest.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Update{Name}.cs",
-    "TemplatePath": "Core\\UpdateRequest.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Get{PluralName}Handler.cs",
+    "templatePath": "Core\\GetListRequestHandler.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Update{Name}Handler.cs",
-    "TemplatePath": "Core\\UpdateRequestHandler.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Update{Name}.cs",
+    "templatePath": "Core\\UpdateRequest.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Requests",
-    "FileName": "{PluralName}\\Update{Name}Validator.cs",
-    "TemplatePath": "Core\\UpdateRequestValidator.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Update{Name}Handler.cs",
+    "templatePath": "Core\\UpdateRequestHandler.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\AutoMapper",
-    "FileName": "{Name}Profile.cs",
-    "TemplatePath": "Core\\AutoMapperProfile.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\Requests",
+    "fileName": "{PluralName}\\Update{Name}Validator.cs",
+    "templatePath": "Core\\UpdateRequestValidator.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Data\\Autofac",
-    "FileName": "{Name}Module.cs",
-    "TemplatePath": "Data\\AutofacModule.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Core\\AutoMapper",
+    "fileName": "{Name}Profile.cs",
+    "templatePath": "Core\\AutoMapperProfile.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Data\\Configurations",
-    "FileName": "{Name}Configuration.cs",
-    "TemplatePath": "Data\\Configuration.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Data\\Autofac",
+    "fileName": "{Name}Module.cs",
+    "templatePath": "Data\\AutofacModule.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web\\Controllers",
-    "FileName": "{Name}Controller.cs",
-    "TemplatePath": "Web\\Controller.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Data\\Configurations",
+    "fileName": "{Name}Configuration.cs",
+    "templatePath": "Data\\Configuration.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web\\Infrastructure\\Menu",
-    "FileName": "{Name}Module.cs",
-    "TemplatePath": "Web\\MenuModule.stg",
-    "Type": 0,
-    "InsertAfter": null
+    "filePath": "*.Web\\Controllers",
+    "fileName": "{Name}Controller.cs",
+    "templatePath": "Web\\Controller.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}.model.ts",
-    "TemplatePath": "Web.Ng\\Model.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}.model.ts",
+    "templatePath": "Web.Ng\\Model.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-filter.model.ts",
-    "TemplatePath": "Web.Ng\\Filter.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-filter.model.ts",
+    "templatePath": "Web.Ng\\Filter.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}.service.ts",
-    "TemplatePath": "Web.Ng\\Service.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-request.model.ts",
+    "templatePath": "Web.Ng\\Request.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-select.component.ts",
-    "TemplatePath": "Web.Ng\\SelectComponent.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}.service.ts",
+    "templatePath": "Web.Ng\\Service.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-select.component.html",
-    "TemplatePath": "Web.Ng\\SelectView.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-select.component.ts",
+    "templatePath": "Web.Ng\\SelectComponent.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-show.component.ts",
-    "TemplatePath": "Web.Ng\\ShowComponent.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-select.component.html",
+    "templatePath": "Web.Ng\\SelectView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-show.component.html",
-    "TemplatePath": "Web.Ng\\ShowView.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-show.component.ts",
+    "templatePath": "Web.Ng\\ShowComponent.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}-core\\{NameKebab}-core.module.ts",
-    "TemplatePath": "Web.Ng\\CoreModule.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-show.component.html",
+    "templatePath": "Web.Ng\\ShowView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-list.component.ts",
-    "TemplatePath": "Web.Ng\\ListComponent.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}-core\\{NameKebab}-core.module.ts",
+    "templatePath": "Web.Ng\\CoreModule.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-list.component.html",
-    "TemplatePath": "Web.Ng\\ListView.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-list.component.ts",
+    "templatePath": "Web.Ng\\ListComponent.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-edit.component.ts",
-    "TemplatePath": "Web.Ng\\EditComponent.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-list.component.html",
+    "templatePath": "Web.Ng\\ListView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-edit.component.html",
-    "TemplatePath": "Web.Ng\\EditView.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-edit.component.ts",
+    "templatePath": "Web.Ng\\EditComponent.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}.module.ts",
-    "TemplatePath": "Web.Ng\\Module.stg",
-    "Type": 1,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-edit.component.html",
+    "templatePath": "Web.Ng\\EditView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "app.module.ts",
-    "TemplatePath": "Web.Ng\\Route.stg",
-    "Type": 1,
-    "InsertAfter": "// ADD ROUTES HERE"
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}.module.ts",
+    "templatePath": "Web.Ng\\Module.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Core\\Enums",
-    "FileName": "{Name}.cs",
-    "TemplatePath": "Core\\Enum.stg",
-    "Type": 2,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "app.module.ts",
+    "templatePath": "Web.Ng\\Route.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": "// ADD ROUTES HERE",
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}.model.ts",
-    "TemplatePath": "Web.Ng\\Enum.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "nav-menu\\menu.service.ts",
+    "templatePath": "Web.Ng\\Menu.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": "// ADD MENU ITEMS HERE",
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-select.component.ts",
-    "TemplatePath": "Web.Ng\\EnumSelectComponent.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Core\\Enums",
+    "fileName": "{Name}.cs",
+    "templatePath": "Core\\Enum.stg",
+    "types": [
+      "Enum"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-select.component.html",
-    "TemplatePath": "Web.Ng\\EnumSelectView.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}.model.ts",
+    "templatePath": "Web.Ng\\Enum.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-view.component.ts",
-    "TemplatePath": "Web.Ng\\EnumViewComponent.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-select.component.ts",
+    "templatePath": "Web.Ng\\EnumSelectComponent.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}-view.component.html",
-    "TemplatePath": "Web.Ng\\EnumViewView.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-select.component.html",
+    "templatePath": "Web.Ng\\EnumSelectView.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
   },
   {
-    "FilePath": "*.Web.Ng\\src\\app",
-    "FileName": "{NameKebab}\\{NameKebab}.module.ts",
-    "TemplatePath": "Web.Ng\\EnumModule.stg",
-    "Type": 3,
-    "InsertAfter": null
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-view.component.ts",
+    "templatePath": "Web.Ng\\EnumViewComponent.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-view.component.html",
+    "templatePath": "Web.Ng\\EnumViewView.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}.module.ts",
+    "templatePath": "Web.Ng\\EnumModule.stg",
+    "types": [
+      "EnumView"
+    ],
+    "insertAfter": null,
+    "targets": []
   }
 ]

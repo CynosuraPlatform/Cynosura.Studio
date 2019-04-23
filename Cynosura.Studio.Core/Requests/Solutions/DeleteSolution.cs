@@ -1,3 +1,4 @@
+using System;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Solutions

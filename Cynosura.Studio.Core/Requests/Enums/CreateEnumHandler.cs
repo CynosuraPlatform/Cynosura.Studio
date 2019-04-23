@@ -1,17 +1,19 @@
 ﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
-    public class CreateEnumHandler : IRequestHandler<CreateEnum, Guid>
+    public class CreateEnumHandler : IRequestHandler<CreateEnum, CreatedEntity<Guid>>
     {
         private readonly CodeGenerator _codeGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
@@ -26,7 +28,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(CreateEnum request, CancellationToken cancellationToken)
+        public async Task<CreatedEntity<Guid>> Handle(CreateEnum request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -40,7 +42,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 .First(e => e.Id == @enum.Id);
             await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
             await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, new Generator.Models.View(), @enum);
-            return @enum.Id;
+            return new CreatedEntity<Guid>() { Id = @enum.Id };
         }
 
     }

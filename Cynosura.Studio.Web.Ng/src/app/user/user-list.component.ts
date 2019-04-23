@@ -44,7 +44,7 @@ export class UserListComponent implements OnInit {
     }
 
     getUsers(): void {
-        this.userService.getUsers(this.pageIndex, this.pageSize, this.filter)
+        this.userService.getUsers({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
             .then(content => {
                 this.content = content;
             })
@@ -67,7 +67,7 @@ export class UserListComponent implements OnInit {
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .then(() => {
-                this.userService.deleteUser(id)
+                this.userService.deleteUser({ id })
                     .then(() => {
                         this.getUsers();
                     })

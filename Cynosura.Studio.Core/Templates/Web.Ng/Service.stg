@@ -3,64 +3,46 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 
 import { ConfigService } from "../config/config.service";
+import { CreatedEntity } from "../core/models/created-entity.model";
 import { $model.Entity.Name$ } from "./$model.Entity.NameKebab$.model";
+import { Get$model.Entity.PluralName$, Get$model.Entity.Name$, Update$model.Entity.Name$, Create$model.Entity.Name$, Delete$model.Entity.Name$ } from "./$model.Entity.NameKebab$-request.model";
 import { $model.Entity.Name$Filter } from "./$model.Entity.NameKebab$-filter.model";
 import { Page } from "../core/page.model";
 
 @Injectable()
 export class $model.Entity.Name$Service {
-    private $model.Entity.NameLower$Url = this.configService.config.apiBaseUrl + "/api/$model.Entity.NameLower$";
+    private apiUrl = this.configService.config.apiBaseUrl + "/api";
     private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    get$model.Entity.PluralName$(pageIndex?: number, pageSize?: number, filter?: $model.Entity.Name$Filter): Promise<Page<$model.Entity.Name$>\> {
-        const url = this.$model.Entity.NameLower$Url;
-
-        let params = new HttpParams();
-
-        if (pageIndex !== undefined && pageIndex !== null) {
-            params = params.set("pageIndex", pageIndex.toString());
-        }
-
-        if (pageSize !== undefined && pageSize !== null) {
-            params = params.set("pageSize", pageSize.toString());
-        }
-
-        if (filter) {
-            params = Object.keys(filter).reduce((prev, cur) => {
-                if (filter[cur] !== undefined && filter[cur] !== null) {
-                    prev = prev.set(`filter.\${cur}`, filter[cur]);
-                }
-                return prev;
-            }, params);
-        }
-
-        return this.httpClient.get<Page<$model.Entity.Name$>\>(url, {
-            params: params
-        }).toPromise();
-    }
-
-    get$model.Entity.Name$($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): Promise<$model.Entity.Name$> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.IdField.NameLower$}`;
-        return this.httpClient.get<$model.Entity.Name$>(url)
+    get$model.Entity.PluralName$(get$model.Entity.PluralName$: Get$model.Entity.PluralName$): Promise<Page<$model.Entity.Name$>\> {
+        const url = `\${this.apiUrl}/Get$model.Entity.PluralName$`;
+        return this.httpClient.post<Page<$model.Entity.Name$>\>(url, JSON.stringify(get$model.Entity.PluralName$), { headers: this.headers })
             .toPromise();
     }
 
-    update$model.Entity.Name$($model.Entity.NameLower$: $model.Entity.Name$): Promise<$model.Entity.Name$> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.NameLower$.$model.Entity.IdField.NameLower$}`;
-        return this.httpClient.put<$model.Entity.Name$>(url, JSON.stringify($model.Entity.NameLower$), { headers: this.headers })
+    get$model.Entity.Name$(get$model.Entity.Name$: Get$model.Entity.Name$): Promise<$model.Entity.Name$> {
+        const url = `\${this.apiUrl}/Get$model.Entity.Name$`;
+        return this.httpClient.post<$model.Entity.Name$>(url, JSON.stringify(get$model.Entity.Name$), { headers: this.headers })
             .toPromise();
     }
 
-    create$model.Entity.Name$($model.Entity.NameLower$: $model.Entity.Name$): Promise<$model.Entity.Name$> {
-        return this.httpClient.post<$model.Entity.Name$>(this.$model.Entity.NameLower$Url, JSON.stringify($model.Entity.NameLower$), { headers: this.headers })
+    update$model.Entity.Name$(update$model.Entity.Name$: Update$model.Entity.Name$): Promise<{}> {
+        const url = `\${this.apiUrl}/Update$model.Entity.Name$`;
+        return this.httpClient.post(url, JSON.stringify(update$model.Entity.Name$), { headers: this.headers })
             .toPromise();
     }
 
-    delete$model.Entity.Name$($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): Promise<{}> {
-        const url = `\${this.$model.Entity.NameLower$Url}/\${$model.Entity.IdField.NameLower$}`;
-        return this.httpClient.delete(url)
+    create$model.Entity.Name$(create$model.Entity.Name$: Create$model.Entity.Name$): Promise<CreatedEntity<$model.Entity.IdField.JsTypeName$>\> {
+        const url = `\${this.apiUrl}/Create$model.Entity.Name$`;
+        return this.httpClient.post<CreatedEntity<$model.Entity.IdField.JsTypeName$>\>(url, JSON.stringify(create$model.Entity.Name$), { headers: this.headers })
+            .toPromise();
+    }
+
+    delete$model.Entity.Name$(delete$model.Entity.Name$: Delete$model.Entity.Name$): Promise<{}> {
+        const url = `\${this.apiUrl}/Delete$model.Entity.Name$`;
+        return this.httpClient.post(url, JSON.stringify(delete$model.Entity.Name$), { headers: this.headers })
             .toPromise();
     }
 }

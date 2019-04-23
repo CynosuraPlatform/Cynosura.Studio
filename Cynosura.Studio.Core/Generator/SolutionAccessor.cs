@@ -108,6 +108,11 @@ namespace Cynosura.Studio.Core.Generator
 
             foreach (var entity in entities)
             {
+                if (entity.BaseEntityId != null)
+                {
+                    entity.BaseEntity = entities.First(e => e.Id == entity.BaseEntityId);
+                }                
+
                 foreach (var field in entity.Fields)
                 {
                     if (field.EntityId != null)

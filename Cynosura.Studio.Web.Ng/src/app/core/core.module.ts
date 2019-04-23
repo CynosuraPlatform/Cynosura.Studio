@@ -26,7 +26,6 @@ import { DateViewComponent } from "./controls/date.view.component";
 import { TimeEditComponent } from "./controls/time.edit.component";
 import { TimeViewComponent } from "./controls/time.view.component";
 
-import { MenuService } from "./services/menu.service";
 import { LoadingService } from "./loading.service";
 import { StoreService } from "./store.service";
 
@@ -63,7 +62,6 @@ import { AppErrorHandler } from "./app-error.handler";
         { provide: ErrorHandler, useClass: AppErrorHandler },
         // {provide: OWL_DATE_TIME_LOCALE, useValue: "ru"},
         StoreService,
-        MenuService,
         LoadingService,
         ModalHelper,
         {

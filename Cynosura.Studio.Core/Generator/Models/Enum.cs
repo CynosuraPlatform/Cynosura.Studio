@@ -28,5 +28,15 @@ namespace Cynosura.Studio.Core.Generator.Models
             template = template.Replace("{NameKebab}", NameKebab);
             return template;
         }
+
+        public IEnumerable<TemplateType> GetTemplateTypes()
+        {
+            return new[] { TemplateType.Enum };
+        }
+
+        public IEnumerable<TemplateType> GetViewTemplateTypes()
+        {
+            return new[] { TemplateType.EnumView };
+        }
     }
 }

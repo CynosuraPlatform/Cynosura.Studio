@@ -7,10 +7,8 @@ using System.Text;
 
 namespace $model.Solution.Namespace$.Core.Entities
 {
-    public class $model.Entity.Name$ : BaseEntity
+    public $if(model.Entity.IsAbstract)$abstract $endif$class $model.Entity.Name$$if(model.Entity.BaseEntity)$ : $model.Entity.BaseEntity.Name$$endif$
     {
-        public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
-
 $model.Entity.Fields:field(); separator="\n"$
     }
 }
