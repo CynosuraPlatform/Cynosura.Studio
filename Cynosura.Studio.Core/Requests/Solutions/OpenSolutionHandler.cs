@@ -26,16 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 
         public async Task<int> Handle(OpenSolution request, CancellationToken cancellationToken)
         {
-            SolutionAccessor accessor;
-            try
-            {
-                accessor = new SolutionAccessor(request.Path);
-            }
-            catch
-            {
-                throw new StudioException("Path does not contain solution or metadata", "NOT_FOUND");
-            }
-
+            var accessor = new SolutionAccessor(request.Path);
             var solution = _mapper.Map<Solution>(request);
             if (string.IsNullOrEmpty(solution.Name))
             {
