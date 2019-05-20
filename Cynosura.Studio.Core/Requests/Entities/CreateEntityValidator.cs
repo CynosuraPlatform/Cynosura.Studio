@@ -1,3 +1,4 @@
+﻿using Cynosura.Studio.Core.Requests.Fields;
 using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Entities
@@ -12,6 +13,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             RuleFor(x => x.PluralDisplayName).MaximumLength(100).NotEmpty();
             RuleFor(x => x.BaseEntityId);
             RuleFor(x => x.IsAbstract);
+            RuleForEach(x => x.Fields).SetValidator(new CreateFieldValidator());
         }
 
     }
