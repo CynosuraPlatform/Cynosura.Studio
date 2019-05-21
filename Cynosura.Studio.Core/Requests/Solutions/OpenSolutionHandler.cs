@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Generator;
+using Cynosura.Studio.Generator;
 using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
 

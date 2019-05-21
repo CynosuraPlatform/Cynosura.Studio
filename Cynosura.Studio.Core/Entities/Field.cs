@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Generator.Models;
 
 namespace Cynosura.Studio.Core.Entities
 {

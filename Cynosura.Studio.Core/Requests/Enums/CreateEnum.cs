@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.EnumValues;
+using Cynosura.Studio.Generator.Infrastructure;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Enums

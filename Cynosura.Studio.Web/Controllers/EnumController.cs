@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Threading.Tasks;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Infrastructure;

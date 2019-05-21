@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Generator.Models;
 using Cynosura.Studio.Core.Infrastructure;
 using MediatR;
+using Cynosura.Studio.Generator.Infrastructure;
 
 namespace Cynosura.Studio.Core.Requests.Fields
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +6,7 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Generator;
+using Cynosura.Studio.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Generator.Infrastructure;
 using Cynosura.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 

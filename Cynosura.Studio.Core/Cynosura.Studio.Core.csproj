@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -12,8 +12,10 @@
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="StringTemplate4" Version="4.0.8" />
-    <PackageReference Include="YamlDotNet" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj" />
   </ItemGroup>
 
 </Project>

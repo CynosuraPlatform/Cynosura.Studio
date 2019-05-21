@@ -6,7 +6,7 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Generator;
+using Cynosura.Studio.Generator;
 using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Solutions

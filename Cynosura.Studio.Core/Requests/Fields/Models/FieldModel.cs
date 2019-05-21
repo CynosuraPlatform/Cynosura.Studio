@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cynosura.Studio.Core.Generator.Models;
+using Cynosura.Studio.Generator.Models;
 using Cynosura.Studio.Core.Requests.Entities.Models;
 
 namespace Cynosura.Studio.Core.Requests.Fields.Models
