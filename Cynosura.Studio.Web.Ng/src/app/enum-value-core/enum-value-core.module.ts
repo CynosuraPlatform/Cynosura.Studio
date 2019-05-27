@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 
 import { CoreModule } from "../core/core.module";
+import { MaterialModule } from "../material.module";
 import { EnumValueShowComponent } from "./enum-value-show.component";
 
 @NgModule({
@@ -8,11 +9,13 @@ import { EnumValueShowComponent } from "./enum-value-show.component";
         EnumValueShowComponent
     ],
     imports: [
-        CoreModule
+        CoreModule,
+        MaterialModule
     ],
     providers: [
     ],
     exports: [
+        MaterialModule,
         EnumValueShowComponent
     ]
 })

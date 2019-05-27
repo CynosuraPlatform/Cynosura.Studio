@@ -1,43 +1,69 @@
-<h2>Fields</h2>
+<mat-card>
 
-<button type="button" class="btn btn-default" (click)="add()">Create</button>
+    <mat-card-header>
+        <mat-card-title>Fields</mat-card-title>
+    </mat-card-header>
 
-<app-error-handler [error]="error"></app-error-handler>
+    <mat-card-actions>        
+        <div class="action-item">
+            <button mat-raised-button type="button" color="primary" aria-label="Create"
+                (click)="add()">Create</button>
+        </div>
+    </mat-card-actions>
 
-<table *ngIf="fields" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Display Name</th>
-            <th>Type</th>
-            <th>Entity</th>
-            <th>Enum</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let field of fields">
-            <td>
-                <app-text-view [value]="field.name"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="field.displayName"></app-text-view>
-            </td>
-            <td>
-                {{FieldType[field.type]}}
-            </td>
-            <td>
-                <app-entity-show [value]="field.entity"></app-entity-show>
-            </td>
-            <td>
-                <app-enum-show [value]="field.enum"></app-enum-show>
-            </td>
-            <td>
-                <button class="btn btn-default" (click)="edit(field.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete(field.id)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <mat-card-content class="mat-elevation-z8">
+
+        <table *ngIf="fields" mat-table [dataSource]="dataSource" multiTemplateDataRows>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.name"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="displayName">
+                <th mat-header-cell *matHeaderCellDef>Display Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.displayName"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let item">
+                    {{FieldType[item.type]}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="entity">
+                <th mat-header-cell *matHeaderCellDef>Entity</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-entity-show [value]="item.entity"></app-entity-show>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="enum">
+                <th mat-header-cell *matHeaderCellDef>Enum</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-enum-show [value]="item.enum"></app-enum-show>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
+                    <app-table-detail [expanded]="item == expandedElement">
+                        <button mat-raised-button (click)="edit(item.id)" color="primary">Edit</button>
+                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
+                    </app-table-detail>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let item; columns: columns;" class="table-item"
+                [class.table-item-expanded]="expandedElement === item" (click)="expandedElement = item">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-expand-item"></tr>
+
+        </table>
+
+    </mat-card-content>
+
+</mat-card>
 
 <app-field-edit *ngIf="field" [field]="field" [solutionId]="solutionId" (fieldSave)="fieldSave($event)"></app-field-edit>

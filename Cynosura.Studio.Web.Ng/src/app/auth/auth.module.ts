@@ -9,6 +9,7 @@ import { AuthInterceptor } from "./auth.interceptor";
 import { LoginComponent } from "./login.component";
 
 import { AuthService } from "./auth.service";
+import { MaterialModule } from "../material.module";
 
 @NgModule({
     imports: [
@@ -16,7 +17,11 @@ import { AuthService } from "./auth.service";
         ReactiveFormsModule,
         RouterModule.forChild([
             { path: "login", component: LoginComponent }
-        ])
+        ]),
+        MaterialModule
+    ],
+    exports: [
+        MaterialModule
     ],
     declarations: [
         LoginComponent

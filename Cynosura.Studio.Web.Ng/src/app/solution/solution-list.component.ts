@@ -1,59 +1,64 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { PageEvent } from "@angular/material/paginator";
+import { MatSnackBar, MatDialog } from "@angular/material";
 
 import { Solution } from "../solution-core/solution.model";
 import { SolutionFilter } from "../solution-core/solution-filter.model";
 import { SolutionService } from "../solution-core/solution.service";
+import { SolutionOpenComponent } from "./solution-open.component";
 
 import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
+class SolutionListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new SolutionFilter();
+}
+
 @Component({
     selector: "app-solution-list",
-    templateUrl: "./solution-list.component.html"
+    templateUrl: "./solution-list.component.html",
+    styleUrls: ["./solution-list.component.scss"]
 })
 export class SolutionListComponent implements OnInit {
     content: Page<Solution>;
-    error: Error;
-    pageSize = 10;
-    filter = new SolutionFilter();
-    openLocation: string;
-    private innerPageIndex: number;
-    get pageIndex(): number {
-        if (!this.innerPageIndex) {
-            this.innerPageIndex = this.storeService.get("solutionsPageIndex", 0);
-        }
-        return this.innerPageIndex;
-    }
-    set pageIndex(value: number) {
-        this.innerPageIndex = value;
-        this.storeService.set("solutionsPageIndex", value);
-    }
+    state: SolutionListState;
+    pageSizeOptions = [10, 20];
+    columns = [
+        "name",
+        "path",
+    ];
 
     constructor(
         private modalHelper: ModalHelper,
         private solutionService: SolutionService,
         private router: Router,
         private route: ActivatedRoute,
-        private storeService: StoreService
-    ) { }
+        private storeService: StoreService,
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar
+        ) {
+        this.state = this.storeService.get("solutionListState", new SolutionListState());
+    }
 
     ngOnInit(): void {
         this.getSolutions();
     }
 
     getSolutions(): void {
-        this.solutionService.getSolutions({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
+        this.solutionService.getSolutions({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
             .then(content => {
                 this.content = content;
             })
-            .catch(error => this.error = error);
+            .catch(error => this.onError(error));
     }
 
     reset(): void {
-        this.filter.text = null;
+        this.state.filter.text = null;
         this.getSolutions();
     }
 
@@ -67,27 +72,30 @@ export class SolutionListComponent implements OnInit {
 
     delete(id: number): void {
         this.modalHelper.confirmDelete()
-            .then(() => {
+            .subscribe(() => {
                 this.solutionService.deleteSolution({ id })
                     .then(() => {
                         this.getSolutions();
                     })
-                    .catch(error => this.error = error);
-            })
-            .catch(() => { });
+                    .catch(error => this.onError(error));
+            });
     }
 
-    onPageSelected(pageIndex: number) {
-        this.pageIndex = pageIndex;
+    onPage(page: PageEvent) {
+        this.state.pageIndex = page.pageIndex;
+        this.state.pageSize = page.pageSize;
         this.getSolutions();
     }
 
+    onError(error: Error) {
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+        }
+    }
+
     open() {
-        const solution = {
-            path: this.openLocation
-        } as Solution;
-        this.solutionService.openSolution(solution)
-            .then((result) => this.edit(result.id))
-            .catch((error) => console.log(this.error = error));
+        this.dialog.open(SolutionOpenComponent, {
+            width: "600px"
+        });
     }
 }

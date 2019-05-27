@@ -6,6 +6,7 @@ import { RoleCoreModule } from "../role-core/role-core.module";
 
 import { RoleListComponent } from "./role-list.component";
 import { RoleEditComponent } from "./role-edit.component";
+import { MaterialModule } from "../material.module";
 
 @NgModule({
     declarations: [
@@ -18,7 +19,11 @@ import { RoleEditComponent } from "./role-edit.component";
             { path: ":id", component: RoleEditComponent }
         ]),
         CoreModule,
-        RoleCoreModule
+        RoleCoreModule,
+        MaterialModule
+    ],
+    exports: [
+        MaterialModule
     ],
     providers: [
     ]

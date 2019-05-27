@@ -1,6 +1,8 @@
 main(model) ::= <<
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { PageEvent } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material";
 
 import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
 import { $model.Entity.Name$Filter } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model";
@@ -11,49 +13,50 @@ import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
+class $model.Entity.Name$ListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new $model.Entity.Name$Filter();
+}
+
 @Component({
     selector: "app-$model.Entity.NameKebab$-list",
-    templateUrl: "./$model.Entity.NameKebab$-list.component.html"
+    templateUrl: "./$model.Entity.NameKebab$-list.component.html",
+    styleUrls: ["./$model.Entity.NameKebab$-list.component.scss"]
 })
 export class $model.Entity.Name$ListComponent implements OnInit {
     content: Page<$model.Entity.Name$>;
-    error: Error;
-    pageSize = 10;
-    filter = new $model.Entity.Name$Filter();
-    private innerPageIndex: number;
-    get pageIndex(): number {
-        if (!this.innerPageIndex) {
-            this.innerPageIndex = this.storeService.get("$model.Entity.PluralNameLower$PageIndex", 0);
-        }
-        return this.innerPageIndex;
-    }
-    set pageIndex(value: number) {
-        this.innerPageIndex = value;
-        this.storeService.set("$model.Entity.PluralNameLower$PageIndex", value);
-    }
+    state: $model.Entity.Name$ListState;
+    pageSizeOptions = [10, 20];
+    columns = [
+        $model.Entity.Fields:field(); separator="\r\n"$
+    ];
 
     constructor(
         private modalHelper: ModalHelper,
         private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
         private router: Router,
         private route: ActivatedRoute,
-        private storeService: StoreService
-        ) {}
+        private storeService: StoreService,
+        private snackBar: MatSnackBar
+        ) {
+        this.state = this.storeService.get("$model.Entity.NameLower$ListState", new $model.Entity.Name$ListState());
+    }
 
     ngOnInit(): void {
         this.get$model.Entity.PluralName$();
     }
 
     get$model.Entity.PluralName$(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({ pageIndex: this.pageIndex, pageSize: this.pageSize, filter: this.filter })
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
             .then(content => {
                 this.content = content;
             })
-            .catch(error => this.error = error);
+            .catch(error => this.onError(error));
     }
 
     reset(): void {
-        this.filter.text = null;
+        this.state.filter.text = null;
         this.get$model.Entity.PluralName$();
     }
 
@@ -67,21 +70,30 @@ export class $model.Entity.Name$ListComponent implements OnInit {
 
     delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.modalHelper.confirmDelete()
-            .then(() => {
-                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ id })
+            .subscribe(() => {
+                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ })
                     .then(() => {
                         this.get$model.Entity.PluralName$();
                     })
-                    .catch(error => this.error = error);
-            })
-            .catch(() => { });
+                    .catch(error => this.onError(error));
+            });
     }
 
-    onPageSelected(pageIndex: number) {
-        this.pageIndex = pageIndex;
+    onPage(page: PageEvent) {
+        this.state.pageIndex = page.pageIndex;
+        this.state.pageSize = page.pageSize;
         this.get$model.Entity.PluralName$();
+    }
+
+    onError(error: Error) {
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+        }
     }
 }
 
 >>
 
+field(field) ::= <<
+"$field.NameLower$",
+>>

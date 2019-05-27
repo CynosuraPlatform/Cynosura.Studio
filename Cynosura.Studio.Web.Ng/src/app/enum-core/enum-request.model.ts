@@ -1,5 +1,6 @@
 import { EnumFilter } from "./enum-filter.model";
 import { OrderDirection } from "../core/models/order-direction.model";
+import { EnumValue } from "../enum-value-core/enum-value.model";
 
 export class GetEnums {
     solutionId: number;
@@ -20,12 +21,24 @@ export class UpdateEnum {
     id: string;
     name: string;
     displayName: string;
+    values: EnumValue[];
+    properties: { [k: string]: any };
+    constructor() {
+        this.values = new Array<EnumValue>();
+        this.properties = {};
+    }
 }
 
 export class CreateEnum {
     solutionId: number;
     name: string;
     displayName: string;
+    values: EnumValue[];
+    properties: { [k: string]: any };
+    constructor() {
+        this.values = new Array<EnumValue>();
+        this.properties = {};
+    }
 }
 
 export class DeleteEnum {

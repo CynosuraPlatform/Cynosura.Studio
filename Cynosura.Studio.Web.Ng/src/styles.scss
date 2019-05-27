@@ -1,5 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+
+/* Add Angular Material themes*/
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/theming';
+
+$custom-typography: mat-typography-config(
+    $font-family: 'IBM Plex Sans'
+);
+
+@include mat-base-typography($custom-typography);
+@include mat-checkbox-typography($custom-typography);
+@include angular-material-typography($custom-typography);
+@include mat-core($custom-typography);
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 .owl-dt-container {
     font-size: 10pt;
 }

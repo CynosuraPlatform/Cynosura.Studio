@@ -1,58 +1,62 @@
-<h2>Entity</h2>
-<form class="form-horizontal" *ngIf="entity" (ngSubmit)="onSubmit()">
-    <button type="submit" class="btn btn-primary">Save</button>
-    <button type="button" class="btn btn-default" (click)="cancel()">Back</button>
-    <button type="button" class="btn btn-default" (click)="generate()" *ngIf="entity.id">Generate</button>
-    <app-error-handler [error]="error"></app-error-handler>
-    <div class="form-group">
-        <label for="name" class="col-sm-2 control-label">Name</label>
-        <div class="col-sm-10">
-            <app-text-edit [(ngModel)]="entity.name" name="name" label="Name"></app-text-edit>
-            <app-model-validator [model]="error?.modelState?.name"></app-model-validator>
+<mat-card>
+
+    <mat-card-header>
+        <mat-card-title>Entity <app-entity-show [value]="entity"></app-entity-show></mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button mat-raised-button type="button" (click)="cancel()">Back</button>
+            <button mat-raised-button type="button" (click)="generate()" *ngIf="id">Generate</button>
+        </mat-card-actions>
+        <div>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+            </mat-form-field>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="pluralName" class="col-sm-2 control-label">Plural Name</label>
-        <div class="col-sm-10">
-            <app-text-edit [(ngModel)]="entity.pluralName" name="pluralName" label="Plural Name"></app-text-edit>
-            <app-model-validator [model]="error?.modelState?.pluralName"></app-model-validator>
+        <div>
+            <mat-form-field>
+                <mat-label>Plural Name</mat-label>
+                <app-text-edit formControlName="pluralName" name="pluralName" label="Plural Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.pluralName | modelError }}</mat-error>
+            </mat-form-field>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="displayName" class="col-sm-2 control-label">Display Name</label>
-        <div class="col-sm-10">
-            <app-text-edit [(ngModel)]="entity.displayName" name="displayName" label="Display Name"></app-text-edit>
-            <app-model-validator [model]="error?.modelState?.displayName"></app-model-validator>
+        <div>
+            <mat-form-field>
+                <mat-label>Display Name</mat-label>
+                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
+            </mat-form-field>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="pluralDisplayName" class="col-sm-2 control-label">Plural Display Name</label>
-        <div class="col-sm-10">
-            <app-text-edit [(ngModel)]="entity.pluralDisplayName" name="pluralDisplayName" label="Plural Display Name"></app-text-edit>
-            <app-model-validator [model]="error?.modelState?.pluralDisplayName"></app-model-validator>
+        <div>
+            <mat-form-field>
+                <mat-label>Plural Display Name</mat-label>
+                <app-text-edit formControlName="pluralDisplayName" name="pluralDisplayName" label="Plural Display Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.pluralDisplayName | modelError }}</mat-error>
+            </mat-form-field>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="isAbstract" class="col-sm-2 control-label">Abstract</label>
-        <div class="col-sm-10">
-            <app-bool-edit [(ngModel)]="entity.isAbstract" name="isAbstract" label="Abstract"></app-bool-edit>
-            <app-model-validator [model]="error?.modelState?.isAbstract"></app-model-validator>
+        <div>
+            <app-bool-edit formControlName="isAbstract" name="isAbstract" label="Abstract"></app-bool-edit>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="baseEntity" class="col-sm-2 control-label">Base Entity</label>
-        <div class="col-sm-10">
-            <app-entity-select [(ngModel)]="entity.baseEntityId" [solutionId]="solutionId" name="baseEntityId" label="Base Entity"></app-entity-select>
-            <app-model-validator [model]="error?.modelState?.baseEntityId"></app-model-validator>
+        <div>
+            <mat-form-field>
+                <mat-label>Base Entity</mat-label>
+                <app-entity-select formControlName="baseEntityId" [solutionId]="solutionId" name="baseEntityId" label="Base Entity"></app-entity-select>
+                <mat-error>{{ error?.modelState?.baseEntityId | modelError }}</mat-error>
+            </mat-form-field>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="properties" class="col-sm-2 control-label">Properties</label>
-        <div class="col-sm-10">
-            <app-properties [target]="entity.name" [properties]="entity.properties"></app-properties>
+        <div>
+            <label for="properties">Properties</label>
+            <div *ngIf="entity">
+                <app-properties [target]="entity.name" [properties]="entity.properties"></app-properties>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+
+</mat-card>
 
 <div *ngIf="entity">
     <app-field-list [fields]="entity.fields" [solutionId]="solutionId"></app-field-list>

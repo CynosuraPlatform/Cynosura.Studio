@@ -1,18 +1,17 @@
 import { NgModule, ErrorHandler } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from "ng-pick-datetime";
+import { MaterialModule } from "../material.module";
 
 import { ErrorInterceptor } from "./error.interceptor";
 import { LoadingInterceptor } from "./loading.interceptor";
 
 import { EnumKeysPipe } from "./pipes/enumkeys.pipe";
+import { ModelErrorPipe } from "./pipes/modelError.pipe";
 
-import { ErrorHandlerComponent } from "./error-handler.component";
-import { ModelValidatorComponent } from "./model-validator.component";
-import { PagerComponent } from "./pager.component";
 import { TextEditComponent } from "./controls/text.edit.component";
 import { TextViewComponent } from "./controls/text.view.component";
 import { NumberEditComponent } from "./controls/number.edit.component";
@@ -29,6 +28,8 @@ import { TimeViewComponent } from "./controls/time.view.component";
 import { LoadingService } from "./loading.service";
 import { StoreService } from "./store.service";
 
+import { TableDetailComponent } from "./table-detail.component";
+import { ModalComponent } from "./modal.component";
 import { ModalHelper } from "./modal.helper";
 import { AppErrorHandler } from "./app-error.handler";
 
@@ -36,9 +37,9 @@ import { AppErrorHandler } from "./app-error.handler";
     declarations: [
         EnumKeysPipe,
         EnumKeysPipe,
-        ErrorHandlerComponent,
-        ModelValidatorComponent,
-        PagerComponent,
+        ModelErrorPipe,
+        ModalComponent,
+        TableDetailComponent,
         TextEditComponent,
         TextViewComponent,
         NumberEditComponent,
@@ -55,8 +56,10 @@ import { AppErrorHandler } from "./app-error.handler";
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         OwlDateTimeModule,
-        OwlNativeDateTimeModule
+        OwlNativeDateTimeModule,
+        MaterialModule
     ],
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
@@ -75,14 +78,18 @@ import { AppErrorHandler } from "./app-error.handler";
             multi: true
         }
     ],
+    entryComponents: [
+        ModalComponent
+    ],
     exports: [
         CommonModule,
         FormsModule,
         EnumKeysPipe,
+        ReactiveFormsModule,
+        MaterialModule,
         EnumKeysPipe,
-        ErrorHandlerComponent,
-        ModelValidatorComponent,
-        PagerComponent,
+        ModelErrorPipe,
+        TableDetailComponent,
         TextEditComponent,
         TextViewComponent,
         NumberEditComponent,

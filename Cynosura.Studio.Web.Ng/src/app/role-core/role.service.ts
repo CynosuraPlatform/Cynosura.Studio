@@ -9,7 +9,7 @@ import { Page } from "../core/page.model";
 
 @Injectable()
 export class RoleService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api/";
+    private apiUrl = this.configService.config.apiBaseUrl + "/api";
     private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }

@@ -1,35 +1,57 @@
-<h2>Enum Values</h2>
+<mat-card>
 
-<button type="button" class="btn btn-default" (click)="add()">Create</button>
+    <mat-card-header>
+        <mat-card-title>Enum Values</mat-card-title>
+    </mat-card-header>
 
-<app-error-handler [error]="error"></app-error-handler>
+    <mat-card-actions>
+        <div class="action-item">
+            <button mat-raised-button type="button" color="primary" aria-label="Create"
+                (click)="add()">Create</button>
+        </div>
+    </mat-card-actions>
 
-<table *ngIf="enumValues" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Display Name</th>
-            <th>Value</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let enumValue of enumValues">
-            <td>
-                <app-text-view [value]="enumValue.name"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="enumValue.displayName"></app-text-view>
-            </td>
-            <td>
-                <app-number-view [value]="enumValue.value"></app-number-view>
-            </td>
-            <td>
-                <button class="btn btn-default" (click)="edit(enumValue.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete(enumValue.id)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <mat-card-content class="mat-elevation-z8">
+
+        <table *ngIf="enumValues" mat-table [dataSource]="dataSource" multiTemplateDataRows>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.name"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="displayName">
+                <th mat-header-cell *matHeaderCellDef>Display Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.displayName"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-number-view [value]="item.value"></app-number-view>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
+                    <app-table-detail [expanded]="item == expandedElement">
+                        <button mat-raised-button (click)="edit(item.id)" color="primary">Edit</button>
+                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
+                    </app-table-detail>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let item; columns: columns;" class="table-item"
+                [class.table-item-expanded]="expandedElement === item" (click)="expandedElement = item">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-expand-item"></tr>
+
+        </table>
+
+    </mat-card-content>
+
+</mat-card>
 
 <app-enum-value-edit *ngIf="enumValue" [enumValue]="enumValue" [solutionId]="solutionId" (enumValueSave)="enumValueSave($event)"></app-enum-value-edit>

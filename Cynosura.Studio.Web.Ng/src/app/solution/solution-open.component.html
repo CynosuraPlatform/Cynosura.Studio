@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Open existing solution</h1>
+<mat-dialog-content>
+    <div>
+        <mat-form-field>
+            <mat-label>Path</mat-label>
+            <app-text-edit [(ngModel)]="path" name="path" label="Path"></app-text-edit>
+            <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>    
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="open()" cdkFocusInitial>Open</button>
+</mat-dialog-actions>

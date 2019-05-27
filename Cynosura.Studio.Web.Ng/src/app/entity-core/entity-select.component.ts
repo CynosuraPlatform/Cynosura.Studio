@@ -1,5 +1,10 @@
-import { Component, Input, OnInit, forwardRef } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
+import { MatFormFieldControl } from "@angular/material";
+import { FocusMonitor } from "@angular/cdk/a11y";
+import { coerceBooleanProperty } from "@angular/cdk/coercion";
+
+import { Subject } from "rxjs";
 
 import { Entity } from "./entity.model";
 import { EntityService } from "./entity.service";
@@ -8,16 +13,31 @@ import { EntityService } from "./entity.service";
     selector: "app-entity-select",
     templateUrl: "./entity-select.component.html",
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => EntitySelectComponent),
-            multi: true
-        }
+        { provide: MatFormFieldControl, useExisting: EntitySelectComponent }
     ]
 })
 
-export class EntitySelectComponent implements OnInit, ControlValueAccessor {
-    constructor(private entityService: EntityService) { }
+export class EntitySelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<string | null>, OnDestroy {
+
+    static nextId = 0;
+
+    stateChanges = new Subject<void>();
+    focused = false;
+    controlType = "app-entity-select";
+    id = `entity-select-${EntitySelectComponent.nextId++}`;
+    describedBy = "";
+
+    get errorState(): boolean {
+        return coerceBooleanProperty(this.ngControl.errors);
+    }
+
+    get empty() {
+        return !this.value;
+    }
+
+    get shouldLabelFloat() { return this.focused || !this.empty; }
+
+    Entity = Entity;
 
     entities: Entity[] = [];
 
@@ -26,6 +46,34 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor {
 
     @Input()
     value: string | null = null;
+
+    @Input()
+    name: string;
+
+    @Input()
+    label: string;
+
+    @Input()
+    placeholder: string;
+
+    @Input()
+    readonly = false;
+
+    @Input()
+    get required(): boolean { return this.innerRequired; }
+    set required(value: boolean) {
+        this.innerRequired = coerceBooleanProperty(value);
+        this.stateChanges.next();
+    }
+    private innerRequired = false;
+
+    @Input()
+    get disabled(): boolean { return this.innerDisabled; }
+    set disabled(value: boolean) {
+        this.innerDisabled = coerceBooleanProperty(value);
+        this.stateChanges.next();
+    }
+    private innerDisabled = false;
 
     get innerValue() {
         return this.value;
@@ -37,20 +85,19 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor {
         this.onTouched();
     }
 
-    @Input()
-    name: string;
-
-    @Input()
-    label: string;
-
-    @Input()
-    readonly = false;
-
     onChange: any = () => { };
     onTouched: any = () => { };
 
-    ngOnInit(): void {
-        this.entityService.getEntities({ solutionId: this.solutionId }).then(entities => this.entities = entities.pageItems);
+    constructor(private entityService: EntityService,
+                private fm: FocusMonitor, private elRef: ElementRef<HTMLElement>,
+                @Optional() @Self() public ngControl: NgControl) {
+        fm.monitor(elRef, true).subscribe(origin => {
+            this.focused = !!origin;
+            this.stateChanges.next();
+        });
+        if (this.ngControl !== null) {
+            this.ngControl.valueAccessor = this;
+        }
     }
 
     registerOnChange(fn) {
@@ -63,5 +110,21 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor {
 
     writeValue(value) {
         this.innerValue = value;
+    }
+
+    ngOnInit(): void {
+        this.entityService.getEntities({ solutionId: this.solutionId }).then(entities => this.entities = entities.pageItems);
+    }
+
+    ngOnDestroy() {
+        this.stateChanges.complete();
+        this.fm.stopMonitoring(this.elRef);
+    }
+
+    setDescribedByIds(ids: string[]) {
+        this.describedBy = ids.join(" ");
+    }
+
+    onContainerClick(event: MouseEvent) {
     }
 }

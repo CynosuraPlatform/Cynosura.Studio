@@ -7,6 +7,7 @@ import { RoleCoreModule } from "../role-core/role-core.module";
 
 import { UserListComponent } from "./user-list.component";
 import { UserEditComponent } from "./user-edit.component";
+import { MaterialModule } from "../material.module";
 
 @NgModule({
     declarations: [
@@ -20,7 +21,11 @@ import { UserEditComponent } from "./user-edit.component";
         ]),
         CoreModule,
         UserCoreModule,
-        RoleCoreModule
+        RoleCoreModule,
+        MaterialModule
+    ],
+    exports: [
+        MaterialModule
     ],
     providers: [
     ]

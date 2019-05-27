@@ -1,65 +1,92 @@
-<h2>Entities</h2>
+<mat-card>
 
-<app-solution-select [(ngModel)]="solutionId" name="solutionId"></app-solution-select>
+    <mat-card-header>
+        <mat-card-title>Entities</mat-card-title>
+    </mat-card-header>
 
-<div class="form-inline">
-    <div class="form-group">
-        <label for="text">Text</label>
-        <input id="text" type="text" class="form-control" placeholder="Text" [(ngModel)]="filter.text" />
-    </div>
+    <mat-form-field>
+        <mat-label>Solution</mat-label>
+        <app-solution-select [(ngModel)]="solutionId" name="solutionId"></app-solution-select>
+    </mat-form-field>
 
-    <button class="btn btn-default" type="button" (click)="getEntities()">Search</button>
-    <button class="btn btn-default" type="reset" (click)="reset()">Reset</button>
-</div>
+    <mat-card-actions>        
+        <div class="action-item">
+            <mat-form-field>
+                <mat-label>Text</mat-label>
+                <input matInput id="text" type="text" class="form-control" placeholder="Text"
+                    [(ngModel)]="state.filter.text" />
+            </mat-form-field>
+            <button mat-raised-button type="button" color="primary" (click)="getEntities()">Search</button>
+            <button mat-raised-button type="reset" (click)="reset()">Reset</button>
+        </div>
+        <div class="action-item">
+            <button mat-raised-button type="button" color="primary" aria-label="Create"
+                (click)="add()">Create</button>
+        </div>
+    </mat-card-actions>
 
-<button *ngIf="solutionId" type="button" class="btn btn-default" (click)="add()">Create</button>
+    <mat-card-content class="mat-elevation-z8">
 
-<app-error-handler [error]="error"></app-error-handler>
+        <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
 
-<table *ngIf="content" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Plural Name</th>
-            <th>Display Name</th>
-            <th>Plural Display Name</th>
-            <th>Abstract</th>
-            <th>Base Entity</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let entity of content.pageItems">
-            <td>
-                <app-text-view [value]="entity.name"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="entity.pluralName"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="entity.displayName"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="entity.pluralDisplayName"></app-text-view>
-            </td>
-            <td>
-                <app-bool-view [value]="entity.isAbstract"></app-bool-view>
-            </td>
-            <td>
-                <app-entity-show [value]="entity.baseEntity"></app-entity-show>
-            </td>
-            <td>
-                <button class="btn btn-default" (click)="edit(entity.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete(entity.id)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.name"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="pluralName">
+                <th mat-header-cell *matHeaderCellDef>Plural Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.pluralName"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="displayName">
+                <th mat-header-cell *matHeaderCellDef>Display Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.displayName"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="pluralDisplayName">
+                <th mat-header-cell *matHeaderCellDef>Plural Display Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.pluralDisplayName"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="isAbstract">
+                <th mat-header-cell *matHeaderCellDef>Abstract</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-bool-view [value]="item.isAbstract"></app-bool-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="baseEntity">
+                <th mat-header-cell *matHeaderCellDef>Base Entity</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-entity-show [value]="item.baseEntity"></app-entity-show>
+                </td>
+            </ng-container>
 
-<app-pager *ngIf="content"
-       [currentPage]="content.currentPageIndex"
-       [pageSize]="pageSize"
-       [totalItems]="content.totalItems"
-       (currentPageChange)="onPageSelected($event)">
-</app-pager>
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
+                    <app-table-detail [expanded]="item == expandedElement">
+                        <button mat-raised-button (click)="edit(item.id)" color="primary">Edit</button>
+                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
+                    </app-table-detail>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let item; columns: columns;" class="table-item"
+                [class.table-item-expanded]="expandedElement === item" (click)="expandedElement = item">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-expand-item"></tr>
 
+        </table>
+
+        <div>
+            <mat-paginator [pageSize]="state.pageSize" [pageIndex]="state.pageIndex" [pageSizeOptions]="pageSizeOptions" [length]="content?.totalItems" 
+                (page)="onPage($event)" showFirstLastButtons></mat-paginator>
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

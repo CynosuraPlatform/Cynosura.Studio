@@ -1,72 +1,65 @@
-<h2>Solutions</h2>
+<mat-card>
 
-<div class="form-inline">
-    <div class="form-group">
-        <label for="text">Text</label>
-        <input id="text" type="text" class="form-control" placeholder="Text" [(ngModel)]="filter.text" />
-    </div>
+    <mat-card-header>
+        <mat-card-title>Solutions</mat-card-title>
+    </mat-card-header>
 
-    <button class="btn btn-default" type="button" (click)="getSolutions()">Search</button>
-    <button class="btn btn-default" type="reset" (click)="reset()">Reset</button>
-</div>
-
-<button type="button" class="btn btn-default" (click)="add()">Create</button>
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#openDialog">Open existing</button>
-
-<app-error-handler [error]="error"></app-error-handler>
-
-<table *ngIf="content" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Path</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let solution of content.pageItems">
-            <td>
-                <app-text-view [value]="solution.name"></app-text-view>
-            </td>
-            <td>
-                <app-text-view [value]="solution.path"></app-text-view>
-            </td>
-            <td>
-                <button class="btn btn-default" (click)="edit(solution.id)">Edit</button>
-                <button class="btn btn-default" (click)="delete(solution.id)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<app-pager *ngIf="content"
-       [currentPage]="content.currentPageIndex"
-       [pageSize]="pageSize"
-       [totalItems]="content.totalItems"
-       (currentPageChange)="onPageSelected($event)">
-</app-pager>
-
-<div id="openDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title">Open existing solution</h4>
+    <mat-card-actions>        
+        <div class="action-item">
+            <mat-form-field>
+                <mat-label>Text</mat-label>
+                <input matInput id="text" type="text" class="form-control" placeholder="Text"
+                    [(ngModel)]="state.filter.text" />
+            </mat-form-field>
+            <button mat-raised-button type="button" color="primary" (click)="getSolutions()">Search</button>
+            <button mat-raised-button type="reset" (click)="reset()">Reset</button>
         </div>
-        <div class="modal-body">
-          <div class="input-group">
-            <input [(ngModel)]="openLocation" type="text" class="form-control" placeholder="Path">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button"  data-dismiss="modal" (click)="open()">Open</button>
-            </span>
-          </div>
-          <div style="clear: both"></div>
+        <div class="action-item">
+            <button mat-raised-button type="button" color="primary" aria-label="Create"
+                (click)="add()">Create</button>
+            <button mat-raised-button type="button" aria-label="Open existing"
+                (click)="open()">Open existing</button>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+    </mat-card-actions>
+
+    <mat-card-content class="mat-elevation-z8">
+
+        <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.name"></app-text-view>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="path">
+                <th mat-header-cell *matHeaderCellDef>Path</th>
+                <td mat-cell *matCellDef="let item">
+                    <app-text-view [value]="item.path"></app-text-view>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
+                    <app-table-detail [expanded]="item == expandedElement">
+                        <button mat-raised-button (click)="edit(item.id)" color="primary">Edit</button>
+                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
+                    </app-table-detail>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let item; columns: columns;" class="table-item"
+                [class.table-item-expanded]="expandedElement === item" (click)="expandedElement = item">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-expand-item"></tr>
+
+        </table>
+
+        <div>
+            <mat-paginator [pageSize]="state.pageSize" [pageIndex]="state.pageIndex" [pageSizeOptions]="pageSizeOptions" [length]="content?.totalItems" 
+                (page)="onPage($event)" showFirstLastButtons></mat-paginator>
         </div>
-      </div>
-    </div>
-  </div>
+
+    </mat-card-content>
+
+</mat-card>

@@ -14,9 +14,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Worker", "C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{86D3C0EE-BB81-46CB-BE79-2EA9BBD9DD3C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48F41545-21BC-4CA3-A882-690B13AD506D}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.Development.yaml = docker-compose.Development.yaml
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Core.UnitTests", "tests\Cynosura.Studio.Core.UnitTests\Cynosura.Studio.Core.UnitTests.csproj", "{092939FA-9B25-4484-B96E-E0D613FD449F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.Generator", "Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj", "{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Generator", "Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj", "{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Generator.Tests", "Tests\Cynosura.Studio.Generator.Tests\Cynosura.Studio.Generator.Tests.csproj", "{7024A4E3-7261-4722-9CEF-E726FC1B8FC1}"
 EndProject

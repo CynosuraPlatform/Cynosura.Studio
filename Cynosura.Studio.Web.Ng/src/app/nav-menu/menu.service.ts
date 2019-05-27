@@ -13,9 +13,9 @@ export class MenuService {
     constructor(private authService: AuthService) {
         this.menu = new Menu();
 // ADD MENU ITEMS HERE
-        this.menu.items.push({ route: "./entity", name: "Entities", cssClass: "glyphicon-folder-close", roles: [] });
-        this.menu.items.push({ route: "./enum", name: "Enums", cssClass: "glyphicon-folder-close", roles: [] });
-        this.menu.items.push({ route: "./solution", name: "Solutions", cssClass: "glyphicon-folder-close", roles: [] });
+        this.menu.items.push({ route: "/entity", name: "Entities", icon: "notes", roles: [] });
+        this.menu.items.push({ route: "/enum", name: "Enums", icon: "notes", roles: [] });
+        this.menu.items.push({ route: "/solution", name: "Solutions", icon: "folder", roles: [] });
 
         this.authService.currentUser$.subscribe(currentUser => {
             this.currentUser = currentUser;

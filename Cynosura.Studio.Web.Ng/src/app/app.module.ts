@@ -1,4 +1,3 @@
-// import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { FormsModule } from "@angular/forms";
@@ -8,6 +7,7 @@ import { RouterModule, Route } from "@angular/router";
 import { ModalModule } from "ngx-modialog";
 import { BootstrapModalModule } from "ngx-modialog/plugins/bootstrap";
 
+import { MaterialModule } from "./material.module";
 import { AuthModule } from "./auth/auth.module";
 import { CoreModule } from "./core/core.module";
 
@@ -24,7 +24,6 @@ import { HomeComponent } from "./home/home.component";
         HomeComponent
     ],
     imports: [
-        // BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
         BrowserAnimationsModule,
         HttpClientModule,
         FormsModule,
@@ -37,8 +36,12 @@ import { HomeComponent } from "./home/home.component";
         ]),
         ModalModule.forRoot(),
         BootstrapModalModule,
+        MaterialModule,
         CoreModule,
         AuthModule
+    ],
+    exports: [
+        MaterialModule
     ],
     providers: [
         ConfigService,

@@ -1,6 +1,6 @@
 main(model) ::= <<
-<select class="form-control" [(ngModel)]="innerValue" [disabled]="readonly">
-    <option [ngValue]="null" selected="selected">Select $model.Enum.DisplayName$</option>
-    <option [ngValue]="$model.Enum.NameLower$.key" *ngFor="let $model.Enum.NameLower$ of $model.Enum.Name$ | enumkeys">{{ $model.Enum.Name$Display[$model.Enum.NameLower$.key] }}</option>
-</select>
+<mat-select [(ngModel)]="innerValue" [disabled]="readonly">
+    <mat-option [value]="null" selected="selected">Select $model.Enum.DisplayName$</mat-option>
+    <mat-option [value]="$model.Enum.NameLower$.key" *ngFor="let $model.Enum.NameLower$ of $model.Enum.Name$ | enumkeys">{{ $model.Enum.Name$Display[$model.Enum.NameLower$.key] }}</mat-option>
+</mat-select>
 >>

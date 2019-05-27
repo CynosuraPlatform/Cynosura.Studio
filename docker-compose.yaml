@@ -1,0 +1,19 @@
+version: '2.2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Cynosura.Studio.Web/Dockerfile
+    links:
+      - db
+  webng:
+    build:
+      context: Cynosura.Studio.Web.Ng
+  worker:
+    build:
+      context: .
+      dockerfile: Cynosura.Studio.Worker/Dockerfile
+    links:
+      - db
+  db:
+    image: 'mcr.microsoft.com/mssql/server:2017-latest-ubuntu'

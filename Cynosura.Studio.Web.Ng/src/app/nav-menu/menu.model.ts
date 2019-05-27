@@ -9,6 +9,6 @@ export class Menu {
 export class MenuItem {
     name: string;
     route: string;
-    cssClass: string;
+    icon: string;
     roles: string[];
 }

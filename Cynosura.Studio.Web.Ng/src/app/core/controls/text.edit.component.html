@@ -1,2 +1,4 @@
-<input *ngIf="!multiline" class="form-control" [id]="name" [name]="name" [type]="type" [(ngModel)]="innerValue" [placeholder]="label" [disabled]="readonly">
-<textarea *ngIf="multiline" class="form-control" [id]="name" [name]="name" [(ngModel)]="innerValue" [placeholder]="label" [disabled]="readonly"></textarea>
+<input matInput *ngIf="!multiline" [id]="name" [name]="name" [type]="type"
+[(ngModel)]="innerValue" [placeholder]="placeholder ? placeholder : label" [disabled]="disabled" />
+<textarea matInput *ngIf="multiline" [id]="name" [name]="name"
+[(ngModel)]="innerValue" [placeholder]="placeholder ? placeholder : label" [disabled]="disabled"></textarea>

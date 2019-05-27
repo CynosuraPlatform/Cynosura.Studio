@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { PageEvent } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material";
 
 import { Enum } from "../enum-core/enum.model";
 import { EnumFilter } from "../enum-core/enum-filter.model";
@@ -10,26 +12,25 @@ import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
+class EnumListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new EnumFilter();
+}
+
 @Component({
     selector: "app-enum-list",
-    templateUrl: "./enum-list.component.html"
+    templateUrl: "./enum-list.component.html",
+    styleUrls: ["./enum-list.component.scss"]
 })
 export class EnumListComponent implements OnInit {
     content: Page<Enum>;
-    error: Error;
-    pageSize = 10;
-    filter = new EnumFilter();
-    private innerPageIndex: number;
-    get pageIndex(): number {
-        if (!this.innerPageIndex) {
-            this.innerPageIndex = this.storeService.get("enumsPageIndex", 0);
-        }
-        return this.innerPageIndex;
-    }
-    set pageIndex(value: number) {
-        this.innerPageIndex = value;
-        this.storeService.set("enumsPageIndex", value);
-    }
+    state: EnumListState;
+    pageSizeOptions = [10, 20];
+    columns = [
+        "name",
+        "displayName",
+    ];
     private innerSolutionId: number;
     get solutionId(): number {
         if (!this.innerSolutionId) {
@@ -48,8 +49,11 @@ export class EnumListComponent implements OnInit {
         private enumService: EnumService,
         private router: Router,
         private route: ActivatedRoute,
-        private storeService: StoreService
-        ) {}
+        private storeService: StoreService,
+        private snackBar: MatSnackBar
+        ) {
+        this.state = this.storeService.get("enumListState", new EnumListState());
+    }
 
     ngOnInit(): void {
         this.getEnums();
@@ -57,19 +61,19 @@ export class EnumListComponent implements OnInit {
 
     getEnums(): void {
         if (this.solutionId) {
-            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.pageIndex, pageSize: this.pageSize,
-                filter: this.filter })
+            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, 
+                filter: this.state.filter })
                 .then(content => {
                     this.content = content;
                 })
-                .catch(error => this.error = error);
+                .catch(error => this.onError(error));
         } else {
             this.content = null;
         }
     }
 
     reset(): void {
-        this.filter.text = null;
+        this.state.filter.text = null;
         this.getEnums();
     }
 
@@ -83,18 +87,24 @@ export class EnumListComponent implements OnInit {
 
     delete(id: string): void {
         this.modalHelper.confirmDelete()
-            .then(() => {
+            .subscribe(() => {
                 this.enumService.deleteEnum({ solutionId: this.solutionId, id })
                     .then(() => {
                         this.getEnums();
                     })
-                    .catch(error => this.error = error);
-            })
-            .catch(() => { });
+                    .catch(error => this.onError(error));
+            });
     }
 
-    onPageSelected(pageIndex: number) {
-        this.pageIndex = pageIndex;
+    onPage(page: PageEvent) {
+        this.state.pageIndex = page.pageIndex;
+        this.state.pageSize = page.pageSize;
         this.getEnums();
+    }
+
+    onError(error: Error) {
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+        }
     }
 }

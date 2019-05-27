@@ -1,75 +1,121 @@
 main(model) ::= <<
-<h2>$model.Entity.DisplayName$</h2>
-<form class="form-horizontal" *ngIf="$model.Entity.NameLower$" (ngSubmit)="onSubmit()">
-    <button type="submit" class="btn btn-primary">Save</button>
-    <button type="button" class="btn btn-default" (click)="cancel()">Back</button>
-    <app-error-handler [error]="error"></app-error-handler>
-$model.Entity.AllFields:field(); separator="\n"$
-</form>
+<mat-card>
+
+    <mat-card-header>
+        <mat-card-title>$model.Entity.DisplayName$ <app-$model.Entity.NameKebab$-show [value]="$model.Entity.NameLower$"></app-$model.Entity.NameKebab$-show></mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="$model.Entity.NameLower$Form" (ngSubmit)="onSubmit()">
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button mat-raised-button type="button" (click)="cancel()">Back</button>
+        </mat-card-actions>
+        $model.Entity.Fields:field(); separator="\n"$
+    </form>
+
+</mat-card>
 >>
 
 field(field) ::= <<
-    <div class="form-group">
-        <label for="$field.NameLower$" class="col-sm-2 control-label">$field.DisplayName$</label>
-        <div class="col-sm-10">
-$field:(field.Template)()$
-        </div>
-    </div>
+<div>
+    $field:(field.Template)()$
+</div>
 >>
 
 Type(field) ::= <<
 $field:(field.TypeTemplate)()$
-            <app-model-validator [model]="error?.modelState?.$field.NameLower$"></app-model-validator>
 >>
 
 Entity(field) ::= <<
-            <app-$field.Entity.NameKebab$-select [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$Id" name="$field.NameLower$Id" label="$field.DisplayName$"></app-$field.Entity.NameKebab$-select>
-            <app-model-validator [model]="error?.modelState?.$field.NameLower$Id"></app-model-validator>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-$field.Entity.NameKebab$-select formControlName="$field.NameLower$Id" name="$field.NameLower$Id" label="$field.DisplayName$"></app-$field.Entity.NameKebab$-select>
+    <mat-error>{{ error?.modelState?.$field.NameLower$Id | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Enum(field) ::= <<
-            <app-$field.Enum.NameKebab$-select [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-$field.Enum.NameKebab$-select>
-            <app-model-validator [model]="error?.modelState?.$field.NameLower$"></app-model-validator>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-$field.Enum.NameKebab$-select formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-$field.Enum.NameKebab$-select>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 String(field) ::= <<
-            <app-text-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-text-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-text-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-text-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Int32(field) ::= <<
-            <app-number-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-number-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Int64(field) ::= <<
-            <app-number-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-number-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Decimal(field) ::= <<
-            <app-number-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-number-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Double(field) ::= <<
-            <app-number-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-number-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-number-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Boolean(field) ::= <<
-            <app-bool-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-bool-edit>
+<app-bool-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-bool-edit>
 >>
 
 DateTime(field) ::= <<
-            <app-datetime-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-datetime-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-datetime-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-datetime-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Date(field) ::= <<
-            <app-date-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-date-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-date-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-date-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Time(field) ::= <<
-            <app-time-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-time-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-time-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-time-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Guid(field) ::= <<
-            <app-text-edit [(ngModel)]="$model.Entity.NameLower$.$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-text-edit>
+<mat-form-field>
+    <mat-label>$field.DisplayName$</mat-label>
+    <app-text-edit formControlName="$field.NameLower$" name="$field.NameLower$" label="$field.DisplayName$"></app-text-edit>
+    <mat-error>{{ error?.modelState?.$field.NameLower$ | modelError }}</mat-error>
+</mat-form-field>
 >>
 
 Blob(field) ::= <<

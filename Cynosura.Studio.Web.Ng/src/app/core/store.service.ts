@@ -9,7 +9,10 @@ export class StoreService {
     }
 
     get(key: string, defaultValue: any = null) {
-        const item = this.map[key];
-        return item !== undefined && item !== null ? item : defaultValue;
+        let item = this.map[key];
+        if (item === undefined || item === null) {
+            item = this.map[key] = defaultValue;
+        }
+        return item;
     }
 }

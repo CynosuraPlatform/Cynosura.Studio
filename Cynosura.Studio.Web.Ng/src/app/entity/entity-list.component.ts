@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
+import { PageEvent } from "@angular/material/paginator";
+import { MatSnackBar } from "@angular/material";
 
 import { Entity } from "../entity-core/entity.model";
 import { EntityFilter } from "../entity-core/entity-filter.model";
@@ -10,26 +12,29 @@ import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
 
+class EntityListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new EntityFilter();
+}
+
 @Component({
     selector: "app-entity-list",
-    templateUrl: "./entity-list.component.html"
+    templateUrl: "./entity-list.component.html",
+    styleUrls: ["./entity-list.component.scss"]
 })
 export class EntityListComponent implements OnInit {
     content: Page<Entity>;
-    error: Error;
-    pageSize = 10;
-    filter = new EntityFilter();
-    private innerPageIndex: number;
-    get pageIndex(): number {
-        if (!this.innerPageIndex) {
-            this.innerPageIndex = this.storeService.get("entitiesPageIndex", 0);
-        }
-        return this.innerPageIndex;
-    }
-    set pageIndex(value: number) {
-        this.innerPageIndex = value;
-        this.storeService.set("entitiesPageIndex", value);
-    }
+    state: EntityListState;
+    pageSizeOptions = [10, 20];
+    columns = [
+        "name",
+        "pluralName",
+        "displayName",
+        "pluralDisplayName",
+        "isAbstract",
+        "baseEntity",
+    ];
     private innerSolutionId: number;
     get solutionId(): number {
         if (!this.innerSolutionId) {
@@ -48,8 +53,11 @@ export class EntityListComponent implements OnInit {
         private entityService: EntityService,
         private router: Router,
         private route: ActivatedRoute,
-        private storeService: StoreService
-        ) {}
+        private storeService: StoreService,
+        private snackBar: MatSnackBar
+        ) {
+        this.state = this.storeService.get("entityListState", new EntityListState());
+    }
 
     ngOnInit(): void {
         this.getEntities();
@@ -57,19 +65,19 @@ export class EntityListComponent implements OnInit {
 
     getEntities(): void {
         if (this.solutionId) {
-            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.pageIndex, pageSize: this.pageSize,
-                filter: this.filter })
+            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, 
+                filter: this.state.filter })
                 .then(content => {
                     this.content = content;
                 })
-                .catch(error => this.error = error);
+                .catch(error => this.onError(error));
         } else {
             this.content = null;
         }
     }
 
     reset(): void {
-        this.filter.text = null;
+        this.state.filter.text = null;
         this.getEntities();
     }
 
@@ -83,18 +91,24 @@ export class EntityListComponent implements OnInit {
 
     delete(id: string): void {
         this.modalHelper.confirmDelete()
-            .then(() => {
+            .subscribe(() => {
                 this.entityService.deleteEntity({ solutionId: this.solutionId, id })
                     .then(() => {
                         this.getEntities();
                     })
-                    .catch(error => this.error = error);
-            })
-            .catch(() => { });
+                    .catch(error => this.onError(error));
+            });
     }
 
-    onPageSelected(pageIndex: number) {
-        this.pageIndex = pageIndex;
+    onPage(page: PageEvent) {
+        this.state.pageIndex = page.pageIndex;
+        this.state.pageSize = page.pageSize;
         this.getEntities();
+    }
+
+    onError(error: Error) {
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+        }
     }
 }

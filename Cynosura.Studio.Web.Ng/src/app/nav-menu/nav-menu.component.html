@@ -1,29 +1,11 @@
-<div class="main-nav">
-    <div class="navbar navbar-inverse">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" [attr.aria-expanded]="isExpanded" (click)="toggle()">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" [routerLink]="['/']">Cynosura.Studio</a>
-            <span class="loader glyphicon glyphicon-repeat pull-right" *ngIf="isLoading"></span>
-        </div>
-        <div class="clearfix"></div>
-        <div class="navbar-collapse collapse" [class.in]="isExpanded" *ngIf="menu">
-            <ul class="nav navbar-nav">
-                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{ exact: true }">
-                    <a [routerLink]="['/']" (click)="collapse()">
-                        <span class="glyphicon glyphicon-home"></span> Home
-                    </a>
-                </li>
-                <li *ngFor="let item of menu.items" [routerLinkActive]="['link-active']">
-                    <a [routerLink]="[item.route]">
-                        <span class="glyphicon" [ngClass]="item.cssClass"></span> {{ item.name }}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+<mat-nav-list>
+    <a mat-list-item [routerLink]="['/']" (click)="collapse()" [routerLinkActive]="['link-active']"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon matListIcon>home</mat-icon>
+        <span>Home</span>
+    </a>
+    <a mat-list-item [routerLink]="[item.route]" *ngFor="let item of menu?.items" [routerLinkActive]="['link-active']">
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        <span>{{ item.name }}</span>
+    </a>
+</mat-nav-list>

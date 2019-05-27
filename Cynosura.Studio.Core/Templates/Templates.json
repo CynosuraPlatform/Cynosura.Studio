@@ -322,6 +322,16 @@
   },
   {
     "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-list.component.scss",
+    "templatePath": "Web.Ng\\ListStyle.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
     "fileName": "{NameKebab}\\{NameKebab}-edit.component.ts",
     "templatePath": "Web.Ng\\EditComponent.stg",
     "types": [
@@ -334,6 +344,16 @@
     "filePath": "*.Web.Ng\\src\\app",
     "fileName": "{NameKebab}\\{NameKebab}-edit.component.html",
     "templatePath": "Web.Ng\\EditView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-edit.component.scss",
+    "templatePath": "Web.Ng\\EditStyle.stg",
     "types": [
       "View"
     ],

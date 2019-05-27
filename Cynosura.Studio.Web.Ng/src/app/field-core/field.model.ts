@@ -6,9 +6,9 @@ export class Field {
     type: FieldType;
     entityId: string;
     size: number;
-    isSystem: boolean;
+    isSystem = false;
 
-    isRequired: boolean;
+    isRequired = false;
     enumId: string;
 
     properties: { [k: string]: any};

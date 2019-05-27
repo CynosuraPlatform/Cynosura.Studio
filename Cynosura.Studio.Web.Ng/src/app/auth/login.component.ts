@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material";
+
 import { AuthService } from "./auth.service";
 
 @Component({
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar
     ) { }
 
     ngOnInit(): void {
@@ -34,7 +37,11 @@ export class LoginComponent implements OnInit {
             .subscribe(() => {
                 this.router.navigateByUrl(this.returnUrl);
             },
-            error => this.error = error);
+            error => {
+                if (error) {
+                    this.snackBar.open(error.error_description, "Ok");
+                }
+            });
     }
 
 }

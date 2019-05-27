@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { MatSnackBar, MatTableDataSource } from "@angular/material";
 
 import { ModalHelper } from "../core/modal.helper";
 
@@ -9,9 +10,18 @@ import { Error } from "../core/error.model";
 
 @Component({
     selector: "app-field-list",
-    templateUrl: "./field-list.component.html"
+    templateUrl: "./field-list.component.html",
+    styleUrls: ["./field-list.component.scss"]
 })
 export class FieldListComponent implements OnInit {
+
+    columns = [
+        "name",
+        "displayName",
+        "type",
+        "entity",
+        "enum",
+    ];
 
     FieldType = FieldType;
 
@@ -21,16 +31,16 @@ export class FieldListComponent implements OnInit {
     @Input()
     fields: Field[];
 
+    dataSource: MatTableDataSource<Field>;
+
     field: Field;
-
-    error: Error;
-
     constructor(
-        private modalHelper: ModalHelper
+        private modalHelper: ModalHelper,
+        private snackBar: MatSnackBar
         ) {}
 
     ngOnInit(): void {
-
+        this.dataSource = new MatTableDataSource(this.fields);
     }
 
     findField(id: string): Field {
@@ -56,19 +66,24 @@ export class FieldListComponent implements OnInit {
             field.id = Guid.newGuid();
             this.fields.push(field);
         }
+        this.dataSource.data = this.fields;
 
         this.field = null;
     }
 
     delete(id: string): void {
         this.modalHelper.confirmDelete()
-            .then(() => {
+            .subscribe(() => {
                 const foundField = this.findField(id);
                 const index = this.fields.indexOf(foundField);
                 this.fields.splice(index, 1);
-            })
-            .catch(() => { });
+                this.dataSource.data = this.fields;
+            });
     }
 
+    onError(error: Error) {
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+        }
+    }
 }
-

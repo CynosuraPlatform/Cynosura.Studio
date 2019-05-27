@@ -6,11 +6,13 @@ import { SolutionCoreModule } from "../solution-core/solution-core.module";
 
 import { SolutionListComponent } from "./solution-list.component";
 import { SolutionEditComponent } from "./solution-edit.component";
+import { SolutionOpenComponent } from "./solution-open.component";
 
 @NgModule({
     declarations: [
         SolutionListComponent,
-        SolutionEditComponent
+        SolutionEditComponent,
+        SolutionOpenComponent
     ],
     imports: [
         RouterModule.forChild([
@@ -21,7 +23,10 @@ import { SolutionEditComponent } from "./solution-edit.component";
         SolutionCoreModule
     ],
     providers: [
-    ]
+    ],
+    entryComponents: [
+        SolutionOpenComponent
+    ],
 })
 export class SolutionModule {
 

@@ -1,6 +1,8 @@
 main(model) ::= <<
 import { Component, Input, OnInit } from "@angular/core";
+import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
+import { MatSnackBar } from "@angular/material";
 
 import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
 import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
@@ -10,15 +12,23 @@ import { Error } from "../core/error.model";
 
 @Component({
     selector: "app-$model.Entity.NameKebab$-edit",
-    templateUrl: "./$model.Entity.NameKebab$-edit.component.html"
+    templateUrl: "./$model.Entity.NameKebab$-edit.component.html",
+    styleUrls: ["./$model.Entity.NameKebab$-edit.component.scss"]
 })
 export class $model.Entity.Name$EditComponent implements OnInit {
+    id: $model.Entity.IdField.JsTypeName$;
+    $model.Entity.NameLower$Form = this.fb.group({
+        id: [],
+$model.Entity.AllFields:field(); separator=",\n"$
+    });
     $model.Entity.NameLower$: $model.Entity.Name$;
     error: Error;
 
     constructor(private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
                 private route: ActivatedRoute,
-                private router: Router) {
+                private router: Router,
+                private fb: FormBuilder,
+                private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -29,11 +39,12 @@ export class $model.Entity.Name$EditComponent implements OnInit {
     }
 
     private get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$): void {
+        this.id = id;
         if (!id) {
-            this.$model.Entity.NameLower$ = new $model.Entity.Name$();
+            this.$model.Entity.NameLower$Form.patchValue(new $model.Entity.Name$());
         } else {
             this.$model.Entity.NameLower$Service.get$model.Entity.Name$({ id }).then($model.Entity.NameLower$ => {
-                this.$model.Entity.NameLower$ = $model.Entity.NameLower$;
+                this.$model.Entity.NameLower$Form.patchValue($model.Entity.NameLower$);
             });
         }
     }
@@ -47,22 +58,44 @@ export class $model.Entity.Name$EditComponent implements OnInit {
     }
 
     private save$model.Entity.Name$(): void {
-        if (this.$model.Entity.NameLower$.id) {
-            this.$model.Entity.NameLower$Service.update$model.Entity.Name$(this.$model.Entity.NameLower$)
+        if (this.id) {
+            this.$model.Entity.NameLower$Service.update$model.Entity.Name$(this.$model.Entity.NameLower$Form.value)
                 .then(
                     () => window.history.back(),
-                    error => this.error = error
+                    error => this.onError(error)
                 );
         } else {
-            this.$model.Entity.NameLower$Service.create$model.Entity.Name$(this.$model.Entity.NameLower$)
+            this.$model.Entity.NameLower$Service.create$model.Entity.Name$(this.$model.Entity.NameLower$Form.value)
                 .then(
                     () => window.history.back(),
-                    error => this.error = error
+                    error => this.onError(error)
                 );
         }
     }
 
+    onError(error: Error) {
+        this.error = error;
+        if (error) {
+            this.snackBar.open(error.message, "Ok");
+            Error.setFormErrors(this.$model.Entity.NameLower$Form, error);
+        }
+    }
 }
 
 >>
 
+field(field) ::= <<
+$field:(field.Template)()$
+>>
+
+Type(field) ::= <<
+        $field.NameLower$: []
+>>
+
+Entity(field) ::= <<
+        $field.NameLower$$field.Entity.IdField.Name$: []
+>>
+
+Enum(field) ::= <<
+        $field.NameLower$: []
+>>
