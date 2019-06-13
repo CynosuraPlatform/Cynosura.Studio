@@ -65,7 +65,7 @@ export class EntityListComponent implements OnInit {
 
     getEntities(): void {
         if (this.solutionId) {
-            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, 
+            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize,
                 filter: this.state.filter })
                 .then(content => {
                     this.content = content;

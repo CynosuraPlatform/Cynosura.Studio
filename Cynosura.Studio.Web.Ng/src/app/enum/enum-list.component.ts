@@ -61,7 +61,7 @@ export class EnumListComponent implements OnInit {
 
     getEnums(): void {
         if (this.solutionId) {
-            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, 
+            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize,
                 filter: this.state.filter })
                 .then(content => {
                     this.content = content;
