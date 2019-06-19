@@ -29,7 +29,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     state: $model.Entity.Name$ListState;
     pageSizeOptions = [10, 20];
     columns = [
-        $model.Entity.Fields:field(); separator="\r\n"$
+        $model.Entity.AllFields:field(); separator="\r\n"$
     ];
 
     constructor(

@@ -41,10 +41,12 @@ $model.Entity.AllFields:field(); separator=",\n"$
     private get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$): void {
         this.id = id;
         if (!id) {
-            this.$model.Entity.NameLower$Form.patchValue(new $model.Entity.Name$());
+            this.$model.Entity.NameLower$ = new $model.Entity.Name$();
+            this.$model.Entity.NameLower$Form.patchValue(this.$model.Entity.NameLower$);
         } else {
             this.$model.Entity.NameLower$Service.get$model.Entity.Name$({ id }).then($model.Entity.NameLower$ => {
-                this.$model.Entity.NameLower$Form.patchValue($model.Entity.NameLower$);
+                this.$model.Entity.NameLower$ = $model.Entity.NameLower$;
+                this.$model.Entity.NameLower$Form.patchValue(this.$model.Entity.NameLower$);
             });
         }
     }

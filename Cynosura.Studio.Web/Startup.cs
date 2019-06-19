@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -152,6 +152,7 @@ namespace Cynosura.Studio.Web
                         options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     }
                 );
 

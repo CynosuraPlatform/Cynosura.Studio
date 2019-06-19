@@ -10,7 +10,7 @@ main(model) ::= <<
             <button mat-raised-button color="primary" type="submit">Save</button>
             <button mat-raised-button type="button" (click)="cancel()">Back</button>
         </mat-card-actions>
-        $model.Entity.Fields:field(); separator="\n"$
+        $model.Entity.AllFields:field(); separator="\n"$
     </form>
 
 </mat-card>

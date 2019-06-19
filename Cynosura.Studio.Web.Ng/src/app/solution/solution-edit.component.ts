@@ -41,10 +41,12 @@ export class SolutionEditComponent implements OnInit {
     private getSolution(id: number): void {
         this.id = id;
         if (!id) {
-            this.solutionForm.patchValue(new Solution());
+            this.solution = new Solution();
+            this.solutionForm.patchValue(this.solution);
         } else {
             this.solutionService.getSolution({ id }).then(solution => {
-                this.solutionForm.patchValue(solution);
+                this.solution = solution;
+                this.solutionForm.patchValue(this.solution);
             });
         }
     }

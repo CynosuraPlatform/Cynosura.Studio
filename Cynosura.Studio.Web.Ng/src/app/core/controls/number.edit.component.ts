@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { MatFormFieldControl } from "@angular/material";
 import { FocusMonitor } from "@angular/cdk/a11y";
@@ -13,7 +13,7 @@ import { Subject } from "rxjs";
         { provide: MatFormFieldControl, useExisting: NumberEditComponent }
     ]
 })
-export class NumberEditComponent implements ControlValueAccessor, MatFormFieldControl<string>, OnDestroy {
+export class NumberEditComponent implements ControlValueAccessor, MatFormFieldControl<number>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -23,18 +23,16 @@ export class NumberEditComponent implements ControlValueAccessor, MatFormFieldCo
     id = `number-edit-${NumberEditComponent.nextId++}`;
     describedBy = "";
 
-    get errorState(): boolean {
-        return coerceBooleanProperty(this.ngControl.errors);
-    }
+    errorState = false;
 
     get empty() {
-        return !this.value;
+        return this.value === null || this.value === undefined;
     }
 
     get shouldLabelFloat() { return this.focused || !this.empty; }
 
     @Input()
-    value: string;
+    value: number;
 
     @Input()
     name: string;
@@ -110,5 +108,12 @@ export class NumberEditComponent implements ControlValueAccessor, MatFormFieldCo
     }
 
     onContainerClick(event: MouseEvent) {
+    }
+
+    ngDoCheck(): void {
+        if (this.ngControl) {
+            this.errorState = this.ngControl.invalid;
+            this.stateChanges.next();
+        }
     }
 }

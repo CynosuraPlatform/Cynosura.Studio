@@ -25,13 +25,13 @@ main(model) ::= <<
         
         <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
 
-            $model.Entity.Fields:fieldContainer(); separator="\n"$
+            $model.Entity.AllFields:fieldContainer(); separator="\n"$
 
             <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
                     <app-table-detail [expanded]="item == expandedElement">
-                        <button mat-raised-button (click)="edit(item.id)" color="primary">Открыть</button>
-                        <button mat-raised-button (click)="delete(item.id)" color="warn">Удалить</button>
+                        <button mat-raised-button (click)="edit(item.id)" color="primary">Edit</button>
+                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
                     </app-table-detail>
                 </td>
             </ng-container>

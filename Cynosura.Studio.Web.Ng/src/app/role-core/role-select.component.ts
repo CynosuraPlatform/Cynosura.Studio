@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { MatFormFieldControl } from "@angular/material";
 import { FocusMonitor } from "@angular/cdk/a11y";
@@ -17,7 +17,7 @@ import { RoleService } from "./role.service";
     ]
 })
 
-export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<number | null>, OnDestroy {
+export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<number | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -27,9 +27,7 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFor
     id = `role-select-${RoleSelectComponent.nextId++}`;
     describedBy = "";
 
-    get errorState(): boolean {
-        return coerceBooleanProperty(this.ngControl.errors);
-    }
+    errorState = false;
 
     get empty() {
         return !this.value;
@@ -123,5 +121,12 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFor
     }
 
     onContainerClick(event: MouseEvent) {
+    }
+
+    ngDoCheck(): void {
+        if (this.ngControl) {
+            this.errorState = this.ngControl.invalid;
+            this.stateChanges.next();
+        }
     }
 }

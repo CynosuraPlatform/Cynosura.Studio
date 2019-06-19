@@ -27,6 +27,7 @@ export class UserEditComponent implements OnInit {
         password: [],
         confirmPassword: []
     });
+    user: User;
     roles: Role[] = [];
     error: Error;
 
@@ -48,12 +49,14 @@ export class UserEditComponent implements OnInit {
     private getUser(id: number): void {
         this.id = id;
         if (id === 0) {
-            this.userForm.patchValue(new User());
+            this.user = new User();
+            this.userForm.patchValue(this.user);
         } else {
             this.userService.getUser({ id }).then(user => {
-                this.userForm.patchValue(user);
+                this.user = user;
+                this.userForm.patchValue(this.user);
                 for (const role of this.roles) {
-                    if (user.roleIds.indexOf(role.id) !== -1) {
+                    if (this.user.roleIds.indexOf(role.id) !== -1) {
                         role.isSelected = true;
                     }
                 }

@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { MatFormFieldControl } from "@angular/material";
 import { FocusMonitor } from "@angular/cdk/a11y";
@@ -13,7 +13,7 @@ import { Subject } from "rxjs";
         { provide: MatFormFieldControl, useExisting: TimeEditComponent }
     ]
 })
-export class TimeEditComponent implements ControlValueAccessor, MatFormFieldControl<string>, OnDestroy {
+export class TimeEditComponent implements ControlValueAccessor, MatFormFieldControl<string>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -23,9 +23,7 @@ export class TimeEditComponent implements ControlValueAccessor, MatFormFieldCont
     id = `time-edit-${TimeEditComponent.nextId++}`;
     describedBy = "";
 
-    get errorState(): boolean {
-        return coerceBooleanProperty(this.ngControl.errors);
-    }
+    errorState = false;
 
     get empty() {
         return !this.value;
@@ -123,5 +121,12 @@ export class TimeEditComponent implements ControlValueAccessor, MatFormFieldCont
     }
 
     onContainerClick(event: MouseEvent) {
+    }
+
+    ngDoCheck(): void {
+        if (this.ngControl) {
+            this.errorState = this.ngControl.invalid;
+            this.stateChanges.next();
+        }
     }
 }

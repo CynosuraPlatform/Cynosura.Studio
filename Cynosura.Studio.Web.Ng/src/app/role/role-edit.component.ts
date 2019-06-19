@@ -20,6 +20,7 @@ export class RoleEditComponent implements OnInit {
         id: [],
         name: []
     });
+    role: Role;
     error: Error;
 
     constructor(private roleService: RoleService,
@@ -39,10 +40,12 @@ export class RoleEditComponent implements OnInit {
     private getRole(id: number): void {
         this.id = id;
         if (id === 0) {
-            this.roleForm.patchValue(new Role());
+            this.role = new Role();
+            this.roleForm.patchValue(this.role);
         } else {
             this.roleService.getRole({ id }).then(role => {
-                this.roleForm.patchValue(role);
+                this.role = role;
+                this.roleForm.patchValue(this.role);
             });
         }
     }

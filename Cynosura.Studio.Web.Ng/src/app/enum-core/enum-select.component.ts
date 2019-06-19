@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { MatFormFieldControl } from "@angular/material";
 import { FocusMonitor } from "@angular/cdk/a11y";
@@ -17,7 +17,7 @@ import { EnumService } from "./enum.service";
     ]
 })
 
-export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<string | null>, OnDestroy {
+export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<string | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -27,9 +27,7 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFor
     id = `enum-select-${EnumSelectComponent.nextId++}`;
     describedBy = "";
 
-    get errorState(): boolean {
-        return coerceBooleanProperty(this.ngControl.errors);
-    }
+    errorState = false;
 
     get empty() {
         return !this.value;
@@ -126,5 +124,12 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFor
     }
 
     onContainerClick(event: MouseEvent) {
+    }
+
+    ngDoCheck(): void {
+        if (this.ngControl) {
+            this.errorState = this.ngControl.invalid;
+            this.stateChanges.next();
+        }
     }
 }

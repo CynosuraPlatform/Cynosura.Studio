@@ -1,5 +1,5 @@
 main(model) ::= <<
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self } from "@angular/core";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
 import { MatFormFieldControl } from "@angular/material";
 import { FocusMonitor } from "@angular/cdk/a11y";
@@ -17,7 +17,7 @@ import { $model.Enum.Name$, $model.Enum.Name$Display } from "./$model.Enum.NameK
     ]
 })
 
-export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<$model.Enum.Name$ | null>, OnDestroy {
+export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<$model.Enum.Name$ | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -27,12 +27,10 @@ export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAcc
     id = `$model.Enum.NameKebab$-select-\${$model.Enum.Name$SelectComponent.nextId++}`;
     describedBy = "";
 
-    get errorState(): boolean {
-        return coerceBooleanProperty(this.ngControl.errors);
-    }
+    errorState = false;
 
     get empty() {
-        return !this.value;
+        return this.value === null || this.value === undefined;
     }
 
     get shouldLabelFloat() { return this.focused || !this.empty; }
@@ -121,6 +119,13 @@ export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAcc
     }
 
     onContainerClick(event: MouseEvent) {
+    }
+
+    ngDoCheck(): void {
+        if (this.ngControl) {
+            this.errorState = this.ngControl.invalid;
+            this.stateChanges.next();
+        }
     }
 }
 
