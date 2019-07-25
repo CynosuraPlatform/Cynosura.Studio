@@ -15,7 +15,6 @@ namespace Cynosura.Studio.Generator
 {
     public class CodeGenerator
     {
-        private const string PackageName = "Cynosura.Template";
         private string StudioDirectoryPath => Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
 
         private readonly ITemplateEngine _templateEngine;
@@ -117,29 +116,29 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task GenerateSolutionAsync(string path, string name)
+        public async Task GenerateSolutionAsync(string path, string name, string templateName)
         {
             _logger.LogInformation("GenerateSolution");
-            var latestVersion = (await _packageFeed.GetVersionsAsync(PackageName)).First();
+            var latestVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
             _logger.LogInformation($"Latest version: {latestVersion}");
             if (Directory.GetFiles(path).Length > 0 || Directory.GetDirectories(path).Length > 0)
             {
                 _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
                 return;
             }
-            await InitSolutionAsync(name, latestVersion, path);
+            await InitSolutionAsync(name, latestVersion, path, templateName);
         }
 
-        private async Task InitSolutionAsync(string solutionName, string packageVersion, string path)
+        private async Task InitSolutionAsync(string solutionName, string packageVersion, string path, string templateName)
         {
             var packagesPath = Path.Combine(StudioDirectoryPath, "Packages");
             if (!Directory.Exists(packagesPath))
                 Directory.CreateDirectory(packagesPath);
-            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, PackageName, packageVersion);
+            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, templateName, packageVersion);
             _logger.LogInformation($"Downloaded version {packageVersion} to {packageFilePath}");
 
             CopyDirectory(packageFilePath, path);
-            await RenameSolutionAsync(path, PackageName, solutionName);
+            await RenameSolutionAsync(path, templateName, solutionName);
             _logger.LogInformation($"Created solution in {path}");
         }
 
@@ -226,10 +225,10 @@ namespace Cynosura.Studio.Generator
                 _logger.LogWarning("Solution metadata not found. Cannot upgrade.");
                 return;
             }
-            _logger.LogInformation($"Current version: {solution.Metadata.Version}");
-            var latestVersion = (await _packageFeed.GetVersionsAsync(PackageName)).First();
+            _logger.LogInformation($"Current version: {solution.Metadata.TemplateVersion}");
+            var latestVersion = (await _packageFeed.GetVersionsAsync(solution.Metadata.TemplateName)).First();
             _logger.LogInformation($"Latest version: {latestVersion}");
-            if (solution.Metadata.Version == latestVersion)
+            if (solution.Metadata.TemplateVersion == latestVersion)
             {
                 _logger.LogWarning("Using latest version. Nothing to upgrade");
                 return;
@@ -239,16 +238,16 @@ namespace Cynosura.Studio.Generator
             var latestPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{latestVersion}");
             if (Directory.Exists(latestPackageSolutionPath))
                 Directory.Delete(latestPackageSolutionPath, true);
-            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.Version}");
+            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.TemplateVersion}");
             if (Directory.Exists(currentPackageSolutionPath))
                 Directory.Delete(currentPackageSolutionPath, true);
 
-            await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath);
+            await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath, solution.Metadata.TemplateName);
             var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
             await CopyEnumsAsync(solution, latestPackageSolution);
             await CopyEntitiesAsync(solution, latestPackageSolution);
 
-            await InitSolutionAsync(solution.Namespace, solution.Metadata.Version, currentPackageSolutionPath);
+            await InitSolutionAsync(solution.Namespace, solution.Metadata.TemplateVersion, currentPackageSolutionPath, solution.Metadata.TemplateName);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
             await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);
