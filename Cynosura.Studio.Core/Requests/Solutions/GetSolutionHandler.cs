@@ -1,10 +1,11 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
+using Cynosura.Studio.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,9 +26,15 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public async Task<SolutionModel> Handle(GetSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
-                .Where(e => e.Id == request.Id)
-                .FirstOrDefaultAsync();
-            return _mapper.Map<Solution, SolutionModel>(solution);
+                .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+            var solutionModel = _mapper.Map<Solution, SolutionModel>(solution);
+            if (solutionModel != null)
+            {
+                var accessor = new SolutionAccessor(solution.Path);
+                solutionModel.TemplateName = accessor.Metadata.TemplateName;
+                solutionModel.TemplateVersion = accessor.Metadata.TemplateVersion;
+            }
+            return solutionModel;
         }
 
     }

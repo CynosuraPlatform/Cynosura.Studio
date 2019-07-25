@@ -25,6 +25,30 @@
                 <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
             </mat-form-field>
         </div>
+        <div *ngIf="id">
+            <mat-form-field>
+                <mat-label>Template Name</mat-label>
+                <app-text-edit formControlName="templateName" name="templateName" label="Template Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="id">
+            <mat-form-field>
+                <mat-label>Template Version</mat-label>
+                <app-text-edit formControlName="templateVersion" name="templateVersion" label="Template Version"></app-text-edit>
+                <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="!id">
+            <mat-form-field>
+                <mat-label>Template Name</mat-label>
+                <mat-select formControlName="templateName" [(ngModel)]="innerValue" [disabled]="readonly">
+                    <mat-option>Select Template</mat-option>
+                    <mat-option [value]="template.name" *ngFor="let template of templates">{{ template.name }}</mat-option>
+                </mat-select>
+                <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
+            </mat-form-field>
+        </div>
     </form>
 
 </mat-card>

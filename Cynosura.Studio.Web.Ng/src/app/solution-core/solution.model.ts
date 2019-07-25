@@ -7,4 +7,6 @@ export class Solution {
     modificationUserId: number;
     name: string;
     path: string;
+    templateName: string;
+    templateVersion: string;
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Cynosura.Studio.Generator.Models;
 using Cynosura.Studio.Generator.Infrastructure;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Cynosura.Studio.Generator
 {
@@ -50,16 +51,22 @@ namespace Cynosura.Studio.Generator
             throw new FileNotFoundException();
         }
 
-        private async Task<SolutionMetadata> GetMetadataAsync()
-        {
-            var metadataPath = GetMetadataPath();
-            return DeserializeMetadata<SolutionMetadata>(await ReadFileAsync(metadataPath));
-        }
-
         private SolutionMetadata GetMetadata()
         {
             var metadataPath = GetMetadataPath();
-            return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
+            var json = File.ReadAllText(metadataPath);
+            var metadata = DeserializeMetadata<SolutionMetadata>(json);
+            if (string.IsNullOrEmpty(metadata.TemplateVersion))
+            {
+                // read "Version" field for old SolutionMetadata
+                var jObject = JObject.Parse(json);
+                var versionToken = jObject.GetValue("Version");
+                if (versionToken != null)
+                {
+                    metadata.TemplateVersion = versionToken.Value<string>();
+                }
+            }
+            return metadata;
         }
 
         private List<ProjectAccessor> GetProjects(string path)

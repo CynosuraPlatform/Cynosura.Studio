@@ -1,3 +1,5 @@
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
+using Cynosura.Studio.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +32,24 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             query = query.Filter(request.Filter);
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
             var solutions = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
-            return solutions.Map<Solution, SolutionModel>(_mapper);
+            var solutionsModels = solutions.Map<Solution, SolutionModel>(_mapper);
+            var solutionPatch = new List<SolutionModel>();
+            foreach (var solution in solutionsModels.PageItems)
+            {
+                try
+                {
+                    var accessor = new SolutionAccessor(solution.Path);
+                    solution.TemplateName = accessor.Metadata.TemplateName;
+                    solution.TemplateVersion = accessor.Metadata.TemplateVersion;
+                }
+                finally
+                {
+                    solutionPatch.Add(solution);
+                }
+            }
+
+            solutionsModels.PageItems = solutionPatch;
+            return solutionsModels;
         }
 
     }

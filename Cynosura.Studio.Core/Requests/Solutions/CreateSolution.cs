@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,5 +13,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public string Name { get; set; }
         [DisplayName("Path")]
         public string Path { get; set; }
+        [DisplayName("Template Name")]
+        public string TemplateName { get; set; }
     }
 }

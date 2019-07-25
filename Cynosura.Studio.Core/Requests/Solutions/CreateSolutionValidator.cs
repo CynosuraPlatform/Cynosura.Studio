@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {
@@ -8,6 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         {
             RuleFor(x => x.Name).MaximumLength(50).NotEmpty();
             RuleFor(x => x.Path).MaximumLength(200).NotEmpty();
+            RuleFor(x => x.TemplateName).NotEmpty();
         }
 
     }

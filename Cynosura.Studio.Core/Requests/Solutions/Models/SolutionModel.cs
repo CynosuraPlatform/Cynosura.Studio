@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Cynosura.Studio.Core.Requests.Solutions.Models
@@ -15,5 +15,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
 
         public string Name { get; set; }
         public string Path { get; set; }
+        public string TemplateName { get; set; }
+        public string TemplateVersion { get; set; }
     }
 }
