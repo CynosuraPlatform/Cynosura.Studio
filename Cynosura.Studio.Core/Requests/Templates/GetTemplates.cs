@@ -23,7 +23,7 @@ namespace Cynosura.Studio.Core.Requests.Templates
 
         public Task<IEnumerable<TemplateModel>> Handle(GetTemplates request, CancellationToken cancellationToken)
         {
-            return _templateProvider.GetTemplates();
+            return _templateProvider.GetTemplatesAsync();
         }
     }
 }

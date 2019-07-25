@@ -14,12 +14,12 @@ namespace Cynosura.Studio.Core.Infrastructure
         {
             _options = options.Value;
         }
-        public Task<IEnumerable<TemplateModel>> GetTemplates()
+        public Task<IEnumerable<TemplateModel>> GetTemplatesAsync()
         {
             return Task.FromResult(_options.AsEnumerable());
         }
 
-        public Task<TemplateModel> GetTemplate(string name)
+        public Task<TemplateModel> GetTemplateAsync(string name)
         {
             return Task.FromResult(_options.FirstOrDefault(f => f.Name == name));
         }
