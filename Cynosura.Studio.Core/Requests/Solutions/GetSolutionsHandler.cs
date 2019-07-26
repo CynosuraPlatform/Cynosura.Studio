@@ -9,18 +9,22 @@ using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {
     public class GetSolutionsHandler : IRequestHandler<GetSolutions, PageModel<SolutionModel>>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
+        private readonly ILogger<GetSolutionsHandler> _logger;
         private readonly IMapper _mapper;
 
         public GetSolutionsHandler(IEntityRepository<Solution> solutionRepository,
+            ILogger<GetSolutionsHandler> logger,
             IMapper mapper)
         {
             _solutionRepository = solutionRepository;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -34,7 +38,14 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             solutionsModels.PageItems = solutionsModels.PageItems
                 .Select(s =>
                 {
-                    s.LoadMetadata();
+                    try
+                    {
+                        s.LoadMetadata();
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogWarning(e, "Can't load metadata for {0}", s.Name);
+                    }
                     return s;
                 })
                 .ToList();
