@@ -54,19 +54,7 @@ namespace Cynosura.Studio.Generator
         private SolutionMetadata GetMetadata()
         {
             var metadataPath = GetMetadataPath();
-            var json = File.ReadAllText(metadataPath);
-            var metadata = DeserializeMetadata<SolutionMetadata>(json);
-            if (string.IsNullOrEmpty(metadata.TemplateVersion))
-            {
-                // read "Version" field for old SolutionMetadata
-                var jObject = JObject.Parse(json);
-                var versionToken = jObject.GetValue("Version");
-                if (versionToken != null)
-                {
-                    metadata.TemplateVersion = versionToken.Value<string>();
-                }
-            }
-            return metadata;
+            return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
         }
 
         private List<ProjectAccessor> GetProjects(string path)

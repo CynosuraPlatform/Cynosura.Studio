@@ -126,16 +126,16 @@ namespace Cynosura.Studio.Generator
                 _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
                 return;
             }
-            await InitSolutionAsync(name, latestVersion, path, templateName);
+            await InitSolutionAsync(name, path, templateName, latestVersion);
         }
 
-        private async Task InitSolutionAsync(string solutionName, string packageVersion, string path, string templateName)
+        private async Task InitSolutionAsync(string solutionName, string path, string templateName, string templateVersion)
         {
             var packagesPath = Path.Combine(StudioDirectoryPath, "Packages");
             if (!Directory.Exists(packagesPath))
                 Directory.CreateDirectory(packagesPath);
-            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, templateName, packageVersion);
-            _logger.LogInformation($"Downloaded version {packageVersion} to {packageFilePath}");
+            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, templateName, templateVersion);
+            _logger.LogInformation($"Downloaded version {templateVersion} to {packageFilePath}");
 
             CopyDirectory(packageFilePath, path);
             await RenameSolutionAsync(path, templateName, solutionName);
@@ -242,12 +242,12 @@ namespace Cynosura.Studio.Generator
             if (Directory.Exists(currentPackageSolutionPath))
                 Directory.Delete(currentPackageSolutionPath, true);
 
-            await InitSolutionAsync(solution.Namespace, latestVersion, latestPackageSolutionPath, solution.Metadata.TemplateName);
+            await InitSolutionAsync(solution.Namespace, latestPackageSolutionPath, solution.Metadata.TemplateName, latestVersion);
             var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
             await CopyEnumsAsync(solution, latestPackageSolution);
             await CopyEntitiesAsync(solution, latestPackageSolution);
 
-            await InitSolutionAsync(solution.Namespace, solution.Metadata.TemplateVersion, currentPackageSolutionPath, solution.Metadata.TemplateName);
+            await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
             await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);

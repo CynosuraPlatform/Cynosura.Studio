@@ -36,7 +36,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         {
             var solution = _mapper.Map<CreateSolution, Solution>(request);
             var template = await _templateProvider.GetTemplateAsync(request.TemplateName);
-            if(template == null)
+            if (template == null)
                 throw new ArgumentException($"Template '{request.TemplateName}' not found");
             _solutionRepository.Add(solution);
             await _unitOfWork.CommitAsync();

@@ -8,9 +8,7 @@ using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
-using Cynosura.Studio.Generator;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {
@@ -33,22 +31,13 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
             var solutions = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
             var solutionsModels = solutions.Map<Solution, SolutionModel>(_mapper);
-            var solutionPatch = new List<SolutionModel>();
-            foreach (var solution in solutionsModels.PageItems)
-            {
-                try
+            solutionsModels.PageItems = solutionsModels.PageItems
+                .Select(s =>
                 {
-                    var accessor = new SolutionAccessor(solution.Path);
-                    solution.TemplateName = accessor.Metadata.TemplateName;
-                    solution.TemplateVersion = accessor.Metadata.TemplateVersion;
-                }
-                finally
-                {
-                    solutionPatch.Add(solution);
-                }
-            }
-
-            solutionsModels.PageItems = solutionPatch;
+                    s.LoadMetadata();
+                    return s;
+                })
+                .ToList();
             return solutionsModels;
         }
 

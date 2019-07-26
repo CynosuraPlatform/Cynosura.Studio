@@ -5,7 +5,6 @@ using AutoMapper;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
-using Cynosura.Studio.Generator;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,9 +29,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             var solutionModel = _mapper.Map<Solution, SolutionModel>(solution);
             if (solutionModel != null)
             {
-                var accessor = new SolutionAccessor(solution.Path);
-                solutionModel.TemplateName = accessor.Metadata.TemplateName;
-                solutionModel.TemplateVersion = accessor.Metadata.TemplateVersion;
+                solutionModel.LoadMetadata();
             }
             return solutionModel;
         }

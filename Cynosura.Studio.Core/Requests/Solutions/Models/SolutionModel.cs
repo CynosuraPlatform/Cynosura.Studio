@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cynosura.Studio.Generator;
 
 namespace Cynosura.Studio.Core.Requests.Solutions.Models
 {
@@ -17,5 +18,11 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
         public string Path { get; set; }
         public string TemplateName { get; set; }
         public string TemplateVersion { get; set; }
+        public void LoadMetadata()
+        {
+            var accessor = new SolutionAccessor(Path);
+            TemplateName = accessor.Metadata.TemplateName;
+            TemplateVersion = accessor.Metadata.TemplateVersion;
+        }
     }
 }

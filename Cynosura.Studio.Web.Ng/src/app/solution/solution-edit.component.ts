@@ -19,9 +19,9 @@ export class SolutionEditComponent implements OnInit {
     id: number;
     solutionForm = this.fb.group({
         id: [],
-        name: [, [Validators.required]],
-        path: [, [Validators.required]],
-        templateName: [, [Validators.required]],
+        name: [],
+        path: [],
+        templateName: [],
         templateVersion: []
     });
     solution: Solution;
