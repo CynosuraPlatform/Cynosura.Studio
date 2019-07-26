@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Cynosura.Studio.Generator.Models;
 using Cynosura.Studio.Generator.Infrastructure;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Cynosura.Studio.Generator
 {
@@ -48,12 +49,6 @@ namespace Cynosura.Studio.Generator
                 return oldLocation;
             }
             throw new FileNotFoundException();
-        }
-
-        private async Task<SolutionMetadata> GetMetadataAsync()
-        {
-            var metadataPath = GetMetadataPath();
-            return DeserializeMetadata<SolutionMetadata>(await ReadFileAsync(metadataPath));
         }
 
         private SolutionMetadata GetMetadata()

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cynosura.Core.Data;
@@ -24,11 +24,11 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public async Task<Unit> Handle(GenerateSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
-                .Where(e => e.Id == request.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
             if (solution != null)
             {
-                await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name);
+                var accessor = new SolutionAccessor(solution.Path);
+                await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name, accessor.Metadata.TemplateName);
             }
             return Unit.Value;
         }

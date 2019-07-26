@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography.X509Certificates;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Generator.PackageFeed.Models;
 using Cynosura.Studio.Generator.PackageFeed;
 using Cynosura.Studio.Data;
@@ -50,6 +51,7 @@ namespace Cynosura.Studio.Web
         {
             services.Configure<NugetSettings>(Configuration.GetSection("Nuget"));
             services.Configure<LocalFeedOptions>(Configuration.GetSection("LocalFeed"));
+            services.Configure<TemplateJsonProviderOptions>(Configuration.GetSection("Templates"));
 
             services.AddDbContext<DataContext>(options =>
             {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 import { MatSnackBar } from "@angular/material";
 
@@ -7,6 +7,7 @@ import { Solution } from "../solution-core/solution.model";
 import { SolutionService } from "../solution-core/solution.service";
 
 import { Error } from "../core/error.model";
+import { TemplateModel, TemplateService } from "../solution-core/template-service";
 
 
 @Component({
@@ -19,16 +20,21 @@ export class SolutionEditComponent implements OnInit {
     solutionForm = this.fb.group({
         id: [],
         name: [],
-        path: []
+        path: [],
+        templateName: [],
+        templateVersion: []
     });
     solution: Solution;
+    templates: TemplateModel;
     error: Error;
 
-    constructor(private solutionService: SolutionService,
-                private route: ActivatedRoute,
-                private router: Router,
-                private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+    constructor(
+        private solutionService: SolutionService,
+        private templateService: TemplateService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private fb: FormBuilder,
+        private snackBar: MatSnackBar) {
     }
 
     ngOnInit(): void {
@@ -36,6 +42,8 @@ export class SolutionEditComponent implements OnInit {
             const id: number = params.id === "0" ? null : params.id;
             this.getSolution(id);
         });
+        this.templateService.getTemplates()
+            .then((templates) => this.templates = templates);
     }
 
     private getSolution(id: number): void {
@@ -86,7 +94,7 @@ export class SolutionEditComponent implements OnInit {
         this.error = null;
         this.solutionService.generateSolution({ id: this.solution.id })
             .then(
-                () => {},
+                () => { },
                 error => this.error = error
             );
     }

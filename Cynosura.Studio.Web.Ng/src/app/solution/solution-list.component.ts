@@ -31,6 +31,8 @@ export class SolutionListComponent implements OnInit {
     columns = [
         "name",
         "path",
+        "templateName",
+        "templateVersion"
     ];
 
     constructor(
