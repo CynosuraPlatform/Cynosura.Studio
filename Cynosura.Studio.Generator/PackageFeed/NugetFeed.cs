@@ -39,27 +39,37 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return httpClient;
         }
 
-        private async Task<string> GetPackageBaseAddressAsync()
+        private async Task<string> GetResourceAsync(string type)
         {
             var httpClient = GetHttpClient();
             var feedResult = await httpClient.GetStringAsync(_settings.FeedUrl);
             var feed = feedResult.DeserializeFromJson<FeedData>();
-            var baseAddress = feed.Resources.Where(r => r.Type == "PackageBaseAddress/3.0.0")
+            var resource = feed.Resources.Where(r => r.Type == type)
                 .Select(r => r.Id)
                 .FirstOrDefault();
-            if (baseAddress != null)
-                baseAddress = Regex.Replace(baseAddress, "/$", "");
-            return baseAddress;
+            if (resource != null)
+                resource = Regex.Replace(resource, "/$", "");
+            return resource;
+        }
+
+        private async Task<string> GetPackageBaseAddressAsync()
+        {
+            return await GetResourceAsync("PackageBaseAddress/3.0.0");
+        }
+
+        private async Task<string> GetSearchAutocompleteServiceAsync()
+        {
+            return await GetResourceAsync("SearchAutocompleteService");
         }
 
         public async Task<IList<string>> GetVersionsAsync(string packageName)
         {
-            var baseAddress = await GetPackageBaseAddressAsync();
-            var versionsUrl = $"{baseAddress}/{packageName.ToLower()}/index.json";
+            var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
+            var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
             var httpClient = GetHttpClient();
             var versionsResult = await httpClient.GetStringAsync(versionsUrl);
             var versions = versionsResult.DeserializeFromJson<VersionData>();
-            return OrderVersionsDescending(versions.Versions);
+            return OrderVersionsDescending(versions.Data);
         }
 
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
@@ -118,7 +128,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
 
         public class VersionData
         {
-            public IList<string> Versions { get; set; }
+            public IList<string> Data { get; set; }
         }
 
         class VersionComparer : IComparer<string>
