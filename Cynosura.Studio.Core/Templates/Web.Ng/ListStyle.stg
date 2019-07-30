@@ -42,7 +42,7 @@ mat-card-content {
         border-bottom-width: 0;
     }
 
-    app-table-detail button {
+    app-table-detail button, app-table-detail a {
         margin-right: 8px;
     }
 }

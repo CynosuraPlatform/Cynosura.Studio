@@ -48,9 +48,7 @@ export class AuthService {
     refreshTokens(): Observable<AuthTokenModel> {
         return this.state.pipe(first())
             .pipe(map((state) => state.tokens))
-            .pipe(flatMap(tokens => this.getTokens({ refresh_token: (<AuthTokenModel>tokens).refresh_token }, "refresh_token")
-                .pipe(catchError(error => observableThrowError("Session Expired")))
-            ));
+            .pipe(flatMap(tokens => this.getTokens({ refresh_token: (<AuthTokenModel>tokens).refresh_token }, "refresh_token")));
     }
 
     tokens(): AuthTokenModel {
@@ -124,8 +122,9 @@ export class AuthService {
                 return this.refreshTokens();
             }))
             .pipe(catchError(error => {
-                this.logout();
-                this.updateState({ authReady: true });
+                if (error === "logout") {
+                    this.updateState({ authReady: true });
+                }
                 return observableThrowError(error);
             }));
     }

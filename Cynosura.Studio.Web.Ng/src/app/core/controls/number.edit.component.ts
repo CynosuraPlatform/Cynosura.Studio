@@ -44,9 +44,6 @@ export class NumberEditComponent implements ControlValueAccessor, MatFormFieldCo
     placeholder: string;
 
     @Input()
-    readonly = false;
-
-    @Input()
     get required(): boolean { return this.innerRequired; }
     set required(value: boolean) {
         this.innerRequired = coerceBooleanProperty(value);

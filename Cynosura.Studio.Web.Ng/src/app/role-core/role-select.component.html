@@ -1,4 +1,4 @@
-<mat-select [(ngModel)]="innerValue" [disabled]="readonly">
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
     <mat-option [value]="null" selected="selected">Select Role</mat-option>
     <mat-option [value]="role.id" *ngFor="let role of roles">{{ role.name }}</mat-option>
 </mat-select>

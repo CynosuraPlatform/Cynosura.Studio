@@ -60,14 +60,6 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         this.get$model.Entity.PluralName$();
     }
 
-    edit($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
-        this.router.navigate([id], { relativeTo: this.route });
-    }
-
-    add(): void {
-        this.router.navigate([0], { relativeTo: this.route });
-    }
-
     delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {

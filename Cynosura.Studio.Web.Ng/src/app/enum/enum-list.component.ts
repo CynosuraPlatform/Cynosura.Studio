@@ -77,14 +77,6 @@ export class EnumListComponent implements OnInit {
         this.getEnums();
     }
 
-    edit(id: string): void {
-        this.router.navigate([id], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
-    }
-
-    add(): void {
-        this.router.navigate([0], { relativeTo: this.route, queryParams: { solutionId: this.solutionId } });
-    }
-
     delete(id: string): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {

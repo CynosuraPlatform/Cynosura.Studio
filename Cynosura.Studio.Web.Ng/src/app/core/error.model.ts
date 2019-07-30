@@ -19,7 +19,9 @@ export class Error {
                     o[e.errorMessage] = true;
                     return o;
                 }, {});
-                group.controls[key].setErrors(errors);
+                if (group.controls[key]) {
+                    group.controls[key].setErrors(errors);
+                }
             }
         }
     }

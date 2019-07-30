@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cynosura.EF;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +36,8 @@ namespace Cynosura.Studio.Data
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyAllConfigurations();
+            var assemblies = CoreHelper.GetPlatformAndAppAssemblies();
+            builder.ApplyAllConfigurations(assemblies);
         }
 
         protected virtual void OnSavingChanges()

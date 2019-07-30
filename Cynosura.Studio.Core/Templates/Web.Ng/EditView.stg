@@ -1,5 +1,5 @@
 main(model) ::= <<
-<mat-card>
+<mat-card *ngIf="$model.Entity.NameLower$">
 
     <mat-card-header>
         <mat-card-title>$model.Entity.DisplayName$ <app-$model.Entity.NameKebab$-show [value]="$model.Entity.NameLower$"></app-$model.Entity.NameKebab$-show></mat-card-title>

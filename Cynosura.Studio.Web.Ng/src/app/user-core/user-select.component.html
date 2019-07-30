@@ -1,4 +1,4 @@
-<mat-select [(ngModel)]="innerValue" [disabled]="readonly">
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
     <mat-option [value]="null" selected="selected">Select User</mat-option>
     <mat-option [value]="user.id" *ngFor="let user of users">{{ user.userName }}</mat-option>
 </mat-select>

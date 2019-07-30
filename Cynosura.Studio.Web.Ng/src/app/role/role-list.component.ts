@@ -59,14 +59,6 @@ export class RoleListComponent implements OnInit {
         this.getRoles();
     }
 
-    edit(id: number): void {
-        this.router.navigate([id], { relativeTo: this.route });
-    }
-
-    add(): void {
-        this.router.navigate([0], { relativeTo: this.route });
-    }
-
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {

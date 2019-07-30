@@ -60,14 +60,6 @@ export class UserListComponent implements OnInit {
         this.getUsers();
     }
 
-    edit(id: number): void {
-        this.router.navigate([id], { relativeTo: this.route });
-    }
-
-    add(): void {
-        this.router.navigate([0], { relativeTo: this.route });
-    }
-
     delete(id: number): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {

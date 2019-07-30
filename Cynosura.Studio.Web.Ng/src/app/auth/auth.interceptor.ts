@@ -85,7 +85,7 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authService.logout();
         this.router.navigate(["/"]);
 
-        return observableThrowError("");
+        return observableThrowError("logout");
     }
 
     handle400Error(error) {

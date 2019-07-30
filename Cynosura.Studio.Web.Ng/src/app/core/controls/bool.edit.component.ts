@@ -24,7 +24,7 @@ export class BoolEditComponent implements ControlValueAccessor {
     label: string;
 
     @Input()
-    readonly = false;
+    disabled = false;
 
     get innerValue() {
         return this.value;

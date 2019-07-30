@@ -51,9 +51,6 @@ export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAcc
     label: string;
     
     @Input()
-    readonly = false;
-
-    @Input()
     get required(): boolean { return this.innerRequired; }
     set required(value: boolean) {
         this.innerRequired = coerceBooleanProperty(value);

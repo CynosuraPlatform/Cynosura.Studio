@@ -64,9 +64,6 @@ export class UserSelectComponent implements OnInit, ControlValueAccessor, MatFor
     placeholder: string;
 
     @Input()
-    readonly = false;
-
-    @Input()
     get required(): boolean { return this.innerRequired; }
     set required(value: boolean) {
         this.innerRequired = coerceBooleanProperty(value);

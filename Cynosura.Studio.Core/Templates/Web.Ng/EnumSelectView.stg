@@ -1,5 +1,5 @@
 main(model) ::= <<
-<mat-select [(ngModel)]="innerValue" [disabled]="readonly">
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
     <mat-option [value]="null" selected="selected">Select $model.Enum.DisplayName$</mat-option>
     <mat-option [value]="$model.Enum.NameLower$.key" *ngFor="let $model.Enum.NameLower$ of $model.Enum.Name$ | enumkeys">{{ $model.Enum.Name$Display[$model.Enum.NameLower$.key] }}</mat-option>
 </mat-select>

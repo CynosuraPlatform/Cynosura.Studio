@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Cynosura.Studio.Core.Autofac;
 using Cynosura.Studio.Core.Security;
 using Cynosura.Studio.Data;
+using Cynosura.Studio.Core.Infrastructure;
 
 namespace Cynosura.Studio.Worker.Infrastructure
 {
@@ -15,7 +16,7 @@ namespace Cynosura.Studio.Worker.Infrastructure
     {
         public static void ConfigureAutofac(ContainerBuilder builder, IConfiguration configuration)
         {
-            var assemblies = GetPlatformAndAppAssemblies();
+            var assemblies = CoreHelper.GetPlatformAndAppAssemblies();
             builder.RegisterAssemblyModules(assemblies);
             builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>()
                 .WithParameter((p, c) => p.Name == "connectionString",
@@ -25,18 +26,6 @@ namespace Cynosura.Studio.Worker.Infrastructure
             builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
             builder.Register(c => new MapperConfiguration(cfg => { cfg.AddProfiles(assemblies); }).CreateMapper())
                 .As<IMapper>().SingleInstance();
-        }
-
-        private static Assembly[] GetPlatformAndAppAssemblies()
-        {
-            // hack
-            new CoreModule();
-            var platformAndAppNames = new[] { "Cynosura", "Cynosura.Studio" };
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => platformAndAppNames.Any(n => a.FullName.Contains(n)) ||
-                            a.GetReferencedAssemblies()
-                                .Any(ra => platformAndAppNames.Any(n => ra.FullName.Contains(n))))
-                .ToArray();
         }
     }
 }

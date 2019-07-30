@@ -1,4 +1,4 @@
-<mat-select [(ngModel)]="innerValue" [disabled]="readonly">
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
     <mat-option [value]="null" selected="selected">Select Enum</mat-option>
     <mat-option [value]="enum.id" *ngFor="let enum of enums">{{ enum.name }}</mat-option>
 </mat-select>

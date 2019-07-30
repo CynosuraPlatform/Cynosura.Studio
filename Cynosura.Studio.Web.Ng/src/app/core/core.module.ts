@@ -32,12 +32,14 @@ import { TableDetailComponent } from "./table-detail.component";
 import { ModalComponent } from "./modal.component";
 import { ModalHelper } from "./modal.helper";
 import { AppErrorHandler } from "./app-error.handler";
+import { ClickOutsideDirective } from "./directives/click-outside.directive";
 
 @NgModule({
     declarations: [
         EnumKeysPipe,
         EnumKeysPipe,
         ModelErrorPipe,
+        ClickOutsideDirective,
         ModalComponent,
         TableDetailComponent,
         TextEditComponent,
@@ -89,6 +91,7 @@ import { AppErrorHandler } from "./app-error.handler";
         MaterialModule,
         EnumKeysPipe,
         ModelErrorPipe,
+        ClickOutsideDirective,
         TableDetailComponent,
         TextEditComponent,
         TextViewComponent,
