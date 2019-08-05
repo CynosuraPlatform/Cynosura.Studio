@@ -5,6 +5,11 @@ namespace Cynosura.Studio.Generator.Infrastructure
 {
     public class PropertyCollection : Dictionary<string, object>
     {
+        public PropertyCollection() : base(StringComparer.InvariantCultureIgnoreCase)
+        {
+
+        }
+
         public static Dictionary<string, object> Defaults = new Dictionary<string, object>()
         {
             {PropertyNames.View, true},
