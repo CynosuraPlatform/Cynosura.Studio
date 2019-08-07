@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 import { MatSnackBar } from "@angular/material";
 
@@ -16,10 +16,11 @@ import { Error } from "../core/error.model";
 })
 export class EntityEditComponent implements OnInit {
     id: string;
+    regExp: RegExp = /^[A-Z][a-zA-Z0-9]{2,}$/;
     entityForm = this.fb.group({
         id: [],
-        name: [],
-        pluralName: [],
+        name: ["", [Validators.required, Validators.pattern(this.regExp)]],
+        pluralName: ["", [Validators.required, Validators.pattern(this.regExp)]],
         displayName: [],
         pluralDisplayName: [],
         isAbstract: [],
