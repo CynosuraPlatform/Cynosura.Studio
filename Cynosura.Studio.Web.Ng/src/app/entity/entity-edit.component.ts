@@ -3,6 +3,8 @@ import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 import { MatSnackBar } from "@angular/material";
 
+import { plural } from "pluralize";
+
 import { Entity } from "../entity-core/entity.model";
 import { EntityService } from "../entity-core/entity.service";
 import { UpdateEntity, CreateEntity } from "../entity-core/entity-request.model";
@@ -28,12 +30,15 @@ export class EntityEditComponent implements OnInit {
     entity: Entity;
     error: Error;
     solutionId: number;
+    previousValue: string;
 
     constructor(private entityService: EntityService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
                 private snackBar: MatSnackBar) {
+
+        this.previousValue = "";
     }
 
     ngOnInit(): void {
@@ -42,8 +47,17 @@ export class EntityEditComponent implements OnInit {
             this.solutionId = this.route.snapshot.queryParams.solutionId;
             this.getEntity(id);
         });
-    }
 
+        this.entityForm.controls.name.valueChanges.subscribe((value: string) => {
+            if (!this.entityForm.controls.pluralName.value ||
+                (plural(this.previousValue) === this.entityForm.controls.pluralName.value)) {
+                this.entityForm.controls.pluralName.setValue(
+                    plural(value)
+                );
+            }
+            this.previousValue = value;
+        });
+    }
     private getEntity(id: string): void {
         this.id = id;
         if (!id) {
