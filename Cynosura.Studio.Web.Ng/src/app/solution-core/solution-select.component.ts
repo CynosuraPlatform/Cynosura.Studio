@@ -105,7 +105,10 @@ export class SolutionSelectComponent implements OnInit, ControlValueAccessor, Ma
     }
 
     ngOnInit(): void {
-        this.solutionService.getSolutions({}).then(solutions => this.solutions = solutions.pageItems);
+        this.solutionService.getSolutions({}).then((solutions) => {
+            this.solutions = solutions.pageItems;
+            if (solutions.pageItems.length === 1) { this.innerValue = solutions.pageItems[0].id; }
+        });
     }
 
     ngOnDestroy() {
