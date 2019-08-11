@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -45,12 +46,27 @@ namespace Cynosura.Studio.Generator.PackageFeed
                 using (var reader = new StreamReader(info, Encoding.UTF8))
                 {
                     var xml = reader.ReadToEnd();
-                    var package = xml.DeserializeDataContract<NugetPackage>();
-                    if (package.Metadata.Id != packageName)
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(xml);
+                    switch (xmlDoc.DocumentElement.NamespaceURI)
                     {
-                        return null;
+                        case "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd":
+                            var package201007 = xml.DeserializeDataContract<NugetPackage201007>();
+                            if (package201007.Metadata.Id != packageName)
+                            {
+                                return null;
+                            }
+                            return package201007.Metadata.Version;
+                        case "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd":
+                            var package201305 = xml.DeserializeDataContract<NugetPackage201305>();
+                            if (package201305.Metadata.Id != packageName)
+                            {
+                                return null;
+                            }
+                            return package201305.Metadata.Version;
+                        default:
+                            return null;
                     }
-                    return package.Metadata.Version;
                 }
             }
         }
@@ -79,7 +95,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
 
                 targetPath = item.Path;
             }
-            
+
             var filePath = Path.Combine(path, fileName);
             if (File.Exists(filePath))
             {
