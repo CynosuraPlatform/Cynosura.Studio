@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cynosura.Studio.Core\Cynosura.Studio.Core.csproj" />
+    <ProjectReference Include="..\Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj" />
   </ItemGroup>
 
 </Project>
