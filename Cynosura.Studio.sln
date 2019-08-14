@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Generator",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Generator.Tests", "Tests\Cynosura.Studio.Generator.Tests\Cynosura.Studio.Generator.Tests.csproj", "{7024A4E3-7261-4722-9CEF-E726FC1B8FC1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool", "Cynosura.Studio.CliTool\Cynosura.Studio.CliTool.csproj", "{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{7024A4E3-7261-4722-9CEF-E726FC1B8FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7024A4E3-7261-4722-9CEF-E726FC1B8FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7024A4E3-7261-4722-9CEF-E726FC1B8FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
