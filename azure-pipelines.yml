@@ -13,3 +13,10 @@ steps:
     packagesToPack: 'Cynosura.Studio.CliTool/*.csproj'
     versioningScheme: 'off'
     buildProperties: 'PackageVersion=$(Build.BuildNumber)'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NuGet'
