@@ -12,3 +12,4 @@ steps:
     command: 'pack'
     packagesToPack: 'Cynosura.Studio.CliTool/*.csproj'
     versioningScheme: 'off'
+    buildProperties: '/p:PackageVersion=$(Build.BuildNumber)'
