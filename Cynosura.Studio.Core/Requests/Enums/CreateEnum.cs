@@ -12,7 +12,10 @@ namespace Cynosura.Studio.Core.Requests.Enums
     public class CreateEnum : IRequest<CreatedEntity<Guid>>
     {
         public int SolutionId { get; set; }
+
         [DisplayName("Name")]
+        [Required]
+        [RegularExpression("^[A-Z][a-zA-Z0-9]{2,}$", ErrorMessage = "Invalid name format")]
         public string Name { get; set; }
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }

@@ -13,8 +13,12 @@ namespace Cynosura.Studio.Core.Requests.Entities
     {
         public int SolutionId { get; set; }
         [DisplayName("Name")]
+        [Required]
+        [RegularExpression("^[A-Z][a-zA-Z0-9]{2,}$", ErrorMessage = "Invalid name format")]
         public string Name { get; set; }
         [DisplayName("Plural Name")]
+        [Required]
+        [RegularExpression("^[A-Z][a-zA-Z0-9]{2,}$", ErrorMessage = "Invalid plural name format")]
         public string PluralName { get; set; }
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }
