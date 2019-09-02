@@ -16,11 +16,10 @@ import { Error } from "../core/error.model";
 })
 export class EntityEditComponent implements OnInit {
     id: string;
-    regExp: RegExp = /^[A-Z][a-zA-Z0-9]{2,}$/;
     entityForm = this.fb.group({
         id: [],
-        name: ["", [Validators.required, Validators.pattern(this.regExp)]],
-        pluralName: ["", [Validators.required, Validators.pattern(this.regExp)]],
+        name: [],
+        pluralName: [],
         displayName: [],
         pluralDisplayName: [],
         isAbstract: [],

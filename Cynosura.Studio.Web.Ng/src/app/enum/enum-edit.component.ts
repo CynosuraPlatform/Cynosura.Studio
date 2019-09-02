@@ -16,10 +16,9 @@ import { Error } from "../core/error.model";
 })
 export class EnumEditComponent implements OnInit {
     id: string;
-    regExp: RegExp = /^[A-Z][a-zA-Z0-9]{2,}$/;
     enumForm = this.fb.group({
         id: [],
-        name: ["", [Validators.required, Validators.pattern(this.regExp)]],
+        name: [],
         displayName: []
     });
     enum: Enum;
