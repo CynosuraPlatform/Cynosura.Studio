@@ -3,7 +3,7 @@
 namespace Cynosura.Studio.Generator.PackageFeed.Models
 {
     [DataContract(Name = "metadata", Namespace = "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd")]
-    public class NugetMetadata:IExtensibleDataObject
+    public class NugetMetadata201007 : IExtensibleDataObject
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }
