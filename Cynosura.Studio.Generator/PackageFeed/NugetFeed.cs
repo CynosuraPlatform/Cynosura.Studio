@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Core.Services;
 using Microsoft.Extensions.Options;
@@ -39,37 +38,45 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return httpClient;
         }
 
-        private async Task<string> GetResourceAsync(string type)
+        private async Task<FeedData> GetFeedDataAsync()
         {
             var httpClient = GetHttpClient();
             var feedResult = await httpClient.GetStringAsync(_settings.FeedUrl);
             var feed = feedResult.DeserializeFromJson<FeedData>();
-            var resource = feed.Resources.Where(r => r.Type == type)
-                .Select(r => r.Id)
-                .FirstOrDefault();
-            if (resource != null)
-                resource = Regex.Replace(resource, "/$", "");
-            return resource;
+            return feed;
         }
 
         private async Task<string> GetPackageBaseAddressAsync()
         {
-            return await GetResourceAsync("PackageBaseAddress/3.0.0");
+            var feed = await GetFeedDataAsync();
+            return feed.GetExplicitService("PackageBaseAddress/3.0.0");
         }
 
         private async Task<string> GetSearchAutocompleteServiceAsync()
         {
-            return await GetResourceAsync("SearchAutocompleteService");
+            var feed = await GetFeedDataAsync();
+            return feed.GetExplicitService("SearchAutocompleteService");
+        }
+        
+        private async Task<string> GetRegistrationsBaseUrlAsync()
+        {
+            var feed = await GetFeedDataAsync();
+            return feed.GetType("RegistrationsBaseUrl", "3.6.0");
         }
 
         public async Task<IList<string>> GetVersionsAsync(string packageName)
         {
-            var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
-            var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
+            var registrationsBase = await GetRegistrationsBaseUrlAsync();
             var httpClient = GetHttpClient();
-            var versionsResult = await httpClient.GetStringAsync(versionsUrl);
-            var versions = versionsResult.DeserializeFromJson<VersionData>();
-            return OrderVersionsDescending(versions.Data);
+            if (registrationsBase == null)
+            {
+                var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
+                var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
+                var versionsResult = await httpClient.GetStringAsync(versionsUrl);
+                var versions = versionsResult.DeserializeFromJson<VersionData>();
+                return OrderVersionsDescending(versions.Data);
+            }
+            throw new NotImplementedException();
         }
 
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
@@ -113,6 +120,31 @@ namespace Cynosura.Studio.Generator.PackageFeed
         {
             public string Version { get; set; }
             public IList<FeedResource> Resources { get; set; }
+
+            public string GetExplicitService(string explicitType)
+            {
+                return Resources.Where(w => w.Type == explicitType)
+                    .Select(s => s.Id)
+                    .FirstOrDefault();
+            }
+
+            public IEnumerable<string> GetTypes(string type)
+            {
+                return Resources.Where(w => w.Type == type || w.Type.StartsWith(type + "/"))
+                    .Select(s => s.Type);
+            }
+
+            public string GetType(string type, string startVersion)
+            {
+                var types = GetTypes(type);
+                var versions = types.Where(NugetVersion.IsValid).Select(inner => new NugetVersion(inner)).ToList();
+                var target = new NugetVersion(startVersion);
+                return versions
+                    .Where(w => w.Version >= target.Version)
+                    .OrderByDescending(d => d.Version)
+                    .Select(s=>s.Original)
+                    .FirstOrDefault();
+            }
         }
 
         public class FeedResource
@@ -156,3 +188,4 @@ namespace Cynosura.Studio.Generator.PackageFeed
         }
     }
 }
+
