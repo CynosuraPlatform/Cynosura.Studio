@@ -6,8 +6,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Core.Services;
+using Cynosura.Studio.Generator.PackageFeed.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -61,14 +64,24 @@ namespace Cynosura.Studio.Generator.PackageFeed
         private async Task<string> GetRegistrationsBaseUrlAsync()
         {
             var feed = await GetFeedDataAsync();
-            return feed.GetType("RegistrationsBaseUrl", "3.6.0");
+            return feed.GetType("RegistrationsBaseUrl", _settings.ListingApiVersion ??  "3.6.0");
         }
 
         public async Task<IList<string>> GetVersionsAsync(string packageName)
         {
-            var registrationsBase = await GetRegistrationsBaseUrlAsync();
             var httpClient = GetHttpClient();
-            if (registrationsBase == null)
+            if (_settings.ListingApi == NugetListingApi.RegistrationsBaseUrl)
+            {
+                var registrationsBase = await GetRegistrationsBaseUrlAsync();
+                var versionsUrl = $"{registrationsBase}/{packageName.ToLower()}";
+                var versionsResult = await httpClient.GetStringAsync(versionsUrl);
+                var response = versionsResult.DeserializeFromJson<RegistrationResponse>();
+                var versions = response.Items.SelectMany(s => s.Items)
+                    .Where(w => w.CatalogEntry.Listed)
+                    .Select(s => s.CatalogEntry.Version);
+                return OrderVersionsDescending(versions);
+            }
+            else
             {
                 var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
                 var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
@@ -76,7 +89,6 @@ namespace Cynosura.Studio.Generator.PackageFeed
                 var versions = versionsResult.DeserializeFromJson<VersionData>();
                 return OrderVersionsDescending(versions.Data);
             }
-            throw new NotImplementedException();
         }
 
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
@@ -106,7 +118,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return Path.Combine(extractedPath, "content");
         }
 
-        private IList<string> OrderVersionsDescending(IList<string> versions)
+        private IList<string> OrderVersionsDescending(IEnumerable<string> versions)
         {
             return versions.OrderByDescending(v => v, new VersionComparer()).ToList();
         }
@@ -137,53 +149,29 @@ namespace Cynosura.Studio.Generator.PackageFeed
             public string GetType(string type, string startVersion)
             {
                 var types = GetTypes(type);
-                var versions = types.Where(NugetVersion.IsValid).Select(inner => new NugetVersion(inner)).ToList();
+                var versions = new List<KeyValuePair<string, NugetVersion>>();
+                foreach (var resourceType in types)
+                {
+                    if (resourceType == $"{type}/Versioned")
+                        versions.Add(new KeyValuePair<string, NugetVersion>(
+                            Resources.First(f => f.Type == resourceType).Id, new NugetVersion($"999.999")));
+                    if (resourceType.StartsWith(type + "/"))
+                    {
+                        var inner = resourceType.Replace(type + "/", "");
+                        if (NugetVersion.IsValid(inner))
+                        {
+                            versions.Add(new KeyValuePair<string, NugetVersion>(
+                                Resources.First(f => f.Type == resourceType).Id, new NugetVersion(inner)));
+                        }
+                    }
+                }
+                
                 var target = new NugetVersion(startVersion);
                 return versions
-                    .Where(w => w.Version >= target.Version)
-                    .OrderByDescending(d => d.Version)
-                    .Select(s=>s.Original)
+                    .Where(w => w.Value.Version >= target.Version)
+                    .OrderByDescending(d => d.Value.Version)
+                    .Select(s=>s.Key)
                     .FirstOrDefault();
-            }
-        }
-
-        public class FeedResource
-        {
-            [JsonProperty(PropertyName = "@id")]
-            public string Id { get; set; }
-
-            [JsonProperty(PropertyName = "@type")]
-            public string Type { get; set; }
-
-            public string Comment { get; set; }
-        }
-
-        public class VersionData
-        {
-            public IList<string> Data { get; set; }
-        }
-
-        class VersionComparer : IComparer<string>
-        {
-            public int Compare(string x, string y)
-            {
-                var xSplit = x.Split('.', '-');
-                var ySplit = y.Split('.', '-');
-                for (int i = 0; i < Math.Min(xSplit.Length, ySplit.Length); i++)
-                {
-                    int compare;
-                    if (int.TryParse(xSplit[i], out var xNumber) && int.TryParse(ySplit[i], out var yNumber))
-                    {
-                        compare = xNumber.CompareTo(yNumber);
-                    }
-                    else
-                    {
-                        compare = xSplit[i].CompareTo(ySplit[i]);
-                    }
-                    if (compare != 0)
-                        return compare;
-                }
-                return 0;
             }
         }
     }
