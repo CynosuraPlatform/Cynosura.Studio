@@ -5,6 +5,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>cyn</ToolCommandName>
+    <Authors>Anatoliy Mikhailov</Authors>
+    <Company>Cynosura</Company>
+    <Description>Cynosura CLI tool</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <LangVersion>7.3</LangVersion>
     <Version>0.0.1</Version>
@@ -24,6 +28,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
   </ItemGroup>
 
 </Project>
