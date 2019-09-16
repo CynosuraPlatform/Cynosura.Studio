@@ -17,7 +17,7 @@ namespace Cynosura.Studio.CliTool.Commands
             var accessor = new SolutionAccessor(SolutionDirectory);
             var meta = accessor.Metadata;
             Console.WriteLine(
-                $"Solution name: {meta.Name}\r\nTemplate name:{meta.TemplateName}\r\nTemplate version: {meta.TemplateVersion}");
+                $"Solution name: {meta.Name}\r\nTemplate name: {meta.TemplateName}\r\nTemplate version: {meta.TemplateVersion}");
             return Task.FromResult(true);
         }
 

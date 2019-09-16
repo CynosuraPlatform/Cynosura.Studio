@@ -25,11 +25,21 @@ namespace Cynosura.Studio.CliTool
         private string _templateName;
 
         private string[] _arguments;
+        private Dictionary<string, Action<string>> _setProps;
 
         public const string CommandName = "cyn";
 
         public CliApp(string[] args)
         {
+            _setProps = new Dictionary<string, Action<string>>
+            {
+                {"solutionDirectory", SetDirectory},
+                {"solution", SetDirectory},
+                {"debug", AttachDebugger },
+                {"feed", value => _feed = value },
+                {"src", value => _src = value },
+                {"templateName", value=> _templateName = value }
+            };
             _solutionDirectory = Directory.GetCurrentDirectory();
             _arguments = PrepareProperties(args);
             var defaultConfig = new Dictionary<string, string>
@@ -44,6 +54,7 @@ namespace Cynosura.Studio.CliTool
                 .AddInMemoryCollection(defaultConfig);
 
             _configurationRoot = builder.Build();
+ 
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -67,15 +78,6 @@ namespace Cynosura.Studio.CliTool
 
         private string[] PrepareProperties(string[] args)
         {
-            var setProps = new Dictionary<string, Action<string>>
-            {
-                {"solutionDirectory", SetDirectory},
-                {"solution", SetDirectory},
-                {"debug", AttachDebugger },
-                {"feed", value => _feed = value },
-                {"src", value => _src = value },
-                {"templateName", value=> _templateName = value }
-            };
             var commandArguments = new List<string>();
             var skipIndex = -1;
             for (var i = 0; i < args.Length; i++)
@@ -85,10 +87,10 @@ namespace Cynosura.Studio.CliTool
                 {
                     skipIndex = i + 1;
                     var prop = part.Substring(2);
-                    if (setProps.ContainsKey(prop))
+                    if (_setProps.ContainsKey(prop))
                     {
                         var value = args.Length < i ? "" : args[i + 1];
-                        setProps[prop].Invoke(value);
+                        _setProps[prop].Invoke(value);
                     }
                     else
                     {
@@ -115,7 +117,10 @@ namespace Cynosura.Studio.CliTool
 
         private void AttachDebugger(string value)
         {
-            System.Diagnostics.Debugger.Launch();
+            if (value == "yes")
+            {
+                System.Diagnostics.Debugger.Launch();
+            }
         }
 
         public async Task<bool> StartAsync()
@@ -129,8 +134,11 @@ namespace Cynosura.Studio.CliTool
                 {"upgrade", new UpgradeCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) },
                 {"info", new InfoCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) }
             };
+            var helpProps = _setProps.Keys.ToDictionary(k => k, v => v);
+            helpProps["debug"] = "yes";
+            helpProps["src"] = "local feed path";
             commands.Add("help",
-                new HelpCommand(_solutionDirectory, _feed, _src, _templateName, _lifetimeScope, commands));
+                new HelpCommand(_solutionDirectory, _feed, _src, _templateName, _lifetimeScope, commands, helpProps));
             var command = _arguments.Length > 0 ? _arguments[0] : null;
             if (!string.IsNullOrEmpty(command) && commands.ContainsKey(command))
             {
@@ -138,10 +146,9 @@ namespace Cynosura.Studio.CliTool
             }
             else
             {
-                Console.Write("Available commands: \r\n{0}\r\n", string.Join("\r\n\t", commands.Keys));
-                return false;
+                await commands["help"].ExecuteAsync(new string[0]);
             }
-
+            return true;
         }
     }
 }

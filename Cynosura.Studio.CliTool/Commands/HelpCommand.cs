@@ -9,10 +9,13 @@ namespace Cynosura.Studio.CliTool.Commands
     public class HelpCommand: AppCommand
     {
         private readonly IDictionary<string, AppCommand> _commands;
+        private readonly IEnumerable<KeyValuePair<string, string>> _props;
 
-        public HelpCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope, IDictionary<string, AppCommand> commands) : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public HelpCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope, IDictionary<string, AppCommand> commands, IEnumerable<KeyValuePair<string, string>> props) 
+            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
         {
             _commands = commands;
+            _props = props;
         }
 
         public override Task<bool> ExecuteAsync(string[] args)
@@ -20,11 +23,13 @@ namespace Cynosura.Studio.CliTool.Commands
             var name = args.FirstOrDefault();
             if (string.IsNullOrEmpty(name))
             {
-                var commands = _commands.Aggregate("", (a, b) => a + $"\r\n\r\n\t{b.Key}\r\n{b.Value.Help()}");
-                Console.WriteLine($"Available commands: {commands}");
+                var commands = string.Join("\r\n", _commands.Keys.Select(s => $"\t{s}"));
+                Console.WriteLine("cyn <command> [command arguments] {0}\r\n\r\nAvailable commands: \r\n{1}",
+                    string.Join(" ", _props.Select(s => $"[--{s.Key} {s.Value}]")),
+                    commands);
                 return Task.FromResult(true);
             }
-            if (_commands.ContainsKey(name))
+            if (!_commands.ContainsKey(name))
             {
                 Console.WriteLine($"Command not found\r\n {Help()}");
                 return Task.FromResult(false);
@@ -36,7 +41,7 @@ namespace Cynosura.Studio.CliTool.Commands
 
         public override string Help()
         {
-            return $"Command usage:\r\n\t{CliApp.CommandName} help\tView all commands\r\n\t{CliApp.CommandName} help <commandName>\tView <commandName> information";
+            return $"Command usage:\r\n\t{CliApp.CommandName} help\t\tView all commands\r\n\t{CliApp.CommandName} help <commandName>\tView <commandName> information";
         }
     }
 }

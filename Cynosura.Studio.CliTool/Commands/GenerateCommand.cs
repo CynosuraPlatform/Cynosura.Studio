@@ -121,7 +121,7 @@ namespace Cynosura.Studio.CliTool.Commands
         public override string Help()
         {
             return $"{CliApp.CommandName} generate <action>\r\n" +
-                   $"Available actions: \r\n{string.Join("\r\n\t", _actions.Keys)}\r\n";
+                   $"Available actions: \r\n{string.Join("\r\n", _actions.Keys.Select(s => $"\t{s}"))}\r\n";
         }
     }
 }

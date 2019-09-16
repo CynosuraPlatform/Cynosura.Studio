@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using AutoMapper;
-using Cynosura.Studio.Core.Autofac;
 using Cynosura.Studio.Generator.Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -14,7 +13,6 @@ namespace Cynosura.Studio.CliTool
         public static void ConfigureAutofac(ContainerBuilder builder, IConfiguration configuration)
         {
             var assemblies = GetPlatformAndAppAssemblies();
-            builder.RegisterModule<CoreModule>();
             builder.RegisterModule<GeneratorModule>();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
