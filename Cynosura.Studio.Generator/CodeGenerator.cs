@@ -123,14 +123,7 @@ namespace Cynosura.Studio.Generator
             _logger.LogInformation($"Latest version: {latestVersion}");
             if (!Directory.Exists(path))
             {
-                try
-                {
-                    Directory.CreateDirectory(path);
-                }
-                catch (Exception e)
-                {
-                    throw new ServiceException($"Error in directory creation = {e.Message}");
-                }
+                Directory.CreateDirectory(path);
             }
             if (Directory.GetFiles(path).Length > 0 || Directory.GetDirectories(path).Length > 0)
             {
