@@ -121,6 +121,17 @@ namespace Cynosura.Studio.Generator
             _logger.LogInformation("GenerateSolution");
             var latestVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
             _logger.LogInformation($"Latest version: {latestVersion}");
+            if (!Directory.Exists(path))
+            {
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch (Exception e)
+                {
+                    throw new ServiceException($"Error in directory creation = {e.Message}");
+                }
+            }
             if (Directory.GetFiles(path).Length > 0 || Directory.GetDirectories(path).Length > 0)
             {
                 _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
@@ -495,9 +506,9 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        private async Task UpgradeAsync(SolutionAccessor solution, 
-            IGenerationObject oldGenerationObject, IGenerationObject newGenerationObject, 
-            object oldModel, object newModel, 
+        private async Task UpgradeAsync(SolutionAccessor solution,
+            IGenerationObject oldGenerationObject, IGenerationObject newGenerationObject,
+            object oldModel, object newModel,
             IEnumerable<TemplateType> oldTypes, IEnumerable<TemplateType> newTypes)
         {
             var templates = await solution.LoadTemplatesAsync();
@@ -545,6 +556,6 @@ namespace Cynosura.Studio.Generator
             }
 
             return path;
-        }        
+        }
     }
 }
