@@ -3,6 +3,8 @@ name: $(version)-b$(BuildID)
 trigger:
 - development
 
+pr: none
+
 pool:
   vmImage: 'ubuntu-latest'
 
