@@ -21,6 +21,8 @@ namespace Cynosura.Studio.CliTool
 
         private string _solutionDirectory;
         private string _feed;
+        private string _feedUsername;
+        private string _feedPassword;
         private string _src;
         private string _templateName;
 
@@ -37,6 +39,8 @@ namespace Cynosura.Studio.CliTool
                 {"solution", SetDirectory},
                 {"debug", AttachDebugger },
                 {"feed", value => _feed = value },
+                {"feedUsername", value => _feedUsername = value },
+                {"feedPassword", value => _feedPassword = value },
                 {"src", value => _src = value },
                 {"templateName", value=> _templateName = value }
             };
@@ -45,11 +49,16 @@ namespace Cynosura.Studio.CliTool
             var defaultConfig = new Dictionary<string, string>
             {
                 {"Nuget:FeedUrl", _feed ?? "https://api.nuget.org/v3/index.json"},
+                {"Nuget:Username", _feedUsername},
+                {"Nuget:Password", _feedPassword},
                 {"LocalFeed:SourcePath", _src}
             };
+            var useProfileSettings =
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".cynosura.json");
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(useProfileSettings, optional: true)
                 .AddJsonFile($"appsettings.local.json", optional: true)
                 .AddInMemoryCollection(defaultConfig);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Autofac;
@@ -30,18 +31,10 @@ namespace Cynosura.Studio.Web
     {
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public Startup(IHostingEnvironment hostingEnvironment)
+        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _hostingEnvironment = hostingEnvironment;
-
-            var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.SetBasePath(_hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
-            configurationBuilder.AddEnvironmentVariables();
-
-            Configuration = configurationBuilder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
