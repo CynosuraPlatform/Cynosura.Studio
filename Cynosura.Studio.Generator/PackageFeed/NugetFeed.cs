@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -25,13 +26,15 @@ namespace Cynosura.Studio.Generator.PackageFeed
             _settings = settings.Value;
         }
 
-        private HttpClient GetHttpClient()
+        private HttpClient GetHttpClient(HttpMessageHandler handler = null)
         {
             if (string.IsNullOrEmpty(_settings.FeedUrl))
             {
                 throw new ServiceException("NugetFeed/FeedUrl not configured");
             }
-            var httpClient = new HttpClient();
+
+            var httpClient =
+                new HttpClient(handler ?? new HttpClientHandler {AutomaticDecompression = DecompressionMethods.GZip});
             if (!string.IsNullOrEmpty(_settings.Username) || !string.IsNullOrEmpty(_settings.Password))
             {
                 var encryptedCredentials = Convert.ToBase64String(
@@ -72,8 +75,8 @@ namespace Cynosura.Studio.Generator.PackageFeed
             var httpClient = GetHttpClient();
             if (_settings.ListingApi == NugetListingApi.RegistrationsBaseUrl)
             {
-                var registrationsBase = await GetRegistrationsBaseUrlAsync();
-                var versionsUrl = $"{registrationsBase}/{packageName.ToLower()}";
+                var registrationsBase =  new Uri(await GetRegistrationsBaseUrlAsync());
+                var versionsUrl = new Uri(registrationsBase, $"{packageName.ToLower()}/index.json");
                 var versionsResult = await httpClient.GetStringAsync(versionsUrl);
                 var response = versionsResult.DeserializeFromJson<RegistrationResponse>();
                 var versions = response.Items.SelectMany(s => s.Items)
@@ -97,8 +100,8 @@ namespace Cynosura.Studio.Generator.PackageFeed
             var filePath = Path.Combine(path, fileName);
             if (!File.Exists(filePath))
             {
-                var baseAddress = await GetPackageBaseAddressAsync();
-                var packageUrl = $"{baseAddress}/{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.{version.ToLower()}.nupkg";
+                var baseAddress = new Uri(await GetPackageBaseAddressAsync());
+                var packageUrl = new Uri(baseAddress, $"{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.{version.ToLower()}.nupkg");
                 var httpClient = GetHttpClient();
                 using (var resultStream = await httpClient.GetStreamAsync(packageUrl))
                 {
