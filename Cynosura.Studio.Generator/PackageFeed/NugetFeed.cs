@@ -170,7 +170,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
                 return versions
                     .Where(w => w.Value.Version >= target.Version)
                     .OrderByDescending(d => d.Value.Version)
-                    .Select(s=>s.Key)
+                    .Select(s => s.Key)
                     .FirstOrDefault();
             }
         }
