@@ -39,7 +39,7 @@ For Task, Task <> methods name must have `Async` postfix.
 
 ## Language optimization
 
-* Prefer to use Implicit typeing insted Explicit
+* Prefer to use Implicit typing instead Explicit
 * Use lazy conditions
 * Use object and collection initializers
 * Prefer to use System.Linq extensions instead of loops, etc.
@@ -59,10 +59,10 @@ For Task, Task <> methods name must have `Async` postfix.
 # ES/TS Code Styling
 
 * Use 4 spaces instead of tab
-* Use double qout(`"`) for literals
+* Use double quotes (`"`) for literals
 * We use semicolon;
 * Prefer to use `const` instead of `let`
-* Do no use `var`
+* Do not use `var`
 * Prefer to use triple equal sign
 * Use JSDoc notation for documentation
 * Prefer to use Array methods instead of loops and etc.
