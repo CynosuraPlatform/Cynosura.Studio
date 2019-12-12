@@ -3,7 +3,6 @@ services:
   web:
     environment:
       ASPNETCORE_URLS: 'http://+:5000'
-      ConnectionStrings__DefaultConnection: 'Server=tcp:db,1433;Database=Cynosura.Studio;User ID=sa;Password=Qwerty123!;MultipleActiveResultSets=false'
       Jwt__CertificatePath: '/my/cert/mycert.pfx'
       Jwt__CertificatePassword: 'qwe123'
       Jwt__Authority: 'http://localhost:5000'
@@ -21,7 +20,6 @@ services:
       - ./volumes/webng/config.json:/usr/share/nginx/html/assets/config.json
   worker:
     environment:
-      ConnectionStrings__DefaultConnection: 'Server=tcp:db,1433;Database=Cynosura.Studio;User ID=sa;Password=Qwerty123!;MultipleActiveResultSets=false'
       Logging__LogLevel__Default: 'Trace'
     volumes:
       - logs:/my/logs

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Configuration;
 using System.Threading.Tasks;
 using Autofac;
@@ -44,7 +44,7 @@ namespace Cynosura.Studio.Worker
                 {
                     services.AddDbContext<DataContext>(options =>
                     {
-                        options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection"));
+                        options.UseSqlite(hostContext.Configuration.GetConnectionString("DefaultConnection"));
                     });
                     services.AddIdentity<User, Role>()
                         .AddEntityFrameworkStores<DataContext>()

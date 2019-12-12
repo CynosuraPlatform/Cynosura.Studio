@@ -55,7 +55,7 @@ namespace Cynosura.Studio.Web
 
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
                 options.UseOpenIddict();
             });
 
