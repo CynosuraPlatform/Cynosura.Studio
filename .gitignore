@@ -3,6 +3,7 @@
 
 NuGet.config
 appsettings.local.json
+cynosura.db
 
 # User-specific files
 *.suo

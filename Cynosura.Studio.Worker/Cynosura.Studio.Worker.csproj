@@ -13,6 +13,7 @@
     <None Remove="nlog.config" />
     <None Remove="nlog.Test.config" />
     <None Remove="quartz.config" />
+    <None Remove="cynosura.db" />
   </ItemGroup>
 
   <ItemGroup>
