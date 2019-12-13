@@ -18,13 +18,14 @@ namespace Cynosura.Studio.CliTool
         private IContainer _container;
         private ILifetimeScope _lifetimeScope;
         private readonly IConfigurationRoot _configurationRoot;
-
+        private IConfigService _configService;
         private string _solutionDirectory;
         private string _feed;
         private string _src;
         private string _templateName;
 
         private string[] _arguments;
+        private Dictionary<string, string> _settingsOverrides;
         private Dictionary<string, Action<string>> _setProps;
 
         public const string CommandName = "cyn";
@@ -38,23 +39,45 @@ namespace Cynosura.Studio.CliTool
                 {"debug", AttachDebugger },
                 {"feed", value => _feed = value },
                 {"src", value => _src = value },
-                {"templateName", value=> _templateName = value }
+                {"templateName", value=> _templateName = value },
+                {"set", OverrideSettingsValue }
             };
+            _configService = new ConfigService();
+            _settingsOverrides = new Dictionary<string, string>();
             _solutionDirectory = Directory.GetCurrentDirectory();
-            _arguments = PrepareProperties(args);
-            var defaultConfig = new Dictionary<string, string>
+            var (arguments, props) = _configService.PrepareProperties(args);
+            _arguments = arguments;
+            foreach (var (key, value) in props)
             {
-                {"Nuget:FeedUrl", _feed ?? "https://api.nuget.org/v3/index.json"},
-                {"LocalFeed:SourcePath", _src}
-            };
+                if (_setProps.ContainsKey(key))
+                {
+                    _setProps[key](value);
+                }
+                else
+                {
+                    throw new Exception($"Invalid prop {key}");
+                }
+            }
+
+            var defaultConfig = new Dictionary<string, string>();
+
+            foreach (var (key, value) in _settingsOverrides)
+            {
+                if (!defaultConfig.ContainsKey(key))
+                    defaultConfig.Add(key, value);
+            }
+
+            if (!defaultConfig.ContainsKey("Nuget:FeedUrl"))
+                defaultConfig.Add("Nuget:FeedUrl", _feed ?? "https://api.nuget.org/v3/index.json");
+            if (!defaultConfig.ContainsKey("LocalFeed:SourcePath"))
+                defaultConfig.Add("LocalFeed:SourcePath", _src);
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
                 .AddInMemoryCollection(defaultConfig);
 
             _configurationRoot = builder.Build();
- 
+
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -76,37 +99,6 @@ namespace Cynosura.Studio.CliTool
         {
         }
 
-        private string[] PrepareProperties(string[] args)
-        {
-            var commandArguments = new List<string>();
-            var skipIndex = -1;
-            for (var i = 0; i < args.Length; i++)
-            {
-                var part = args[i];
-                if (part.StartsWith("--"))
-                {
-                    skipIndex = i + 1;
-                    var prop = part.Substring(2);
-                    if (_setProps.ContainsKey(prop))
-                    {
-                        var value = args.Length < i ? "" : args[i + 1];
-                        _setProps[prop].Invoke(value);
-                    }
-                    else
-                    {
-                        throw new Exception($"Invalid prop {prop}");
-                    }
-                    continue;
-                }
-
-                if (skipIndex != i)
-                {
-                    commandArguments.Add(part);
-                }
-            }
-
-            return commandArguments.ToArray();
-        }
 
         private void SetDirectory(string value)
         {
@@ -122,6 +114,19 @@ namespace Cynosura.Studio.CliTool
                 System.Diagnostics.Debugger.Launch();
             }
         }
+
+        private void OverrideSettingsValue(string expression)
+        {
+            var overrides = _configService.OverrideSettingsValue(expression);
+            foreach (var (key, value) in overrides)
+            {
+                if (!_settingsOverrides.ContainsKey(key))
+                {
+                    _settingsOverrides.Add(key, value);
+                }
+            }
+        }
+
 
         public async Task<bool> StartAsync()
         {
