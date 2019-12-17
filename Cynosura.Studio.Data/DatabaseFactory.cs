@@ -21,12 +21,13 @@ namespace Cynosura.Studio.Data
             if (_dataContext == null)
             {
                 var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-                optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseSqlite(_connectionString);
                 optionsBuilder.UseLoggerFactory(_loggerFactory);
                 _dataContext = new DataContext(optionsBuilder.Options);
             }
             return _dataContext;
         }
+
 
         public void Dispose()
         {
