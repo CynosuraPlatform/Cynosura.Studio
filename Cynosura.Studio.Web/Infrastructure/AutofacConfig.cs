@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Web.Infrastructure
             builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
-                cfg.AddProfiles(assemblies);
+                cfg.AddMaps(assemblies);
             }).CreateMapper()).As<IMapper>().SingleInstance();
         }
 

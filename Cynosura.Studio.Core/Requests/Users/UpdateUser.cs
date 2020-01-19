@@ -15,6 +15,6 @@ namespace Cynosura.Studio.Core.Requests.Users
 
         public string ConfirmPassword { get; set; }
 
-        public IList<int> RoleIds { get; } = new List<int>();
+        public List<int> RoleIds { get; set; }
     }
 }

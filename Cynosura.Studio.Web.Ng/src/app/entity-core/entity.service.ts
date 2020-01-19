@@ -11,44 +11,43 @@ import { Page } from "../core/page.model";
 @Injectable()
 export class EntityService {
     private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
     getEntities(getEntities: GetEntities): Promise<Page<Entity>> {
         const url = `${this.apiUrl}/GetEntities`;
-        return this.httpClient.post<Page<Entity>>(url, JSON.stringify(getEntities), { headers: this.headers })
+        return this.httpClient.post<Page<Entity>>(url, getEntities)
             .toPromise();
     }
 
     getEntity(getEntity: GetEntity): Promise<Entity> {
         const url = `${this.apiUrl}/GetEntity`;
-        return this.httpClient.post<Entity>(url, JSON.stringify(getEntity), { headers: this.headers })
+        return this.httpClient.post<Entity>(url, getEntity)
             .toPromise();
     }
 
     updateEntity(updateEntity: UpdateEntity): Promise<{}> {
         const url = `${this.apiUrl}/UpdateEntity`;
-        return this.httpClient.post(url, JSON.stringify(updateEntity), { headers: this.headers })
+        return this.httpClient.post(url, updateEntity)
             .toPromise();
     }
 
 
     createEntity(createEntity: CreateEntity): Promise<CreatedEntity<string>> {
         const url = `${this.apiUrl}/CreateEntity`;
-        return this.httpClient.post<CreatedEntity<string>>(url, JSON.stringify(createEntity), { headers: this.headers })
+        return this.httpClient.post<CreatedEntity<string>>(url, createEntity)
             .toPromise();
     }
 
     deleteEntity(deleteEntity: DeleteEntity): Promise<{}> {
         const url = `${this.apiUrl}/DeleteEntity`;
-        return this.httpClient.post(url, JSON.stringify(deleteEntity), { headers: this.headers })
+        return this.httpClient.post(url, deleteEntity)
             .toPromise();
     }
 
     generateEntity(generateEntity: GenerateEntity): Promise<{}> {
         const url = `${this.apiUrl}/GenerateEntity`;
-        return this.httpClient.post(url, JSON.stringify(generateEntity), { headers: this.headers })
+        return this.httpClient.post(url, generateEntity)
             .toPromise();
     }
 }

@@ -2,6 +2,10 @@ mat-card {
     max-width: 1200px;
     margin: 0 auto;
 
+    mat-card-header {
+        margin: 0 -16px;
+    }
+
     mat-card-actions {
         margin-left: 0;
         margin-right: 0;

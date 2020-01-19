@@ -5,6 +5,8 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~@angular/material/theming';
 
+$primary: mat-palette($mat-indigo);
+
 $custom-typography: mat-typography-config(
     $font-family: 'IBM Plex Sans'
 );
@@ -22,6 +24,37 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+}
+
+a {
+    color: mat-color($primary);
+    text-decoration: none;
+}
+
+.mat-table {
+    width: 100%;
+
+    .mat-header-cell:not(:last-of-type), .mat-cell:not(:last-of-type) {
+        padding-right: 8px;
+    }
+
+    .mat-cell {
+        app-text-view {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block; 
+            overflow: hidden;
+            max-width: 220px;
+        }
+    }
+
+    .mat-row {
+        outline: 0;
+        
+        &:hover, &:focus {
+            background: #f5f5f5;
+        }
+    }
 }
 
 .owl-dt-container {

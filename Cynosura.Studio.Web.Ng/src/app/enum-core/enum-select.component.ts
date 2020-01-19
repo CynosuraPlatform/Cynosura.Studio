@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material";
+import { MatFormFieldControl } from "@angular/material/form-field";
 import { FocusMonitor } from "@angular/cdk/a11y";
 import { coerceBooleanProperty } from "@angular/cdk/coercion";
 
@@ -17,7 +17,8 @@ import { EnumService } from "./enum.service";
     ]
 })
 
-export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<string | null>, OnDestroy, DoCheck {
+export class EnumSelectComponent implements OnInit, ControlValueAccessor,
+    MatFormFieldControl<string | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
@@ -47,9 +48,6 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor, MatFor
 
     @Input()
     name: string;
-
-    @Input()
-    label: string;
 
     @Input()
     placeholder: string;

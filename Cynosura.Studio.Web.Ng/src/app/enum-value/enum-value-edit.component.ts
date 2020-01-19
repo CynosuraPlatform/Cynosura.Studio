@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { EnumValue } from "../enum-value-core/enum-value.model";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 
 @Component({
@@ -40,7 +41,7 @@ export class EnumValueEditComponent implements OnInit {
     error: Error;
 
     constructor(private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
@@ -60,7 +61,7 @@ export class EnumValueEditComponent implements OnInit {
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.enumValueForm, error);
         }
     }

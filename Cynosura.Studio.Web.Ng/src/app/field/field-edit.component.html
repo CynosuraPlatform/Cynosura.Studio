@@ -5,27 +5,24 @@
     </mat-card-header>
 
     <form [formGroup]="fieldForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-        </mat-card-actions>
         <div>
             <mat-form-field>
                 <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
+                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Type</mat-label>
-                <mat-select formControlName="type" id="type" name="type">
+                <mat-select formControlName="type" id="type" pnaceholder="type">
                     <mat-option [value]="null">Select Type</mat-option>
                     <mat-option *ngFor="let item of FieldType | enumkeys" [value]="item.key">{{item.value}}</mat-option>
                 </mat-select>
@@ -35,14 +32,14 @@
         <div>
             <mat-form-field>
                 <mat-label>Size</mat-label>
-                <app-number-edit formControlName="size" name="size" label="Size"></app-number-edit>
+                <app-number-edit formControlName="size" name="size" placeholder="Size"></app-number-edit>
                 <mat-error>{{ error?.modelState?.size | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Entity</mat-label>
-                <app-entity-select formControlName="entityId" [solutionId]="solutionId" name="entityId" label="Entity"></app-entity-select>
+                <app-entity-select formControlName="entityId" [solutionId]="solutionId" name="entityId" placeholder="Entity"></app-entity-select>
                 <mat-error>{{ error?.modelState?.entityId | modelError }}</mat-error>
             </mat-form-field>
         </div>
@@ -50,7 +47,7 @@
         <div>
             <mat-form-field>
                 <mat-label>Enum</mat-label>
-                <app-enum-select formControlName="enumId" [solutionId]="solutionId" name="enumId" label="Enum"></app-enum-select>
+                <app-enum-select formControlName="enumId" [solutionId]="solutionId" name="enumId" placeholder="Enum"></app-enum-select>
                 <mat-error>{{ error?.modelState?.enumId | modelError }}</mat-error>
             </mat-form-field>
         </div>
@@ -66,6 +63,9 @@
                 <app-properties [target]="field.name" [properties]="field.properties"></app-properties>
             </div>
         </div>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-actions>
     </form>
 
 </mat-card>

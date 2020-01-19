@@ -11,6 +11,7 @@ import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 class EntityListState {
     pageSize = 10;
@@ -34,6 +35,7 @@ export class EntityListComponent implements OnInit {
         "pluralDisplayName",
         "isAbstract",
         "baseEntity",
+        "action"
     ];
     private innerSolutionId: number;
     get solutionId(): number {
@@ -54,7 +56,7 @@ export class EntityListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
         this.state = this.storeService.get("entityListState", new EntityListState());
     }
@@ -100,7 +102,7 @@ export class EntityListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

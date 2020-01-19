@@ -26,12 +26,21 @@ namespace Cynosura.Studio.Web.Infrastructure
         {
             return failures.Select(p => new
                 {
-                    Property = p.Key,
+                    Property = ToCamelCase(p.Key),
                     Errors = p.Value.Select(e => new ModelStateError() { ErrorMessage = e })
                 }).ToDictionary(p => p.Property, p => new SimpleModelState()
                 {
                     Errors = p.Errors.ToList(),
                 });
+        }
+
+        private string ToCamelCase(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return name;
+            }
+            return char.ToLowerInvariant(name[0]) + name.Substring(1);
         }
     }
 }

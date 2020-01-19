@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
 
 import { Role } from "../role-core/role.model";
 import { RoleFilter } from "../role-core/role-filter.model";
@@ -11,6 +10,7 @@ import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 class RoleListState {
     pageSize = 10;
@@ -29,6 +29,7 @@ export class RoleListComponent implements OnInit {
     pageSizeOptions = [10, 20];
     columns = [
         "name",
+        "action"
     ];
 
     constructor(
@@ -37,7 +38,7 @@ export class RoleListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
         this.state = this.storeService.get("roleListState", new RoleListState());
     }
@@ -46,12 +47,12 @@ export class RoleListComponent implements OnInit {
         this.getRoles();
     }
 
-    getRoles(): void {
-        this.roleService.getRoles({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.onError(error));
+    async getRoles() {
+        this.content = await this.roleService.getRoles({
+            pageIndex: this.state.pageIndex,
+            pageSize: this.state.pageSize,
+            filter: this.state.filter
+        });
     }
 
     reset(): void {
@@ -61,12 +62,13 @@ export class RoleListComponent implements OnInit {
 
     delete(id: number): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.roleService.deleteRole({ id })
-                    .then(() => {
-                        this.getRoles();
-                    })
-                    .catch(error => this.onError(error));
+            .subscribe(async () => {
+                try {
+                    await this.roleService.deleteRole({ id });
+                    this.getRoles();
+                } catch (error) {
+                    this.onError(error);
+                }
             });
     }
 
@@ -78,7 +80,7 @@ export class RoleListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

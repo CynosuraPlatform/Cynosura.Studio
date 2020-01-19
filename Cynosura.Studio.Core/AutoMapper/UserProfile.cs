@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Core.AutoMapper
         public UserProfile()
         {
             CreateMap<User, UserModel>();
+            CreateMap<User, UserShortModel>();
             CreateMap<CreateUser, User>();
             CreateMap<UpdateUser, User>();
         }

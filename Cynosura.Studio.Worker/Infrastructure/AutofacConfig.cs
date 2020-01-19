@@ -24,7 +24,7 @@ namespace Cynosura.Studio.Worker.Infrastructure
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
-            builder.Register(c => new MapperConfiguration(cfg => { cfg.AddProfiles(assemblies); }).CreateMapper())
+            builder.Register(c => new MapperConfiguration(cfg => { cfg.AddMaps(assemblies); }).CreateMapper())
                 .As<IMapper>().SingleInstance();
         }
     }

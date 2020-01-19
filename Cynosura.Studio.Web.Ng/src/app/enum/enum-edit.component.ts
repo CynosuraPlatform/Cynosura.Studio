@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { Enum } from "../enum-core/enum.model";
 import { EnumService } from "../enum-core/enum.service";
 import { UpdateEnum, CreateEnum } from "../enum-core/enum-request.model";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 @Component({
     selector: "app-enum-edit",
@@ -29,13 +30,13 @@ export class EnumEditComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             const id: string = params.id === "0" ? null : params.id;
-            this.solutionId = this.route.snapshot.queryParams.solutionId;
+            this.solutionId = ConvertStringTo.number(this.route.snapshot.queryParams.solutionId);
             this.getEnum(id);
         });
     }
@@ -96,7 +97,7 @@ export class EnumEditComponent implements OnInit {
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.enumForm, error);
         }
     }

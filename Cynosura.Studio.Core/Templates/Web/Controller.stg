@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace $model.Solution.Namespace$.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
-    [Authorize(Roles = "Administrator")]
+    [Authorize("Read$model.Entity.Name$")]
     [ValidateModel]
     [Route("api")]
     public class $model.Entity.Name$Controller : Controller
@@ -38,18 +38,21 @@ namespace $model.Solution.Namespace$.Web.Controllers
             return await _mediator.Send(get$model.Entity.Name$);
         }
 
+        [Authorize("Write$model.Entity.Name$")]
         [HttpPost("Update$model.Entity.Name$")]
         public async Task<Unit> Update$model.Entity.Name$Async([FromBody] Update$model.Entity.Name$ update$model.Entity.Name$)
         {
             return await _mediator.Send(update$model.Entity.Name$);
         }
 
+        [Authorize("Write$model.Entity.Name$")]
         [HttpPost("Create$model.Entity.Name$")]
         public async Task<CreatedEntity<$model.Entity.IdField.TypeName$>\> Create$model.Entity.Name$Async([FromBody] Create$model.Entity.Name$ create$model.Entity.Name$)
         {
             return await _mediator.Send(create$model.Entity.Name$);
         }
 
+        [Authorize("Write$model.Entity.Name$")]
         [HttpPost("Delete$model.Entity.Name$")]
         public async Task<Unit> Delete$model.Entity.Name$Async([FromBody] Delete$model.Entity.Name$ delete$model.Entity.Name$)
         {

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { User } from "../user-core/user.model";
 import { CreateUser, UpdateUser } from "../user-core/user-request.model";
@@ -11,6 +10,7 @@ import { Role } from "../role-core/role.model";
 import { RoleService } from "../role-core/role.service";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 
 @Component({
@@ -36,31 +36,28 @@ export class UserEditComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) { }
+                private noticeHelper: NoticeHelper) { }
 
-    ngOnInit(): void {
-        this.roleService.getRoles({}).then(roles => this.roles = roles.pageItems).then(() =>
-            this.route.params.forEach((params: Params) => {
-                const id = +params.id;
-                this.getUser(id);
-            }));
+    async ngOnInit() {
+        this.roles = (await this.roleService.getRoles({})).pageItems;
+        this.route.params.forEach((params: Params) => {
+            const id = +params.id;
+            this.getUser(id);
+        });
     }
 
-    private getUser(id: number): void {
+    private async getUser(id: number) {
         this.id = id;
         if (id === 0) {
             this.user = new User();
-            this.userForm.patchValue(this.user);
         } else {
-            this.userService.getUser({ id }).then(user => {
-                this.user = user;
-                this.userForm.patchValue(this.user);
-                for (const role of this.roles) {
-                    if (this.user.roleIds.indexOf(role.id) !== -1) {
-                        role.isSelected = true;
-                    }
-                }
-            });
+            this.user = await this.userService.getUser({ id });
+        }
+        this.userForm.patchValue(this.user);
+        for (const role of this.roles) {
+            if (this.user.roleIds && this.user.roleIds.indexOf(role.id) !== -1) {
+                role.isSelected = true;
+            }
         }
     }
 
@@ -72,30 +69,27 @@ export class UserEditComponent implements OnInit {
         this.saveUser();
     }
 
-    private saveUser(): void {
-        const user = this.userForm.value;
-        user.roleIds = this.roles
-            .filter(role => role.isSelected)
-            .map(role => role.id);
-        if (this.id) {
-            this.userService.updateUser(user)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            this.userService.createUser(user)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async saveUser() {
+        try {
+            const user = this.userForm.value;
+            user.roleIds = this.roles
+                .filter(role => role.isSelected)
+                .map(role => role.id);
+            if (this.id) {
+                await this.userService.updateUser(user);
+            } else {
+                await this.userService.createUser(user);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.userForm, error);
         }
     }

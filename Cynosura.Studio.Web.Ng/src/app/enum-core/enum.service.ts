@@ -11,44 +11,43 @@ import { Page } from "../core/page.model";
 @Injectable()
 export class EnumService {
     private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
     getEnums(getEnums: GetEnums): Promise<Page<Enum>> {
         const url = `${this.apiUrl}/GetEnums`;
-        return this.httpClient.post<Page<Enum>>(url, JSON.stringify(getEnums), { headers: this.headers })
+        return this.httpClient.post<Page<Enum>>(url, getEnums)
             .toPromise();
     }
 
     getEnum(getEnum: GetEnum): Promise<Enum> {
         const url = `${this.apiUrl}/GetEnum`;
-        return this.httpClient.post<Enum>(url, JSON.stringify(getEnum), { headers: this.headers })
+        return this.httpClient.post<Enum>(url, getEnum)
             .toPromise();
     }
 
     updateEnum(updateEnum: UpdateEnum): Promise<{}> {
         const url = `${this.apiUrl}/UpdateEnum`;
-        return this.httpClient.post(url, JSON.stringify(updateEnum), { headers: this.headers })
+        return this.httpClient.post(url, updateEnum)
             .toPromise();
     }
 
 
     createEnum(createEnum: CreateEnum): Promise<CreatedEntity<string>> {
         const url = `${this.apiUrl}/CreateEnum`;
-        return this.httpClient.post<CreatedEntity<string>>(url, JSON.stringify(createEnum), { headers: this.headers })
+        return this.httpClient.post<CreatedEntity<string>>(url, createEnum)
             .toPromise();
     }
 
     deleteEnum(deleteEnum: DeleteEnum): Promise<{}> {
         const url = `${this.apiUrl}/DeleteEnum`;
-        return this.httpClient.post(url, JSON.stringify(deleteEnum), { headers: this.headers })
+        return this.httpClient.post(url, deleteEnum)
             .toPromise();
     }
 
     generateEnum(generateEnum: GenerateEnum): Promise<{}> {
         const url = `${this.apiUrl}/GenerateEnum`;
-        return this.httpClient.post(url, JSON.stringify(generateEnum), { headers: this.headers })
+        return this.httpClient.post(url, generateEnum)
             .toPromise();
     }
 }

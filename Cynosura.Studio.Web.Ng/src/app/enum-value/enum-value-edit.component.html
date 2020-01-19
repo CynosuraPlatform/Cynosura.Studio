@@ -5,27 +5,24 @@
     </mat-card-header>
 
     <form [formGroup]="enumValueForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-        </mat-card-actions>
         <div>
             <mat-form-field>
                 <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
+                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Value</mat-label>
-                <app-number-edit formControlName="value" name="value" label="Value"></app-number-edit>
+                <app-number-edit formControlName="value" name="value" placeholder="Value"></app-number-edit>
                 <mat-error>{{ error?.modelState?.value | modelError }}</mat-error>
             </mat-form-field>
         </div>
@@ -35,6 +32,9 @@
                 <app-properties [target]="enumValue.name" [properties]="enumValue.properties"></app-properties>
             </div>
         </div>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-actions>
     </form>
 
 </mat-card>

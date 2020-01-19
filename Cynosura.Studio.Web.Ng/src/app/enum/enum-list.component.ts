@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
 
 import { Enum } from "../enum-core/enum.model";
 import { EnumFilter } from "../enum-core/enum-filter.model";
@@ -11,6 +10,7 @@ import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 class EnumListState {
     pageSize = 10;
@@ -30,6 +30,7 @@ export class EnumListComponent implements OnInit {
     columns = [
         "name",
         "displayName",
+        "action"
     ];
     private innerSolutionId: number;
     get solutionId(): number {
@@ -50,7 +51,7 @@ export class EnumListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
         this.state = this.storeService.get("enumListState", new EnumListState());
     }
@@ -96,7 +97,7 @@ export class EnumListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

@@ -22,13 +22,13 @@ $field:(field.Template)()$
 >>
 
 Type(field) ::= <<
-        public $field.TypeName$ $field.Name$ { get; set; }
+        public $field.TypeNameNullable$ $field.Name$ { get; set; }
 >>
 
 Entity(field) ::= <<
-        public $field.EntityIdTypeName$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
+        public $field.EntityIdTypeNameNullable$ $field.Name$$field.Entity.IdField.Name$ { get; set; }
 >>
 
 Enum(field) ::= <<
-        public Enums.$field.Enum.Name$$if(!field.IsRequired)$?$endif$ $field.Name$ { get; set; }
+        public Enums.$field.Enum.Name$? $field.Name$ { get; set; }
 >>

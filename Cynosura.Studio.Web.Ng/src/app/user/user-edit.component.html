@@ -5,10 +5,6 @@
     </mat-card-header>
 
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
-        </mat-card-actions>
         <mat-form-field>
             <mat-label>Username</mat-label>
             <input matInput type="email" id="userName" name="userName" formControlName="userName" placeholder="Username"
@@ -39,6 +35,10 @@
                 <mat-checkbox [name]="'roleIds' + i" [(ngModel)]="role.isSelected" [ngModelOptions]="{standalone: true}">{{ role.name }}</mat-checkbox>                    
             </div>
         </div>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+        </mat-card-actions>
     </form>
 
 </mat-card>

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { Role } from "../role-core/role.model";
 import { RoleService } from "../role-core/role.service";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 
 @Component({
@@ -27,7 +27,7 @@ export class RoleEditComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
@@ -37,17 +37,14 @@ export class RoleEditComponent implements OnInit {
         });
     }
 
-    private getRole(id: number): void {
+    private async getRole(id: number) {
         this.id = id;
         if (id === 0) {
             this.role = new Role();
-            this.roleForm.patchValue(this.role);
         } else {
-            this.roleService.getRole({ id }).then(role => {
-                this.role = role;
-                this.roleForm.patchValue(this.role);
-            });
+            this.role = await this.roleService.getRole({ id });
         }
+        this.roleForm.patchValue(this.role);
     }
 
     cancel(): void {
@@ -58,26 +55,23 @@ export class RoleEditComponent implements OnInit {
         this.saveRole();
     }
 
-    private saveRole(): void {
-        if (this.id) {
-            this.roleService.updateRole(this.roleForm.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            this.roleService.createRole(this.roleForm.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async saveRole() {
+        try {
+            if (this.id) {
+                await this.roleService.updateRole(this.roleForm.value);
+            } else {
+                await this.roleService.createRole(this.roleForm.value);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.roleForm, error);
         }
     }

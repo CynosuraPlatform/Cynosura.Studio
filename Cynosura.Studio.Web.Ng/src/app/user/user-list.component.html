@@ -21,10 +21,10 @@
     </mat-card-actions>
 
     <mat-card-content class="mat-elevation-z8">
-        <table *ngIf="content" mat-table [dataSource]="content?.pageItems" multiTemplateDataRows appClickOutside (clickOutside)="expandedElement = null">
+        <table *ngIf="content" mat-table [dataSource]="content?.pageItems" multiTemplateDataRows>
 
             <ng-container matColumnDef="userName">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <th mat-header-cell *matHeaderCellDef> Username </th>
                 <td mat-cell *matCellDef="let user">
                     <app-text-view [value]="user.userName"></app-text-view>
                 </td>
@@ -37,19 +37,18 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let item" [attr.colspan]="columns.length">
-                    <app-table-detail [expanded]="item == expandedElement">
-                        <a mat-raised-button [routerLink]="[item.id]" color="primary">Edit</a>
-                        <button mat-raised-button (click)="delete(item.id)" color="warn">Delete</button>
-                    </app-table-detail>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let item">
+                    <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="actionMenu"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #actionMenu="matMenu">
+                        <a mat-menu-item (click)="delete(item.id)">Delete</a>
+                    </mat-menu>
                 </td>
             </ng-container>
+
             <tr mat-header-row *matHeaderRowDef="columns"></tr>
-            <tr mat-row *matRowDef="let item; columns: columns;" class="table-item"
-                [class.table-item-expanded]="expandedElement === item" (click)="expandedElement = item">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="table-expand-item"></tr>
+            <tr mat-row *matRowDef="let item; columns: columns;" [routerLink]="[item.id]"></tr>
 
         </table>
         <div>

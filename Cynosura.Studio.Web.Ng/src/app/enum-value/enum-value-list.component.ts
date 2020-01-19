@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar, MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from "@angular/material";
 
 import { EnumValue } from "../enum-value-core/enum-value.model";
 import { EnumValueFilter } from "../enum-value-core/enum-value-filter.model";
@@ -11,6 +11,7 @@ import { Guid } from "../core/guid";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 @Component({
     selector: "app-enum-value-list",
@@ -22,6 +23,7 @@ export class EnumValueListComponent implements OnInit {
         "name",
         "displayName",
         "value",
+        "action"
     ];
     @Input()
     solutionId: number;
@@ -35,7 +37,7 @@ export class EnumValueListComponent implements OnInit {
 
     constructor(
         private modalHelper: ModalHelper,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {}
 
     ngOnInit(): void {
@@ -82,7 +84,7 @@ export class EnumValueListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
+import { Router } from "@angular/router";
+import { MatSidenav } from "@angular/material/sidenav";
+import { MediaObserver } from "@angular/flex-layout";
 import { Observable } from "rxjs";
 import { debounceTime, map, tap, first } from "rxjs/operators";
-import { MediaObserver } from "@angular/flex-layout";
 
-import { AuthService } from "./auth/auth.service";
 import { LoadingService } from "./core/loading.service";
-import { MatSidenav } from "@angular/material";
 
 @Component({
   selector: "app-root",
@@ -26,11 +26,11 @@ export class AppComponent implements OnInit {
         ),
         tap(() => this.changeDetectorRef.detectChanges()));
 
-    constructor(private authService: AuthService,
-                private loadingService: LoadingService,
+    constructor(private loadingService: LoadingService,
                 private cdRef: ChangeDetectorRef,
                 private media: MediaObserver,
-                private changeDetectorRef: ChangeDetectorRef) {
+                private changeDetectorRef: ChangeDetectorRef,
+                private router: Router) {
         loadingService
             .onLoadingChanged
             .pipe(debounceTime(500))
@@ -41,11 +41,6 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.authService.init()
-            .subscribe(
-                () => { console.info("Auth init success"); },
-                error => console.warn(error)
-            );
         this.emitEventResize();
     }
 

@@ -6,22 +6,20 @@
 
     <form [formGroup]="solutionForm" (ngSubmit)="onSubmit()">
         <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
             <button mat-raised-button type="button" (click)="generate()" *ngIf="id">Generate</button>
             <button mat-raised-button type="button" (click)="upgrade()" *ngIf="id">Upgrade</button>
         </mat-card-actions>
         <div>
             <mat-form-field>
                 <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Path</mat-label>
-                <app-text-edit formControlName="path" name="path" label="Path"></app-text-edit>
+                <app-text-edit formControlName="path" name="path" placeholder="Path"></app-text-edit>
                 <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
             </mat-form-field>
         </div>
@@ -38,9 +36,13 @@
         <div *ngIf="id">
             <mat-form-field>
                 <mat-label>Template Version</mat-label>
-                <app-text-edit formControlName="templateVersion" name="templateVersion" label="Template Version" [disabled]="true"></app-text-edit>
+                <app-text-edit formControlName="templateVersion" name="templateVersion" placeholder="Template Version" [disabled]="true"></app-text-edit>
             </mat-form-field>
         </div>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+            <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
+        </mat-card-actions>
     </form>
 
 </mat-card>

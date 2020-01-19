@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { MatSnackBar, MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from "@angular/material";
 
 import { ModalHelper } from "../core/modal.helper";
 
@@ -7,6 +7,7 @@ import { Field, FieldType } from "../field-core/field.model";
 
 import { Guid } from "../core/guid";
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 @Component({
     selector: "app-field-list",
@@ -21,6 +22,7 @@ export class FieldListComponent implements OnInit {
         "type",
         "entity",
         "enum",
+        "action"
     ];
 
     FieldType = FieldType;
@@ -36,7 +38,7 @@ export class FieldListComponent implements OnInit {
     field: Field;
     constructor(
         private modalHelper: ModalHelper,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {}
 
     ngOnInit(): void {
@@ -83,7 +85,7 @@ export class FieldListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

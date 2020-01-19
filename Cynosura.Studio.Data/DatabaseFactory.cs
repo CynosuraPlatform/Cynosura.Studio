@@ -1,4 +1,5 @@
-﻿using Cynosura.EF;
+using Autofac;
+using Cynosura.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -6,24 +7,19 @@ namespace Cynosura.Studio.Data
 {
     public class DatabaseFactory : IDatabaseFactory
     {
-        private readonly string _connectionString;
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILifetimeScope _lifetimeScope;
         private DataContext _dataContext;
 
-        public DatabaseFactory(string connectionString, ILoggerFactory loggerFactory)
+        public DatabaseFactory(ILifetimeScope lifetimeScope)
         {
-            _connectionString = connectionString;
-            _loggerFactory = loggerFactory;
+            _lifetimeScope = lifetimeScope;
         }
 
         public DbContext Get()
         {
             if (_dataContext == null)
             {
-                var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-                optionsBuilder.UseSqlite(_connectionString);
-                optionsBuilder.UseLoggerFactory(_loggerFactory);
-                _dataContext = new DataContext(optionsBuilder.Options);
+                _dataContext = _lifetimeScope.Resolve<DataContext>();
             }
             return _dataContext;
         }

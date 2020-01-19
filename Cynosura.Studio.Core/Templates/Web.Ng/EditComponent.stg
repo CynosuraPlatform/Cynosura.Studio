@@ -2,12 +2,13 @@ main(model) ::= <<
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
 import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 
 @Component({
@@ -28,27 +29,24 @@ $model.Entity.AllFields:field(); separator=",\n"$
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const id: $model.Entity.IdField.JsTypeName$ = params.id === "0" ? null : params.id;
+            const id: $model.Entity.IdField.JsTypeName$ = params.id === "0" ? null : ConvertStringTo.$model.Entity.IdField.JsTypeName$(params.id);
             this.get$model.Entity.Name$(id);
         });
     }
 
-    private get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$): void {
+    private async get$model.Entity.Name$(id: $model.Entity.IdField.JsTypeName$) {
         this.id = id;
         if (!id) {
             this.$model.Entity.NameLower$ = new $model.Entity.Name$();
-            this.$model.Entity.NameLower$Form.patchValue(this.$model.Entity.NameLower$);
         } else {
-            this.$model.Entity.NameLower$Service.get$model.Entity.Name$({ id }).then($model.Entity.NameLower$ => {
-                this.$model.Entity.NameLower$ = $model.Entity.NameLower$;
-                this.$model.Entity.NameLower$Form.patchValue(this.$model.Entity.NameLower$);
-            });
+            this.$model.Entity.NameLower$ = await this.$model.Entity.NameLower$Service.get$model.Entity.Name$({ id });
         }
+        this.$model.Entity.NameLower$Form.patchValue(this.$model.Entity.NameLower$);
     }
 
     cancel(): void {
@@ -59,26 +57,23 @@ $model.Entity.AllFields:field(); separator=",\n"$
         this.save$model.Entity.Name$();
     }
 
-    private save$model.Entity.Name$(): void {
-        if (this.id) {
-            this.$model.Entity.NameLower$Service.update$model.Entity.Name$(this.$model.Entity.NameLower$Form.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            this.$model.Entity.NameLower$Service.create$model.Entity.Name$(this.$model.Entity.NameLower$Form.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async save$model.Entity.Name$() {
+        try {
+            if (this.id) {
+                await this.$model.Entity.NameLower$Service.update$model.Entity.Name$(this.$model.Entity.NameLower$Form.value);
+            } else {
+                await this.$model.Entity.NameLower$Service.create$model.Entity.Name$(this.$model.Entity.NameLower$Form.value);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.$model.Entity.NameLower$Form, error);
         }
     }

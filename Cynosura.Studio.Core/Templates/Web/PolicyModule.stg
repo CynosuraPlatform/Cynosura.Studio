@@ -1,0 +1,23 @@
+main(model) ::= <<
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Cynosura.Web.Infrastructure.Authorization;
+using Microsoft.AspNetCore.Authorization;
+
+namespace $model.Solution.Namespace$.Web.Infrastructure.Authorization
+{
+    public class $model.Entity.Name$Module : IPolicyModule
+    {
+        public void RegisterPolicies(AuthorizationOptions options)
+        {
+            options.AddPolicy("Read$model.Entity.Name$",
+                policy => policy.RequireClaim(ClaimTypes.Role, "Administrator"));
+            options.AddPolicy("Write$model.Entity.Name$",
+                policy => policy.RequireClaim(ClaimTypes.Role, "Administrator"));
+        }
+    }
+}
+>>

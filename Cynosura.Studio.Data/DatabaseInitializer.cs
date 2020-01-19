@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Cynosura.Studio.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,12 +28,14 @@ namespace Cynosura.Studio.Data
                 await _roleManager.CreateAsync(new Role() { Name = administratorRoleName });
             }
 
-            var administratorUserName = "admin";
-            if (await _userManager.FindByNameAsync(administratorUserName) == null)
+            var administratorEmail = "admin@cynosura.ru";
+            if (await _userManager.FindByNameAsync(administratorEmail) == null)
             {
                 var user = new User()
                 {
-                    UserName = administratorUserName,
+                    UserName = administratorEmail,
+                    Email = administratorEmail,
+                    EmailConfirmed = true
                 };
                 await _userManager.CreateAsync(user);
                 await _userManager.AddToRoleAsync(user, administratorRoleName);

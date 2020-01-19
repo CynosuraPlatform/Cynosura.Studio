@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +23,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public IList<CreateField> Fields { get; set; }
         public PropertyCollection Properties { get; set; }
         [DisplayName("Abstract")]
-        public bool IsAbstract { get; set; }
+        public bool? IsAbstract { get; set; }
         [DisplayName("Base Entity")]
         public Guid? BaseEntityId { get; set; }
     }

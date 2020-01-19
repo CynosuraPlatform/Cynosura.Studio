@@ -10,37 +10,36 @@ import { Page } from "../core/page.model";
 @Injectable()
 export class RoleService {
     private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
     getRoles(getRoles: GetRoles): Promise<Page<Role>> {
         const url = `${this.apiUrl}/GetRoles`;
-        return this.httpClient.post<Page<Role>>(url, JSON.stringify(getRoles), { headers: this.headers })
+        return this.httpClient.post<Page<Role>>(url, getRoles)
             .toPromise();
     }
 
     getRole(getRole: GetRole): Promise<Role> {
         const url = `${this.apiUrl}/GetRole`;
-        return this.httpClient.post<Role>(url, JSON.stringify(getRole), { headers: this.headers })
+        return this.httpClient.post<Role>(url, getRole)
             .toPromise();
     }
 
     updateRole(updateRole: UpdateRole): Promise<{}> {
         const url = `${this.apiUrl}/UpdateRole`;
-        return this.httpClient.post(url, JSON.stringify(updateRole), { headers: this.headers })
+        return this.httpClient.post(url, updateRole)
             .toPromise();
     }
 
     createRole(createRole: CreateRole): Promise<CreatedEntity<number>> {
         const url = `${this.apiUrl}/CreateRole`;
-        return this.httpClient.post<CreatedEntity<number>>(url, JSON.stringify(createRole), { headers: this.headers })
+        return this.httpClient.post<CreatedEntity<number>>(url, createRole)
             .toPromise();
     }
 
     deleteRole(deleteRole: DeleteRole): Promise<{}> {
         const url = `${this.apiUrl}/DeleteRole`;
-        return this.httpClient.post(url, JSON.stringify(deleteRole), { headers: this.headers })
+        return this.httpClient.post(url, deleteRole)
             .toPromise();
     }
 }

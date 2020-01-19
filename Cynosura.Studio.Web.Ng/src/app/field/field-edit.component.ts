@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { Field, FieldType } from "../field-core/field.model";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 
 @Component({
@@ -50,14 +51,14 @@ export class FieldEditComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
 
     }
 
-    cancel(): void {
+    cancel() {
         window.history.back();
     }
 
@@ -74,7 +75,7 @@ export class FieldEditComponent implements OnInit {
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.fieldForm, error);
         }
     }

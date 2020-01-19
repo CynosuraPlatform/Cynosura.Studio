@@ -3,7 +3,9 @@ import { HttpClient } from "@angular/common/http";
 
 import { Config } from "./config.model";
 
-@Injectable()
+@Injectable({
+    providedIn: "root"
+})
 export class ConfigService {
 
     public config: Config;

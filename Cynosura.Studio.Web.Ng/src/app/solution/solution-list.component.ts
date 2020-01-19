@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar, MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material";
 
 import { Solution } from "../solution-core/solution.model";
 import { SolutionFilter } from "../solution-core/solution-filter.model";
@@ -12,6 +12,7 @@ import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 class SolutionListState {
     pageSize = 10;
@@ -32,7 +33,8 @@ export class SolutionListComponent implements OnInit {
         "name",
         "path",
         "templateName",
-        "templateVersion"
+        "templateVersion",
+        "action"
     ];
 
     constructor(
@@ -42,7 +44,7 @@ export class SolutionListComponent implements OnInit {
         private route: ActivatedRoute,
         private storeService: StoreService,
         private dialog: MatDialog,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
         this.state = this.storeService.get("solutionListState", new SolutionListState());
     }
@@ -51,12 +53,12 @@ export class SolutionListComponent implements OnInit {
         this.getSolutions();
     }
 
-    getSolutions(): void {
-        this.solutionService.getSolutions({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.onError(error));
+    async getSolutions() {
+        this.content = await this.solutionService.getSolutions({
+            pageIndex: this.state.pageIndex,
+            pageSize: this.state.pageSize,
+            filter: this.state.filter
+        });
     }
 
     reset(): void {
@@ -66,12 +68,13 @@ export class SolutionListComponent implements OnInit {
 
     delete(id: number): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.solutionService.deleteSolution({ id })
-                    .then(() => {
-                        this.getSolutions();
-                    })
-                    .catch(error => this.onError(error));
+            .subscribe(async () => {
+                try {
+                    await this.solutionService.deleteSolution({ id });
+                    this.getSolutions();
+                } catch (error) {
+                    this.onError(error);
+                }
             });
     }
 
@@ -83,7 +86,7 @@ export class SolutionListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 

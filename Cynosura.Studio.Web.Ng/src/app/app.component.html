@@ -1,24 +1,23 @@
 <div class="loading">
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 </div>
 
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <button mat-icon-button *ngIf="isHandset$ | async" (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>Cynosura.Studio</span>
-    <span class="menu-spacer"></span>
-    <div fxShow="true" fxHide.lt-md></div>
-  </mat-toolbar-row>
+    <mat-toolbar-row>
+        <button mat-icon-button *ngIf="isHandset$ | async" (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>Cynosura.Studio</span>
+        <span class="menu-spacer"></span>
+    </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-sidenav-container fxFlexFill>
-  <mat-sidenav #sidenav fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
-    <app-nav-menu (click)="toggle(sidenav)"></app-nav-menu>
-  </mat-sidenav>
-  <mat-sidenav-content fxFlexFill>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <mat-sidenav #sidenav fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <app-nav-menu (click)="toggle(sidenav)"></app-nav-menu>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
 </mat-sidenav-container>

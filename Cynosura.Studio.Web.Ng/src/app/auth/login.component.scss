@@ -1,9 +1,0 @@
-$blockHeight: 200px;
-$blockWidth: 190px;
-.fields-container {
-    .centered-layout {
-        height: $blockHeight;
-        width: $blockWidth;
-        margin: calc(50vh - #{$blockHeight} / 2) auto 0;
-    }
-}

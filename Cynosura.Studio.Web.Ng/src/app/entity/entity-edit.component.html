@@ -13,28 +13,28 @@
         <div>
             <mat-form-field>
                 <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Plural Name</mat-label>
-                <app-text-edit formControlName="pluralName" name="pluralName" label="Plural Name"></app-text-edit>
+                <app-text-edit formControlName="pluralName" name="pluralName" placeholder="Plural Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.pluralName | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
+                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Plural Display Name</mat-label>
-                <app-text-edit formControlName="pluralDisplayName" name="pluralDisplayName" label="Plural Display Name"></app-text-edit>
+                <app-text-edit formControlName="pluralDisplayName" name="pluralDisplayName" placeholder="Plural Display Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.pluralDisplayName | modelError }}</mat-error>
             </mat-form-field>
         </div>
@@ -44,7 +44,7 @@
         <div>
             <mat-form-field>
                 <mat-label>Base Entity</mat-label>
-                <app-entity-select formControlName="baseEntityId" [solutionId]="solutionId" name="baseEntityId" label="Base Entity"></app-entity-select>
+                <app-entity-select formControlName="baseEntityId" [solutionId]="solutionId" name="baseEntityId" placeholder="Base Entity"></app-entity-select>
                 <mat-error>{{ error?.modelState?.baseEntityId | modelError }}</mat-error>
             </mat-form-field>
         </div>

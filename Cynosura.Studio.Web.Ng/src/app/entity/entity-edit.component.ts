@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { plural } from "pluralize";
 
@@ -10,6 +9,8 @@ import { EntityService } from "../entity-core/entity.service";
 import { UpdateEntity, CreateEntity } from "../entity-core/entity-request.model";
 
 import { Error } from "../core/error.model";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 @Component({
     selector: "app-entity-edit",
@@ -36,7 +37,7 @@ export class EntityEditComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
 
         this.previousValue = "";
     }
@@ -44,7 +45,7 @@ export class EntityEditComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
             const id: string = params.id === "0" ? null : params.id;
-            this.solutionId = this.route.snapshot.queryParams.solutionId;
+            this.solutionId = ConvertStringTo.number(this.route.snapshot.queryParams.solutionId);
             this.getEntity(id);
         });
 
@@ -114,7 +115,7 @@ export class EntityEditComponent implements OnInit {
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.entityForm, error);
         }
     }

@@ -1,13 +1,14 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
 
 import { Solution } from "../solution-core/solution.model";
 import { SolutionService } from "../solution-core/solution.service";
 
 import { Error } from "../core/error.model";
 import { TemplateModel, TemplateService } from "../solution-core/template-service";
+import { NoticeHelper } from "../core/notice.helper";
+import { ConvertStringTo } from "../core/converter.helper";
 
 
 @Component({
@@ -34,12 +35,12 @@ export class SolutionEditComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private fb: FormBuilder,
-        private snackBar: MatSnackBar) {
+        private noticeHelper: NoticeHelper) {
     }
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            const id: number = params.id === "0" ? null : params.id;
+            const id: number = params.id === "0" ? null : ConvertStringTo.number(params.id);
             this.getSolution(id);
         });
         this.templateService.getTemplates()
@@ -86,7 +87,7 @@ export class SolutionEditComponent implements OnInit {
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.solutionForm, error);
         }
     }

@@ -13,14 +13,14 @@
         <div>
             <mat-form-field>
                 <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
+                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
                 <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
             </mat-form-field>
         </div>

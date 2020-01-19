@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Threading.Tasks;
 using Autofac;
@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Data;
 using Cynosura.Studio.Worker.Infrastructure;
@@ -20,7 +19,6 @@ namespace Cynosura.Studio.Worker
     {
         public static async Task Main(string[] args)
         {
-            NLog.LogManager.LoadConfiguration("nlog.config");
             var builder = new HostBuilder()
                 .ConfigureHostConfiguration(configHost =>
                 {
@@ -46,9 +44,6 @@ namespace Cynosura.Studio.Worker
                     {
                         options.UseSqlite(hostContext.Configuration.GetConnectionString("DefaultConnection"));
                     });
-                    services.AddIdentity<User, Role>()
-                        .AddEntityFrameworkStores<DataContext>()
-                        .AddDefaultTokenProviders();
 
                     services.AddOptions();
                 })
@@ -60,12 +55,14 @@ namespace Cynosura.Studio.Worker
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddNLog();
+                    logging.AddConsole(c =>
+                    {
+                        c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
+                    });
                 });
 
             await builder.RunConsoleAsync();
-
-            NLog.LogManager.Shutdown();
         }
     }
 }
+

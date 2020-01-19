@@ -2,7 +2,6 @@ main(model) ::= <<
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
 
 import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
 import { $model.Entity.Name$Filter } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model";
@@ -12,6 +11,7 @@ import { ModalHelper } from "../core/modal.helper";
 import { StoreService } from "../core/store.service";
 import { Error } from "../core/error.model";
 import { Page } from "../core/page.model";
+import { NoticeHelper } from "../core/notice.helper";
 
 class $model.Entity.Name$ListState {
     pageSize = 10;
@@ -30,6 +30,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     pageSizeOptions = [10, 20];
     columns = [
         $model.Entity.AllFields:field(); separator="\r\n"$
+        "action"
     ];
 
     constructor(
@@ -38,7 +39,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
         this.state = this.storeService.get("$model.Entity.NameLower$ListState", new $model.Entity.Name$ListState());
     }
@@ -47,12 +48,12 @@ export class $model.Entity.Name$ListComponent implements OnInit {
         this.get$model.Entity.PluralName$();
     }
 
-    get$model.Entity.PluralName$(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.onError(error));
+    async get$model.Entity.PluralName$() {
+        this.content = await this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({
+            pageIndex: this.state.pageIndex,
+            pageSize: this.state.pageSize,
+            filter: this.state.filter
+        });
     }
 
     reset(): void {
@@ -62,12 +63,13 @@ export class $model.Entity.Name$ListComponent implements OnInit {
 
     delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ })
-                    .then(() => {
-                        this.get$model.Entity.PluralName$();
-                    })
-                    .catch(error => this.onError(error));
+            .subscribe(async () => {
+                try {
+                    await this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ });
+                    this.get$model.Entity.PluralName$();
+                } catch (error) {
+                    this.onError(error);
+                }
             });
     }
 
@@ -79,7 +81,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

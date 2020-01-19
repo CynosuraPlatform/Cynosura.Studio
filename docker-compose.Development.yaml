@@ -12,7 +12,6 @@ services:
       - '0.0.0.0:5000:5000'
     volumes:
       - ./volumes/cert:/my/cert
-      - logs:/my/logs
   webng:
     ports:
       - '0.0.0.0:5001:80'
@@ -21,8 +20,6 @@ services:
   worker:
     environment:
       Logging__LogLevel__Default: 'Trace'
-    volumes:
-      - logs:/my/logs
   db:
     ports:
       - '0.0.0.0:1433:1433'
@@ -32,5 +29,4 @@ services:
     volumes:
       - db:/var/opt/mssql
 volumes:
-  logs:
   db:

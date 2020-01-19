@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 
-import { AuthService } from "../auth/auth.service";
 import { MenuService } from "./menu.service";
 import { Menu } from "./menu.model";
 
@@ -11,27 +11,15 @@ import { Menu } from "./menu.model";
     styleUrls: ["./nav-menu.component.scss"]
 })
 export class NavMenuComponent implements OnInit {
-    menu: Menu;
+    menu: Observable<Menu>;
     isExpanded = false;
-    loggedIn = false;
 
     constructor(private menuService: MenuService,
-                private authService: AuthService,
                 private router: Router) {
     }
 
     ngOnInit(): void {
-        this.authService.loggedIn$.subscribe(loggedIn => this.loggedIn = loggedIn);
-        this.authService.state$.subscribe(state => {
-            this.menuService.getMenu().then(menu => {
-                this.menu = menu;
-            });
-        });
-    }
-
-    logout() {
-        this.authService.logout();
-        this.router.navigate(["/"]);
+        this.menu = this.menuService.getMenu();
     }
 
     collapse() {

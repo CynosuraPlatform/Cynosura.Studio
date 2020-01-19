@@ -211,6 +211,16 @@
     "targets": []
   },
   {
+    "filePath": "*.Web\\Infrastructure\\Authorization",
+    "fileName": "{Name}Module.cs",
+    "templatePath": "Web\\PolicyModule.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
     "filePath": "*.Web.Ng\\src\\app",
     "fileName": "{NameKebab}-core\\{NameKebab}.model.ts",
     "templatePath": "Web.Ng\\Model.stg",

@@ -11,19 +11,18 @@ import { Page } from "../core/page.model";
 @Injectable()
 export class UserService {
     private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
     getUsers(getUsers: GetUsers): Promise<Page<User>> {
         const url = `${this.apiUrl}/GetUsers`;
-        return this.httpClient.post<Page<User>>(url, JSON.stringify(getUsers), { headers: this.headers })
+        return this.httpClient.post<Page<User>>(url, getUsers)
             .toPromise();
     }
 
     getUser(getUser: GetUser): Promise<User> {
         const url = `${this.apiUrl}/GetUser`;
-        return this.httpClient.post<User>(url, JSON.stringify(getUser), { headers: this.headers })
+        return this.httpClient.post<User>(url, getUser)
             .toPromise();
     }
 
@@ -32,19 +31,19 @@ export class UserService {
         if (!updateUser.password) {
             updateUser.password = null;
         }
-        return this.httpClient.post(url, JSON.stringify(updateUser), { headers: this.headers })
+        return this.httpClient.post(url, updateUser)
             .toPromise();
     }
 
     createUser(createUser: CreateUser): Promise<CreatedEntity<number>> {
         const url = `${this.apiUrl}/CreateUser`;
-        return this.httpClient.post<CreatedEntity<number>>(url, JSON.stringify(createUser), { headers: this.headers })
+        return this.httpClient.post<CreatedEntity<number>>(url, createUser)
             .toPromise();
     }
 
     deleteUser(deleteUser: DeleteUser): Promise<{}> {
         const url = `${this.apiUrl}/DeleteUser`;
-        return this.httpClient.post(url, JSON.stringify(deleteUser), { headers: this.headers })
+        return this.httpClient.post(url, deleteUser)
             .toPromise();
     }
 }

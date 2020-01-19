@@ -12,37 +12,36 @@ import { Page } from "../core/page.model";
 @Injectable()
 export class $model.Entity.Name$Service {
     private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
     get$model.Entity.PluralName$(get$model.Entity.PluralName$: Get$model.Entity.PluralName$): Promise<Page<$model.Entity.Name$>\> {
         const url = `\${this.apiUrl}/Get$model.Entity.PluralName$`;
-        return this.httpClient.post<Page<$model.Entity.Name$>\>(url, JSON.stringify(get$model.Entity.PluralName$), { headers: this.headers })
+        return this.httpClient.post<Page<$model.Entity.Name$>\>(url, get$model.Entity.PluralName$)
             .toPromise();
     }
 
     get$model.Entity.Name$(get$model.Entity.Name$: Get$model.Entity.Name$): Promise<$model.Entity.Name$> {
         const url = `\${this.apiUrl}/Get$model.Entity.Name$`;
-        return this.httpClient.post<$model.Entity.Name$>(url, JSON.stringify(get$model.Entity.Name$), { headers: this.headers })
+        return this.httpClient.post<$model.Entity.Name$>(url, get$model.Entity.Name$)
             .toPromise();
     }
 
     update$model.Entity.Name$(update$model.Entity.Name$: Update$model.Entity.Name$): Promise<{}> {
         const url = `\${this.apiUrl}/Update$model.Entity.Name$`;
-        return this.httpClient.post(url, JSON.stringify(update$model.Entity.Name$), { headers: this.headers })
+        return this.httpClient.post(url, update$model.Entity.Name$)
             .toPromise();
     }
 
     create$model.Entity.Name$(create$model.Entity.Name$: Create$model.Entity.Name$): Promise<CreatedEntity<$model.Entity.IdField.JsTypeName$>\> {
         const url = `\${this.apiUrl}/Create$model.Entity.Name$`;
-        return this.httpClient.post<CreatedEntity<$model.Entity.IdField.JsTypeName$>\>(url, JSON.stringify(create$model.Entity.Name$), { headers: this.headers })
+        return this.httpClient.post<CreatedEntity<$model.Entity.IdField.JsTypeName$>\>(url, create$model.Entity.Name$)
             .toPromise();
     }
 
     delete$model.Entity.Name$(delete$model.Entity.Name$: Delete$model.Entity.Name$): Promise<{}> {
         const url = `\${this.apiUrl}/Delete$model.Entity.Name$`;
-        return this.httpClient.post(url, JSON.stringify(delete$model.Entity.Name$), { headers: this.headers })
+        return this.httpClient.post(url, delete$model.Entity.Name$)
             .toPromise();
     }
 }
