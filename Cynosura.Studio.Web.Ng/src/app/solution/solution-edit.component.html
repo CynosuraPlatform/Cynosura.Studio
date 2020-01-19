@@ -26,7 +26,7 @@
         <div>
             <mat-form-field>
                 <mat-label>Template Name</mat-label>
-                <mat-select formControlName="templateName" [(ngModel)]="innerValue">
+                <mat-select formControlName="templateName">
                     <mat-option>Select Template</mat-option>
                     <mat-option [value]="template.name" *ngFor="let template of templates">{{ template.name }}</mat-option>
                 </mat-select>
