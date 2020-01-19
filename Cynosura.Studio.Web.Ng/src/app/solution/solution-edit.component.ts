@@ -47,17 +47,14 @@ export class SolutionEditComponent implements OnInit {
             .then((templates) => this.templates = templates);
     }
 
-    private getSolution(id: number): void {
+    private async getSolution(id: number) {
         this.id = id;
         if (!id) {
             this.solution = new Solution();
-            this.solutionForm.patchValue(this.solution);
         } else {
-            this.solutionService.getSolution({ id }).then(solution => {
-                this.solution = solution;
-                this.solutionForm.patchValue(this.solution);
-            });
+            this.solution = await this.solutionService.getSolution({ id });
         }
+        this.solutionForm.patchValue(this.solution);
     }
 
     cancel(): void {
@@ -68,19 +65,16 @@ export class SolutionEditComponent implements OnInit {
         this.saveSolution();
     }
 
-    private saveSolution(): void {
-        if (this.id) {
-            this.solutionService.updateSolution(this.solutionForm.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            this.solutionService.createSolution(this.solutionForm.value)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async saveSolution() {
+        try {
+            if (this.id) {
+                await this.solutionService.updateSolution(this.solutionForm.value);
+            } else {
+                await this.solutionService.createSolution(this.solutionForm.value);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
@@ -91,21 +85,23 @@ export class SolutionEditComponent implements OnInit {
             Error.setFormErrors(this.solutionForm, error);
         }
     }
-    generate(): void {
-        this.error = null;
-        this.solutionService.generateSolution({ id: this.solution.id })
-            .then(
-                () => { },
-                error => this.error = error
-            );
+    async generate() {
+        try {
+            this.error = null;
+            await this.solutionService.generateSolution({ id: this.solution.id });
+            this.noticeHelper.showMessage("Generation completed");
+        } catch (error) {
+            this.onError(error);
+        }
     }
 
-    upgrade(): void {
-        this.error = null;
-        this.solutionService.upgradeSolution({ id: this.solution.id })
-            .then(
-                () => { },
-                error => this.error = error
-            );
+    async upgrade() {
+        try {
+            this.error = null;
+            await this.solutionService.upgradeSolution({ id: this.solution.id });
+            this.noticeHelper.showMessage("Upgrade completed");
+        } catch (error) {
+            this.onError(error);
+        }
     }
 }

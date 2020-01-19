@@ -60,14 +60,14 @@ export class EnumListComponent implements OnInit {
         this.getEnums();
     }
 
-    getEnums(): void {
+    async getEnums() {
         if (this.solutionId) {
-            this.enumService.getEnums({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize,
-                filter: this.state.filter })
-                .then(content => {
-                    this.content = content;
-                })
-                .catch(error => this.onError(error));
+            this.content = await this.enumService.getEnums({
+                solutionId: this.solutionId,
+                pageIndex: this.state.pageIndex,
+                pageSize: this.state.pageSize,
+                filter: this.state.filter
+            });
         } else {
             this.content = null;
         }
@@ -80,12 +80,13 @@ export class EnumListComponent implements OnInit {
 
     delete(id: string): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.enumService.deleteEnum({ solutionId: this.solutionId, id })
-                    .then(() => {
-                        this.getEnums();
-                    })
-                    .catch(error => this.onError(error));
+            .subscribe(async () => {
+                try {
+                    await this.enumService.deleteEnum({ solutionId: this.solutionId, id });
+                    this.getEnums();
+                } catch (error) {
+                    this.onError(error);
+                }
             });
     }
 

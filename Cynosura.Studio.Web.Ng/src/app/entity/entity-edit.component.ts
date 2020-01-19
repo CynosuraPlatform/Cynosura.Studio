@@ -59,17 +59,14 @@ export class EntityEditComponent implements OnInit {
             this.previousValue = value;
         });
     }
-    private getEntity(id: string): void {
+    private async getEntity(id: string) {
         this.id = id;
         if (!id) {
             this.entity = new Entity();
-            this.entityForm.patchValue(this.entity);
         } else {
-            this.entityService.getEntity({ solutionId: this.solutionId, id }).then(entity => {
-                this.entity = entity;
-                this.entityForm.patchValue(this.entity);
-            });
+            this.entity = await this.entityService.getEntity({ solutionId: this.solutionId, id });
         }
+        this.entityForm.patchValue(this.entity);
     }
 
     cancel(): void {
@@ -80,36 +77,34 @@ export class EntityEditComponent implements OnInit {
         this.saveEntity();
     }
 
-    private saveEntity(): void {
-        if (this.id) {
-            const updateEntity: UpdateEntity = this.entityForm.value;
-            updateEntity.solutionId = this.solutionId;
-            updateEntity.properties = this.entity.properties;
-            updateEntity.fields = this.entity.fields;
-            this.entityService.updateEntity(updateEntity)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            const createEntity: CreateEntity = this.entityForm.value;
-            createEntity.solutionId = this.solutionId;
-            createEntity.properties = this.entity.properties;
-            createEntity.fields = this.entity.fields;
-            this.entityService.createEntity(createEntity)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async saveEntity() {
+        try {
+            if (this.id) {
+                const updateEntity: UpdateEntity = this.entityForm.value;
+                updateEntity.solutionId = this.solutionId;
+                updateEntity.properties = this.entity.properties;
+                updateEntity.fields = this.entity.fields;
+                await this.entityService.updateEntity(updateEntity);
+            } else {
+                const createEntity: CreateEntity = this.entityForm.value;
+                createEntity.solutionId = this.solutionId;
+                createEntity.properties = this.entity.properties;
+                createEntity.fields = this.entity.fields;
+                await this.entityService.createEntity(createEntity);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
-    generate(): void {
-        this.entityService.generateEntity({ solutionId: this.solutionId, id: this.id })
-            .then(
-                () => { },
-                error => this.onError(error)
-            );
+    async generate() {
+        try {
+            await this.entityService.generateEntity({ solutionId: this.solutionId, id: this.id });
+            this.noticeHelper.showMessage("Generation completed");
+        } catch (error) {
+            this.onError(error);
+        }
     }
 
     onError(error: Error) {

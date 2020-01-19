@@ -41,17 +41,14 @@ export class EnumEditComponent implements OnInit {
         });
     }
 
-    private getEnum(id: string): void {
+    private async getEnum(id: string) {
         this.id = id;
         if (!id) {
             this.enum = new Enum();
-            this.enumForm.patchValue(this.enum);
         } else {
-            this.enumService.getEnum({ solutionId: this.solutionId, id }).then(enumModel => {
-                this.enum = enumModel;
-                this.enumForm.patchValue(this.enum);
-            });
+            this.enum = await this.enumService.getEnum({ solutionId: this.solutionId, id });
         }
+        this.enumForm.patchValue(this.enum);
     }
 
     cancel(): void {
@@ -62,36 +59,34 @@ export class EnumEditComponent implements OnInit {
         this.saveEnum();
     }
 
-    private saveEnum(): void {
-        if (this.id) {
-            const updateEnum: UpdateEnum = this.enumForm.value;
-            updateEnum.solutionId = this.solutionId;
-            updateEnum.properties = this.enum.properties;
-            updateEnum.values = this.enum.values;
-            this.enumService.updateEnum(updateEnum)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            const createEnum: CreateEnum = this.enumForm.value;
-            createEnum.solutionId = this.solutionId;
-            createEnum.properties = this.enum.properties;
-            createEnum.values = this.enum.values;
-            this.enumService.createEnum(createEnum)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+    private async saveEnum() {
+        try {
+            if (this.id) {
+                const updateEnum: UpdateEnum = this.enumForm.value;
+                updateEnum.solutionId = this.solutionId;
+                updateEnum.properties = this.enum.properties;
+                updateEnum.values = this.enum.values;
+                await this.enumService.updateEnum(updateEnum);
+            } else {
+                const createEnum: CreateEnum = this.enumForm.value;
+                createEnum.solutionId = this.solutionId;
+                createEnum.properties = this.enum.properties;
+                createEnum.values = this.enum.values;
+                await this.enumService.createEnum(createEnum);
+            }
+            window.history.back();
+        } catch (error) {
+            this.onError(error);
         }
     }
 
-    generate(): void {
-        this.enumService.generateEnum({ solutionId: this.solutionId, id: this.enum.id })
-            .then(
-                () => { },
-                error => this.onError(error)
-            );
+    async generate() {
+        try {
+            await this.enumService.generateEnum({ solutionId: this.solutionId, id: this.enum.id });
+            this.noticeHelper.showMessage("Generation completed");
+        } catch (error) {
+            this.onError(error);
+        }
     }
 
     onError(error: Error) {

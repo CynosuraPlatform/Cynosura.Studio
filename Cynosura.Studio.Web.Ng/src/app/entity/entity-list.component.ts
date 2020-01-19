@@ -65,14 +65,14 @@ export class EntityListComponent implements OnInit {
         this.getEntities();
     }
 
-    getEntities(): void {
+    async getEntities() {
         if (this.solutionId) {
-            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize,
-                filter: this.state.filter })
-                .then(content => {
-                    this.content = content;
-                })
-                .catch(error => this.onError(error));
+            this.content = await this.entityService.getEntities({
+                solutionId: this.solutionId,
+                pageIndex: this.state.pageIndex,
+                pageSize: this.state.pageSize,
+                filter: this.state.filter
+            });
         } else {
             this.content = null;
         }
@@ -85,12 +85,13 @@ export class EntityListComponent implements OnInit {
 
     delete(id: string): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.entityService.deleteEntity({ solutionId: this.solutionId, id })
-                    .then(() => {
-                        this.getEntities();
-                    })
-                    .catch(error => this.onError(error));
+            .subscribe(async () => {
+                try {
+                    await this.entityService.deleteEntity({ solutionId: this.solutionId, id });
+                    this.getEntities();
+                } catch (error) {
+                    this.onError(error);
+                }
             });
     }
 
