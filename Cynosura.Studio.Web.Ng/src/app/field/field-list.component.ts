@@ -1,13 +1,12 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource, MatDialog } from "@angular/material";
 
 import { ModalHelper } from "../core/modal.helper";
-
-import { Field, FieldType } from "../field-core/field.model";
-
 import { Guid } from "../core/guid";
 import { Error } from "../core/error.model";
 import { NoticeHelper } from "../core/notice.helper";
+import { Field, FieldType } from "../field-core/field.model";
+import { FieldEditComponent } from "./field-edit.component";
 
 @Component({
     selector: "app-field-list",
@@ -35,10 +34,10 @@ export class FieldListComponent implements OnInit {
 
     dataSource: MatTableDataSource<Field>;
 
-    field: Field;
     constructor(
         private modalHelper: ModalHelper,
-        private noticeHelper: NoticeHelper
+        private noticeHelper: NoticeHelper,
+        private dialog: MatDialog,
         ) {}
 
     ngOnInit(): void {
@@ -50,11 +49,23 @@ export class FieldListComponent implements OnInit {
     }
 
     edit(id: string): void {
-        this.field = this.findField(id);
+        this.openEditDialog(this.findField(id));
     }
 
     add(): void {
-        this.field = new Field();
+        this.openEditDialog(new Field());
+    }
+
+    openEditDialog(field: Field): Promise<any> {
+        const dialogRef = this.dialog.open(FieldEditComponent, {
+            width: "600px",
+            data: { field: field, solutionId: this.solutionId }
+        });
+        return dialogRef.afterClosed().toPromise().then(result => {
+            if (result) {
+                this.fieldSave(result);
+            }
+        });
     }
 
     fieldSave(field: Field): void {
@@ -69,8 +80,6 @@ export class FieldListComponent implements OnInit {
             this.fields.push(field);
         }
         this.dataSource.data = this.fields;
-
-        this.field = null;
     }
 
     delete(id: string): void {

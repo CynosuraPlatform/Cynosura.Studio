@@ -26,6 +26,9 @@ import { FieldEditComponent } from "./field-edit.component";
     ],
     exports: [
         FieldListComponent
+    ],
+    entryComponents: [
+        FieldEditComponent
     ]
 })
 export class FieldModule {

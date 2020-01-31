@@ -1,13 +1,17 @@
-import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, Input, OnInit, Output, EventEmitter, Inject } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
 import { Field, FieldType } from "../field-core/field.model";
 
 import { Error } from "../core/error.model";
 import { NoticeHelper } from "../core/notice.helper";
-import { ConvertStringTo } from "../core/converter.helper";
 
+
+class DialogData {
+    field: Field;
+    solutionId: number;
+}
 
 @Component({
     selector: "app-field-edit",
@@ -18,8 +22,8 @@ export class FieldEditComponent implements OnInit {
 
     FieldType = FieldType;
 
-    @Input()
     solutionId: number;
+
     fieldForm = this.fb.group({
         id: [],
         name: [],
@@ -31,6 +35,7 @@ export class FieldEditComponent implements OnInit {
         enumId: [],
         isSystem: []
     });
+
     private localField: Field;
 
     get field(): Field {
@@ -44,32 +49,28 @@ export class FieldEditComponent implements OnInit {
         this.fieldForm.patchValue(value);
     }
 
-    @Output()
-    fieldSave = new EventEmitter<Field>();
     error: Error;
 
-    constructor(private route: ActivatedRoute,
-                private router: Router,
+    constructor(public dialogRef: MatDialogRef<FieldEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
                 private fb: FormBuilder,
                 private noticeHelper: NoticeHelper) {
+        this.solutionId = data.solutionId;
+        this.field = data.field;
     }
 
     ngOnInit(): void {
 
     }
 
-    cancel() {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    save(): void {
         this.saveField();
     }
 
     private saveField(): void {
         const field: Field = this.fieldForm.value;
-        field.properties = this.localField.properties;
-        this.fieldSave.emit(field);
+        field.properties = this.field.properties;
+        this.dialogRef.close(field);
     }
 
     onError(error: Error) {
