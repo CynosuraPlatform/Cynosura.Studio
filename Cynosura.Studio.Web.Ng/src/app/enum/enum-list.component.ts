@@ -35,13 +35,13 @@ export class EnumListComponent implements OnInit {
     private innerSolutionId: number;
     get solutionId(): number {
         if (!this.innerSolutionId) {
-            this.innerSolutionId = this.storeService.get("enumsSolutionId", 0);
+            this.innerSolutionId = this.storeService.get("solutionId", 0);
         }
         return this.innerSolutionId;
     }
     set solutionId(val: number) {
         this.innerSolutionId = val;
-        this.storeService.set("enumsSolutionId", this.innerSolutionId);
+        this.storeService.set("solutionId", this.innerSolutionId);
         this.getEnums();
     }
 

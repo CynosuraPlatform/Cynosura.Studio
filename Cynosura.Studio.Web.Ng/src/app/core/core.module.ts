@@ -26,8 +26,6 @@ import { TimeEditComponent } from "./controls/time.edit.component";
 import { TimeViewComponent } from "./controls/time.view.component";
 
 import { LoadingService } from "./loading.service";
-import { StoreService } from "./store.service";
-
 import { TableDetailComponent } from "./table-detail.component";
 import { ModalComponent } from "./modal.component";
 import { ModalHelper } from "./modal.helper";
@@ -67,7 +65,6 @@ import { NoticeHelper } from "./notice.helper";
     providers: [
         { provide: ErrorHandler, useClass: AppErrorHandler },
         // {provide: OWL_DATE_TIME_LOCALE, useValue: "ru"},
-        StoreService,
         LoadingService,
         ModalHelper,
         NoticeHelper,

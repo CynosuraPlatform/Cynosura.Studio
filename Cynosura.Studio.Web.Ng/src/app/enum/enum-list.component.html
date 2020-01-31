@@ -9,7 +9,7 @@
         <app-solution-select [(ngModel)]="solutionId" name="solutionId"></app-solution-select>
     </mat-form-field>
 
-    <mat-card-actions>        
+    <mat-card-actions *ngIf="solutionId">        
         <div class="action-item">
             <form (ngSubmit)="getEnums()">
                     <mat-form-field>
@@ -25,7 +25,7 @@
         </div>
     </mat-card-actions>
 
-    <mat-card-content class="mat-elevation-z8">
+    <mat-card-content *ngIf="solutionId" class="mat-elevation-z8">
 
         <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
 
