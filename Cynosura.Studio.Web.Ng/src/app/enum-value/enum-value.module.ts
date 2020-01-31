@@ -24,6 +24,9 @@ import { EnumValueEditComponent } from "./enum-value-edit.component";
     ],
     exports: [
         EnumValueListComponent
+    ],
+    entryComponents: [
+        EnumValueEditComponent
     ]
 })
 export class EnumValueModule {
