@@ -16,7 +16,7 @@ namespace Cynosura.Studio.CliTool
             builder.RegisterModule<GeneratorModule>();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
-                cfg.AddProfiles(assemblies);
+                cfg.AddMaps(assemblies);
             }).CreateMapper()).As<IMapper>().SingleInstance();
         }
 
