@@ -29,10 +29,10 @@ steps:
     nuGetFeedType: 'external'
     publishFeedCredentials: 'NuGet'
 
-- task: DotNetCoreCLI@2
-  displayName: dotnet nuget push (Github)
+- task: NuGetCommand@2
+  displayName: nuget push (Github)
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Github Package Registry'

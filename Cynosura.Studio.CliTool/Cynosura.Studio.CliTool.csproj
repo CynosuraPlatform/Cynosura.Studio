@@ -13,6 +13,7 @@
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <LangVersion>7.3</LangVersion>
     <Version>0.2.0</Version>
+    <RepositoryUrl>https://github.com/CynosuraPlatform/Cynosura.Studio</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
