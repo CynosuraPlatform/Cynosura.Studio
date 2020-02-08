@@ -156,6 +156,9 @@ namespace Cynosura.Studio.Generator.Models
 
         [JsonIgnore]
         public string TypeTemplate => System.Enum.GetName(typeof(FieldType), Type);
+
+        [JsonIgnore]
+        public int Number { get; set; }
     }
 
     public enum FieldType

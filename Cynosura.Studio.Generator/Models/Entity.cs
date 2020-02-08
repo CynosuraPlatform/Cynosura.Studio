@@ -42,6 +42,7 @@ namespace Cynosura.Studio.Generator.Models
                         DisplayName = "Id",
                         IsRequired = true,
                         Type = FieldType.Int32,
+                        Number = 1
                     };
                 }
                 return idField;

@@ -103,11 +103,14 @@ namespace Cynosura.Studio.Generator
 
             foreach (var entity in entities)
             {
+                var i = 1;
+
                 if (entity.BaseEntityId != null)
                 {
                     entity.BaseEntity = entities.First(e => e.Id == entity.BaseEntityId);
-                }                
-
+                    i += entity.BaseEntity.AllFields.Count + entity.BaseEntity.AllSystemFields.Count;
+                }
+                
                 foreach (var field in entity.Fields)
                 {
                     if (field.EntityId != null)
@@ -119,6 +122,8 @@ namespace Cynosura.Studio.Generator
                     {
                         field.Enum = enums.First(e => e.Id == field.EnumId);
                     }
+
+                    field.Number = i++;
                 }
             }
 
