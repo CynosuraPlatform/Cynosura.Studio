@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Config } from "./config.model";
+import { Config } from './config.model';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class ConfigService {
 
@@ -21,14 +21,14 @@ export class ConfigService {
     }
 
     private buildUrl(): string {
-        let url = "assets/config.json";
-        url += "?t=" + this.makeId();
+        let url = 'assets/config.json';
+        url += '?t=' + this.makeId();
         return url;
     }
 
     private makeId(): string {
-        let text = "";
-        const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let text = '';
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
         for (let i = 0; i < 5; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));

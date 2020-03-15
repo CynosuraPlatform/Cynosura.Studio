@@ -1,27 +1,28 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { MatTableDataSource, MatDialog } from "@angular/material";
+import { Component, OnInit, Input } from '@angular/core';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 
-import { ModalHelper } from "../core/modal.helper";
-import { Guid } from "../core/guid";
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
-import { Field, FieldType } from "../field-core/field.model";
-import { FieldEditComponent } from "./field-edit.component";
+import { ModalHelper } from '../core/modal.helper';
+import { Guid } from '../core/guid';
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
+
+import { Field, FieldType } from '../field-core/field.model';
+import { FieldEditComponent } from './field-edit.component';
 
 @Component({
-    selector: "app-field-list",
-    templateUrl: "./field-list.component.html",
-    styleUrls: ["./field-list.component.scss"]
+    selector: 'app-field-list',
+    templateUrl: './field-list.component.html',
+    styleUrls: ['./field-list.component.scss']
 })
 export class FieldListComponent implements OnInit {
 
     columns = [
-        "name",
-        "displayName",
-        "type",
-        "entity",
-        "enum",
-        "action"
+        'name',
+        'displayName',
+        'type',
+        'entity',
+        'enum',
+        'action'
     ];
 
     FieldType = FieldType;
@@ -48,20 +49,20 @@ export class FieldListComponent implements OnInit {
         return this.fields.find(f => f.id === id);
     }
 
-    edit(id: string): void {
+    onEdit(id: string): void {
         this.openEditDialog(this.findField(id));
     }
 
-    add(): void {
+    onCreate() {
         this.openEditDialog(new Field());
     }
 
-    openEditDialog(field: Field): Promise<any> {
+    openEditDialog(field: Field) {
         const dialogRef = this.dialog.open(FieldEditComponent, {
-            width: "600px",
+            width: '600px',
             data: { field: field, solutionId: this.solutionId }
         });
-        return dialogRef.afterClosed().toPromise().then(result => {
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.fieldSave(result);
             }

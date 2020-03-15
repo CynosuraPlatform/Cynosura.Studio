@@ -1,0 +1,27 @@
+<mat-card *ngIf="solution" class="mat-card-view">
+
+    <mat-card-header>
+        <mat-card-title>Solution <app-solution-show [value]="solution"></app-solution-show></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="onEdit()">Edit</button>
+        <button mat-raised-button type="button" (click)="onGenerate()">Generate</button>
+        <button mat-raised-button type="button" (click)="onUpgrade()">Upgrade</button>
+        <button mat-raised-button type="button" (click)="onBack()">Back</button>
+    </mat-card-actions>
+
+   <div class="field-view">
+       <label>Name</label>
+       <div>
+           <app-text-view [value]="solution.name"></app-text-view>
+       </div>
+   </div>
+   <div class="field-view">
+       <label>Path</label>
+       <div>
+           <app-text-view [value]="solution.path"></app-text-view>
+       </div>
+   </div>
+
+</mat-card>

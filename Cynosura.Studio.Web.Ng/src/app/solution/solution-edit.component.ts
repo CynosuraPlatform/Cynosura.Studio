@@ -1,20 +1,25 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
-import { Solution } from "../solution-core/solution.model";
-import { SolutionService } from "../solution-core/solution.service";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
+import { ConvertStringTo } from '../core/converter.helper';
 
-import { Error } from "../core/error.model";
-import { TemplateModel, TemplateService } from "../solution-core/template-service";
-import { NoticeHelper } from "../core/notice.helper";
-import { ConvertStringTo } from "../core/converter.helper";
+import { Solution } from '../solution-core/solution.model';
+import { SolutionService } from '../solution-core/solution.service';
+import { TemplateModel, TemplateService } from '../solution-core/template-service';
 
+class DialogData {
+    id: number;
+}
 
 @Component({
-    selector: "app-solution-edit",
-    templateUrl: "./solution-edit.component.html",
-    styleUrls: ["./solution-edit.component.scss"]
+    selector: 'app-solution-edit',
+    templateUrl: './solution-edit.component.html',
+    styleUrls: ['./solution-edit.component.scss']
 })
 export class SolutionEditComponent implements OnInit {
     id: number;
@@ -29,53 +34,50 @@ export class SolutionEditComponent implements OnInit {
     templates: TemplateModel;
     error: Error;
 
-    constructor(
-        private solutionService: SolutionService,
-        private templateService: TemplateService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private fb: FormBuilder,
-        private noticeHelper: NoticeHelper) {
+    constructor(public dialogRef: MatDialogRef<SolutionEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private solutionService: SolutionService,
+                private templateService: TemplateService,
+                private fb: FormBuilder,
+                private noticeHelper: NoticeHelper) {
+        this.id = data.id;
+    }
+
+    static show(dialog: MatDialog, id: number): Observable<any> {
+        const dialogRef = dialog.open(SolutionEditComponent, {
+            width: '600px',
+            data: { id: id }
+        });
+        return dialogRef.afterClosed()
+            .pipe(filter(res => res === true));
     }
 
     ngOnInit(): void {
-        this.route.params.forEach((params: Params) => {
-            const id: number = params.id === "0" ? null : ConvertStringTo.number(params.id);
-            this.getSolution(id);
-        });
+        this.getSolution();
         this.templateService.getTemplates()
-            .then((templates) => this.templates = templates);
+            .subscribe(templates => this.templates = templates);
     }
 
-    private async getSolution(id: number) {
-        this.id = id;
-        if (!id) {
-            this.solution = new Solution();
-        } else {
-            this.solution = await this.solutionService.getSolution({ id });
-        }
-        this.solutionForm.patchValue(this.solution);
+    private getSolution() {
+        const getSolution$ = !this.id ?
+            of(new Solution()) :
+            this.solutionService.getSolution({ id: this.id });
+        getSolution$.subscribe(solution => {
+            this.solution = solution;
+            this.solutionForm.patchValue(this.solution);
+        });
     }
 
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave(): void {
         this.saveSolution();
     }
 
-    private async saveSolution() {
-        try {
-            if (this.id) {
-                await this.solutionService.updateSolution(this.solutionForm.value);
-            } else {
-                await this.solutionService.createSolution(this.solutionForm.value);
-            }
-            window.history.back();
-        } catch (error) {
-            this.onError(error);
-        }
+    private saveSolution() {
+        const saveSolution$ = this.id ?
+            this.solutionService.updateSolution(this.solutionForm.value) :
+            this.solutionService.createSolution(this.solutionForm.value);
+        saveSolution$.subscribe(() => this.dialogRef.close(true),
+            error => this.onError(error));
     }
 
     onError(error: Error) {
@@ -83,25 +85,6 @@ export class SolutionEditComponent implements OnInit {
         if (error) {
             this.noticeHelper.showError(error);
             Error.setFormErrors(this.solutionForm, error);
-        }
-    }
-    async generate() {
-        try {
-            this.error = null;
-            await this.solutionService.generateSolution({ id: this.solution.id });
-            this.noticeHelper.showMessage("Generation completed");
-        } catch (error) {
-            this.onError(error);
-        }
-    }
-
-    async upgrade() {
-        try {
-            this.error = null;
-            await this.solutionService.upgradeSolution({ id: this.solution.id });
-            this.noticeHelper.showMessage("Upgrade completed");
-        } catch (error) {
-            this.onError(error);
         }
     }
 }

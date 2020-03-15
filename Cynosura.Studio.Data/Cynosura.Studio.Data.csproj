@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cynosura.EF" Version="0.2.0-b75" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Cynosura.EF" Version="0.2.1-b103" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>

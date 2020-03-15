@@ -1,17 +1,16 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material/form-field";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
 
-import { Subject } from "rxjs";
-
-import { Role } from "./role.model";
-import { RoleService } from "./role.service";
+import { Role } from './role.model';
+import { RoleService } from './role.service';
 
 @Component({
-    selector: "app-role-select",
-    templateUrl: "./role-select.component.html",
+    selector: 'app-role-select',
+    templateUrl: './role-select.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: RoleSelectComponent }
     ]
@@ -23,9 +22,9 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFor
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-role-select";
+    controlType = 'app-role-select';
     id = `role-select-${RoleSelectComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -102,7 +101,7 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFor
     }
 
     ngOnInit(): void {
-        this.roleService.getRoles({}).then(roles => this.roles = roles.pageItems);
+        this.roleService.getRoles({}).subscribe(roles => this.roles = roles.pageItems);
     }
 
     ngOnDestroy() {
@@ -111,7 +110,7 @@ export class RoleSelectComponent implements OnInit, ControlValueAccessor, MatFor
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {

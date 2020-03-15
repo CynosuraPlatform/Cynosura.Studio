@@ -1,53 +1,48 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { ConfigService } from "../config/config.service";
-import { CreatedEntity } from "../core/models/created-entity.model";
-import { Enum } from "./enum.model";
-import { GetEnums, GetEnum, UpdateEnum, CreateEnum, DeleteEnum, GenerateEnum } from "./enum-request.model";
-import { EnumFilter } from "./enum-filter.model";
-import { Page } from "../core/page.model";
+import { ConfigService } from '../config/config.service';
+import { CreatedEntity } from '../core/models/created-entity.model';
+import { Page } from '../core/page.model';
+
+import { Enum } from './enum.model';
+import { GetEnums, GetEnum, UpdateEnum, CreateEnum, DeleteEnum, GenerateEnum } from './enum-request.model';
 
 @Injectable()
 export class EnumService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    getEnums(getEnums: GetEnums): Promise<Page<Enum>> {
+    getEnums(getEnums: GetEnums): Observable<Page<Enum>> {
         const url = `${this.apiUrl}/GetEnums`;
-        return this.httpClient.post<Page<Enum>>(url, getEnums)
-            .toPromise();
+        return this.httpClient.post<Page<Enum>>(url, getEnums);
     }
 
-    getEnum(getEnum: GetEnum): Promise<Enum> {
+    getEnum(getEnum: GetEnum): Observable<Enum> {
         const url = `${this.apiUrl}/GetEnum`;
-        return this.httpClient.post<Enum>(url, getEnum)
-            .toPromise();
+        return this.httpClient.post<Enum>(url, getEnum);
     }
 
-    updateEnum(updateEnum: UpdateEnum): Promise<{}> {
+    updateEnum(updateEnum: UpdateEnum): Observable<{}> {
         const url = `${this.apiUrl}/UpdateEnum`;
-        return this.httpClient.post(url, updateEnum)
-            .toPromise();
+        return this.httpClient.post(url, updateEnum);
     }
 
 
-    createEnum(createEnum: CreateEnum): Promise<CreatedEntity<string>> {
+    createEnum(createEnum: CreateEnum): Observable<CreatedEntity<string>> {
         const url = `${this.apiUrl}/CreateEnum`;
-        return this.httpClient.post<CreatedEntity<string>>(url, createEnum)
-            .toPromise();
+        return this.httpClient.post<CreatedEntity<string>>(url, createEnum);
     }
 
-    deleteEnum(deleteEnum: DeleteEnum): Promise<{}> {
+    deleteEnum(deleteEnum: DeleteEnum): Observable<{}> {
         const url = `${this.apiUrl}/DeleteEnum`;
-        return this.httpClient.post(url, deleteEnum)
-            .toPromise();
+        return this.httpClient.post(url, deleteEnum);
     }
 
-    generateEnum(generateEnum: GenerateEnum): Promise<{}> {
+    generateEnum(generateEnum: GenerateEnum): Observable<{}> {
         const url = `${this.apiUrl}/GenerateEnum`;
-        return this.httpClient.post(url, generateEnum)
-            .toPromise();
+        return this.httpClient.post(url, generateEnum);
     }
 }

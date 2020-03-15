@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Roles";
+
+message Role {
+    int32 id = 1;
+    string name = 2;
+}
+
+message RolePageModel {
+    repeated Role pageItems = 1;
+    int32 totalItems = 2;
+    int32 currentPageIndex = 3;
+}

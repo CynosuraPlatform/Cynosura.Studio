@@ -1,18 +1,17 @@
 main(model) ::= <<
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material/form-field";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
 
-import { Subject } from "rxjs";
-
-import { $model.Entity.Name$ } from "./$model.Entity.NameKebab$.model";
-import { $model.Entity.Name$Service } from "./$model.Entity.NameKebab$.service";
+import { $model.Entity.Name$ } from './$model.Entity.NameKebab$.model';
+import { $model.Entity.Name$Service } from './$model.Entity.NameKebab$.service';
 
 @Component({
-    selector: "app-$model.Entity.NameKebab$-select",
-    templateUrl: "./$model.Entity.NameKebab$-select.component.html",
+    selector: 'app-$model.Entity.NameKebab$-select',
+    templateUrl: './$model.Entity.NameKebab$-select.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: $model.Entity.Name$SelectComponent }
     ]
@@ -25,9 +24,9 @@ export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueA
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-$model.Entity.NameKebab$-select";
+    controlType = 'app-$model.Entity.NameKebab$-select';
     id = `$model.Entity.NameKebab$-select-\${$model.Entity.Name$SelectComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -104,7 +103,7 @@ export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueA
     }
 
     ngOnInit(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({}).then($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({}).subscribe($model.Entity.PluralNameLower$ => this.$model.Entity.PluralNameLower$ = $model.Entity.PluralNameLower$.pageItems);
     }
 
     ngOnDestroy() {
@@ -113,7 +112,7 @@ export class $model.Entity.Name$SelectComponent implements OnInit, ControlValueA
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {

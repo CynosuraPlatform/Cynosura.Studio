@@ -1,24 +1,25 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { MatTableDataSource, MatDialog } from "@angular/material";
+import { Component, OnInit, Input } from '@angular/core';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 
-import { ModalHelper } from "../core/modal.helper";
-import { Guid } from "../core/guid";
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
-import { EnumValue } from "../enum-value-core/enum-value.model";
-import { EnumValueEditComponent } from "./enum-value-edit.component";
+import { ModalHelper } from '../core/modal.helper';
+import { Error } from '../core/error.model';
+import { Guid } from '../core/guid';
+import { NoticeHelper } from '../core/notice.helper';
+
+import { EnumValue } from '../enum-value-core/enum-value.model';
+import { EnumValueEditComponent } from './enum-value-edit.component';
 
 @Component({
-    selector: "app-enum-value-list",
-    templateUrl: "./enum-value-list.component.html",
-    styleUrls: ["./enum-value-list.component.scss"]
+    selector: 'app-enum-value-list',
+    templateUrl: './enum-value-list.component.html',
+    styleUrls: ['./enum-value-list.component.scss']
 })
 export class EnumValueListComponent implements OnInit {
     columns = [
-        "name",
-        "displayName",
-        "value",
-        "action"
+        'name',
+        'displayName',
+        'value',
+        'action'
     ];
     @Input()
     solutionId: number;
@@ -42,20 +43,20 @@ export class EnumValueListComponent implements OnInit {
         return this.enumValues.find(v => v.id === id);
     }
 
-    edit(id: string): void {
+    onEdit(id: string): void {
         this.openEditDialog(this.findEnumValue(id));
     }
 
-    add(): void {
+    onCreate() {
         this.openEditDialog(new EnumValue());
     }
 
-    openEditDialog(enumValue: EnumValue): Promise<any> {
+    openEditDialog(enumValue: EnumValue) {
         const dialogRef = this.dialog.open(EnumValueEditComponent, {
-            width: "600px",
+            width: '600px',
             data: { enumValue: enumValue, solutionId: this.solutionId }
         });
-        return dialogRef.afterClosed().toPromise().then(result => {
+        dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.enumValueSave(result);
             }

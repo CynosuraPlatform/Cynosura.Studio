@@ -1,18 +1,23 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
-import { Role } from "../role-core/role.model";
-import { RoleService } from "../role-core/role.service";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
+import { Role } from '../role-core/role.model';
+import { RoleService } from '../role-core/role.service';
 
+class DialogData {
+    id: number;
+}
 
 @Component({
-    selector: "app-role-edit",
-    templateUrl: "./role-edit.component.html",
-    styleUrls: ["./role-edit.component.scss"]
+    selector: 'app-role-edit',
+    templateUrl: './role-edit.component.html',
+    styleUrls: ['./role-edit.component.scss']
 })
 export class RoleEditComponent implements OnInit {
     id: number;
@@ -23,49 +28,47 @@ export class RoleEditComponent implements OnInit {
     role: Role;
     error: Error;
 
-    constructor(private roleService: RoleService,
-                private route: ActivatedRoute,
-                private router: Router,
+    constructor(public dialogRef: MatDialogRef<RoleEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private roleService: RoleService,
                 private fb: FormBuilder,
                 private noticeHelper: NoticeHelper) {
+        this.id = data.id;
+    }
+
+    static show(dialog: MatDialog, id: number): Observable<any> {
+        const dialogRef = dialog.open(RoleEditComponent, {
+            width: '600px',
+            data: { id: id }
+        });
+        return dialogRef.afterClosed()
+            .pipe(filter(res => res === true));
     }
 
     ngOnInit(): void {
-        this.route.params.forEach((params: Params) => {
-            const id = +params.id;
-            this.getRole(id);
+        this.getRole();
+    }
+
+    private getRole() {
+        const getRole$ = this.id === 0 ?
+            of(new Role()) :
+            this.roleService.getRole({ id: this.id });
+        getRole$.subscribe(role => {
+            this.role = role;
+            this.roleForm.patchValue(this.role);
         });
     }
 
-    private async getRole(id: number) {
-        this.id = id;
-        if (id === 0) {
-            this.role = new Role();
-        } else {
-            this.role = await this.roleService.getRole({ id });
-        }
-        this.roleForm.patchValue(this.role);
-    }
-
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave(): void {
         this.saveRole();
     }
 
-    private async saveRole() {
-        try {
-            if (this.id) {
-                await this.roleService.updateRole(this.roleForm.value);
-            } else {
-                await this.roleService.createRole(this.roleForm.value);
-            }
-            window.history.back();
-        } catch (error) {
-            this.onError(error);
-        }
+    private saveRole() {
+        const saveRole$ = this.id ?
+            this.roleService.updateRole(this.roleForm.value) :
+            this.roleService.createRole(this.roleForm.value);
+        saveRole$.subscribe(() => this.dialogRef.close(true),
+            error => this.onError(error));
     }
 
     onError(error: Error) {

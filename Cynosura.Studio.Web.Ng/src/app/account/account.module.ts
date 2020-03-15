@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { CoreModule } from "../core/core.module";
-import { RegisterComponent } from "./register.component";
-import { AccountService } from "./account.service";
+import { CoreModule } from '../core/core.module';
+import { RegisterComponent } from './register.component';
+import { AccountService } from './account.service';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { AccountService } from "./account.service";
     ],
     imports: [
         RouterModule.forChild([
-            { path: "register", component: RegisterComponent },
+            { path: 'register', component: RegisterComponent },
         ]),
         CoreModule
     ],

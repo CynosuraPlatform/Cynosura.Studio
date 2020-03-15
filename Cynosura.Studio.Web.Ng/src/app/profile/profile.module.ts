@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { ProfileCommonModule } from "./profile-common.module";
+import { ProfileCommonModule } from './profile-common.module';
 
-import { ProfileEditComponent } from "./edit.component";
+import { ProfileEditComponent } from './edit.component';
 
 
 @NgModule({
@@ -12,7 +12,7 @@ import { ProfileEditComponent } from "./edit.component";
     imports: [
         ProfileCommonModule,
         RouterModule.forChild([
-            { path: "", component: ProfileEditComponent },
+            { path: '', component: ProfileEditComponent },
         ]),
     ],
     providers: [

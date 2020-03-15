@@ -1,17 +1,16 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material/form-field";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
 
-import { Subject } from "rxjs";
-
-import { Enum } from "./enum.model";
-import { EnumService } from "./enum.service";
+import { Enum } from './enum.model';
+import { EnumService } from './enum.service';
 
 @Component({
-    selector: "app-enum-select",
-    templateUrl: "./enum-select.component.html",
+    selector: 'app-enum-select',
+    templateUrl: './enum-select.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: EnumSelectComponent }
     ]
@@ -24,9 +23,9 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor,
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-enum-select";
+    controlType = 'app-enum-select';
     id = `enum-select-${EnumSelectComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -106,7 +105,7 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor,
     }
 
     ngOnInit(): void {
-        this.enumService.getEnums({ solutionId: this.solutionId }).then(enums => this.enums = enums.pageItems);
+        this.enumService.getEnums({ solutionId: this.solutionId }).subscribe(enums => this.enums = enums.pageItems);
     }
 
     ngOnDestroy() {
@@ -115,7 +114,7 @@ export class EnumSelectComponent implements OnInit, ControlValueAccessor,
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {

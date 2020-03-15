@@ -1,11 +1,10 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
+import { CoreModule } from '../core/core.module';
 
-import { UserService } from "./user.service";
-import { UserSelectComponent } from "./user-select.component";
-import { UserShowComponent } from "./user-show.component";
+import { UserService } from './user.service';
+import { UserSelectComponent } from './user-select.component';
+import { UserShowComponent } from './user-show.component';
 
 @NgModule({
     declarations: [
@@ -14,13 +13,11 @@ import { UserShowComponent } from "./user-show.component";
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
         UserService
     ],
     exports: [
-        MaterialModule,
         UserSelectComponent,
         UserShowComponent
     ]

@@ -1,10 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { CoreModule } from "../core/core.module";
+import { CoreModule } from '../core/core.module';
 
-import { ProfileService } from "./profile.service";
-import { ProfileEditComponent } from "./edit.component";
+import { ProfileService } from './profile.service';
+import { ProfileEditComponent } from './edit.component';
 
 @NgModule({
     declarations: [

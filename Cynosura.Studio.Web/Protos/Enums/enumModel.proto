@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Enums";
+
+message Enum {
+    string id = 3;
+    string name = 1;
+    string displayName = 2;
+}
+
+message EnumPageModel {
+    repeated Enum pageItems = 1;
+    int32 totalItems = 2;
+    int32 currentPageIndex = 3;
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Autofac;
 using Cynosura.Studio.Core.Infrastructure;
@@ -11,6 +11,7 @@ namespace Cynosura.Studio.Core.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ServiceProviderValidatorFactory>().As<IValidatorFactory>().InstancePerLifetimeScope();
             builder.RegisterType<Mediator>().As<IMediator>().InstancePerLifetimeScope();
             builder.RegisterType<TemplateJsonProvider>().As<ITemplateProvider>();
             builder.Register<ServiceFactory>(context =>

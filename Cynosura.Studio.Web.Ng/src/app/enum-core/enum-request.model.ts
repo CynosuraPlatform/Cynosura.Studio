@@ -1,6 +1,6 @@
-import { EnumFilter } from "./enum-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
-import { EnumValue } from "../enum-value-core/enum-value.model";
+import { EnumFilter } from './enum-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
+import { EnumValue } from '../enum-value-core/enum-value.model';
 
 export class GetEnums {
     solutionId: number;

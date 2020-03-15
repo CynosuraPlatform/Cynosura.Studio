@@ -1,28 +1,28 @@
-import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
-import { Router } from "@angular/router";
-import { MatSidenav } from "@angular/material/sidenav";
-import { MediaObserver } from "@angular/flex-layout";
-import { Observable } from "rxjs";
-import { debounceTime, map, tap, first } from "rxjs/operators";
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MediaObserver } from '@angular/flex-layout';
+import { Observable } from 'rxjs';
+import { debounceTime, map, tap, first } from 'rxjs/operators';
 
-import { LoadingService } from "./core/loading.service";
+import { LoadingService } from './core/loading.service';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    title = "app";
+    title = 'app';
     isLoading = false;
 
     // FlexLayout
     isHandset$: Observable<boolean> = this.media.asObservable().pipe(
         map(
           () =>
-            this.media.isActive("xs") ||
-            this.media.isActive("sm") ||
-            this.media.isActive("lt-md")
+            this.media.isActive('xs') ||
+            this.media.isActive('sm') ||
+            this.media.isActive('lt-md')
         ),
         tap(() => this.changeDetectorRef.detectChanges()));
 
@@ -57,6 +57,6 @@ export class AppComponent implements OnInit {
 
     emitEventResize() {
         // fix for mat-sidenav-content not resizing
-        window.dispatchEvent(new Event("resize"));
+        window.dispatchEvent(new Event('resize'));
     }
 }

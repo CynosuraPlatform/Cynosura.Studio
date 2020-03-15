@@ -1,45 +1,42 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { ConfigService } from "../config/config.service";
-import { CreatedEntity } from "../core/models/created-entity.model";
-import { Role } from "./role.model";
-import { GetRoles, GetRole, UpdateRole, CreateRole, DeleteRole } from "./role-request.model";
-import { Page } from "../core/page.model";
+import { ConfigService } from '../config/config.service';
+import { CreatedEntity } from '../core/models/created-entity.model';
+import { Page } from '../core/page.model';
+
+import { Role } from './role.model';
+import { GetRoles, GetRole, UpdateRole, CreateRole, DeleteRole } from './role-request.model';
 
 @Injectable()
 export class RoleService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    getRoles(getRoles: GetRoles): Promise<Page<Role>> {
+    getRoles(getRoles: GetRoles): Observable<Page<Role>> {
         const url = `${this.apiUrl}/GetRoles`;
-        return this.httpClient.post<Page<Role>>(url, getRoles)
-            .toPromise();
+        return this.httpClient.post<Page<Role>>(url, getRoles);
     }
 
-    getRole(getRole: GetRole): Promise<Role> {
+    getRole(getRole: GetRole): Observable<Role> {
         const url = `${this.apiUrl}/GetRole`;
-        return this.httpClient.post<Role>(url, getRole)
-            .toPromise();
+        return this.httpClient.post<Role>(url, getRole);
     }
 
-    updateRole(updateRole: UpdateRole): Promise<{}> {
+    updateRole(updateRole: UpdateRole): Observable<{}> {
         const url = `${this.apiUrl}/UpdateRole`;
-        return this.httpClient.post(url, updateRole)
-            .toPromise();
+        return this.httpClient.post(url, updateRole);
     }
 
-    createRole(createRole: CreateRole): Promise<CreatedEntity<number>> {
+    createRole(createRole: CreateRole): Observable<CreatedEntity<number>> {
         const url = `${this.apiUrl}/CreateRole`;
-        return this.httpClient.post<CreatedEntity<number>>(url, createRole)
-            .toPromise();
+        return this.httpClient.post<CreatedEntity<number>>(url, createRole);
     }
 
-    deleteRole(deleteRole: DeleteRole): Promise<{}> {
+    deleteRole(deleteRole: DeleteRole): Observable<{}> {
         const url = `${this.apiUrl}/DeleteRole`;
-        return this.httpClient.post(url, deleteRole)
-            .toPromise();
+        return this.httpClient.post(url, deleteRole);
     }
 }

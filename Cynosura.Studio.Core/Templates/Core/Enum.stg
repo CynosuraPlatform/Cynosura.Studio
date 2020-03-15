@@ -13,5 +13,10 @@ $model.Enum.Values:enumValue(); separator=",\n"$
 >>
 
 enumValue(value) ::= <<
+        $value:enumDisplayName()$
         $value.Name$$if(value.Value)$ = $value.Value$$endif$
+>>
+
+enumDisplayName(value) ::= <<
+[Description("$value.DisplayNameOrName$")]
 >>

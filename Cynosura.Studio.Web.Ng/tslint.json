@@ -49,7 +49,7 @@
     "ordered-imports": false,
     "quotemark": [
       true,
-      "double"
+      "single"
     ],
     "object-literal-shorthand": false,
     "no-empty": false,

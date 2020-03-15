@@ -1,28 +1,22 @@
 <h1 mat-dialog-title>Enum Value <app-enum-value-show [value]="enumValue"></app-enum-value-show></h1>
-<mat-dialog-content *ngIf="enumValue">
+<mat-dialog-content *ngIf="enumValue" class="mat-dialog-content-edit">
     <div>
         <form [formGroup]="enumValueForm">
-            <div>
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
-                    <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
-                </mat-form-field>
-            </div>
-            <div>
-                <mat-form-field>
-                    <mat-label>Display Name</mat-label>
-                    <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
-                    <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
-                </mat-form-field>
-            </div>
-            <div>
-                <mat-form-field>
-                    <mat-label>Value</mat-label>
-                    <app-number-edit formControlName="value" name="value" placeholder="Value"></app-number-edit>
-                    <mat-error>{{ error?.modelState?.value | modelError }}</mat-error>
-                </mat-form-field>
-            </div>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Display Name</mat-label>
+                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
+                <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Value</mat-label>
+                <app-number-edit formControlName="value" name="value" placeholder="Value"></app-number-edit>
+                <mat-error>{{ error?.modelState?.value | modelError }}</mat-error>
+            </mat-form-field>
             <div>
                 <label for="properties">Properties</label>
                 <div *ngIf="enumValue">
@@ -32,7 +26,7 @@
         </form>
     </div>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="mat-dialog-actions-edit">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="save()" cdkFocusInitial>Save</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
 </mat-dialog-actions>

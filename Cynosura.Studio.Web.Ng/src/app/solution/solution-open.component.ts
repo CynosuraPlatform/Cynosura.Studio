@@ -1,16 +1,20 @@
-import { Component, Inject } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
+import { Component, Inject } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
-import { Solution } from "../solution-core/solution.model";
-import { SolutionService } from "../solution-core/solution.service";
+import { Error } from '../core/error.model';
+
+import { Solution } from '../solution-core/solution.model';
+import { SolutionService } from '../solution-core/solution.service';
 
 @Component({
-    templateUrl: "solution-open.component.html",
-    styleUrls: ["solution-open.component.scss"]
+    templateUrl: 'solution-open.component.html',
+    styleUrls: ['solution-open.component.scss']
 })
 export class SolutionOpenComponent {
     path: string;
+    error: Error;
+
     constructor(
         private solutionService: SolutionService,
         public dialogRef: MatDialogRef<SolutionOpenComponent>,
@@ -24,7 +28,7 @@ export class SolutionOpenComponent {
     }
 
     edit(id: number): void {
-        this.router.navigate(["solution", id], { relativeTo: this.route });
+        this.router.navigate(['solution', id], { relativeTo: this.route });
     }
 
     open() {
@@ -32,16 +36,16 @@ export class SolutionOpenComponent {
             path: this.path
         } as Solution;
         this.solutionService.openSolution(solution)
-            .then((result) => {
+            .subscribe((result) => {
                 this.dialogRef.close();
                 this.edit(result.id);
-            })
-            .catch((error) => this.onError(error));
+            }, error => this.onError(error));
     }
 
     onError(error: Error) {
+        this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.snackBar.open(error.message, 'Ok');
         }
     }
 }

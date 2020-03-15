@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-import { Menu } from "./menu.model";
+import { Menu } from './menu.model';
 
 @Injectable()
 export class MenuService {
@@ -10,9 +10,9 @@ export class MenuService {
     constructor() {
         this.menu = new Menu();
 // ADD MENU ITEMS HERE
-        this.menu.items.push({ route: "/entity", name: "Entities", icon: "notes", roles: [] });
-        this.menu.items.push({ route: "/enum", name: "Enums", icon: "notes", roles: [] });
-        this.menu.items.push({ route: "/solution", name: "Solutions", icon: "folder", roles: [] });
+        this.menu.items.push({ route: '/entity', name: 'Entities', icon: 'notes', roles: [] });
+        this.menu.items.push({ route: '/enum', name: 'Enums', icon: 'notes', roles: [''] });
+        this.menu.items.push({ route: '/solution', name: 'Solutions', icon: 'folder', roles: [] });
     }
 
     getMenu(): Observable<Menu> {

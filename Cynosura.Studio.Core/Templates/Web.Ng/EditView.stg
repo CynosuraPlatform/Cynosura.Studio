@@ -1,25 +1,20 @@
 main(model) ::= <<
-<mat-card *ngIf="$model.Entity.NameLower$">
+<h1 mat-dialog-title>$model.Entity.DisplayName$ <app-$model.Entity.NameKebab$-show [value]="$model.Entity.NameLower$"></app-$model.Entity.NameKebab$-show></h1>
+<mat-dialog-content *ngIf="$model.Entity.NameLower$" class="mat-dialog-content-edit">
 
-    <mat-card-header>
-        <mat-card-title>$model.Entity.DisplayName$ <app-$model.Entity.NameKebab$-show [value]="$model.Entity.NameLower$"></app-$model.Entity.NameKebab$-show></mat-card-title>
-    </mat-card-header>
-
-    <form [formGroup]="$model.Entity.NameLower$Form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="$model.Entity.NameLower$Form">
         $model.Entity.AllFields:field(); separator="\n"$
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Cancel</button>
-        </mat-card-actions>
     </form>
 
-</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>
 >>
 
 field(field) ::= <<
-<div>
-    $field:(field.Template)()$
-</div>
+$field:(field.Template)()$
 >>
 
 Type(field) ::= <<

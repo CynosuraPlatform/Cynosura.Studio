@@ -1,19 +1,25 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
-import { Enum } from "../enum-core/enum.model";
-import { EnumService } from "../enum-core/enum.service";
-import { UpdateEnum, CreateEnum } from "../enum-core/enum-request.model";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
+import { ConvertStringTo } from '../core/converter.helper';
 
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
-import { ConvertStringTo } from "../core/converter.helper";
+import { Enum } from '../enum-core/enum.model';
+import { EnumService } from '../enum-core/enum.service';
+import { UpdateEnum, CreateEnum } from '../enum-core/enum-request.model';
 
+class DialogData {
+    id: string;
+    solutionId: number;
+}
 @Component({
-    selector: "app-enum-edit",
-    templateUrl: "./enum-edit.component.html",
-    styleUrls: ["./enum-edit.component.scss"]
+    selector: 'app-enum-edit',
+    templateUrl: './enum-edit.component.html',
+    styleUrls: ['./enum-edit.component.scss']
 })
 export class EnumEditComponent implements OnInit {
     id: string;
@@ -26,67 +32,62 @@ export class EnumEditComponent implements OnInit {
     error: Error;
     solutionId: number;
 
-    constructor(private enumService: EnumService,
-                private route: ActivatedRoute,
-                private router: Router,
+    constructor(public dialogRef: MatDialogRef<EnumEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private enumService: EnumService,
                 private fb: FormBuilder,
                 private noticeHelper: NoticeHelper) {
+        this.id = data.id;
+        this.solutionId = data.solutionId;
+    }
+
+    static show(dialog: MatDialog, solutionId: number, id: string): Observable<any> {
+        const dialogRef = dialog.open(EnumEditComponent, {
+            width: '600px',
+            data: {
+                solutionId: solutionId,
+                id: id
+            }
+        });
+        return dialogRef.afterClosed()
+            .pipe(filter(res => res === true));
     }
 
     ngOnInit(): void {
-        this.route.params.forEach((params: Params) => {
-            const id: string = params.id === "0" ? null : params.id;
-            this.solutionId = ConvertStringTo.number(this.route.snapshot.queryParams.solutionId);
-            this.getEnum(id);
+        this.getEnum();
+    }
+
+    private getEnum() {
+        const getEnum$ = !this.id ?
+            of(new Enum()) :
+            this.enumService.getEnum({ solutionId: this.solutionId, id: this.id });
+        getEnum$.subscribe(e => {
+            this.enum = e;
+            this.enumForm.patchValue(this.enum);
         });
     }
 
-    private async getEnum(id: string) {
-        this.id = id;
-        if (!id) {
-            this.enum = new Enum();
-        } else {
-            this.enum = await this.enumService.getEnum({ solutionId: this.solutionId, id });
-        }
-        this.enumForm.patchValue(this.enum);
-    }
-
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave(): void {
         this.saveEnum();
     }
 
-    private async saveEnum() {
-        try {
-            if (this.id) {
-                const updateEnum: UpdateEnum = this.enumForm.value;
-                updateEnum.solutionId = this.solutionId;
-                updateEnum.properties = this.enum.properties;
-                updateEnum.values = this.enum.values;
-                await this.enumService.updateEnum(updateEnum);
-            } else {
-                const createEnum: CreateEnum = this.enumForm.value;
-                createEnum.solutionId = this.solutionId;
-                createEnum.properties = this.enum.properties;
-                createEnum.values = this.enum.values;
-                await this.enumService.createEnum(createEnum);
-            }
-            window.history.back();
-        } catch (error) {
-            this.onError(error);
+    private saveEnum() {
+        let saveEnum$: Observable<{}>;
+        if (this.id) {
+            const updateEnum: UpdateEnum = this.enumForm.value;
+            updateEnum.solutionId = this.solutionId;
+            updateEnum.properties = this.enum.properties;
+            updateEnum.values = this.enum.values;
+            saveEnum$ = this.enumService.updateEnum(updateEnum);
+        } else {
+            const createEnum: CreateEnum = this.enumForm.value;
+            createEnum.solutionId = this.solutionId;
+            createEnum.properties = this.enum.properties;
+            createEnum.values = this.enum.values;
+            saveEnum$ = this.enumService.createEnum(createEnum);
         }
-    }
-
-    async generate() {
-        try {
-            await this.enumService.generateEnum({ solutionId: this.solutionId, id: this.enum.id });
-            this.noticeHelper.showMessage("Generation completed");
-        } catch (error) {
-            this.onError(error);
-        }
+        saveEnum$.subscribe(() => this.dialogRef.close(true),
+            error => this.onError(error));
     }
 
     onError(error: Error) {

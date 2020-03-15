@@ -1,5 +1,5 @@
-import { EventEmitter, Injectable } from "@angular/core";
-import { HttpRequest } from "@angular/common/http";
+import { EventEmitter, Injectable } from '@angular/core';
+import { HttpRequest } from '@angular/common/http';
 
 @Injectable()
 export class LoadingService {

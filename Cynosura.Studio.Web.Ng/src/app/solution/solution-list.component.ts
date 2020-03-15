@@ -1,18 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { MatDialog } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { mergeMap } from 'rxjs/operators';
 
-import { Solution } from "../solution-core/solution.model";
-import { SolutionFilter } from "../solution-core/solution-filter.model";
-import { SolutionService } from "../solution-core/solution.service";
-import { SolutionOpenComponent } from "./solution-open.component";
+import { ModalHelper } from '../core/modal.helper';
+import { StoreService } from '../core/store.service';
+import { Error } from '../core/error.model';
+import { Page } from '../core/page.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { ModalHelper } from "../core/modal.helper";
-import { StoreService } from "../core/store.service";
-import { Error } from "../core/error.model";
-import { Page } from "../core/page.model";
-import { NoticeHelper } from "../core/notice.helper";
+import { Solution } from '../solution-core/solution.model';
+import { SolutionFilter } from '../solution-core/solution-filter.model';
+import { SolutionService } from '../solution-core/solution.service';
+import { SolutionEditComponent } from './solution-edit.component';
+import { SolutionOpenComponent } from './solution-open.component';
 
 class SolutionListState {
     pageSize = 10;
@@ -21,61 +22,72 @@ class SolutionListState {
 }
 
 @Component({
-    selector: "app-solution-list",
-    templateUrl: "./solution-list.component.html",
-    styleUrls: ["./solution-list.component.scss"]
+    selector: 'app-solution-list',
+    templateUrl: './solution-list.component.html',
+    styleUrls: ['./solution-list.component.scss']
 })
 export class SolutionListComponent implements OnInit {
     content: Page<Solution>;
     state: SolutionListState;
     pageSizeOptions = [10, 20];
     columns = [
-        "name",
-        "path",
-        "templateName",
-        "templateVersion",
-        "action"
+        'name',
+        'path',
+        'templateName',
+        'templateVersion',
+        'action'
     ];
 
     constructor(
         private modalHelper: ModalHelper,
         private solutionService: SolutionService,
-        private router: Router,
-        private route: ActivatedRoute,
         private storeService: StoreService,
         private dialog: MatDialog,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get("solutionListState", new SolutionListState());
+        this.state = this.storeService.get('solutionListState', new SolutionListState());
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.getSolutions();
     }
 
-    async getSolutions() {
-        this.content = await this.solutionService.getSolutions({
+    private getSolutions() {
+        this.solutionService.getSolutions({
             pageIndex: this.state.pageIndex,
             pageSize: this.state.pageSize,
             filter: this.state.filter
-        });
+        }).subscribe(content => this.content = content);
     }
 
-    reset(): void {
+    onSearch() {
+        this.getSolutions();
+    }
+
+    onReset() {
         this.state.filter.text = null;
         this.getSolutions();
     }
 
-    delete(id: number): void {
+    onCreate() {
+        SolutionEditComponent.show(this.dialog, 0).subscribe(() => {
+            this.getSolutions();
+        });
+    }
+
+    onEdit(id: number) {
+        SolutionEditComponent.show(this.dialog, id).subscribe(() => {
+            this.getSolutions();
+        });
+    }
+
+    onDelete(id: number) {
         this.modalHelper.confirmDelete()
-            .subscribe(async () => {
-                try {
-                    await this.solutionService.deleteSolution({ id });
-                    this.getSolutions();
-                } catch (error) {
-                    this.onError(error);
-                }
-            });
+            .pipe(
+                mergeMap(() => this.solutionService.deleteSolution({ id }))
+            )
+            .subscribe(() => this.getSolutions(),
+                error => this.onError(error));
     }
 
     onPage(page: PageEvent) {
@@ -92,7 +104,7 @@ export class SolutionListComponent implements OnInit {
 
     open() {
         this.dialog.open(SolutionOpenComponent, {
-            width: "600px"
+            width: '600px'
         });
     }
 }

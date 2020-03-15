@@ -6,7 +6,7 @@ export class ConvertStringTo {
         return +value;
     }
     static boolean(value: string): boolean {
-        return value === "true";
+        return value === 'true';
     }
     static Date(value: string): Date {
         return new Date(value);

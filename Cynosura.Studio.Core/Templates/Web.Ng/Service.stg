@@ -1,48 +1,44 @@
 main(model) ::= <<
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { ConfigService } from "../config/config.service";
-import { CreatedEntity } from "../core/models/created-entity.model";
-import { $model.Entity.Name$ } from "./$model.Entity.NameKebab$.model";
-import { Get$model.Entity.PluralName$, Get$model.Entity.Name$, Update$model.Entity.Name$, Create$model.Entity.Name$, Delete$model.Entity.Name$ } from "./$model.Entity.NameKebab$-request.model";
-import { $model.Entity.Name$Filter } from "./$model.Entity.NameKebab$-filter.model";
-import { Page } from "../core/page.model";
+import { ConfigService } from '../config/config.service';
+import { CreatedEntity } from '../core/models/created-entity.model';
+import { Page } from '../core/page.model';
+
+import { $model.Entity.Name$ } from './$model.Entity.NameKebab$.model';
+import { Get$model.Entity.PluralName$, Get$model.Entity.Name$, Update$model.Entity.Name$, Create$model.Entity.Name$, Delete$model.Entity.Name$ } from './$model.Entity.NameKebab$-request.model';
 
 @Injectable()
 export class $model.Entity.Name$Service {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    get$model.Entity.PluralName$(get$model.Entity.PluralName$: Get$model.Entity.PluralName$): Promise<Page<$model.Entity.Name$>\> {
+    get$model.Entity.PluralName$(get$model.Entity.PluralName$: Get$model.Entity.PluralName$): Observable<Page<$model.Entity.Name$>\> {
         const url = `\${this.apiUrl}/Get$model.Entity.PluralName$`;
-        return this.httpClient.post<Page<$model.Entity.Name$>\>(url, get$model.Entity.PluralName$)
-            .toPromise();
+        return this.httpClient.post<Page<$model.Entity.Name$>\>(url, get$model.Entity.PluralName$);
     }
 
-    get$model.Entity.Name$(get$model.Entity.Name$: Get$model.Entity.Name$): Promise<$model.Entity.Name$> {
+    get$model.Entity.Name$(get$model.Entity.Name$: Get$model.Entity.Name$): Observable<$model.Entity.Name$> {
         const url = `\${this.apiUrl}/Get$model.Entity.Name$`;
-        return this.httpClient.post<$model.Entity.Name$>(url, get$model.Entity.Name$)
-            .toPromise();
+        return this.httpClient.post<$model.Entity.Name$>(url, get$model.Entity.Name$);
     }
 
-    update$model.Entity.Name$(update$model.Entity.Name$: Update$model.Entity.Name$): Promise<{}> {
+    update$model.Entity.Name$(update$model.Entity.Name$: Update$model.Entity.Name$): Observable<{}> {
         const url = `\${this.apiUrl}/Update$model.Entity.Name$`;
-        return this.httpClient.post(url, update$model.Entity.Name$)
-            .toPromise();
+        return this.httpClient.post(url, update$model.Entity.Name$);
     }
 
-    create$model.Entity.Name$(create$model.Entity.Name$: Create$model.Entity.Name$): Promise<CreatedEntity<$model.Entity.IdField.JsTypeName$>\> {
+    create$model.Entity.Name$(create$model.Entity.Name$: Create$model.Entity.Name$): Observable<CreatedEntity<$model.Entity.IdField.JsTypeName$>\> {
         const url = `\${this.apiUrl}/Create$model.Entity.Name$`;
-        return this.httpClient.post<CreatedEntity<$model.Entity.IdField.JsTypeName$>\>(url, create$model.Entity.Name$)
-            .toPromise();
+        return this.httpClient.post<CreatedEntity<$model.Entity.IdField.JsTypeName$>\>(url, create$model.Entity.Name$);
     }
 
-    delete$model.Entity.Name$(delete$model.Entity.Name$: Delete$model.Entity.Name$): Promise<{}> {
+    delete$model.Entity.Name$(delete$model.Entity.Name$: Delete$model.Entity.Name$): Observable<{}> {
         const url = `\${this.apiUrl}/Delete$model.Entity.Name$`;
-        return this.httpClient.post(url, delete$model.Entity.Name$)
-            .toPromise();
+        return this.httpClient.post(url, delete$model.Entity.Name$);
     }
 }
 

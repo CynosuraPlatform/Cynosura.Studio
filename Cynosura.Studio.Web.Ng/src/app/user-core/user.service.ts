@@ -1,49 +1,45 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { ConfigService } from "../config/config.service";
-import { CreatedEntity } from "../core/models/created-entity.model";
-import { User } from "./user.model";
-import { GetUsers, GetUser, UpdateUser, CreateUser, DeleteUser } from "./user-request.model";
-import { UserFilter } from "./user-filter.model";
-import { Page } from "../core/page.model";
+import { ConfigService } from '../config/config.service';
+import { CreatedEntity } from '../core/models/created-entity.model';
+import { Page } from '../core/page.model';
+
+import { User } from './user.model';
+import { GetUsers, GetUser, UpdateUser, CreateUser, DeleteUser } from './user-request.model';
 
 @Injectable()
 export class UserService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    getUsers(getUsers: GetUsers): Promise<Page<User>> {
+    getUsers(getUsers: GetUsers): Observable<Page<User>> {
         const url = `${this.apiUrl}/GetUsers`;
-        return this.httpClient.post<Page<User>>(url, getUsers)
-            .toPromise();
+        return this.httpClient.post<Page<User>>(url, getUsers);
     }
 
-    getUser(getUser: GetUser): Promise<User> {
+    getUser(getUser: GetUser): Observable<User> {
         const url = `${this.apiUrl}/GetUser`;
-        return this.httpClient.post<User>(url, getUser)
-            .toPromise();
+        return this.httpClient.post<User>(url, getUser);
     }
 
-    updateUser(updateUser: UpdateUser): Promise<{}> {
+    updateUser(updateUser: UpdateUser): Observable<{}> {
         const url = `${this.apiUrl}/UpdateUser`;
         if (!updateUser.password) {
             updateUser.password = null;
         }
-        return this.httpClient.post(url, updateUser)
-            .toPromise();
+        return this.httpClient.post(url, updateUser);
     }
 
-    createUser(createUser: CreateUser): Promise<CreatedEntity<number>> {
+    createUser(createUser: CreateUser): Observable<CreatedEntity<number>> {
         const url = `${this.apiUrl}/CreateUser`;
-        return this.httpClient.post<CreatedEntity<number>>(url, createUser)
-            .toPromise();
+        return this.httpClient.post<CreatedEntity<number>>(url, createUser);
     }
 
-    deleteUser(deleteUser: DeleteUser): Promise<{}> {
+    deleteUser(deleteUser: DeleteUser): Observable<{}> {
         const url = `${this.apiUrl}/DeleteUser`;
-        return this.httpClient.post(url, deleteUser)
-            .toPromise();
+        return this.httpClient.post(url, deleteUser);
     }
 }

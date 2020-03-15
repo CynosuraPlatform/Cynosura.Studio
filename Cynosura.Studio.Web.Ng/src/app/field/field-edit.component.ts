@@ -1,12 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, Inject } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, Input, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { Field, FieldType } from "../field-core/field.model";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
-
+import { Field, FieldType } from '../field-core/field.model';
 
 class DialogData {
     field: Field;
@@ -14,9 +13,9 @@ class DialogData {
 }
 
 @Component({
-    selector: "app-field-edit",
-    templateUrl: "./field-edit.component.html",
-    styleUrls: ["./field-edit.component.scss"]
+    selector: 'app-field-edit',
+    templateUrl: './field-edit.component.html',
+    styleUrls: ['./field-edit.component.scss']
 })
 export class FieldEditComponent implements OnInit {
 
@@ -63,7 +62,7 @@ export class FieldEditComponent implements OnInit {
 
     }
 
-    save(): void {
+    onSave(): void {
         this.saveField();
     }
 

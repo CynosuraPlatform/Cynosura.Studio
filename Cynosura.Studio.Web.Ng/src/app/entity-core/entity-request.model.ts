@@ -1,6 +1,6 @@
-import { EntityFilter } from "./entity-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
-import { Field } from "../field-core/field.model";
+import { EntityFilter } from './entity-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
+import { Field } from '../field-core/field.model';
 
 export class GetEntities {
     solutionId: number;

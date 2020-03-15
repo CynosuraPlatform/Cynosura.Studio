@@ -1,29 +1,27 @@
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { Profile } from "./profile.model";
-import { ConfigService } from "../config/config.service";
-import { GetProfile, UpdateProfile } from "./profile-request.model";
+import { ConfigService } from '../config/config.service';
 
+import { Profile } from './profile.model';
+import { GetProfile, UpdateProfile } from './profile-request.model';
 
 @Injectable()
 export class ProfileService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient,
                 private configService: ConfigService) {
     }
 
-    getProfile(getProfile: GetProfile): Promise<Profile> {
+    getProfile(getProfile: GetProfile): Observable<Profile> {
         const url = `${this.apiUrl}/GetProfile`;
-        return this.httpClient.post<Profile>(url, getProfile)
-            .toPromise();
+        return this.httpClient.post<Profile>(url, getProfile);
     }
 
-    updateProfile(updateProfile: UpdateProfile): Promise<{}> {
+    updateProfile(updateProfile: UpdateProfile): Observable<{}> {
         const url = `${this.apiUrl}/UpdateProfile`;
-        return this.httpClient.post(url, updateProfile)
-            .toPromise();
+        return this.httpClient.post(url, updateProfile);
     }
 }

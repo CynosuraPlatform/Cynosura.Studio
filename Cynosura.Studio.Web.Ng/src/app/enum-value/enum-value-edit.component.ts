@@ -1,12 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, Inject } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, Input, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { EnumValue } from "../enum-value-core/enum-value.model";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Error } from "../core/error.model";
-import { NoticeHelper } from "../core/notice.helper";
-
+import { EnumValue } from '../enum-value-core/enum-value.model';
 
 class DialogData {
     enumValue: EnumValue;
@@ -14,9 +13,9 @@ class DialogData {
 }
 
 @Component({
-    selector: "app-enum-value-edit",
-    templateUrl: "./enum-value-edit.component.html",
-    styleUrls: ["./enum-value-edit.component.scss"]
+    selector: 'app-enum-value-edit',
+    templateUrl: './enum-value-edit.component.html',
+    styleUrls: ['./enum-value-edit.component.scss']
 })
 export class EnumValueEditComponent implements OnInit {
     @Input()
@@ -54,7 +53,7 @@ export class EnumValueEditComponent implements OnInit {
 
     }
 
-    save(): void {
+    onSave(): void {
         this.saveEnumValue();
     }
 

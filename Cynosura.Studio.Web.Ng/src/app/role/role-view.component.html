@@ -1,0 +1,20 @@
+<mat-card *ngIf="role" class="mat-card-view">
+
+    <mat-card-header>
+        <mat-card-title>Role <app-role-show [value]="role"></app-role-show></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="onEdit()">Edit</button>
+        <button mat-raised-button type="button" (click)="onBack()">Back</button>
+    </mat-card-actions>  
+
+    <div class="field-view">
+        <label>Name</label>
+        <div>
+            <app-text-view [value]="role.name"></app-text-view>
+        </div>
+    </div>
+
+
+</mat-card>
