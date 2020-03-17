@@ -58,8 +58,10 @@ export class SolutionViewComponent implements OnInit {
     onUpgrade() {
         this.error = null;
         this.solutionService.upgradeSolution({ id: this.solution.id })
-            .subscribe(() => this.noticeHelper.showMessage('Upgrade completed'),
-                error => this.onError(error));
+            .subscribe(() => {
+                this.getSolution();
+                this.noticeHelper.showMessage('Upgrade completed');
+            }, error => this.onError(error));
     }
 
     onError(error: Error) {

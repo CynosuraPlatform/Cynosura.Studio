@@ -40,7 +40,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
                 throw new ArgumentException($"Template '{request.TemplateName}' not found");
             _solutionRepository.Add(solution);
             await _unitOfWork.CommitAsync();
-            await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name, template.Name);
+            await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name, template.Name, request.TemplateVersion);
             return new CreatedEntity<int>() { Id = solution.Id };
         }
 

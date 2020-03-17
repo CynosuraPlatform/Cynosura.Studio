@@ -116,11 +116,14 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task GenerateSolutionAsync(string path, string name, string templateName)
+        public async Task GenerateSolutionAsync(string path, string name, string templateName, string templateVersion = null)
         {
-            _logger.LogInformation("GenerateSolution");
-            var latestVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
-            _logger.LogInformation($"Latest version: {latestVersion}");
+            _logger.LogInformation($"GenerateSolution {templateName} {templateVersion}");
+            if (string.IsNullOrEmpty(templateVersion))
+            {
+                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();                
+            }
+            _logger.LogInformation($"Use template: {templateName} {templateVersion}");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -130,7 +133,7 @@ namespace Cynosura.Studio.Generator
                 _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
                 return;
             }
-            await InitSolutionAsync(name, path, templateName, latestVersion);
+            await InitSolutionAsync(name, path, templateName, templateVersion);
         }
 
         private async Task InitSolutionAsync(string solutionName, string path, string templateName, string templateVersion)
@@ -221,49 +224,56 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task UpgradeSolutionAsync(SolutionAccessor solution)
+        public async Task UpgradeSolutionAsync(SolutionAccessor solution, string templateName = null, string templateVersion = null)
         {
-            _logger.LogInformation("UpgradeSolution");
+            _logger.LogInformation($"UpgradeSolution {templateName} {templateVersion}");
             if (solution.Metadata == null)
             {
                 _logger.LogWarning("Solution metadata not found. Cannot upgrade.");
                 return;
             }
-            _logger.LogInformation($"Current version: {solution.Metadata.TemplateVersion}");
-            var latestVersion = (await _packageFeed.GetVersionsAsync(solution.Metadata.TemplateName)).First();
-            _logger.LogInformation($"Latest version: {latestVersion}");
-            if (solution.Metadata.TemplateVersion == latestVersion)
+            _logger.LogInformation($"Current version: {solution.Metadata.TemplateName} {solution.Metadata.TemplateVersion}");
+            if (string.IsNullOrEmpty(templateName))
+            {
+                templateName = solution.Metadata.TemplateName;
+            }
+            if (string.IsNullOrEmpty(templateVersion))
+            {
+                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
+            }
+            _logger.LogInformation($"Upgrade version: {templateName} {templateVersion}");
+            if (solution.Metadata.TemplateName == templateName && solution.Metadata.TemplateVersion == templateVersion)
             {
                 _logger.LogWarning("Using latest version. Nothing to upgrade");
                 return;
             }
 
             var solutionsPath = Path.Combine(StudioDirectoryPath, "Solutions");
-            var latestPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{latestVersion}");
-            if (Directory.Exists(latestPackageSolutionPath))
-                Directory.Delete(latestPackageSolutionPath, true);
-            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.TemplateVersion}");
+            var upgradePackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{templateName}.{templateVersion}");
+            if (Directory.Exists(upgradePackageSolutionPath))
+                Directory.Delete(upgradePackageSolutionPath, true);
+            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.TemplateName}.{solution.Metadata.TemplateVersion}");
             if (Directory.Exists(currentPackageSolutionPath))
                 Directory.Delete(currentPackageSolutionPath, true);
 
-            await InitSolutionAsync(solution.Namespace, latestPackageSolutionPath, solution.Metadata.TemplateName, latestVersion);
-            var latestPackageSolution = new SolutionAccessor(latestPackageSolutionPath);
-            await CopyEnumsAsync(solution, latestPackageSolution);
-            await CopyEntitiesAsync(solution, latestPackageSolution);
+            await InitSolutionAsync(solution.Namespace, upgradePackageSolutionPath, templateName, templateVersion);
+            var upgradePackageSolution = new SolutionAccessor(upgradePackageSolutionPath);
+            await CopyEnumsAsync(solution, upgradePackageSolution);
+            await CopyEntitiesAsync(solution, upgradePackageSolution);
 
             await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
             await CopyEnumsAsync(solution, currentPackageSolution);
             await CopyEntitiesAsync(solution, currentPackageSolution);
 
-            var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, latestPackageSolution);
+            var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, upgradePackageSolution);
             RenameInSolution(solution, upgradeRenames);
 
-            var templateResultRenames = await GetTemplateResultRenames(currentPackageSolution, latestPackageSolution);
+            var templateResultRenames = await GetTemplateResultRenames(currentPackageSolution, upgradePackageSolution);
             var renames = upgradeRenames.Concat(templateResultRenames).ToList();
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, latestPackageSolutionPath, solution.Path,
+            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, upgradePackageSolutionPath, solution.Path,
                 renames);
             _logger.LogInformation($"Completed");
         }

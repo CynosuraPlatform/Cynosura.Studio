@@ -15,5 +15,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public string Path { get; set; }
         [DisplayName("Template Name")]
         public string TemplateName { get; set; }
+        [DisplayName("Template Version")]
+        public string TemplateVersion { get; set; }
     }
 }
