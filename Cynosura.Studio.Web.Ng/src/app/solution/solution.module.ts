@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { CoreModule } from '../core/core.module';
 import { SolutionCoreModule } from '../solution-core/solution-core.module';
+import { TemplateCoreModule } from '../template-core/template-core.module';
 
 import { SolutionListComponent } from './solution-list.component';
 import { SolutionEditComponent } from './solution-edit.component';
@@ -22,7 +23,8 @@ import { SolutionViewComponent } from './solution-view.component';
             { path: ':id', component: SolutionViewComponent }
         ]),
         CoreModule,
-        SolutionCoreModule
+        SolutionCoreModule,
+        TemplateCoreModule
     ],
     providers: [
     ],

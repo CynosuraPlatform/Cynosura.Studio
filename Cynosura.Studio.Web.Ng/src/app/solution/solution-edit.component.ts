@@ -10,7 +10,8 @@ import { ConvertStringTo } from '../core/converter.helper';
 
 import { Solution } from '../solution-core/solution.model';
 import { SolutionService } from '../solution-core/solution.service';
-import { TemplateModel, TemplateService } from '../solution-core/template-service';
+import { TemplateService } from '../template-core/template-service';
+import { TemplateModel } from '../template-core/template.model';
 
 class DialogData {
     id: number;
@@ -31,7 +32,6 @@ export class SolutionEditComponent implements OnInit {
         templateVersion: []
     });
     solution: Solution;
-    templates: TemplateModel;
     error: Error;
 
     constructor(public dialogRef: MatDialogRef<SolutionEditComponent>,
@@ -54,8 +54,6 @@ export class SolutionEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.getSolution();
-        this.templateService.getTemplates()
-            .subscribe(templates => this.templates = templates);
     }
 
     private getSolution() {

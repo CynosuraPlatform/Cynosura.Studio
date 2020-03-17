@@ -1,0 +1,4 @@
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
+    <mat-option [value]="null"></mat-option>
+    <mat-option [value]="template.name" *ngFor="let template of templates">{{ template.name }}</mat-option>
+</mat-select>

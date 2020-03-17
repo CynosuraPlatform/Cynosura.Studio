@@ -12,16 +12,28 @@
     </mat-card-actions>
 
    <div class="field-view">
-       <label>Name</label>
-       <div>
-           <app-text-view [value]="solution.name"></app-text-view>
-       </div>
+        <label>Name</label>
+        <div>
+            <app-text-view [value]="solution.name"></app-text-view>
+        </div>
    </div>
    <div class="field-view">
-       <label>Path</label>
-       <div>
-           <app-text-view [value]="solution.path"></app-text-view>
-       </div>
+        <label>Path</label>
+        <div>
+            <app-text-view [value]="solution.path"></app-text-view>
+        </div>
    </div>
+   <div class="field-view">
+        <label>Template Name</label>
+        <div>
+            <app-text-view [value]="solution.templateName"></app-text-view>
+        </div>
+   </div>
+   <div class="field-view">
+        <label>Template Version</label>
+        <div>
+            <app-text-view [value]="solution.templateVersion"></app-text-view>
+        </div>
+</div>
 
 </mat-card>

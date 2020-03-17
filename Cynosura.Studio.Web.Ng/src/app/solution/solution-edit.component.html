@@ -14,18 +14,14 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label>Template Name</mat-label>
-            <mat-select formControlName="templateName">
-                <mat-option>Select Template</mat-option>
-                <mat-option [value]="template.name" *ngFor="let template of templates">{{ template.name }}</mat-option>
-            </mat-select>
+            <app-template-select formControlName="templateName" name="templateName" placeholder="Template Name"></app-template-select>
             <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
         </mat-form-field>
-        <div *ngIf="id">
-            <mat-form-field>
-                <mat-label>Template Version</mat-label>
-                <app-text-edit formControlName="templateVersion" name="templateVersion" placeholder="Template Version" [disabled]="true"></app-text-edit>
-            </mat-form-field>
-        </div>
+        <mat-form-field>
+            <mat-label>Template Version</mat-label>
+            <app-template-version-select formControlName="templateVersion" name="templateVersion" [templateName]="solutionForm.controls.templateName.value" placeholder="Template Version"></app-template-version-select>
+            <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
+        </mat-form-field>
     </form>
 
 </mat-dialog-content>
