@@ -19,18 +19,15 @@ namespace Cynosura.Studio.Generator
 
         private readonly ITemplateEngine _templateEngine;
         private readonly IPackageFeed _packageFeed;
-        private readonly IFileMerge _fileMerge;
         private readonly IDirectoryMerge _directoryMerge;
         private readonly ILogger<CodeGenerator> _logger;
         public CodeGenerator(ITemplateEngine templateEngine,
             IPackageFeed packageFeed,
-            IFileMerge fileMerge,
             IDirectoryMerge directoryMerge,
             ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
             _packageFeed = packageFeed;
-            _fileMerge = fileMerge;
             _directoryMerge = directoryMerge;
             _logger = logger;
         }
@@ -52,9 +49,17 @@ namespace Cynosura.Studio.Generator
             return filePath;
         }
 
-        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject)
+        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject, string overrideSolutionPath = null)
         {
             var filePath = GetTemplateFilePath(template, solution, generationObject);
+            var fileSavePath = filePath;
+            if (!string.IsNullOrEmpty(overrideSolutionPath))
+            {
+                fileSavePath = Path.Combine(overrideSolutionPath, Path.GetRelativePath(solution.Path, fileSavePath));
+                var dir = Path.GetDirectoryName(fileSavePath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+            }
             var content = ProcessTemplate(template, solution, model);
 
             if (!string.IsNullOrEmpty(template.InsertAfter))
@@ -66,53 +71,12 @@ namespace Cynosura.Studio.Generator
                     fileContent = fileContent.Replace(template.InsertAfter + Environment.NewLine,
                         template.InsertAfter + Environment.NewLine + content + Environment.NewLine);
 
-                    await WriteFileAsync(filePath, fileContent);
+                    await WriteFileAsync(fileSavePath, fileContent);
                 }
             }
             else
             {
-                await WriteFileAsync(filePath, content);
-            }
-        }
-
-        private async Task UpgradeFileAsync(CodeTemplate template, object oldModel, object newModel, SolutionAccessor solution, IGenerationObject oldGenerationObject, IGenerationObject newGenerationObject)
-        {
-            var oldContent = ProcessTemplate(template, solution, oldModel);
-            var newContent = ProcessTemplate(template, solution, newModel);
-            var oldFilePath = GetTemplateFilePath(template, solution, oldGenerationObject);
-            var newFilePath = GetTemplateFilePath(template, solution, newGenerationObject);
-            if (!File.Exists(oldFilePath))
-            {
-                _logger.LogWarning($"File {oldFilePath} is not found. Skip upgrade");
-                return;
-            }
-            var oldFileContent = await ReadFileAsync(oldFilePath);
-            var newFileContent = _fileMerge.Merge(oldContent, newContent, oldFileContent);
-            if (oldFilePath != newFilePath)
-            {
-                File.Delete(oldFilePath);
-            }
-            if (oldFileContent == newFileContent && oldFilePath == newFilePath)
-                return;
-            await WriteFileAsync(newFilePath, newFileContent);
-        }
-
-        private async Task RemoveFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject)
-        {
-            var filePath = GetTemplateFilePath(template, solution, generationObject);
-            if (!File.Exists(filePath))
-                return;
-            var content = ProcessTemplate(template, solution, model);
-            if (!string.IsNullOrEmpty(template.InsertAfter))
-            {
-                var fileContent = await ReadFileAsync(filePath);
-                fileContent = fileContent.Replace(content + Environment.NewLine, "");
-
-                await WriteFileAsync(filePath, fileContent);
-            }
-            else
-            {
-                File.Delete(filePath);
+                await WriteFileAsync(fileSavePath, content);
             }
         }
 
@@ -499,13 +463,13 @@ namespace Cynosura.Studio.Generator
             await UpgradeAsync(solution, oldEnum, newEnum, oldModel, newModel, oldTypes, newTypes);
         }
 
-        private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, IEnumerable<TemplateType> types)
+        private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, IEnumerable<TemplateType> types, string overrideSolutionPath = null)
         {
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.CheckTypes(types))
                 .Where(t => t.CheckTargets(generationObject.Properties)))
             {
-                await CreateFileAsync(template, model, solution, generationObject);
+                await CreateFileAsync(template, model, solution, generationObject, overrideSolutionPath);
             }
         }
 
@@ -514,24 +478,19 @@ namespace Cynosura.Studio.Generator
             object oldModel, object newModel,
             IEnumerable<TemplateType> oldTypes, IEnumerable<TemplateType> newTypes)
         {
-            var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.CheckTypes(oldTypes) || t.CheckTypes(newTypes)))
-            {
-                var oldExists = template.CheckTypes(oldTypes) && template.CheckTargets(oldGenerationObject.Properties);
-                var newExists = template.CheckTypes(newTypes) && template.CheckTargets(newGenerationObject.Properties);
-                if (oldExists && newExists)
-                {
-                    await UpgradeFileAsync(template, oldModel, newModel, solution, oldGenerationObject, newGenerationObject);
-                }
-                else if (oldExists)
-                {
-                    await RemoveFileAsync(template, oldModel, solution, oldGenerationObject);
-                }
-                else if (newExists)
-                {
-                    await CreateFileAsync(template, newModel, solution, newGenerationObject);
-                }
-            }
+            var oldPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            var newPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+
+            Directory.CreateDirectory(oldPath);
+            Directory.CreateDirectory(newPath);
+
+            await GenerateAsync(solution, oldGenerationObject, oldModel, oldTypes, oldPath);
+            await GenerateAsync(solution, newGenerationObject, newModel, newTypes, newPath);
+
+            await _directoryMerge.MergeDirectoryAsync(oldPath, newPath, solution.Path);
+
+            Directory.Delete(oldPath, true);
+            Directory.Delete(newPath, true);
         }
 
         private bool HasWildcards(string path)
@@ -541,12 +500,11 @@ namespace Cynosura.Studio.Generator
 
         private string FindDirectory(string path, string templatePath)
         {
-            var ignoreList = new[] { "AebIt.Platform.Common" };
             var templatePathItems = templatePath.Split(Path.DirectorySeparatorChar);
             foreach (var templatePathItem in templatePathItems)
             {
                 var dir = Directory.GetDirectories(path, templatePathItem)
-                    .FirstOrDefault(d => ignoreList.All(l => !d.Contains(l)));
+                    .FirstOrDefault();
                 if (dir == null)
                 {
                     if (HasWildcards(templatePathItem))

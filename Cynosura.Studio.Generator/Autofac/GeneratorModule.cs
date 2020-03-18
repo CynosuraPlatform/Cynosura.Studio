@@ -28,7 +28,6 @@ namespace Cynosura.Studio.Generator.Autofac
                     : ctx.Resolve<LocalFeed>();
             });
 
-            builder.RegisterType<DmpMerge>().As<IFileMerge>();
             builder.RegisterType<GitMerge>().As<IDirectoryMerge>();
         }
     }

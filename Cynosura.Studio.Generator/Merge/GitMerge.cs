@@ -37,8 +37,22 @@ namespace Cynosura.Studio.Generator.Merge
 
             Sync(exportPath, repositoryPath, myDirectoryPath);
 
-            Directory.Delete(exportPath, true);
-            Directory.Delete(repositoryPath, true);
+            try
+            {
+                Directory.Delete(exportPath, true);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(0, e, $"Can not delete {exportPath}");
+            }
+            try
+            {
+                Directory.Delete(repositoryPath, true);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(0, e, $"Can not delete {repositoryPath}");
+            }
         }
 
         private async Task InitializeRepository(string repositoryPath)
@@ -89,14 +103,23 @@ namespace Cynosura.Studio.Generator.Merge
             foreach (var compareFile in compareFiles)
             {
                 var myFilePath = Path.Combine(myDirectoryPath, compareFile.OriginalName);
-                if (compareFile.RightPath == null)
+                if (compareFile.LeftPath == null)
+                {
+                    File.Copy(compareFile.RightPath, myFilePath, true);
+                }
+                else if (compareFile.RightPath == null)
                 {
                     if (File.Exists(myFilePath))
                         File.Delete(myFilePath);
                 }
                 else
                 {
-                    File.Copy(compareFile.RightPath, myFilePath, true);
+                    var leftFileInfo = new FileInfo(compareFile.LeftPath);
+                    var rightFileInfo = new FileInfo(compareFile.RightPath);
+                    if (leftFileInfo.LastWriteTimeUtc != rightFileInfo.LastWriteTimeUtc)
+                    {
+                        File.Copy(compareFile.RightPath, myFilePath, true);
+                    }
                 }
             }
         }
