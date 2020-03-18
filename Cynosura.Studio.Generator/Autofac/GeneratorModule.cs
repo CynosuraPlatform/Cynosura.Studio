@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Generator.Autofac
             });
 
             builder.RegisterType<DmpMerge>().As<IFileMerge>();
-            builder.RegisterType<DirectoryMerge>().As<IDirectoryMerge>();
+            builder.RegisterType<GitMerge>().As<IDirectoryMerge>();
         }
     }
 }
