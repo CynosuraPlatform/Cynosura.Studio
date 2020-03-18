@@ -19,19 +19,19 @@ namespace Cynosura.Studio.Generator
 
         private readonly ITemplateEngine _templateEngine;
         private readonly IPackageFeed _packageFeed;
-        private readonly IMerge _merge;
-        private readonly FileMerge _fileMerge;
+        private readonly IFileMerge _fileMerge;
+        private readonly IDirectoryMerge _directoryMerge;
         private readonly ILogger<CodeGenerator> _logger;
         public CodeGenerator(ITemplateEngine templateEngine,
             IPackageFeed packageFeed,
-            IMerge merge,
-            FileMerge fileMerge,
+            IFileMerge fileMerge,
+            IDirectoryMerge directoryMerge,
             ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
             _packageFeed = packageFeed;
-            _merge = merge;
             _fileMerge = fileMerge;
+            _directoryMerge = directoryMerge;
             _logger = logger;
         }
 
@@ -87,7 +87,7 @@ namespace Cynosura.Studio.Generator
                 return;
             }
             var oldFileContent = await ReadFileAsync(oldFilePath);
-            var newFileContent = _merge.Merge(oldContent, newContent, oldFileContent);
+            var newFileContent = _fileMerge.Merge(oldContent, newContent, oldFileContent);
             if (oldFilePath != newFilePath)
             {
                 File.Delete(oldFilePath);
@@ -273,7 +273,7 @@ namespace Cynosura.Studio.Generator
             var renames = upgradeRenames.Concat(templateResultRenames).ToList();
 
             _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _fileMerge.MergeDirectoryAsync(currentPackageSolutionPath, upgradePackageSolutionPath, solution.Path,
+            await _directoryMerge.MergeDirectoryAsync(currentPackageSolutionPath, upgradePackageSolutionPath, solution.Path,
                 renames);
             _logger.LogInformation($"Completed");
         }

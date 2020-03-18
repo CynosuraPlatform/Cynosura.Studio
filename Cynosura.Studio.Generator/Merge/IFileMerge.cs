@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Cynosura.Studio.Generator.Merge
 {
-    public interface IMerge
+    public interface IFileMerge
     {
         string Merge(string original, string their, string my);
     }

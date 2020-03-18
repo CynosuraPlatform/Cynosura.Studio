@@ -21,7 +21,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("file.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
                 var files = ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
@@ -44,7 +44,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new FileInfo[] { });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
                 var files = ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
@@ -67,7 +67,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("file.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
                 var files = ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(0));
@@ -87,7 +87,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new FileInfo[] { });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
                 var files = ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(0));
@@ -108,7 +108,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("file.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
                     new[] { ("file.txt", "file2.txt") });
                 var files = ReadDirectory(dir3).ToList();
@@ -132,7 +132,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("file2.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
                     new[] { ("file.txt", "file2.txt") });
                 var files = ReadDirectory(dir3).ToList();
@@ -156,7 +156,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("file.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
                     new[] { ("file.txt", "file2.txt") });
                 var files = ReadDirectory(dir3).ToList();
@@ -180,7 +180,7 @@ namespace Cynosura.Studio.Generator.Tests
             var dir3 = InitDirectory(new[] { new FileInfo("path1/file.txt", "abd plk def ghi") });
             try
             {
-                var fileMerge = new FileMerge(new DmpMerge());
+                var fileMerge = new DirectoryMerge(new DmpMerge());
                 await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3,
                     new[] { ("path1", "path2") });
                 var files = ReadDirectory(dir3).ToList();

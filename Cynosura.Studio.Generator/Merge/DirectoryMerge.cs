@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Cynosura.Studio.Generator.Merge
 {
-    public class FileMerge
+    public class DirectoryMerge : IDirectoryMerge
     {
-        private readonly IMerge _merge;
+        private readonly IFileMerge _merge;
 
-        public FileMerge(IMerge merge)
+        public DirectoryMerge(IFileMerge merge)
         {
             _merge = merge;
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cynosura.Studio.Generator.Merge
 {
-    public class DmpMerge : IMerge
+    public class DmpMerge : IFileMerge
     {
         public string Merge(string original, string their, string my)
         {

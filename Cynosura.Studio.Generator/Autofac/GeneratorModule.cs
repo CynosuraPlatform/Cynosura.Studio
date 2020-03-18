@@ -28,8 +28,8 @@ namespace Cynosura.Studio.Generator.Autofac
                     : ctx.Resolve<LocalFeed>();
             });
 
-            builder.RegisterType<DmpMerge>().As<IMerge>();
-            builder.RegisterType<FileMerge>();
+            builder.RegisterType<DmpMerge>().As<IFileMerge>();
+            builder.RegisterType<DirectoryMerge>().As<IDirectoryMerge>();
         }
     }
 }
