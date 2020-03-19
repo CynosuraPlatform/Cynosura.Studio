@@ -31,6 +31,12 @@ a {
     text-decoration: none;
 }
 
+.mat-card-actions .mat-button:first-child, 
+.mat-card-actions .mat-raised-button:first-child, 
+.mat-card-actions .mat-stroked-button:first-child {
+    margin-right: 8px !important;
+}
+
 .mat-table {
     width: 100%;
 

@@ -2,13 +2,13 @@ using Cynosura.Web.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace Cynosura.Studio.Web.Infrastructure.Routes
+namespace Cynosura.Studio.Web.Routes
 {
-    public class EnumModule : IConfigurationModule<IEndpointRouteBuilder>
+    public class EntityModule : IConfigurationModule<IEndpointRouteBuilder>
     {
         public void Configure(IEndpointRouteBuilder configuration)
         {
-            configuration.MapGrpcService<Services.EnumService>();
+            configuration.MapGrpcService<Services.EntityService>();
         }
     }
 }

@@ -1,13 +1,6 @@
-using System;
-using System.Linq;
-using System.Reflection;
 using Autofac;
 using AutoMapper;
-using Cynosura.EF;
 using Microsoft.Extensions.Configuration;
-using Cynosura.Studio.Core.Autofac;
-using Cynosura.Studio.Core.Security;
-using Cynosura.Studio.Data;
 using Cynosura.Studio.Core.Infrastructure;
 
 namespace Cynosura.Studio.Worker.Infrastructure
@@ -18,12 +11,6 @@ namespace Cynosura.Studio.Worker.Infrastructure
         {
             var assemblies = CoreHelper.GetPlatformAndAppAssemblies();
             builder.RegisterAssemblyModules(assemblies);
-            builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>()
-                .WithParameter((p, c) => p.Name == "connectionString",
-                    (p, c) => configuration.GetConnectionString("DefaultConnection"))
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<UserInfoProvider>().As<IUserInfoProvider>().InstancePerLifetimeScope();
             builder.Register(c => new MapperConfiguration(cfg => { cfg.AddMaps(assemblies); }).CreateMapper())
                 .As<IMapper>().SingleInstance();
         }

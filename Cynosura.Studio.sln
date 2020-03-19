@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yaml = docker-compose.yaml
 	EndProjectSection
 EndProject
+<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Core.UnitTests", "tests\Cynosura.Studio.Core.UnitTests\Cynosura.Studio.Core.UnitTests.csproj", "{092939FA-9B25-4484-B96E-E0D613FD449F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Generator", "Cynosura.Studio.Generator\Cynosura.Studio.Generator.csproj", "{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}"
@@ -30,6 +31,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool", "Cynosura.Studio.CliTool\Cynosura.Studio.CliTool.csproj", "{1CD3E018-4E57-4A1C-8F7B-BF9DAED07F7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool.UnitTests", "Tests\Cynosura.Studio.CliTool.UnitTests\Cynosura.Studio.CliTool.UnitTests.csproj", "{2D20317F-B1CF-4670-9001-797DAD1BC0DA}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.Infrastructure", "Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj", "{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}"
+>>>>>>> upgrade
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,7 @@ Global
 		{092939FA-9B25-4484-B96E-E0D613FD449F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{092939FA-9B25-4484-B96E-E0D613FD449F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{092939FA-9B25-4484-B96E-E0D613FD449F}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72CFA33B-0C1F-4B87-99DB-B1A01CE42077}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,6 +82,12 @@ Global
 		{2D20317F-B1CF-4670-9001-797DAD1BC0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D20317F-B1CF-4670-9001-797DAD1BC0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D20317F-B1CF-4670-9001-797DAD1BC0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> upgrade
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

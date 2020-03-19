@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using Cynosura.Web.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Cynosura.Studio.Web.Infrastructure.Authorization
+namespace Cynosura.Studio.Web.Authorization
 {
-    public class UserModule : IPolicyModule
+    public class EnumValueModule : IPolicyModule
     {
         public void RegisterPolicies(AuthorizationOptions options)
         {
-            options.AddPolicy("ReadUser",
+            options.AddPolicy("ReadEnumValue",
                 policy => policy.RequireClaim(ClaimTypes.Role, "Administrator"));
-            options.AddPolicy("WriteUser",
+            options.AddPolicy("WriteEnumValue",
                 policy => policy.RequireClaim(ClaimTypes.Role, "Administrator"));
         }
     }

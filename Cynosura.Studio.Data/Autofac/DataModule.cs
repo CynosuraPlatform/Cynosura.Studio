@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Data.Autofac
         {
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<DatabaseInitializer>().As<IDatabaseInitializer>();
+            builder.RegisterType<DatabaseFactory>().As<IDatabaseFactory>().InstancePerLifetimeScope();
         }
     }
 }

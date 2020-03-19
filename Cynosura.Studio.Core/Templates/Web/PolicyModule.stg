@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Cynosura.Web.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
-namespace $model.Solution.Namespace$.Web.Infrastructure.Authorization
+namespace $model.Solution.Namespace$.Web.Authorization
 {
     public class $model.Entity.Name$Module : IPolicyModule
     {

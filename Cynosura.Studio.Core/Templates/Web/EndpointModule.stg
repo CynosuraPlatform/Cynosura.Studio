@@ -3,7 +3,7 @@ using Cynosura.Web.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace $model.Solution.Namespace$.Web.Infrastructure.Routes
+namespace $model.Solution.Namespace$.Web.Routes
 {
     public class $model.Entity.Name$Module : IConfigurationModule<IEndpointRouteBuilder>
     {

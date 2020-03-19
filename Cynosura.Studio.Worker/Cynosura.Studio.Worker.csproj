@@ -41,6 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cynosura.Studio.Core\Cynosura.Studio.Core.csproj" />
     <ProjectReference Include="..\Cynosura.Studio.Data\Cynosura.Studio.Data.csproj" />
+    <ProjectReference Include="..\Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

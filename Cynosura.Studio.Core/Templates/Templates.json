@@ -221,7 +221,7 @@
     "targets": []
   },
   {
-    "filePath": "*.Web\\Infrastructure\\Authorization",
+    "filePath": "*.Web\\Authorization",
     "fileName": "{Name}Module.cs",
     "templatePath": "Web\\PolicyModule.stg",
     "types": [
@@ -231,7 +231,7 @@
     "targets": []
   },
   {
-    "filePath": "*.Web\\Infrastructure\\Routes",
+    "filePath": "*.Web\\Routes",
     "fileName": "{Name}Module.cs",
     "templatePath": "Web\\EndpointModule.stg",
     "types": [
