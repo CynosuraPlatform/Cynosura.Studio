@@ -39,7 +39,7 @@ namespace Cynosura.Studio.Generator.Merge
 
             try
             {
-                Directory.Delete(exportPath, true);
+                DeleteDirectory(exportPath);
             }
             catch (Exception e)
             {
@@ -47,7 +47,7 @@ namespace Cynosura.Studio.Generator.Merge
             }
             try
             {
-                Directory.Delete(repositoryPath, true);
+                DeleteDirectory(repositoryPath);
             }
             catch (Exception e)
             {
@@ -81,7 +81,14 @@ namespace Cynosura.Studio.Generator.Merge
         private async Task ExportCurrent(string currentDirectoryPath, string exportPath)
         {
             Directory.CreateDirectory(exportPath);
-            await RunCommandAsync("git", $"checkout-index -a -f --prefix={exportPath}{Path.DirectorySeparatorChar}", currentDirectoryPath);
+            if (HasDirectory(currentDirectoryPath, ".git"))
+            {
+                await RunCommandAsync("git", $"checkout-index -a -f --prefix={exportPath}{Path.DirectorySeparatorChar}", currentDirectoryPath);
+            }
+            else
+            {
+                CopyAllFiles(currentDirectoryPath, exportPath);
+            }
         }
 
         private async Task CommitCurrent(string repositoryPath, string currentDirectoryPath)
@@ -227,6 +234,29 @@ namespace Cynosura.Studio.Generator.Merge
                     continue;
                 subdir.Delete(true);
             }
+        }
+        
+        private bool HasDirectory(string directory, string subdirectory)
+        {
+            var dir = new DirectoryInfo(directory);
+            foreach (var subdir in dir.GetDirectories())
+            {
+                if (subdir.Name == subdirectory)
+                    return true;
+            }
+            return false;
+        }
+
+        private void DeleteDirectory(string path)
+        {
+            var directory = new DirectoryInfo(path) { Attributes = FileAttributes.Normal };
+
+            foreach (var info in directory.GetFileSystemInfos("*", SearchOption.AllDirectories))
+            {
+                info.Attributes = FileAttributes.Normal;
+            }
+
+            directory.Delete(true);
         }
 
         private string GetTempPath()
