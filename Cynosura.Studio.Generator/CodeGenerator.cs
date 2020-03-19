@@ -85,7 +85,7 @@ namespace Cynosura.Studio.Generator
             _logger.LogInformation($"GenerateSolution {templateName} {templateVersion}");
             if (string.IsNullOrEmpty(templateVersion))
             {
-                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();                
+                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
             }
             _logger.LogInformation($"Use template: {templateName} {templateVersion}");
             if (!Directory.Exists(path))
@@ -140,6 +140,8 @@ namespace Cynosura.Studio.Generator
             var fromEntities = await fromSolution.GetEntitiesAsync();
             fromEntities = SortByDependency(fromEntities).ToList();
             var toEntities = await toSolution.GetEntitiesAsync();
+            var oldEntitiesToUpgrade = new List<Entity>();
+            var newEntitiesToUpgrade = new List<Entity>();
             foreach (var entity in fromEntities)
             {
                 var toEntity = toEntities.FirstOrDefault(e => e.Id == entity.Id);
@@ -156,9 +158,24 @@ namespace Cynosura.Studio.Generator
                     await toSolution.UpdateEntityAsync(entity);
                     var newEntity = (await toSolution.GetEntitiesAsync())
                         .FirstOrDefault(e => e.Id == entity.Id);
-                    await UpgradeEntityAsync(toSolution, toEntity, newEntity);
-                    await UpgradeViewAsync(toSolution, new View(), toEntity, newEntity);
+                    oldEntitiesToUpgrade.Add(toEntity);
+                    newEntitiesToUpgrade.Add(newEntity);
                 }
+            }
+
+            if (oldEntitiesToUpgrade.Count > 0)
+            {
+                var oldGenerateInfos = oldEntitiesToUpgrade
+                    .SelectMany(oldEntity => new[] {
+                        new EntityModel(oldEntity, toSolution).GetGenerateInfo(),
+                        new ViewModel(new View(), oldEntity, toSolution).GetGenerateInfo()
+                    });
+                var newGenerateInfos = newEntitiesToUpgrade
+                    .SelectMany(newEntity => new[] {
+                        new EntityModel(newEntity, toSolution).GetGenerateInfo(),
+                        new ViewModel(new View(), newEntity, toSolution).GetGenerateInfo()
+                    });
+                await UpgradeAsync(toSolution, oldGenerateInfos, newGenerateInfos);
             }
         }
 
@@ -166,6 +183,8 @@ namespace Cynosura.Studio.Generator
         {
             var fromEnums = await fromSolution.GetEnumsAsync();
             var toEnums = await toSolution.GetEnumsAsync();
+            var oldEnumsToUpgrade = new List<Models.Enum>();
+            var newEnumsToUpgrade = new List<Models.Enum>();
             foreach (var @enum in fromEnums)
             {
                 var toEnum = toEnums.FirstOrDefault(e => e.Id == @enum.Id);
@@ -182,9 +201,24 @@ namespace Cynosura.Studio.Generator
                     await toSolution.UpdateEnumAsync(@enum);
                     var newEnum = (await toSolution.GetEnumsAsync())
                         .FirstOrDefault(e => e.Id == @enum.Id);
-                    await UpgradeEnumAsync(toSolution, toEnum, newEnum);
-                    await UpgradeEnumViewAsync(toSolution, new View(), toEnum, newEnum);
+                    oldEnumsToUpgrade.Add(toEnum);
+                    newEnumsToUpgrade.Add(newEnum);
                 }
+            }
+
+            if (oldEnumsToUpgrade.Count > 0)
+            {
+                var oldGenerateInfos = oldEnumsToUpgrade
+                    .SelectMany(oldEnum => new[] {
+                        new EnumModel(oldEnum, toSolution).GetGenerateInfo(),
+                        new EnumViewModel(new View(), oldEnum, toSolution).GetGenerateInfo()
+                    });
+                var newGenerateInfos = newEnumsToUpgrade
+                    .SelectMany(newEnum => new[] {
+                        new EnumModel(newEnum, toSolution).GetGenerateInfo(),
+                        new EnumViewModel(new View(), newEnum, toSolution).GetGenerateInfo()
+                    });
+                await UpgradeAsync(toSolution, oldGenerateInfos, newGenerateInfos);
             }
         }
 
@@ -399,84 +433,108 @@ namespace Cynosura.Studio.Generator
 
         public async Task GenerateEntityAsync(SolutionAccessor solution, Entity entity)
         {
-            var types = entity.GetTemplateTypes();
-            await GenerateAsync(solution, entity, new EntityModel(entity, solution), types);
+            var model = new EntityModel(entity, solution);
+            await GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeEntityAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
-            var oldModel = new EntityModel(oldEntity, solution);
-            var newModel = new EntityModel(newEntity, solution);
+            await UpgradeEntitiesAsync(solution, new[] { oldEntity }, new[] { newEntity });
+        }
 
-            var oldTypes = oldEntity.GetTemplateTypes();
-            var newTypes = newEntity.GetTemplateTypes();
+        public async Task UpgradeEntitiesAsync(SolutionAccessor solution, IEnumerable<Entity> oldEntities, IEnumerable<Entity> newEntities)
+        {
+            var oldGenerateInfos = oldEntities
+                .Select(oldEntity => new EntityModel(oldEntity, solution))
+                .Select(model => model.GetGenerateInfo());
+            var newGenerateInfos = newEntities
+                .Select(newEntity => new EntityModel(newEntity, solution))
+                .Select(model => model.GetGenerateInfo());
 
-            await UpgradeAsync(solution, oldEntity, newEntity, oldModel, newModel, oldTypes, newTypes);
+            await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
         public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
         {
-            var types = entity.GetViewTemplateTypes();
-            await GenerateAsync(solution, entity, new ViewModel(view, entity, solution), types);
+            var model = new ViewModel(view, entity, solution);
+            await GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeViewAsync(SolutionAccessor solution, View view, Entity oldEntity, Entity newEntity)
         {
-            var oldModel = new ViewModel(view, oldEntity, solution);
-            var newModel = new ViewModel(view, newEntity, solution);
+            await UpgradeViewsAsync(solution, view, new[] { oldEntity }, new[] { newEntity });
+        }
 
-            var oldTypes = oldEntity.GetViewTemplateTypes();
-            var newTypes = newEntity.GetViewTemplateTypes();
+        public async Task UpgradeViewsAsync(SolutionAccessor solution, View view, IEnumerable<Entity> oldEntities, IEnumerable<Entity> newEntities)
+        {
+            var oldGenerateInfos = oldEntities
+                .Select(oldEntity => new ViewModel(view, oldEntity, solution))
+                .Select(model => model.GetGenerateInfo());
+            var newGenerateInfos = newEntities
+                .Select(newEntity => new ViewModel(view, newEntity, solution))
+                .Select(model => model.GetGenerateInfo());
 
-            await UpgradeAsync(solution, oldEntity, newEntity, oldModel, newModel, oldTypes, newTypes);
+            await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
         public async Task GenerateEnumAsync(SolutionAccessor solution, Models.Enum @enum)
         {
-            await GenerateAsync(solution, @enum, new EnumModel(@enum, solution), @enum.GetTemplateTypes());
+            var model = new EnumModel(@enum, solution);
+            await GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeEnumAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
         {
-            var oldModel = new EnumModel(oldEnum, solution);
-            var newModel = new EnumModel(newEnum, solution);
+            await UpgradeEnumsAsync(solution, new[] { oldEnum }, new[] { newEnum });
+        }
 
-            var oldTypes = oldEnum.GetTemplateTypes();
-            var newTypes = newEnum.GetTemplateTypes();
+        public async Task UpgradeEnumsAsync(SolutionAccessor solution, IEnumerable<Models.Enum> oldEnums, IEnumerable<Models.Enum> newEnums)
+        {
+            var oldGenerateInfos = oldEnums
+                .Select(oldEnum => new EnumModel(oldEnum, solution))
+                .Select(model => model.GetGenerateInfo());
+            var newGenerateInfos = newEnums
+                .Select(newEnum => new EnumModel(newEnum, solution))
+                .Select(model => model.GetGenerateInfo());
 
-            await UpgradeAsync(solution, oldEnum, newEnum, oldModel, newModel, oldTypes, newTypes);
+            await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
         public async Task GenerateEnumViewAsync(SolutionAccessor solution, View view, Models.Enum @enum)
         {
-            await GenerateAsync(solution, @enum, new EnumViewModel(view, @enum, solution), @enum.GetViewTemplateTypes());
+            var model = new EnumViewModel(view, @enum, solution);
+            await GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeEnumViewAsync(SolutionAccessor solution, View view, Models.Enum oldEnum, Models.Enum newEnum)
         {
-            var oldModel = new EnumViewModel(view, oldEnum, solution);
-            var newModel = new EnumViewModel(view, newEnum, solution);
-
-            var oldTypes = oldEnum.GetViewTemplateTypes();
-            var newTypes = newEnum.GetViewTemplateTypes();
-
-            await UpgradeAsync(solution, oldEnum, newEnum, oldModel, newModel, oldTypes, newTypes);
+            await UpgradeEnumViewsAsync(solution, view, new[] { oldEnum }, new[] { newEnum });
         }
 
-        private async Task GenerateAsync(SolutionAccessor solution, IGenerationObject generationObject, object model, IEnumerable<TemplateType> types, string overrideSolutionPath = null)
+        public async Task UpgradeEnumViewsAsync(SolutionAccessor solution, View view, IEnumerable<Models.Enum> oldEnums, IEnumerable<Models.Enum> newEnums)
+        {
+            var oldGenerateInfos = oldEnums
+                .Select(oldEnum => new EnumViewModel(view, oldEnum, solution))
+                .Select(model => model.GetGenerateInfo());
+            var newGenerateInfos = newEnums
+                .Select(newEnum => new EnumViewModel(view, newEnum, solution))
+                .Select(model => model.GetGenerateInfo());
+
+            await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
+        }
+
+        private async Task GenerateAsync(SolutionAccessor solution, GenerateInfo generateInfo, string overrideSolutionPath = null)
         {
             var templates = await solution.LoadTemplatesAsync();
-            foreach (var template in templates.Where(t => t.CheckTypes(types))
-                .Where(t => t.CheckTargets(generationObject.Properties)))
+            foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))
+                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties)))
             {
-                await CreateFileAsync(template, model, solution, generationObject, overrideSolutionPath);
+                await CreateFileAsync(template, generateInfo.Model, solution, generateInfo.GenerationObject, overrideSolutionPath);
             }
         }
 
         private async Task UpgradeAsync(SolutionAccessor solution,
-            IGenerationObject oldGenerationObject, IGenerationObject newGenerationObject,
-            object oldModel, object newModel,
-            IEnumerable<TemplateType> oldTypes, IEnumerable<TemplateType> newTypes)
+            IEnumerable<GenerateInfo> oldGenerateInfos, IEnumerable<GenerateInfo> newGenerateInfos)
         {
             var oldPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             var newPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
@@ -484,8 +542,14 @@ namespace Cynosura.Studio.Generator
             Directory.CreateDirectory(oldPath);
             Directory.CreateDirectory(newPath);
 
-            await GenerateAsync(solution, oldGenerationObject, oldModel, oldTypes, oldPath);
-            await GenerateAsync(solution, newGenerationObject, newModel, newTypes, newPath);
+            foreach (var oldGenerateInfo in oldGenerateInfos)
+            {
+                await GenerateAsync(solution, oldGenerateInfo, oldPath);
+            }
+            foreach (var newGenerateInfo in newGenerateInfos) 
+            {
+                await GenerateAsync(solution, newGenerateInfo, newPath);
+            }
 
             await _directoryMerge.MergeDirectoryAsync(oldPath, newPath, solution.Path);
 
