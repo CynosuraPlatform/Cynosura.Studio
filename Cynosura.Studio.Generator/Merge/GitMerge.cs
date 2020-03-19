@@ -19,6 +19,8 @@ namespace Cynosura.Studio.Generator.Merge
 
         public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)> renames = null)
         {
+            _logger.LogInformation("Starting MergeDirectoryAsync for {Path}", myDirectoryPath);
+
             var repositoryPath = GetTempPath();
 
             await InitializeRepository(repositoryPath);
@@ -53,6 +55,8 @@ namespace Cynosura.Studio.Generator.Merge
             {
                 _logger.LogError(0, e, $"Can not delete {repositoryPath}");
             }
+
+            _logger.LogInformation("Completed MergeDirectoryAsync for {Path}", myDirectoryPath);
         }
 
         private async Task InitializeRepository(string repositoryPath)

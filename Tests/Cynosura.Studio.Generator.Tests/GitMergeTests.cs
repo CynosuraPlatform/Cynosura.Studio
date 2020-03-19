@@ -15,6 +15,11 @@ namespace Cynosura.Studio.Generator.Tests
     [TestFixture]
     public class GitMergeTests
     {
+        private string Normalize(string str)
+        {
+            return str.Replace("\r\n", "\n");
+        }
+
         private ILogger<T> GetLoggerMock<T>()
         {
             return new Mock<ILogger<T>>().Object;
@@ -33,7 +38,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
                 Assert.That(files[0].Path, Is.EqualTo("file.txt"));
-                Assert.That(files[0].Content, Is.EqualTo("abd\r\nplk\r\ndef\r\ntyu\r\nghi"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\nplk\ndef\ntyu\nghi"));
             }
             finally
             {
@@ -56,7 +61,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(2));
                 Assert.That(files[1].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[1].Content, Is.EqualTo("abd def tyu ghi"));
+                Assert.That(Normalize(files[1].Content), Is.EqualTo("abd def tyu ghi"));
             }
             finally
             {
@@ -100,7 +105,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(2));
                 Assert.That(files[1].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[1].Content, Is.EqualTo("abd def poi ghi"));
+                Assert.That(Normalize(files[1].Content), Is.EqualTo("abd def poi ghi"));
             }
             finally
             {
@@ -123,7 +128,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(2));
                 Assert.That(files[1].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[1].Content, Is.EqualTo("abd def tyu ghi"));
+                Assert.That(Normalize(files[1].Content), Is.EqualTo("abd def tyu ghi"));
             }
             finally
             {
@@ -146,7 +151,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
                 Assert.That(files[0].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[0].Content, Is.EqualTo("abd\r\nplk\r\ndef\r\ntyu\r\nghi"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\nplk\ndef\ntyu\nghi"));
             }
             finally
             {
@@ -169,7 +174,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
                 Assert.That(files[0].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[0].Content, Is.EqualTo("abd\r\nplk\r\ndef\r\ntyu\r\nghi"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\nplk\ndef\ntyu\nghi"));
             }
             finally
             {
@@ -192,7 +197,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
                 Assert.That(files[0].Path, Is.EqualTo("file2.txt"));
-                Assert.That(files[0].Content, Is.EqualTo("abd plk def ghi"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd plk def ghi"));
             }
             finally
             {
@@ -215,7 +220,7 @@ namespace Cynosura.Studio.Generator.Tests
                 var files = FileHelper.ReadDirectory(dir3).ToList();
                 Assert.That(files.Count, Is.EqualTo(1));
                 Assert.That(files[0].Path, Is.EqualTo("path2" + Path.DirectorySeparatorChar + "file.txt"));
-                Assert.That(files[0].Content, Is.EqualTo("abd\r\nplk\r\ndef\r\ntyu\r\nghi"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\nplk\ndef\ntyu\nghi"));
             }
             finally
             {
@@ -225,7 +230,51 @@ namespace Cynosura.Studio.Generator.Tests
             }
         }
 
-        
+        [Test]
+        public async Task MergeDirectoryAsync_NoChange()
+        {
+            var dir1 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\ndef\nghi") });
+            var dir2 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\ndef\nghi") });
+            var dir3 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\nplk\ndef\nghi") });
+            try
+            {
+                var fileMerge = new GitMerge(GetLoggerMock<GitMerge>());
+                await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
+                var files = FileHelper.ReadDirectory(dir3).ToList();
+                Assert.That(files.Count, Is.EqualTo(1));
+                Assert.That(files[0].Path, Is.EqualTo("file.txt"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\nplk\ndef\nghi"));
+            }
+            finally
+            {
+                Directory.Delete(dir1, true);
+                Directory.Delete(dir2, true);
+                Directory.Delete(dir3, true);
+            }
+        }
+
+        [Test]
+        public async Task MergeDirectoryAsync_NoMerge()
+        {
+            var dir1 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\ndef\nghi") });
+            var dir2 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\ndef\ntyu\nghi") });
+            var dir3 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd\ndef\nghi") });
+            try
+            {
+                var fileMerge = new GitMerge(GetLoggerMock<GitMerge>());
+                await fileMerge.MergeDirectoryAsync(dir1, dir2, dir3);
+                var files = FileHelper.ReadDirectory(dir3).ToList();
+                Assert.That(files.Count, Is.EqualTo(1));
+                Assert.That(files[0].Path, Is.EqualTo("file.txt"));
+                Assert.That(Normalize(files[0].Content), Is.EqualTo("abd\ndef\ntyu\nghi"));
+            }
+            finally
+            {
+                Directory.Delete(dir1, true);
+                Directory.Delete(dir2, true);
+                Directory.Delete(dir3, true);
+            }
+        }
     }
 
 
