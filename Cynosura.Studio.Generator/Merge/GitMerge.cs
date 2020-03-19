@@ -112,6 +112,7 @@ namespace Cynosura.Studio.Generator.Merge
                 var myFilePath = Path.Combine(myDirectoryPath, compareFile.OriginalName);
                 if (compareFile.LeftPath == null)
                 {
+                    EnsureDirectoryExists(myFilePath);
                     File.Copy(compareFile.RightPath, myFilePath, true);
                 }
                 else if (compareFile.RightPath == null)
@@ -129,6 +130,13 @@ namespace Cynosura.Studio.Generator.Merge
                     }
                 }
             }
+        }
+
+        private void EnsureDirectoryExists(string filePath)
+        {
+            var directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
         }
 
         private async Task<int> RunCommandAsync(string command, string arguments, string workingDirectory)
