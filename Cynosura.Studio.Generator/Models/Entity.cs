@@ -92,13 +92,13 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                var nameField = Fields.FirstOrDefault(f => f.Name == "Name");
+                var nameField = AllFields.FirstOrDefault(f => f.Name == "Name");
                 if (nameField != null)
                     return nameField;
-                var stringField = Fields.FirstOrDefault(f => f.Type == FieldType.String);
+                var stringField = AllFields.FirstOrDefault(f => f.Type == FieldType.String);
                 if (stringField != null)
                     return stringField;
-                return Fields.FirstOrDefault();
+                return AllFields.FirstOrDefault();
             }
         }
 
