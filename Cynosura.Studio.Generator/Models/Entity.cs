@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -127,7 +127,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return EntityFields.Select(f => f.Entity)
+                return AllEntityFields.Select(f => f.Entity)
                     .Where(e => e.Id != Id)
                     .Distinct()
                     .ToList();
@@ -159,7 +159,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return EnumFields.Select(f => f.Enum)
+                return AllEnumFields.Select(f => f.Enum)
                     .Distinct()
                     .ToList();
             }
