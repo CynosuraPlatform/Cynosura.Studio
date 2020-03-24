@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -113,6 +113,16 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
+        public IList<Field> AllEntityFields
+        {
+            get
+            {
+                return AllFields.Where(f => f.EntityId != null)
+                    .ToList();
+            }
+        }
+        
+        [JsonIgnore]
         public IList<Entity> DependentEntities
         {
             get
@@ -130,6 +140,16 @@ namespace Cynosura.Studio.Generator.Models
             get
             {
                 return Fields.Where(f => f.EnumId != null)
+                    .ToList();
+            }
+        }
+        
+        [JsonIgnore]
+        public IList<Field> AllEnumFields
+        {
+            get
+            {
+                return AllFields.Where(f => f.EnumId != null)
                     .ToList();
             }
         }
