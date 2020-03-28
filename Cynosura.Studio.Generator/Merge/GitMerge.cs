@@ -10,6 +10,8 @@ namespace Cynosura.Studio.Generator.Merge
 {
     public class GitMerge : IDirectoryMerge
     {
+        private static string[] _copyFilesIgnores = new[] { ".git", ".vs", "bin", "obj", "Debug", "Release", "node_modules" };
+
         private readonly ILogger<GitMerge> _logger;
 
         public GitMerge(ILogger<GitMerge> logger)
@@ -31,7 +33,7 @@ namespace Cynosura.Studio.Generator.Merge
 
             var exportPath = GetTempPath();
 
-            await ExportCurrent(myDirectoryPath, exportPath);
+            ExportCurrent(myDirectoryPath, exportPath);
 
             await CommitCurrent(repositoryPath, exportPath);
 
@@ -82,17 +84,10 @@ namespace Cynosura.Studio.Generator.Merge
             await RunCommandAsync("git", "checkout master", repositoryPath);
         }
 
-        private async Task ExportCurrent(string currentDirectoryPath, string exportPath)
+        private void ExportCurrent(string currentDirectoryPath, string exportPath)
         {
             Directory.CreateDirectory(exportPath);
-            if (HasDirectory(currentDirectoryPath, ".git"))
-            {
-                await RunCommandAsync("git", $"checkout-index -a -f --prefix={exportPath}{Path.DirectorySeparatorChar}", currentDirectoryPath);
-            }
-            else
-            {
-                CopyAllFiles(currentDirectoryPath, exportPath);
-            }
+            CopyAllFiles(currentDirectoryPath, exportPath, _copyFilesIgnores);
         }
 
         private async Task CommitCurrent(string repositoryPath, string currentDirectoryPath)
@@ -200,7 +195,7 @@ namespace Cynosura.Studio.Generator.Merge
             return tcs.Task;
         }
 
-        private void CopyAllFiles(string sourceDirectory, string destinationDirectory)
+        private void CopyAllFiles(string sourceDirectory, string destinationDirectory, IList<string> ignores = null)
         {
             var dir = new DirectoryInfo(sourceDirectory);
 
@@ -219,14 +214,22 @@ namespace Cynosura.Studio.Generator.Merge
             var files = dir.GetFiles();
             foreach (var file in files)
             {
+                if (ignores != null && ignores.Contains(file.Name))
+                {
+                    continue;
+                }
                 var destinationPath = Path.Combine(destinationDirectory, file.Name);
                 file.CopyTo(destinationPath, false);
             }
 
             foreach (var subdir in dirs)
             {
+                if (ignores != null && ignores.Contains(subdir.Name))
+                {
+                    continue;
+                }
                 var destinationPath = Path.Combine(destinationDirectory, subdir.Name);
-                CopyAllFiles(subdir.FullName, destinationPath);
+                CopyAllFiles(subdir.FullName, destinationPath, ignores);
             }
         }
 
