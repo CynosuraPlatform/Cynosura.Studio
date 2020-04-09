@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
+using Cynosura.Studio.Core;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Generator.PackageFeed.Models;
 using Cynosura.Studio.Generator.PackageFeed;
 using Cynosura.Studio.Data;
+using Cynosura.Studio.Infrastructure;
 using Cynosura.Studio.Web.Infrastructure;
 using Cynosura.Web;
+using Cynosura.Web.Authorization;
 using Cynosura.Web.Infrastructure;
-using Cynosura.Web.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using Cynosura.Studio.Generator;
 
 namespace Cynosura.Studio.Web
 {
@@ -45,7 +46,7 @@ namespace Cynosura.Studio.Web
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<NugetSettings>(Configuration.GetSection("Nuget"));
             services.Configure<LocalFeedOptions>(Configuration.GetSection("LocalFeed"));
@@ -59,7 +60,15 @@ namespace Cynosura.Studio.Web
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<DataContext>();
 
-            services.AddIdentityServer()
+            services.AddIdentityServer(o =>
+                {
+                    var authority = Configuration["Authority"];
+                    if (!string.IsNullOrEmpty(authority))
+                    {
+                        o.IssuerUri = authority;
+                        o.PublicOrigin = authority;
+                    }
+                })
                 .AddApiAuthorization<User, DataContext>()
                 .AddProfileService<MyProfileService>();
 
@@ -112,11 +121,12 @@ namespace Cynosura.Studio.Web
 
             services.AddGrpc();
 
-            var builder = new ContainerBuilder();
-            AutofacConfig.ConfigureAutofac(builder, Configuration);
-            builder.Populate(services);
-            var applicationContainer = builder.Build();
-            return new AutofacServiceProvider(applicationContainer);
+            services.AddWeb(Configuration);
+            services.AddInfrastructure(Configuration);
+            services.AddData();
+            services.AddCore(Configuration);
+            services.AddGenerator(Configuration);
+            services.AddCynosuraWeb();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

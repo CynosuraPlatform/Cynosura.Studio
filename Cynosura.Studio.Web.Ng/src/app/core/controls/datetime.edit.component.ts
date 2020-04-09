@@ -117,4 +117,8 @@ export class DateTimeEditComponent implements ControlValueAccessor, MatFormField
             this.stateChanges.next();
         }
     }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
 }

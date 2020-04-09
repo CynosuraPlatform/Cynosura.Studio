@@ -10,8 +10,7 @@ namespace Cynosura.Studio.CliTool
         {
             var app = new CliApp(args);
             var services = new ServiceCollection();
-            var serviceProvider = app.ConfigureServices(services);
-            app.Configure(serviceProvider);
+            app.ConfigureServices(services);
             try
             {
                 var result = await app.StartAsync();

@@ -123,4 +123,8 @@ export class TimeEditComponent implements ControlValueAccessor, MatFormFieldCont
             this.stateChanges.next();
         }
     }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
 }

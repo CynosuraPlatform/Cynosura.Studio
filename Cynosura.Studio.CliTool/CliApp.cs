@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.CliTool.Commands;
+using Cynosura.Studio.Generator;
 using Cynosura.Studio.Generator.PackageFeed;
 using Cynosura.Studio.Generator.PackageFeed.Models;
 using Microsoft.Extensions.Configuration;
@@ -80,19 +81,15 @@ namespace Cynosura.Studio.CliTool
 
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
             services.Configure<NugetSettings>(_configurationRoot.GetSection("Nuget"));
             services.Configure<LocalFeedOptions>(_configurationRoot.GetSection("LocalFeed"));
             services.AddLogging();
-            var containerBuilder = new ContainerBuilder();
-            AutofacConfig.ConfigureAutofac(containerBuilder, _configurationRoot);
-            containerBuilder.Populate(services);
-            var container = containerBuilder.Build();
-            _container = container;
-            _lifetimeScope = container.BeginLifetimeScope();
-            return new AutofacServiceProvider(container);
+
+            services.AddCliTool();
+            services.AddGenerator(_configurationRoot);
         }
 
         public void Configure(IServiceProvider serviceProvider)

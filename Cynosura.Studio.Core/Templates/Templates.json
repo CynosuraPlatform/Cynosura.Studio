@@ -181,16 +181,6 @@
     "targets": []
   },
   {
-    "filePath": "*.Data\\Autofac",
-    "fileName": "{Name}Module.cs",
-    "templatePath": "Data\\AutofacModule.stg",
-    "types": [
-      "Entity"
-    ],
-    "insertAfter": null,
-    "targets": []
-  },
-  {
     "filePath": "*.Data\\Configurations",
     "fileName": "{Name}Configuration.cs",
     "templatePath": "Data\\Configuration.stg",

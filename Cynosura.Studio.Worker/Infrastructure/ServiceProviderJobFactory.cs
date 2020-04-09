@@ -1,36 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Simpl;
 using Quartz.Spi;
 
 namespace Cynosura.Studio.Worker.Infrastructure
 {
-    public class AutofacJobFactory : SimpleJobFactory
+    public class ServiceProviderJobFactory : SimpleJobFactory
     {
-        private readonly Dictionary<IJob, ILifetimeScope> _scopes = new Dictionary<IJob, ILifetimeScope>();
-        private readonly ILifetimeScope _lifetimeScope;
+        private readonly Dictionary<IJob, IServiceScope> _scopes = new Dictionary<IJob, IServiceScope>();
+        private readonly IServiceProvider _serviceProvider;
 
-        public AutofacJobFactory(ILifetimeScope lifetimeScope)
+        public ServiceProviderJobFactory(IServiceProvider serviceProvider)
         {
-            _lifetimeScope = lifetimeScope;
+            _serviceProvider = serviceProvider;
         }
 
         public override IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
             try
             {
-                var scope = _lifetimeScope.BeginLifetimeScope();
-                var job = (IJob)scope.Resolve(bundle.JobDetail.JobType);
+                var scope = _serviceProvider.CreateScope();
+                var job = (IJob)scope.ServiceProvider.GetRequiredService(bundle.JobDetail.JobType);
                 _scopes[job] = scope;
                 return job;
             }
             catch (Exception e)
             {
                 throw new SchedulerException(
-                    $"Problem while instantiating job '{bundle.JobDetail.Key}' from the AutofacJobFactory.", e);
+                    $"Problem while instantiating job '{bundle.JobDetail.Key}' from the ServiceProviderJobFactory.", e);
             }
         }
 

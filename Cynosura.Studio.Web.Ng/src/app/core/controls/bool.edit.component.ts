@@ -63,4 +63,8 @@ export class BoolEditComponent implements ControlValueAccessor {
     writeValue(value) {
         this.innerValue = value;
     }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
 }

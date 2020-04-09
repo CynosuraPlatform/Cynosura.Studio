@@ -1,23 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Autofac;
+using System.Text;
 using AutoMapper;
-using Cynosura.Studio.Generator.Autofac;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool
 {
-    public class AutofacConfig
+    public static class ServiceCollectionExtensions
     {
-        public static void ConfigureAutofac(ContainerBuilder builder, IConfiguration configuration)
+        public static IServiceCollection AddCliTool(this IServiceCollection services)
         {
             var assemblies = GetPlatformAndAppAssemblies();
-            builder.RegisterModule<GeneratorModule>();
-            builder.Register(c => new MapperConfiguration(cfg =>
-            {
-                cfg.AddMaps(assemblies);
-            }).CreateMapper()).As<IMapper>().SingleInstance();
+            services.AddSingleton<IMapper>(sp => new MapperConfiguration(cfg => { cfg.AddMaps(assemblies); }).CreateMapper());
+            return services;
         }
 
         private static Assembly[] GetPlatformAndAppAssemblies()

@@ -1,25 +1,25 @@
-using Autofac;
+using System;
 using Cynosura.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.Data
 {
     public class DatabaseFactory : IDatabaseFactory
     {
-        private readonly ILifetimeScope _lifetimeScope;
+        private readonly IServiceProvider _serviceProvider;
         private DataContext _dataContext;
 
-        public DatabaseFactory(ILifetimeScope lifetimeScope)
+        public DatabaseFactory(IServiceProvider serviceProvider)
         {
-            _lifetimeScope = lifetimeScope;
+            _serviceProvider = serviceProvider;
         }
 
         public DbContext Get()
         {
             if (_dataContext == null)
             {
-                _dataContext = _lifetimeScope.Resolve<DataContext>();
+                _dataContext = _serviceProvider.GetRequiredService<DataContext>();
             }
             return _dataContext;
         }

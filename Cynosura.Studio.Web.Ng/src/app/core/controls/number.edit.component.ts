@@ -110,4 +110,8 @@ export class NumberEditComponent implements ControlValueAccessor, MatFormFieldCo
             this.stateChanges.next();
         }
     }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
+    }
 }

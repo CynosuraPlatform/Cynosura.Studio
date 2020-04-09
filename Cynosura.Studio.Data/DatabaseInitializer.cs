@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Data
             }
 
             var administratorEmail = "admin@cynosura.ru";
-            if (await _userManager.FindByNameAsync(administratorEmail) == null)
+            if (!(await _userManager.Users.AnyAsync()))
             {
                 var user = new User()
                 {
