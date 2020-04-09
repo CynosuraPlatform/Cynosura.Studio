@@ -107,7 +107,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return Fields.Where(f => f.EntityId != null)
+                return AllFields.Where(f => f.EntityId != null)
                     .ToList();
             }
         }
