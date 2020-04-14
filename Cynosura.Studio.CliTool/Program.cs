@@ -13,7 +13,8 @@ namespace Cynosura.Studio.CliTool
             app.ConfigureServices(services);
             try
             {
-                var result = await app.StartAsync();
+                var serviceProvider = services.BuildServiceProvider();
+                var result = await app.StartAsync(serviceProvider);
                 if (!result)
                 {
                     Environment.ExitCode = 1;

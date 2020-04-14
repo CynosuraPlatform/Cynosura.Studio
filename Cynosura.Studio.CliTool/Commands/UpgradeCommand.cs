@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Autofac;
 using Cynosura.Studio.Generator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
     public class UpgradeCommand: AppCommand
     {
-        public UpgradeCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope) 
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public UpgradeCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider) 
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
         }
 
         public override async Task<bool> ExecuteAsync(string[] args)
         {
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<CodeGenerator>();
             var accessor = new SolutionAccessor(SolutionDirectory);
             await generator.UpgradeSolutionAsync(accessor);
             Console.WriteLine($"Solution {accessor.Namespace} upgraded successfully");

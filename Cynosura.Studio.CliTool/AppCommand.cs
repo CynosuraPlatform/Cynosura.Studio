@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool
 {
@@ -11,15 +11,15 @@ namespace Cynosura.Studio.CliTool
         protected readonly string Feed;
         protected readonly string Src;
         protected readonly string TemplateName;
-        protected readonly ILifetimeScope LifetimeScope;
+        protected readonly ServiceProvider ServiceProvider;
 
-        protected AppCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope)
+        protected AppCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider)
         {
             SolutionDirectory = solutionDirectory;
             Feed = feed;
             Src = src;
             TemplateName = templateName;
-            LifetimeScope = lifetimeScope;
+            ServiceProvider = serviceProvider;
         }
 
         protected IEnumerable<string> GetArguments(IEnumerable<string> args)
