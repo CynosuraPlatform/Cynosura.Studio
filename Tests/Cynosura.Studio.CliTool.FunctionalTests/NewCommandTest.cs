@@ -24,7 +24,7 @@ namespace Cynosura.Studio.CliTool.FunctionalTests
             Console.SetOut(outBuffer);
 
             // Act
-            await Program.Main($"new ${ProjectName} --solution {_directoryName}".Split(" "));
+            await Program.Main($"new {ProjectName} --solution {_directoryName}".Split(" "));
 
             var path = Path.Combine(Environment.CurrentDirectory, _directoryName);
             _testOutputHelper.WriteLine($"Project directory: {path}");
@@ -32,7 +32,7 @@ namespace Cynosura.Studio.CliTool.FunctionalTests
             
             // Assert
             Assert.True(Directory.Exists(path), "Directory.Exists(_directoryName)");
-            Assert.True(File.Exists(Path.Combine(path, $"{ProjectName}.sln")));
+            Assert.True(File.Exists(Path.Combine(path, $"{ProjectName}.sln")), "File.Exists(Path.Combine(path, $'{ProjectName}.sln'))");
             Assert.True(outBuffer.GetStringBuilder().ToString().Contains($"Solution {ProjectName} created"),
                 "outBuffer.GetStringBuilder().ToString().Contains($'Solution {ProjectName} created')");
         }
