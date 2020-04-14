@@ -23,7 +23,7 @@ namespace Cynosura.Studio.CliTool
         private string _solutionDirectory;
         private string _feed;
         private string _src;
-        private string _templateName;
+        private string _templateName = "Cynosura.Template";
 
         private string[] _arguments;
         private Dictionary<string, string> _settingsOverrides;
