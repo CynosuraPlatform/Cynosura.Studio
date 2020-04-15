@@ -1,17 +1,16 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Cynosura.Studio.Generator.PackageFeed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace Cynosura.Studio.Generator.Tests
 {
-    [TestFixture]
     public class PackageFeedTests
     {
-        [Test]
+        [Fact]
         public async Task FeedListing()
         {
             var config = GetConfig();
@@ -19,7 +18,7 @@ namespace Cynosura.Studio.Generator.Tests
             configMock.Setup(s => s.Value).Returns(config);
             var feed = new NugetFeed(configMock.Object);
             var versions = await feed.GetVersionsAsync("Cynosura.Template");
-            Assert.IsNotEmpty(versions);
+            Assert.NotEmpty(versions);
         }
         
         private NugetSettings GetConfig()

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Cynosura.Studio.Generator.Merge;
-using NUnit.Framework;
+using Xunit;
 
 namespace Cynosura.Studio.Generator.Tests
 {
-    [TestFixture]
-    class DirectoryCompareHelperTests
+    public class DirectoryCompareHelperTests
     {
-        [Test]
+        [Fact]
         public void Compare_Simple()
         {
             var dir1 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("file.txt", "abd def ghi") });
@@ -19,8 +18,8 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2);
-                Assert.That(compares.Count, Is.EqualTo(1));
-                Assert.That(compares[0].Name, Is.EqualTo("file.txt"));
+                Assert.Equal(1, compares.Count);
+                Assert.Equal("file.txt", compares[0].Name);
             }
             finally
             {
@@ -29,7 +28,7 @@ namespace Cynosura.Studio.Generator.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public void Compare_Subdirectories()
         {
             var dir1 = FileHelper.InitDirectory(new[] { new FileHelper.FileInfo("path/file.txt", "abd def ghi") });
@@ -38,8 +37,8 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2);
-                Assert.That(compares.Count, Is.EqualTo(1));
-                Assert.That(compares[0].Name, Is.EqualTo($"path{Path.DirectorySeparatorChar}file.txt"));
+                Assert.Equal(1, compares.Count);
+                Assert.Equal($"path{Path.DirectorySeparatorChar}file.txt", compares[0].Name);
             }
             finally
             {
@@ -48,7 +47,7 @@ namespace Cynosura.Studio.Generator.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public void Compare_WithIgnore()
         {
             var dir1 = FileHelper.InitDirectory(new[] { 
@@ -60,8 +59,8 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2, ignores: new[] { $"path{Path.DirectorySeparatorChar}" });
-                Assert.That(compares.Count, Is.EqualTo(1));
-                Assert.That(compares[0].Name, Is.EqualTo($"path2{Path.DirectorySeparatorChar}file.txt"));
+                Assert.Equal(1, compares.Count);
+                Assert.Equal($"path2{Path.DirectorySeparatorChar}file.txt", compares[0].Name);
             }
             finally
             {
