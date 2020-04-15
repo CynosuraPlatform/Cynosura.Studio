@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.Infrastructure", "Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj", "{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.CliTool.FunctionalTests", "Tests\Cynosura.Studio.CliTool.FunctionalTests\Cynosura.Studio.CliTool.FunctionalTests.csproj", "{74362532-D617-4B31-A901-95AB0D57D312}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74362532-D617-4B31-A901-95AB0D57D312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74362532-D617-4B31-A901-95AB0D57D312}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74362532-D617-4B31-A901-95AB0D57D312}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74362532-D617-4B31-A901-95AB0D57D312}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{092939FA-9B25-4484-B96E-E0D613FD449F} = {86D3C0EE-BB81-46CB-BE79-2EA9BBD9DD3C}
 		{7024A4E3-7261-4722-9CEF-E726FC1B8FC1} = {86D3C0EE-BB81-46CB-BE79-2EA9BBD9DD3C}
 		{2D20317F-B1CF-4670-9001-797DAD1BC0DA} = {86D3C0EE-BB81-46CB-BE79-2EA9BBD9DD3C}
+		{74362532-D617-4B31-A901-95AB0D57D312} = {86D3C0EE-BB81-46CB-BE79-2EA9BBD9DD3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B67DE6B-2794-4D74-8B11-B9B93DA5E671}

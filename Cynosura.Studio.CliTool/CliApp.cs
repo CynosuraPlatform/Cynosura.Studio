@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Cynosura.Studio.CliTool.Commands;
 using Cynosura.Studio.Generator;
 using Cynosura.Studio.Generator.PackageFeed;
@@ -16,14 +14,12 @@ namespace Cynosura.Studio.CliTool
 {
     public class CliApp
     {
-        private IContainer _container;
-        private ILifetimeScope _lifetimeScope;
         private readonly IConfigurationRoot _configurationRoot;
         private IConfigService _configService;
         private string _solutionDirectory;
         private string _feed;
         private string _src;
-        private string _templateName;
+        private string _templateName = "Cynosura.Template";
 
         private string[] _arguments;
         private Dictionary<string, string> _settingsOverrides;
@@ -125,22 +121,23 @@ namespace Cynosura.Studio.CliTool
         }
 
 
-        public async Task<bool> StartAsync()
+        public async Task<bool> StartAsync(ServiceProvider serviceProvider)
         {
+            
             Console.CancelKeyPress += (sender, e) => e.Cancel = true;
             var commands = new Dictionary<string, AppCommand>
             {
-                {"list", new ListCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) },
-                {"generate", new GenerateCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) },
-                {"new", new NewCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) },
-                {"upgrade", new UpgradeCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) },
-                {"info", new InfoCommand(_solutionDirectory, _feed, _src,_templateName, _lifetimeScope) }
+                {"list", new ListCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
+                {"generate", new GenerateCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
+                {"new", new NewCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
+                {"upgrade", new UpgradeCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
+                {"info", new InfoCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) }
             };
             var helpProps = _setProps.Keys.ToDictionary(k => k, v => v);
             helpProps["debug"] = "yes";
             helpProps["src"] = "local feed path";
             commands.Add("help",
-                new HelpCommand(_solutionDirectory, _feed, _src, _templateName, _lifetimeScope, commands, helpProps));
+                new HelpCommand(_solutionDirectory, _feed, _src, _templateName, serviceProvider, commands, helpProps));
             var command = _arguments.Length > 0 ? _arguments[0] : null;
             if (!string.IsNullOrEmpty(command) && commands.ContainsKey(command))
             {
