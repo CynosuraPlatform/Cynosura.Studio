@@ -26,34 +26,55 @@ namespace Cynosura.Studio.Generator
         public SolutionAccessor(string path)
         {
             Path = path;
-            var solutionFile = Directory.GetFiles(Path, "*.sln").FirstOrDefault();
-            if (solutionFile == null)
-                throw new Exception("Solution file not found");
-            var info = new FileInfo(solutionFile);
-            Namespace = Regex.Replace(info.Name, "\\.sln$", "");
-            Projects = GetProjects(Path);
-            Metadata = GetMetadata();
+            var metadata = GetMetadataPath();
+
+            if (metadata != null)
+            {
+                Metadata = GetMetadata();
+                var solutionFile = System.IO.Path.Combine(Path, Metadata.SolutionFile ?? $"{Metadata.Name}.sln");
+                if (!File.Exists(solutionFile))
+                {
+                    throw new Exception("Solution file not found");
+                }
+                var info = new FileInfo(solutionFile);
+                Namespace = Regex.Replace(info.Name, "\\.sln$", "");
+                Projects = GetProjects(Path);
+            }
+            else
+            {
+                var solutionFile = Directory.GetFiles(Path, "*.sln").FirstOrDefault();
+                if (solutionFile == null)
+                    throw new Exception("Solution file not found");
+                var info = new FileInfo(solutionFile);
+                Namespace = Regex.Replace(info.Name, "\\.sln$", "");
+                Projects = GetProjects(Path);
+                Metadata = GetMetadataFromOldPath();
+            }
+           
         }
 
         private string GetMetadataPath()
         {
             var newLocation = System.IO.Path.Combine(Path, ".cynosura.json");
-            if (File.Exists(newLocation))
-            {
-                return newLocation;
-            }
+            return File.Exists(newLocation) ? newLocation : null;
+        }
+
+        private string GetMetadataOldPath()
+        {
             var coreProject = GetProject("Core");
             var oldLocation = System.IO.Path.Combine(coreProject.Path, "Metadata", "Solution.json");
-            if (File.Exists(oldLocation))
-            {
-                return oldLocation;
-            }
-            throw new FileNotFoundException();
+            return File.Exists(oldLocation) ? oldLocation : null;
         }
 
         private SolutionMetadata GetMetadata()
         {
             var metadataPath = GetMetadataPath();
+            return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
+        }
+        
+        private SolutionMetadata GetMetadataFromOldPath()
+        {
+            var metadataPath = GetMetadataOldPath();
             return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
         }
 

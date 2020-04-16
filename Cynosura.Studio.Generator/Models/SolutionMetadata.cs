@@ -20,5 +20,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             return false;
         }
+        
+        public string SolutionFile { get; set; }
     }
 }
