@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Fields";
+
+message Field {
+    string id = 8;
+    string name = 1;
+    string displayName = 2;
+    int32 size = 3;
+    string entityId = 4;
+    bool isRequired = 5;
+    string enumId = 6;
+    bool isSystem = 7;
+}
+
+message FieldPageModel {
+    repeated Field pageItems = 1;
+    int32 totalItems = 2;
+    int32 currentPageIndex = 3;
+}

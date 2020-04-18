@@ -1,0 +1,33 @@
+<mat-card *ngIf="user" class="mat-card-view">
+
+    <mat-card-header>
+        <mat-card-title>User <app-user-show [value]="user"></app-user-show></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="onEdit()">Edit</button>
+        <button mat-raised-button type="button" (click)="onBack()">Back</button>
+    </mat-card-actions>
+
+    <div class="field-view">
+        <label>Username</label>
+        <div>
+            <app-text-view [value]="user.userName"></app-text-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Email</label>
+        <div>
+            <app-text-view [value]="user.email"></app-text-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Roles</label>
+        <div *ngFor="let role of userRoles">
+            {{ role.name }}               
+        </div>
+    </div>
+    
+
+
+</mat-card>

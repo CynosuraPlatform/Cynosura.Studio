@@ -1,31 +1,31 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
 
-import { Subject } from "rxjs";
-
-import { Entity } from "./entity.model";
-import { EntityService } from "./entity.service";
+import { Entity } from './entity.model';
+import { EntityService } from './entity.service';
 
 @Component({
-    selector: "app-entity-select",
-    templateUrl: "./entity-select.component.html",
+    selector: 'app-entity-select',
+    templateUrl: './entity-select.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: EntitySelectComponent }
     ]
 })
 
-export class EntitySelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<string | null>, OnDestroy, DoCheck {
+export class EntitySelectComponent implements OnInit, ControlValueAccessor,
+    MatFormFieldControl<string | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-entity-select";
+    controlType = 'app-entity-select';
     id = `entity-select-${EntitySelectComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -47,9 +47,6 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor, MatF
 
     @Input()
     name: string;
-
-    @Input()
-    label: string;
 
     @Input()
     placeholder: string;
@@ -108,7 +105,7 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor, MatF
     }
 
     ngOnInit(): void {
-        this.entityService.getEntities({ solutionId: this.solutionId }).then(entities => this.entities = entities.pageItems);
+        this.entityService.getEntities({ solutionId: this.solutionId }).subscribe(entities => this.entities = entities.pageItems);
     }
 
     ngOnDestroy() {
@@ -117,7 +114,7 @@ export class EntitySelectComponent implements OnInit, ControlValueAccessor, MatF
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {

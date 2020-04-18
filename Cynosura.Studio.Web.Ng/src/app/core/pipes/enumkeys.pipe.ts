@@ -1,6 +1,6 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: "enumkeys" })
+@Pipe({ name: 'enumkeys' })
 export class EnumKeysPipe implements PipeTransform {
     transform(value, args: string[]): any {
         const keys = [];

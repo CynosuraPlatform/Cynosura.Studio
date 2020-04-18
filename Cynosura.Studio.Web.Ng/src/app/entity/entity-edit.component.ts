@@ -1,20 +1,26 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { plural } from 'pluralize';
 
-import { plural } from "pluralize";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
+import { ConvertStringTo } from '../core/converter.helper';
 
-import { Entity } from "../entity-core/entity.model";
-import { EntityService } from "../entity-core/entity.service";
-import { UpdateEntity, CreateEntity } from "../entity-core/entity-request.model";
+import { Entity } from '../entity-core/entity.model';
+import { EntityService } from '../entity-core/entity.service';
+import { UpdateEntity, CreateEntity } from '../entity-core/entity-request.model';
 
-import { Error } from "../core/error.model";
-
+class DialogData {
+    id: string;
+    solutionId: number;
+}
 @Component({
-    selector: "app-entity-edit",
-    templateUrl: "./entity-edit.component.html",
-    styleUrls: ["./entity-edit.component.scss"]
+    selector: 'app-entity-edit',
+    templateUrl: './entity-edit.component.html',
+    styleUrls: ['./entity-edit.component.scss']
 })
 export class EntityEditComponent implements OnInit {
     id: string;
@@ -32,21 +38,29 @@ export class EntityEditComponent implements OnInit {
     solutionId: number;
     previousValue: string;
 
-    constructor(private entityService: EntityService,
-                private route: ActivatedRoute,
-                private router: Router,
+    constructor(public dialogRef: MatDialogRef<EntityEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private entityService: EntityService,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
+        this.id = data.id;
+        this.solutionId = data.solutionId;
+    }
 
-        this.previousValue = "";
+    static show(dialog: MatDialog, solutionId: number, id: string): Observable<any> {
+        const dialogRef = dialog.open(EntityEditComponent, {
+            width: '800px',
+            data: {
+                solutionId: solutionId,
+                id: id
+            }
+        });
+        return dialogRef.afterClosed()
+            .pipe(filter(res => res === true));
     }
 
     ngOnInit(): void {
-        this.route.params.forEach((params: Params) => {
-            const id: string = params.id === "0" ? null : params.id;
-            this.solutionId = this.route.snapshot.queryParams.solutionId;
-            this.getEntity(id);
-        });
+        this.getEntity();
 
         this.entityForm.controls.name.valueChanges.subscribe((value: string) => {
             if (!this.entityForm.controls.pluralName.value ||
@@ -58,63 +72,44 @@ export class EntityEditComponent implements OnInit {
             this.previousValue = value;
         });
     }
-    private getEntity(id: string): void {
-        this.id = id;
-        if (!id) {
-            this.entity = new Entity();
+
+    private getEntity() {
+        const getEntity$ = !this.id ?
+            of(new Entity()) :
+            this.entityService.getEntity({ solutionId: this.solutionId, id: this.id });
+        getEntity$.subscribe(entity => {
+            this.entity = entity;
             this.entityForm.patchValue(this.entity);
-        } else {
-            this.entityService.getEntity({ solutionId: this.solutionId, id }).then(entity => {
-                this.entity = entity;
-                this.entityForm.patchValue(this.entity);
-            });
-        }
+        });
     }
 
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave(): void {
         this.saveEntity();
     }
 
-    private saveEntity(): void {
+    private saveEntity() {
+        let saveEntity$: Observable<{}>;
         if (this.id) {
             const updateEntity: UpdateEntity = this.entityForm.value;
             updateEntity.solutionId = this.solutionId;
             updateEntity.properties = this.entity.properties;
             updateEntity.fields = this.entity.fields;
-            this.entityService.updateEntity(updateEntity)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+            saveEntity$ = this.entityService.updateEntity(updateEntity);
         } else {
             const createEntity: CreateEntity = this.entityForm.value;
             createEntity.solutionId = this.solutionId;
             createEntity.properties = this.entity.properties;
             createEntity.fields = this.entity.fields;
-            this.entityService.createEntity(createEntity)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
+            saveEntity$ = this.entityService.createEntity(createEntity);
         }
-    }
-
-    generate(): void {
-        this.entityService.generateEntity({ solutionId: this.solutionId, id: this.id })
-            .then(
-                () => { },
-                error => this.onError(error)
-            );
+        saveEntity$.subscribe(() => this.dialogRef.close(true),
+            error => this.onError(error));
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.entityForm, error);
         }
     }

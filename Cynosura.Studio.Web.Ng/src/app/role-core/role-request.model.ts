@@ -1,5 +1,5 @@
-import { RoleFilter } from "./role-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { RoleFilter } from './role-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 
 export class GetRoles {
     pageIndex?: number;

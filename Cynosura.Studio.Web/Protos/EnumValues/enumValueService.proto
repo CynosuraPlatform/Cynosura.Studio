@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+import "Protos/EnumValues/enumValueModel.proto";
+import "Protos/EnumValues/enumValueFilter.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.EnumValues";
+
+message CreateEnumValueRequest {
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof displayNameOneOf {
+        string displayName = 2;
+    }
+    oneof valueOneOf {
+        int32 value = 3;
+    }
+    oneof enumIdOneOf {
+        string enumId = 4;
+    }
+}
+
+message UpdateEnumValueRequest {
+    string id = 5;
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof displayNameOneOf {
+        string displayName = 2;
+    }
+    oneof valueOneOf {
+        int32 value = 3;
+    }
+    oneof enumIdOneOf {
+        string enumId = 4;
+    }
+}

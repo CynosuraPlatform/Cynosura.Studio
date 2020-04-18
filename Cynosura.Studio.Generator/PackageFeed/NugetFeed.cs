@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cynosura.Core.Services;
+using Cynosura.Studio.Generator.PackageFeed.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -23,13 +26,15 @@ namespace Cynosura.Studio.Generator.PackageFeed
             _settings = settings.Value;
         }
 
-        private HttpClient GetHttpClient()
+        private HttpClient GetHttpClient(HttpMessageHandler handler = null)
         {
             if (string.IsNullOrEmpty(_settings.FeedUrl))
             {
                 throw new ServiceException("NugetFeed/FeedUrl not configured");
             }
-            var httpClient = new HttpClient();
+
+            var httpClient =
+                new HttpClient(handler ?? new HttpClientHandler {AutomaticDecompression = DecompressionMethods.GZip});
             if (!string.IsNullOrEmpty(_settings.Username) || !string.IsNullOrEmpty(_settings.Password))
             {
                 var encryptedCredentials = Convert.ToBase64String(
@@ -39,37 +44,54 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return httpClient;
         }
 
-        private async Task<string> GetResourceAsync(string type)
+        private async Task<FeedData> GetFeedDataAsync()
         {
             var httpClient = GetHttpClient();
             var feedResult = await httpClient.GetStringAsync(_settings.FeedUrl);
             var feed = feedResult.DeserializeFromJson<FeedData>();
-            var resource = feed.Resources.Where(r => r.Type == type)
-                .Select(r => r.Id)
-                .FirstOrDefault();
-            if (resource != null)
-                resource = Regex.Replace(resource, "/$", "");
-            return resource;
+            return feed;
         }
 
         private async Task<string> GetPackageBaseAddressAsync()
         {
-            return await GetResourceAsync("PackageBaseAddress/3.0.0");
+            var feed = await GetFeedDataAsync();
+            return feed.GetExplicitService("PackageBaseAddress/3.0.0");
         }
 
         private async Task<string> GetSearchAutocompleteServiceAsync()
         {
-            return await GetResourceAsync("SearchAutocompleteService");
+            var feed = await GetFeedDataAsync();
+            return feed.GetExplicitService("SearchAutocompleteService");
+        }
+        
+        private async Task<string> GetRegistrationsBaseUrlAsync()
+        {
+            var feed = await GetFeedDataAsync();
+            return feed.GetType("RegistrationsBaseUrl", _settings.ListingApiVersion ??  "3.6.0");
         }
 
         public async Task<IList<string>> GetVersionsAsync(string packageName)
         {
-            var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
-            var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
             var httpClient = GetHttpClient();
-            var versionsResult = await httpClient.GetStringAsync(versionsUrl);
-            var versions = versionsResult.DeserializeFromJson<VersionData>();
-            return OrderVersionsDescending(versions.Data);
+            if (_settings.ListingApi == NugetListingApi.RegistrationsBaseUrl)
+            {
+                var registrationsBase =  new Uri(await GetRegistrationsBaseUrlAsync());
+                var versionsUrl = new Uri(registrationsBase, $"{packageName.ToLower()}/index.json");
+                var versionsResult = await httpClient.GetStringAsync(versionsUrl);
+                var response = versionsResult.DeserializeFromJson<RegistrationResponse>();
+                var versions = response.Items.SelectMany(s => s.Items)
+                    .Where(w => w.CatalogEntry.Listed)
+                    .Select(s => s.CatalogEntry.Version);
+                return OrderVersionsDescending(versions);
+            }
+            else
+            {
+                var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
+                var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
+                var versionsResult = await httpClient.GetStringAsync(versionsUrl);
+                var versions = versionsResult.DeserializeFromJson<VersionData>();
+                return OrderVersionsDescending(versions.Data);
+            }
         }
 
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
@@ -78,8 +100,8 @@ namespace Cynosura.Studio.Generator.PackageFeed
             var filePath = Path.Combine(path, fileName);
             if (!File.Exists(filePath))
             {
-                var baseAddress = await GetPackageBaseAddressAsync();
-                var packageUrl = $"{baseAddress}/{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.{version.ToLower()}.nupkg";
+                var baseAddress = new Uri(await GetPackageBaseAddressAsync());
+                var packageUrl = new Uri(baseAddress, $"{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.{version.ToLower()}.nupkg");
                 var httpClient = GetHttpClient();
                 using (var resultStream = await httpClient.GetStreamAsync(packageUrl))
                 {
@@ -99,7 +121,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return Path.Combine(extractedPath, "content");
         }
 
-        private IList<string> OrderVersionsDescending(IList<string> versions)
+        private IList<string> OrderVersionsDescending(IEnumerable<string> versions)
         {
             return versions.OrderByDescending(v => v, new VersionComparer()).ToList();
         }
@@ -113,46 +135,48 @@ namespace Cynosura.Studio.Generator.PackageFeed
         {
             public string Version { get; set; }
             public IList<FeedResource> Resources { get; set; }
-        }
 
-        public class FeedResource
-        {
-            [JsonProperty(PropertyName = "@id")]
-            public string Id { get; set; }
-
-            [JsonProperty(PropertyName = "@type")]
-            public string Type { get; set; }
-
-            public string Comment { get; set; }
-        }
-
-        public class VersionData
-        {
-            public IList<string> Data { get; set; }
-        }
-
-        class VersionComparer : IComparer<string>
-        {
-            public int Compare(string x, string y)
+            public string GetExplicitService(string explicitType)
             {
-                var xSplit = x.Split('.', '-');
-                var ySplit = y.Split('.', '-');
-                for (int i = 0; i < Math.Min(xSplit.Length, ySplit.Length); i++)
+                return Resources.Where(w => w.Type == explicitType)
+                    .Select(s => s.Id)
+                    .FirstOrDefault();
+            }
+
+            public IEnumerable<string> GetTypes(string type)
+            {
+                return Resources.Where(w => w.Type == type || w.Type.StartsWith(type + "/"))
+                    .Select(s => s.Type);
+            }
+
+            public string GetType(string type, string startVersion)
+            {
+                var types = GetTypes(type);
+                var versions = new List<KeyValuePair<string, NugetVersion>>();
+                foreach (var resourceType in types)
                 {
-                    int compare;
-                    if (int.TryParse(xSplit[i], out var xNumber) && int.TryParse(ySplit[i], out var yNumber))
+                    if (resourceType == $"{type}/Versioned")
+                        versions.Add(new KeyValuePair<string, NugetVersion>(
+                            Resources.First(f => f.Type == resourceType).Id, new NugetVersion($"999.999")));
+                    if (resourceType.StartsWith(type + "/"))
                     {
-                        compare = xNumber.CompareTo(yNumber);
+                        var inner = resourceType.Replace(type + "/", "");
+                        if (NugetVersion.IsValid(inner))
+                        {
+                            versions.Add(new KeyValuePair<string, NugetVersion>(
+                                Resources.First(f => f.Type == resourceType).Id, new NugetVersion(inner)));
+                        }
                     }
-                    else
-                    {
-                        compare = xSplit[i].CompareTo(ySplit[i]);
-                    }
-                    if (compare != 0)
-                        return compare;
                 }
-                return 0;
+                
+                var target = new NugetVersion(startVersion);
+                return versions
+                    .Where(w => w.Value.Version >= target.Version)
+                    .OrderByDescending(d => d.Value.Version)
+                    .Select(s => s.Key)
+                    .FirstOrDefault();
             }
         }
     }
 }
+

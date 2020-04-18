@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Core.AutoMapper
         public RoleProfile()
         {
             CreateMap<Role, RoleModel>();
+            CreateMap<Role, RoleShortModel>();
             CreateMap<CreateRole, Role>();
             CreateMap<UpdateRole, Role>();
         }

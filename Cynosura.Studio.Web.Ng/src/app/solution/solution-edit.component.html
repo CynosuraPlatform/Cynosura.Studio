@@ -1,46 +1,31 @@
-<mat-card *ngIf="solution">
+<h1 mat-dialog-title>Solution <app-solution-show [value]="solution"></app-solution-show></h1>
+<mat-dialog-content *ngIf="solution" class="mat-dialog-content-edit">
 
-    <mat-card-header>
-        <mat-card-title>Solution <app-solution-show [value]="solution"></app-solution-show></mat-card-title>
-    </mat-card-header>
-
-    <form [formGroup]="solutionForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
-            <button mat-raised-button type="button" (click)="generate()" *ngIf="id">Generate</button>
-            <button mat-raised-button type="button" (click)="upgrade()" *ngIf="id">Upgrade</button>
-        </mat-card-actions>
-        <div>
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
-                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Path</mat-label>
-                <app-text-edit formControlName="path" name="path" label="Path"></app-text-edit>
-                <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Template Name</mat-label>
-                <mat-select formControlName="templateName" [(ngModel)]="innerValue">
-                    <mat-option>Select Template</mat-option>
-                    <mat-option [value]="template.name" *ngFor="let template of templates">{{ template.name }}</mat-option>
-                </mat-select>
-                <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div *ngIf="id">
-            <mat-form-field>
-                <mat-label>Template Version</mat-label>
-                <app-text-edit formControlName="templateVersion" name="templateVersion" label="Template Version" [disabled]="true"></app-text-edit>
-            </mat-form-field>
-        </div>
+    <form [formGroup]="solutionForm">
+        <mat-form-field>
+            <mat-label>Name</mat-label>        
+            <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
+            <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Path</mat-label>
+            <app-text-edit formControlName="path" name="path" placeholder="Path"></app-text-edit>
+            <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Template Name</mat-label>
+            <app-template-select formControlName="templateName" name="templateName" placeholder="Template Name"></app-template-select>
+            <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Template Version</mat-label>
+            <app-template-version-select formControlName="templateVersion" name="templateVersion" [templateName]="solutionForm.controls.templateName.value" placeholder="Template Version"></app-template-version-select>
+            <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
+        </mat-form-field>
     </form>
 
-</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

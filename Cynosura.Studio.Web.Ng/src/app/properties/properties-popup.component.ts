@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { PropertiesService } from "./properties.service";
+import { PropertiesService } from './properties.service';
 
 export interface DialogData {
     properties: { [k: string]: any };
@@ -9,8 +9,8 @@ export interface DialogData {
 }
 
 @Component({
-    templateUrl: "properties-popup.component.html",
-    styleUrls: ["properties-popup.component.scss"]
+    templateUrl: 'properties-popup.component.html',
+    styleUrls: ['properties-popup.component.scss']
 })
 export class PropertiesPopupComponent implements OnInit {
 
@@ -20,7 +20,7 @@ export class PropertiesPopupComponent implements OnInit {
         this.innerProperties = properties;
         this.boolProperties = {};
         Object.keys(properties)
-            .filter((f) => typeof properties[f] === "boolean")
+            .filter((f) => typeof properties[f] === 'boolean')
             .reduce((prev, cur) => {
                 prev[cur] = properties[cur];
                 return prev;
@@ -35,7 +35,7 @@ export class PropertiesPopupComponent implements OnInit {
 
     boolProperties: { [k: string]: any };
 
-    newProperty = "";
+    newProperty = '';
 
     constructor(
         public dialogRef: MatDialogRef<PropertiesPopupComponent>,
@@ -54,7 +54,7 @@ export class PropertiesPopupComponent implements OnInit {
             .then((data) => {
                 this.defaults = data;
                 Object.keys(data)
-                    .filter((f) => typeof data[f] === "boolean")
+                    .filter((f) => typeof data[f] === 'boolean')
                     .reduce((boolProperties, cur) => {
                         if (boolProperties[cur] === undefined || boolProperties[cur] === null) {
                             boolProperties[cur] = data[cur];
@@ -68,7 +68,7 @@ export class PropertiesPopupComponent implements OnInit {
         if (this.newProperty && this.newProperty.length > 0 && this.properties[this.newProperty] === undefined) {
             this.boolProperties[this.newProperty] = false;
             this.properties[this.newProperty] = false;
-            this.newProperty = "";
+            this.newProperty = '';
         }
     }
 

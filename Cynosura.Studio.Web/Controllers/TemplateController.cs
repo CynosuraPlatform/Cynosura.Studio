@@ -23,9 +23,15 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetTemplates")]
-        public async Task<IEnumerable<TemplateModel>> GetTemplatesAsync()
+        public async Task<IEnumerable<TemplateModel>> GetTemplatesAsync([FromBody] GetTemplates getTemplates)
         {
-            return await _mediator.Send(new GetTemplates());
+            return await _mediator.Send(getTemplates);
+        }
+
+        [HttpPost("GetTemplateVersions")]
+        public async Task<IEnumerable<string>> GetTemplateVersions([FromBody] GetTemplateVersions getTemplateVersions)
+        {
+            return await _mediator.Send(getTemplateVersions);
         }
     }
 }

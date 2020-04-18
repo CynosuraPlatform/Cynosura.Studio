@@ -11,6 +11,7 @@ namespace $model.Solution.Namespace$.Core.AutoMapper
         public $model.Entity.Name$Profile()
         {
             CreateMap<$model.Entity.Name$, $model.Entity.Name$Model>();
+            CreateMap<$model.Entity.Name$, $model.Entity.Name$ShortModel>();
             CreateMap<Create$model.Entity.Name$, $model.Entity.Name$>();
             CreateMap<Update$model.Entity.Name$, $model.Entity.Name$>();
         }

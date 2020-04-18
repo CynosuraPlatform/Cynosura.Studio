@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+import "Protos/Enums/enumModel.proto";
+import "Protos/Enums/enumFilter.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Enums";
+
+service EnumService {
+    rpc GetEnums(GetEnumsRequest) returns (EnumPageModel);
+    rpc GetEnum(GetEnumRequest) returns (Enum);
+    rpc UpdateEnum(UpdateEnumRequest) returns (Empty);
+    rpc CreateEnum(CreateEnumRequest) returns (CreatedEntity);
+    rpc DeleteEnum(DeleteEnumRequest) returns (Empty);
+}
+
+message CreateEnumRequest {
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof displayNameOneOf {
+        string displayName = 2;
+    }
+}
+
+message DeleteEnumRequest {
+    string id = 3;
+}
+
+message GetEnumRequest {
+    string id = 3;
+}
+
+message GetEnumsRequest {
+    oneof pageIndexOneOf {
+        int32 pageIndex = 1;
+    }
+    oneof pageSizeOneOf {
+        int32 pageSize = 2;
+    }
+    EnumFilter filter = 3;
+    string orderBy = 4;
+    oneof orderDirectionOneOf {
+        OrderDirection orderDirection = 5;
+    }
+}
+
+message UpdateEnumRequest {
+    string id = 3;
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof displayNameOneOf {
+        string displayName = 2;
+    }
+}

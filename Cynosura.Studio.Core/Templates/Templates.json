@@ -181,16 +181,6 @@
     "targets": []
   },
   {
-    "filePath": "*.Data\\Autofac",
-    "fileName": "{Name}Module.cs",
-    "templatePath": "Data\\AutofacModule.stg",
-    "types": [
-      "Entity"
-    ],
-    "insertAfter": null,
-    "targets": []
-  },
-  {
     "filePath": "*.Data\\Configurations",
     "fileName": "{Name}Configuration.cs",
     "templatePath": "Data\\Configuration.stg",
@@ -201,9 +191,79 @@
     "targets": []
   },
   {
+    "filePath": "*.Web\\AutoMapper",
+    "fileName": "{Name}Profile.cs",
+    "templatePath": "Web\\AutoMapperProfile.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
     "filePath": "*.Web\\Controllers",
     "fileName": "{Name}Controller.cs",
     "templatePath": "Web\\Controller.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Authorization",
+    "fileName": "{Name}Module.cs",
+    "templatePath": "Web\\PolicyModule.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Routes",
+    "fileName": "{Name}Module.cs",
+    "templatePath": "Web\\EndpointModule.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Services",
+    "fileName": "{Name}Service.cs",
+    "templatePath": "Web\\Service.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Protos",
+    "fileName": "{PluralName}\\{NameLower}Filter.proto",
+    "templatePath": "Web\\Protos\\Filter.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Protos",
+    "fileName": "{PluralName}\\{NameLower}Model.proto",
+    "templatePath": "Web\\Protos\\Model.stg",
+    "types": [
+      "Entity"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Protos",
+    "fileName": "{PluralName}\\{NameLower}Service.proto",
+    "templatePath": "Web\\Protos\\Service.stg",
     "types": [
       "Entity"
     ],
@@ -362,6 +422,36 @@
   },
   {
     "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-view.component.ts",
+    "templatePath": "Web.Ng\\ViewComponent.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-view.component.html",
+    "templatePath": "Web.Ng\\ViewView.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
+    "fileName": "{NameKebab}\\{NameKebab}-view.component.scss",
+    "templatePath": "Web.Ng\\ViewStyle.stg",
+    "types": [
+      "View"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web.Ng\\src\\app",
     "fileName": "{NameKebab}\\{NameKebab}.module.ts",
     "templatePath": "Web.Ng\\Module.stg",
     "types": [
@@ -394,6 +484,16 @@
     "filePath": "*.Core\\Enums",
     "fileName": "{Name}.cs",
     "templatePath": "Core\\Enum.stg",
+    "types": [
+      "Enum"
+    ],
+    "insertAfter": null,
+    "targets": []
+  },
+  {
+    "filePath": "*.Web\\Protos",
+    "fileName": "{Name}\\{NameLower}.proto",
+    "templatePath": "Web\\Protos\\Enum.stg",
     "types": [
       "Enum"
     ],

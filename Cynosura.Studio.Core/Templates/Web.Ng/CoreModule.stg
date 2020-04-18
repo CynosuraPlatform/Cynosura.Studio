@@ -1,12 +1,11 @@
 main(model) ::= <<
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
+import { CoreModule } from '../core/core.module';
 
-import { $model.Entity.Name$Service } from "./$model.Entity.NameKebab$.service";
-import { $model.Entity.Name$SelectComponent } from "./$model.Entity.NameKebab$-select.component";
-import { $model.Entity.Name$ShowComponent } from "./$model.Entity.NameKebab$-show.component";
+import { $model.Entity.Name$Service } from './$model.Entity.NameKebab$.service';
+import { $model.Entity.Name$SelectComponent } from './$model.Entity.NameKebab$-select.component';
+import { $model.Entity.Name$ShowComponent } from './$model.Entity.NameKebab$-show.component';
 
 @NgModule({
     declarations: [
@@ -15,13 +14,11 @@ import { $model.Entity.Name$ShowComponent } from "./$model.Entity.NameKebab$-sho
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
         $model.Entity.Name$Service
     ],
     exports: [
-        MaterialModule,
         $model.Entity.Name$SelectComponent,
         $model.Entity.Name$ShowComponent
     ]

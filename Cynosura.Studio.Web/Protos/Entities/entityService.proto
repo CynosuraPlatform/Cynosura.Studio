@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+import "Protos/Entities/entityModel.proto";
+import "Protos/Entities/entityFilter.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Entities";
+
+service EntityService {
+    rpc GetEntities(GetEntitiesRequest) returns (EntityPageModel);
+    rpc GetEntity(GetEntityRequest) returns (Entity);
+    rpc UpdateEntity(UpdateEntityRequest) returns (Empty);
+    rpc CreateEntity(CreateEntityRequest) returns (CreatedEntity);
+    rpc DeleteEntity(DeleteEntityRequest) returns (Empty);
+}
+
+message CreateEntityRequest {
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof pluralNameOneOf {
+        string pluralName = 2;
+    }
+    oneof displayNameOneOf {
+        string displayName = 3;
+    }
+    oneof pluralDisplayNameOneOf {
+        string pluralDisplayName = 4;
+    }
+    oneof isAbstractOneOf {
+        bool isAbstract = 5;
+    }
+    oneof baseEntityIdOneOf {
+        string baseEntityId = 6;
+    }
+}
+
+message DeleteEntityRequest {
+    string id = 7;
+}
+
+message GetEntityRequest {
+    string id = 7;
+}
+
+message GetEntitiesRequest {
+    oneof pageIndexOneOf {
+        int32 pageIndex = 1;
+    }
+    oneof pageSizeOneOf {
+        int32 pageSize = 2;
+    }
+    EntityFilter filter = 3;
+    string orderBy = 4;
+    oneof orderDirectionOneOf {
+        OrderDirection orderDirection = 5;
+    }
+}
+
+message UpdateEntityRequest {
+    string id = 7;
+    oneof nameOneOf {
+        string name = 1;
+    }
+    oneof pluralNameOneOf {
+        string pluralName = 2;
+    }
+    oneof displayNameOneOf {
+        string displayName = 3;
+    }
+    oneof pluralDisplayNameOneOf {
+        string pluralDisplayName = 4;
+    }
+    oneof isAbstractOneOf {
+        bool isAbstract = 5;
+    }
+    oneof baseEntityIdOneOf {
+        string baseEntityId = 6;
+    }
+}

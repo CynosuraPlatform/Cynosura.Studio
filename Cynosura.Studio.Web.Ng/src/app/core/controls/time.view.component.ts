@@ -1,8 +1,8 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: "app-time-view",
-    templateUrl: "./time.view.component.html"
+    selector: 'app-time-view',
+    templateUrl: './time.view.component.html'
 })
 export class TimeViewComponent {
     @Input()

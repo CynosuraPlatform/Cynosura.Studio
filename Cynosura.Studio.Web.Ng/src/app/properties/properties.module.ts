@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { PropertiesComponent } from "./properties.component";
-import { PropertiesPopupComponent } from "./properties-popup.component";
-import { PropertiesService } from "./properties.service";
+import { CoreModule } from '../core/core.module';
+import { PropertiesComponent } from './properties.component';
+import { PropertiesPopupComponent } from './properties-popup.component';
+import { PropertiesService } from './properties.service';
 
 @NgModule({
     declarations: [

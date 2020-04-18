@@ -1,17 +1,21 @@
-import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { Component, Input, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { EnumValue } from "../enum-value-core/enum-value.model";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Error } from "../core/error.model";
+import { EnumValue } from '../enum-value-core/enum-value.model';
 
+class DialogData {
+    enumValue: EnumValue;
+    solutionId: number;
+}
 
 @Component({
-    selector: "app-enum-value-edit",
-    templateUrl: "./enum-value-edit.component.html",
-    styleUrls: ["./enum-value-edit.component.scss"]
+    selector: 'app-enum-value-edit',
+    templateUrl: './enum-value-edit.component.html',
+    styleUrls: ['./enum-value-edit.component.scss']
 })
 export class EnumValueEditComponent implements OnInit {
     @Input()
@@ -35,32 +39,34 @@ export class EnumValueEditComponent implements OnInit {
         this.enumValueForm.patchValue(value);
     }
 
-    @Output()
-    enumValueSave = new EventEmitter<EnumValue>();
     error: Error;
 
-    constructor(private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+    constructor(public dialogRef: MatDialogRef<EnumValueEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private fb: FormBuilder,
+                private noticeHelper: NoticeHelper) {
+        this.solutionId = data.solutionId;
+        this.enumValue = data.enumValue;
     }
 
     ngOnInit(): void {
 
     }
 
-    onSubmit(): void {
+    onSave(): void {
         this.saveEnumValue();
     }
 
     private saveEnumValue(): void {
         const enumValue: EnumValue = this.enumValueForm.value;
-        enumValue.properties = this.localEnumValue.properties;
-        this.enumValueSave.emit(enumValue);
+        enumValue.properties = this.enumValue.properties;
+        this.dialogRef.close(enumValue);
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.enumValueForm, error);
         }
     }

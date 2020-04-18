@@ -1,5 +1,5 @@
-import { SolutionFilter } from "./solution-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { SolutionFilter } from './solution-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 
 export class GetSolutions {
     pageIndex?: number;

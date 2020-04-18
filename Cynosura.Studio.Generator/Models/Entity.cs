@@ -42,6 +42,7 @@ namespace Cynosura.Studio.Generator.Models
                         DisplayName = "Id",
                         IsRequired = true,
                         Type = FieldType.Int32,
+                        Number = 1
                     };
                 }
                 return idField;
@@ -91,13 +92,13 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                var nameField = Fields.FirstOrDefault(f => f.Name == "Name");
+                var nameField = AllFields.FirstOrDefault(f => f.Name == "Name");
                 if (nameField != null)
                     return nameField;
-                var stringField = Fields.FirstOrDefault(f => f.Type == FieldType.String);
+                var stringField = AllFields.FirstOrDefault(f => f.Type == FieldType.String);
                 if (stringField != null)
                     return stringField;
-                return Fields.FirstOrDefault();
+                return AllFields.FirstOrDefault();
             }
         }
 
@@ -106,7 +107,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return Fields.Where(f => f.EntityId != null)
+                return AllFields.Where(f => f.EntityId != null)
                     .ToList();
             }
         }

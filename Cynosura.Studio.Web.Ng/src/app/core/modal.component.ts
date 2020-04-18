@@ -1,5 +1,5 @@
-import { Component, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
     title: string;
@@ -9,8 +9,8 @@ export interface DialogData {
 }
 
 @Component({
-    templateUrl: "modal.component.html",
-    styleUrls: ["modal.component.scss"]
+    templateUrl: 'modal.component.html',
+    styleUrls: ['modal.component.scss']
 })
 export class ModalComponent {
     constructor(

@@ -1,11 +1,10 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
+import { CoreModule } from '../core/core.module';
 
-import { EnumService } from "./enum.service";
-import { EnumSelectComponent } from "./enum-select.component";
-import { EnumShowComponent } from "./enum-show.component";
+import { EnumService } from './enum.service';
+import { EnumSelectComponent } from './enum-select.component';
+import { EnumShowComponent } from './enum-show.component';
 
 @NgModule({
     declarations: [
@@ -14,13 +13,11 @@ import { EnumShowComponent } from "./enum-show.component";
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
         EnumService
     ],
     exports: [
-        MaterialModule,
         EnumSelectComponent,
         EnumShowComponent
     ]

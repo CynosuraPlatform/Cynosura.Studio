@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
 using ConsoleTables;
 using Cynosura.Studio.Generator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
     public class ListCommand: AppCommand
     {
         private readonly Dictionary<string, Func<IEnumerable<string>, Task<bool>>> _actions;
-        public ListCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope)
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public ListCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider)
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
             _actions = new Dictionary<string, Func<IEnumerable<string>, Task<bool>>>
             {

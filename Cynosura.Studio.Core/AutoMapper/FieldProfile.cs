@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Fields;
 using Cynosura.Studio.Core.Requests.Fields.Models;
@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Core.AutoMapper
         public FieldProfile()
         {
             CreateMap<Generator.Models.Field, FieldModel>();
+            CreateMap<Generator.Models.Field, FieldShortModel>();
             CreateMap<CreateField, Generator.Models.Field>();
             CreateMap<UpdateField, Generator.Models.Field>();
         }

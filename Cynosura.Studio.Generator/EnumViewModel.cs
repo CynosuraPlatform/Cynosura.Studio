@@ -21,5 +21,15 @@ namespace Cynosura.Studio.Generator
         public View View { get; set; }
         public Models.Enum Enum { get; set; }
         public SolutionAccessor Solution { get; set; }
+
+        public GenerateInfo GetGenerateInfo()
+        {
+            return new GenerateInfo
+            {
+                GenerationObject = Enum,
+                Model = this,
+                Types = Enum.GetViewTemplateTypes(),
+            };
+        }
     }
 }

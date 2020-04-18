@@ -1,22 +1,25 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
-import { User } from "../user-core/user.model";
-import { CreateUser, UpdateUser } from "../user-core/user-request.model";
-import { UserService } from "../user-core/user.service";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Role } from "../role-core/role.model";
-import { RoleService } from "../role-core/role.service";
+import { User } from '../user-core/user.model';
+import { UserService } from '../user-core/user.service';
+import { Role } from '../role-core/role.model';
+import { RoleService } from '../role-core/role.service';
 
-import { Error } from "../core/error.model";
-
+class DialogData {
+    id: number;
+}
 
 @Component({
-    selector: "app-user-edit",
-    templateUrl: "./user-edit.component.html",
-    styleUrls: ["./user-edit.component.scss"]
+    selector: 'app-user-edit',
+    templateUrl: './user-edit.component.html',
+    styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit {
     id: number;
@@ -31,71 +34,64 @@ export class UserEditComponent implements OnInit {
     roles: Role[] = [];
     error: Error;
 
-    constructor(private userService: UserService,
+    constructor(public dialogRef: MatDialogRef<UserEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
+                private userService: UserService,
                 private roleService: RoleService,
-                private route: ActivatedRoute,
-                private router: Router,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) { }
-
-    ngOnInit(): void {
-        this.roleService.getRoles({}).then(roles => this.roles = roles.pageItems).then(() =>
-            this.route.params.forEach((params: Params) => {
-                const id = +params.id;
-                this.getUser(id);
-            }));
+                private noticeHelper: NoticeHelper) {
+        this.id = data.id;
     }
 
-    private getUser(id: number): void {
-        this.id = id;
-        if (id === 0) {
-            this.user = new User();
+    static show(dialog: MatDialog, id: number): Observable<any> {
+        const dialogRef = dialog.open(UserEditComponent, {
+            width: '600px',
+            data: { id: id }
+        });
+        return dialogRef.afterClosed()
+            .pipe(filter(res => res === true));
+    }
+
+    ngOnInit() {
+        this.roleService.getRoles({}).subscribe(roles => this.roles = roles.pageItems);
+        this.getUser();
+    }
+
+    private getUser() {
+        const getUser$ = this.id === 0 ?
+            of(new User()) :
+            this.userService.getUser({ id: this.id });
+        getUser$.subscribe(user => {
+            this.user = user;
             this.userForm.patchValue(this.user);
-        } else {
-            this.userService.getUser({ id }).then(user => {
-                this.user = user;
-                this.userForm.patchValue(this.user);
-                for (const role of this.roles) {
-                    if (this.user.roleIds.indexOf(role.id) !== -1) {
-                        role.isSelected = true;
-                    }
+            for (const role of this.roles) {
+                if (this.user.roleIds && this.user.roleIds.indexOf(role.id) !== -1) {
+                    role.isSelected = true;
                 }
-            });
-        }
+            }
+        });
     }
 
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave() {
         this.saveUser();
     }
 
-    private saveUser(): void {
+    private saveUser() {
         const user = this.userForm.value;
         user.roleIds = this.roles
             .filter(role => role.isSelected)
             .map(role => role.id);
-        if (this.id) {
-            this.userService.updateUser(user)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        } else {
-            this.userService.createUser(user)
-                .then(
-                    () => window.history.back(),
-                    error => this.onError(error)
-                );
-        }
+        const saveUser$ = this.id ?
+            this.userService.updateUser(user) :
+            this.userService.createUser(user);
+        saveUser$.subscribe(() => this.dialogRef.close(true),
+            error => this.onError(error));
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.userForm, error);
         }
     }

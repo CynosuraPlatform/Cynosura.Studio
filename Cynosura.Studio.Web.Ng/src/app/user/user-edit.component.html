@@ -1,14 +1,7 @@
-<mat-card *ngIf="user">
+<h1 mat-dialog-title>User <app-user-show [value]="user"></app-user-show></h1>
+<mat-dialog-content *ngIf="user" class="mat-dialog-content-edit">
 
-    <mat-card-header>
-        <mat-card-title>User <app-user-show [value]="user"></app-user-show></mat-card-title>
-    </mat-card-header>
-
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
-        </mat-card-actions>
+    <form [formGroup]="userForm">
         <mat-form-field>
             <mat-label>Username</mat-label>
             <input matInput type="email" id="userName" name="userName" formControlName="userName" placeholder="Username"
@@ -41,4 +34,8 @@
         </div>
     </form>
 
-</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

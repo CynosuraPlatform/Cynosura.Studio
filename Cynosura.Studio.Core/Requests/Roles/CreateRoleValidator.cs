@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Roles
 {
@@ -6,7 +6,7 @@ namespace Cynosura.Studio.Core.Requests.Roles
     {
         public CreateRoleValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(256);
+            RuleFor(x => x.Name).MaximumLength(256).NotEmpty();
         }
 
     }

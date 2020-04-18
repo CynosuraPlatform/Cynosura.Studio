@@ -126,6 +126,23 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
+        public string EntityIdTypeNameNullable
+        {
+            get
+            {
+                if (Entity?.IdField.Type != null)
+                {
+                    var typeInfo = FieldTypeInfo.Types[Entity.IdField.Type.Value];
+                    var typeName = typeInfo.NetTypeName;
+                    if (typeInfo.NetType.IsValueType)
+                        typeName += "?";
+                    return typeName;
+                }
+                return null;
+            }
+        }
+
+        [JsonIgnore]
         public string Template {
             get
             {
@@ -139,6 +156,9 @@ namespace Cynosura.Studio.Generator.Models
 
         [JsonIgnore]
         public string TypeTemplate => System.Enum.GetName(typeof(FieldType), Type);
+
+        [JsonIgnore]
+        public int Number { get; set; }
     }
 
     public enum FieldType

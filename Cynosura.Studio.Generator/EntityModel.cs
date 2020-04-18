@@ -16,5 +16,15 @@ namespace Cynosura.Studio.Generator
 
         public Entity Entity { get; set; }
         public SolutionAccessor Solution { get; set; }
+
+        public GenerateInfo GetGenerateInfo()
+        {
+            return new GenerateInfo
+            {
+                GenerationObject = Entity,
+                Model = this,
+                Types = Entity.GetTemplateTypes(),
+            };
+        }
     }
 }

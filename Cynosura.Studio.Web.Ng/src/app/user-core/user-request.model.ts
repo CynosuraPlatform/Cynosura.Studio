@@ -1,5 +1,5 @@
-import { UserFilter } from "./user-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { UserFilter } from './user-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 
 export class GetUsers {
     pageIndex?: number;

@@ -1,0 +1,3 @@
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
+    <mat-option [value]="templateVersion" *ngFor="let templateVersion of templateVersions">{{ templateVersion }}</mat-option>
+</mat-select>

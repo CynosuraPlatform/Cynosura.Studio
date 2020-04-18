@@ -1,0 +1,55 @@
+<mat-card *ngIf="field" class="mat-card-view">
+
+    <mat-card-header>
+        <mat-card-title>Field <app-field-show [value]="field"></app-field-show></mat-card-title>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="onEdit()">Edit</button>
+        <button mat-raised-button type="button" (click)="onBack()">Back</button>
+    </mat-card-actions>
+
+    <div class="field-view">
+        <label>Name</label>
+        <div>
+            <app-text-view [value]="field.name"></app-text-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Display Name</label>
+        <div>
+            <app-text-view [value]="field.displayName"></app-text-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Size</label>
+        <div>
+            <app-number-view [value]="field.size"></app-number-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Entity</label>
+        <div>
+            <app-entity-show [value]="field.entity"></app-entity-show>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Required</label>
+        <div>
+            <app-bool-view [value]="field.isRequired"></app-bool-view>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>Enum</label>
+        <div>
+            <app-enum-show [value]="field.enum"></app-enum-show>
+        </div>
+    </div>
+    <div class="field-view">
+        <label>System</label>
+        <div>
+            <app-bool-view [value]="field.isSystem"></app-bool-view>
+        </div>
+    </div>
+
+</mat-card>

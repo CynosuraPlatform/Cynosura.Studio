@@ -1,67 +1,59 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { ConfigService } from "../config/config.service";
-import { CreatedEntity } from "../core/models/created-entity.model";
-import { Solution } from "./solution.model";
+import { ConfigService } from '../config/config.service';
+import { CreatedEntity } from '../core/models/created-entity.model';
+import { Page } from '../core/page.model';
+
+import { Solution } from './solution.model';
 import { GetSolutions, GetSolution, UpdateSolution, CreateSolution, DeleteSolution,
-         GenerateSolution, UpgradeSolution } from "./solution-request.model";
-import { SolutionFilter } from "./solution-filter.model";
-import { Page } from "../core/page.model";
+         GenerateSolution, UpgradeSolution } from './solution-request.model';
 
 @Injectable()
 export class SolutionService {
-    private apiUrl = this.configService.config.apiBaseUrl + "/api";
-    private headers = new HttpHeaders({ "Content-Type": "application/json" });
+    private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
     constructor(private httpClient: HttpClient, private configService: ConfigService) { }
 
-    getSolutions(getSolutions: GetSolutions): Promise<Page<Solution>> {
+    getSolutions(getSolutions: GetSolutions): Observable<Page<Solution>> {
         const url = `${this.apiUrl}/GetSolutions`;
-        return this.httpClient.post<Page<Solution>>(url, JSON.stringify(getSolutions), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post<Page<Solution>>(url, getSolutions);
     }
 
-    getSolution(getSolution: GetSolution): Promise<Solution> {
+    getSolution(getSolution: GetSolution): Observable<Solution> {
         const url = `${this.apiUrl}/GetSolution`;
-        return this.httpClient.post<Solution>(url, JSON.stringify(getSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post<Solution>(url, getSolution);
     }
 
-    updateSolution(updateSolution: UpdateSolution): Promise<{}> {
+    updateSolution(updateSolution: UpdateSolution): Observable<{}> {
         const url = `${this.apiUrl}/UpdateSolution`;
-        return this.httpClient.post(url, JSON.stringify(updateSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post(url, updateSolution);
     }
 
-    createSolution(createSolution: CreateSolution): Promise<CreatedEntity<number>> {
+    createSolution(createSolution: CreateSolution): Observable<CreatedEntity<number>> {
         const url = `${this.apiUrl}/CreateSolution`;
-        return this.httpClient.post<CreatedEntity<number>>(url, JSON.stringify(createSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post<CreatedEntity<number>>(url, createSolution);
     }
 
-    deleteSolution(deleteSolution: DeleteSolution): Promise<{}> {
+    deleteSolution(deleteSolution: DeleteSolution): Observable<{}> {
         const url = `${this.apiUrl}/DeleteSolution`;
-        return this.httpClient.post(url, JSON.stringify(deleteSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post(url, deleteSolution);
     }
 
 
-    generateSolution(generateSolution: GenerateSolution): Promise<{}> {
+    generateSolution(generateSolution: GenerateSolution): Observable<{}> {
         const url = `${this.apiUrl}/GenerateSolution`;
-        return this.httpClient.post(url, JSON.stringify(generateSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post(url, generateSolution);
     }
 
-    upgradeSolution(upgradeSolution: UpgradeSolution): Promise<{}> {
+    upgradeSolution(upgradeSolution: UpgradeSolution): Observable<{}> {
         const url = `${this.apiUrl}/UpgradeSolution`;
-        return this.httpClient.post(url, JSON.stringify(upgradeSolution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post(url, upgradeSolution);
     }
 
-    openSolution(solution: Solution): Promise<Solution> {
+    openSolution(solution: Solution): Observable<Solution> {
         const url = `${this.apiUrl}/OpenSolution`;
-        return this.httpClient.post<Solution>(url, JSON.stringify(solution), { headers: this.headers })
-            .toPromise();
+        return this.httpClient.post<Solution>(url, solution);
     }
 }

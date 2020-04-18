@@ -18,5 +18,5 @@ enumValue(value) ::= <<
 >>
 
 enumDisplayName(value) ::= <<
-[DisplayName("$value.DisplayNameOrName$")]
+[Description("$value.DisplayNameOrName$")]
 >>

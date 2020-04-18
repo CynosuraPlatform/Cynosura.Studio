@@ -1,8 +1,7 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
-import { FieldShowComponent } from "./field-show.component";
+import { CoreModule } from '../core/core.module';
+import { FieldShowComponent } from './field-show.component';
 
 @NgModule({
     declarations: [
@@ -10,12 +9,10 @@ import { FieldShowComponent } from "./field-show.component";
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
     ],
     exports: [
-        MaterialModule,
         FieldShowComponent
     ]
 })

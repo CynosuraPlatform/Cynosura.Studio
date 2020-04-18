@@ -1,33 +1,26 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
-import { User } from "../auth/user.model";
-import { AuthService } from "../auth/auth.service";
-import { Menu } from "./menu.model";
+import { Menu } from './menu.model';
 
 @Injectable()
 export class MenuService {
     private menu: Menu;
-    private currentUser: User;
 
-    constructor(private authService: AuthService) {
+    constructor() {
         this.menu = new Menu();
 // ADD MENU ITEMS HERE
-        this.menu.items.push({ route: "/entity", name: "Entities", icon: "notes", roles: [] });
-        this.menu.items.push({ route: "/enum", name: "Enums", icon: "notes", roles: [] });
-        this.menu.items.push({ route: "/solution", name: "Solutions", icon: "folder", roles: [] });
-
-        this.authService.currentUser$.subscribe(currentUser => {
-            this.currentUser = currentUser;
-        });
+        this.menu.items.push({ route: '/entity', name: 'Entities', icon: 'notes', roles: [] });
+        this.menu.items.push({ route: '/enum', name: 'Enums', icon: 'notes', roles: [''] });
+        this.menu.items.push({ route: '/solution', name: 'Solutions', icon: 'folder', roles: [] });
     }
 
-    getMenu(): Promise<Menu> {
+    getMenu(): Observable<Menu> {
         const menu: Menu = {
             items: this.menu.items.filter(item => {
-                return item.roles.length === 0 || item.roles.some(role => this.currentUser ? this.currentUser.roles.includes(role) : false);
+                return true;
             })
         };
-        return Promise.resolve(menu);
+        return of(menu);
     }
 }

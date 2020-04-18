@@ -4,17 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool
 {
-    class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var app = new CliApp(args);
             var services = new ServiceCollection();
-            var serviceProvider = app.ConfigureServices(services);
-            app.Configure(serviceProvider);
+            app.ConfigureServices(services);
             try
             {
-                var result = await app.StartAsync();
+                var serviceProvider = services.BuildServiceProvider();
+                var result = await app.StartAsync(serviceProvider);
                 if (!result)
                 {
                     Environment.ExitCode = 1;

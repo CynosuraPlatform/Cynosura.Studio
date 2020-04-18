@@ -1,27 +1,25 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar, MatTableDataSource } from "@angular/material";
+import { Component, OnInit, Input } from '@angular/core';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 
-import { EnumValue } from "../enum-value-core/enum-value.model";
-import { EnumValueFilter } from "../enum-value-core/enum-value-filter.model";
+import { ModalHelper } from '../core/modal.helper';
+import { Error } from '../core/error.model';
+import { Guid } from '../core/guid';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { ModalHelper } from "../core/modal.helper";
-import { Guid } from "../core/guid";
-import { StoreService } from "../core/store.service";
-import { Error } from "../core/error.model";
-import { Page } from "../core/page.model";
+import { EnumValue } from '../enum-value-core/enum-value.model';
+import { EnumValueEditComponent } from './enum-value-edit.component';
 
 @Component({
-    selector: "app-enum-value-list",
-    templateUrl: "./enum-value-list.component.html",
-    styleUrls: ["./enum-value-list.component.scss"]
+    selector: 'app-enum-value-list',
+    templateUrl: './enum-value-list.component.html',
+    styleUrls: ['./enum-value-list.component.scss']
 })
 export class EnumValueListComponent implements OnInit {
     columns = [
-        "name",
-        "displayName",
-        "value",
+        'name',
+        'displayName',
+        'value',
+        'action'
     ];
     @Input()
     solutionId: number;
@@ -31,11 +29,10 @@ export class EnumValueListComponent implements OnInit {
 
     dataSource: MatTableDataSource<EnumValue>;
 
-    enumValue: EnumValue;
-
     constructor(
         private modalHelper: ModalHelper,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper,
+        private dialog: MatDialog,
         ) {}
 
     ngOnInit(): void {
@@ -46,12 +43,24 @@ export class EnumValueListComponent implements OnInit {
         return this.enumValues.find(v => v.id === id);
     }
 
-    edit(id: string): void {
-        this.enumValue = this.findEnumValue(id);
+    onEdit(id: string): void {
+        this.openEditDialog(this.findEnumValue(id));
     }
 
-    add(): void {
-        this.enumValue = new EnumValue();
+    onCreate() {
+        this.openEditDialog(new EnumValue());
+    }
+
+    openEditDialog(enumValue: EnumValue) {
+        const dialogRef = this.dialog.open(EnumValueEditComponent, {
+            width: '600px',
+            data: { enumValue: enumValue, solutionId: this.solutionId }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.enumValueSave(result);
+            }
+        });
     }
 
     enumValueSave(enumValue: EnumValue): void {
@@ -66,8 +75,6 @@ export class EnumValueListComponent implements OnInit {
             this.enumValues.push(enumValue);
         }
         this.dataSource.data = this.enumValues;
-
-        this.enumValue = null;
     }
 
     delete(id: string): void {
@@ -82,7 +89,7 @@ export class EnumValueListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

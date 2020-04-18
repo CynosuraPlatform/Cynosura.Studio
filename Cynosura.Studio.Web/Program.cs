@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Cynosura.Studio.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Web;
 
 namespace Cynosura.Studio.Web
 {
@@ -17,27 +17,14 @@ namespace Cynosura.Studio.Web
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-            try
+            var host = CreateWebHostBuilder(args).Build();
+            using (var scope = host.Services.CreateScope())
             {
-                var host = CreateWebHostBuilder(args).Build();
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    var databaseInitializer = (IDatabaseInitializer)services.GetService(typeof(IDatabaseInitializer));
-                    databaseInitializer.SeedAsync().GetAwaiter().GetResult();
-                }
-                host.Run();
+                var services = scope.ServiceProvider;
+                var databaseInitializer = (IDatabaseInitializer)services.GetService(typeof(IDatabaseInitializer));
+                databaseInitializer.SeedAsync().GetAwaiter().GetResult();
             }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Stopped program because of exception");
-                throw;
-            }
-            finally
-            {
-                NLog.LogManager.Shutdown();
-            }
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -59,8 +46,10 @@ namespace Cynosura.Studio.Web
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                })
-                .UseNLog();
+                    logging.AddConsole(c =>
+                    {
+                        c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
+                    });
+                });
     }
 }

@@ -3,18 +3,26 @@ name: $(version)-b$(BuildID)
 trigger:
 - development
 
+pr: none
+
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: dotnet pack
   inputs:
     command: 'pack'
     packagesToPack: 'Cynosura.Studio.CliTool/*.csproj'
     versioningScheme: 'off'
     buildProperties: 'PackageVersion=$(Build.BuildNumber)'
 
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 
+
 - task: NuGetCommand@2
+  displayName: nuget push
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'

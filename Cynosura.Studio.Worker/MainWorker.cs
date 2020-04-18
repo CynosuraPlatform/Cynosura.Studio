@@ -1,6 +1,6 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Impl;
@@ -13,12 +13,12 @@ namespace Cynosura.Studio.Worker
     {
         private readonly IScheduler _scheduler;
 
-        public MainWorker(ILifetimeScope lifetimeScope, CoreLogProvider coreLogProvider)
+        public MainWorker(IServiceProvider serviceProvider, CoreLogProvider coreLogProvider)
         {
             LogProvider.SetCurrentLogProvider(coreLogProvider);
             var schedulerFactory = new StdSchedulerFactory();
             _scheduler = schedulerFactory.GetScheduler().Result;
-            _scheduler.JobFactory = new AutofacJobFactory(lifetimeScope);
+            _scheduler.JobFactory = new ServiceProviderJobFactory(serviceProvider);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

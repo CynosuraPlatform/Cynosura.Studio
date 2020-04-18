@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
 using Cynosura.Studio.Generator;
 using Cynosura.Studio.Generator.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
@@ -12,8 +12,8 @@ namespace Cynosura.Studio.CliTool.Commands
     {
         private readonly Dictionary<string, Func<IEnumerable<string>, Task<bool>>> _actions;
 
-        public GenerateCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope)
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public GenerateCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider)
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
             _actions = new Dictionary<string, Func<IEnumerable<string>, Task<bool>>>
             {
@@ -80,7 +80,7 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var enums = await accessor.GetEnumsAsync();
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<CodeGenerator>();
             var en = enums.FirstOrDefault(f => f.Name == name);
             if (en == null)
             {
@@ -108,7 +108,7 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var entities = await accessor.GetEntitiesAsync();
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<CodeGenerator>();
             var entity = entities.FirstOrDefault(f => f.Name == name);
             if (entity == null)
             {
