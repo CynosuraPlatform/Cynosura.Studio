@@ -27,11 +27,8 @@ namespace Cynosura.Studio.Web
 {
     public class Startup
     {
-        private readonly IWebHostEnvironment _hostingEnvironment;
-
-        public Startup(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
-            _hostingEnvironment = hostingEnvironment;
             Configuration = configuration;
         }
 

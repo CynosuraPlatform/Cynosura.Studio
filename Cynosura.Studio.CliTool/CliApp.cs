@@ -73,6 +73,10 @@ namespace Cynosura.Studio.CliTool
             if (!defaultConfig.ContainsKey("LocalFeed:SourcePath"))
                 defaultConfig.Add("LocalFeed:SourcePath", _src);
 
+            var useProfileSettings =
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    Path.Combine(".cynosura", "appsettings.json"));
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)

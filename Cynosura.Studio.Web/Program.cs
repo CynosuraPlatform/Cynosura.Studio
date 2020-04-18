@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,7 +33,8 @@ namespace Cynosura.Studio.Web
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var useProfileSettings =
-                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".cynosura.json");
+                        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                            Path.Combine(".cynosura", "appsettings.json"));
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json",
