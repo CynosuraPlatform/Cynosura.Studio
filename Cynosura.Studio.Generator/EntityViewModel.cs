@@ -2,13 +2,13 @@
 
 namespace Cynosura.Studio.Generator
 {
-    public class ViewModel
+    public class EntityViewModel
     {
-        public ViewModel()
+        public EntityViewModel()
         {
         }
 
-        public ViewModel(View view, Entity entity, SolutionAccessor solution)
+        public EntityViewModel(View view, Entity entity, SolutionAccessor solution)
         {
             View = view;
             Entity = entity;
@@ -25,7 +25,8 @@ namespace Cynosura.Studio.Generator
             {
                 GenerationObject = Entity,
                 Model = this,
-                Types = Entity.GetViewTemplateTypes(),
+                Types = Entity.GetTemplateTypes(),
+                View = View,
             };
         }
     }

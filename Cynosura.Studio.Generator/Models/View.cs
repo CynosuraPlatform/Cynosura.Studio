@@ -2,6 +2,8 @@
 {
     public class View
     {
-        public string Entity { get; set; }
+        public static string DefaultViewName { get; } = "Ng";
+
+        public string Name { get; set; } = DefaultViewName;
     }
 }

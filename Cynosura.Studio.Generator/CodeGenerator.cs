@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Cynosura.Core.Services;
 using Cynosura.Studio.Generator.Models;
@@ -168,12 +169,12 @@ namespace Cynosura.Studio.Generator
                 var oldGenerateInfos = oldEntitiesToUpgrade
                     .SelectMany(oldEntity => new[] {
                         new EntityModel(oldEntity, toSolution).GetGenerateInfo(),
-                        new ViewModel(new View(), oldEntity, toSolution).GetGenerateInfo()
+                        new EntityViewModel(new View(), oldEntity, toSolution).GetGenerateInfo()
                     });
                 var newGenerateInfos = newEntitiesToUpgrade
                     .SelectMany(newEntity => new[] {
                         new EntityModel(newEntity, toSolution).GetGenerateInfo(),
-                        new ViewModel(new View(), newEntity, toSolution).GetGenerateInfo()
+                        new EntityViewModel(new View(), newEntity, toSolution).GetGenerateInfo()
                     });
                 await UpgradeAsync(toSolution, oldGenerateInfos, newGenerateInfos);
             }
@@ -334,7 +335,7 @@ namespace Cynosura.Studio.Generator
                 var destinationTemplate = destinationTemplates.FirstOrDefault(t => t.TemplatePath == sourceTemplate.TemplatePath);
                 if (destinationTemplate == null)
                     continue;
-                if (sourceTemplate.Types.Contains(TemplateType.Entity) || sourceTemplate.Types.Contains(TemplateType.View))
+                if (sourceTemplate.Types.Contains(TemplateType.Entity))
                 {
                     foreach (var sourceEntity in sourceEntities)
                     {
@@ -349,7 +350,7 @@ namespace Cynosura.Studio.Generator
                             renames.Add((sourceFilePath, destinationFilePath));
                     }
                 }
-                else if (sourceTemplate.Types.Contains(TemplateType.Enum) || sourceTemplate.Types.Contains(TemplateType.EnumView))
+                else if (sourceTemplate.Types.Contains(TemplateType.Enum))
                 {
                     foreach (var sourceEnum in sourceEnums)
                     {
@@ -425,7 +426,7 @@ namespace Cynosura.Studio.Generator
 
         private async Task WriteFileAsync(string filePath, string content)
         {
-            using (var fileWriter = new StreamWriter(filePath))
+            using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 await fileWriter.WriteAsync(content);
             }
@@ -456,7 +457,7 @@ namespace Cynosura.Studio.Generator
 
         public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
         {
-            var model = new ViewModel(view, entity, solution);
+            var model = new EntityViewModel(view, entity, solution);
             await GenerateAsync(solution, model.GetGenerateInfo());
         }
 
@@ -468,10 +469,10 @@ namespace Cynosura.Studio.Generator
         public async Task UpgradeViewsAsync(SolutionAccessor solution, View view, IEnumerable<Entity> oldEntities, IEnumerable<Entity> newEntities)
         {
             var oldGenerateInfos = oldEntities
-                .Select(oldEntity => new ViewModel(view, oldEntity, solution))
+                .Select(oldEntity => new EntityViewModel(view, oldEntity, solution))
                 .Select(model => model.GetGenerateInfo());
             var newGenerateInfos = newEntities
-                .Select(newEntity => new ViewModel(view, newEntity, solution))
+                .Select(newEntity => new EntityViewModel(view, newEntity, solution))
                 .Select(model => model.GetGenerateInfo());
 
             await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
@@ -527,6 +528,7 @@ namespace Cynosura.Studio.Generator
         {
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))
+                .Where(t => t.CheckView(generateInfo.View))
                 .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties)))
             {
                 await CreateFileAsync(template, generateInfo.Model, solution, generateInfo.GenerationObject, overrideSolutionPath);

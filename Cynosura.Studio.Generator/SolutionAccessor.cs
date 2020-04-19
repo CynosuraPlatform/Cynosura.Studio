@@ -228,7 +228,7 @@ namespace Cynosura.Studio.Generator
 
         private async Task WriteFileAsync(string filePath, string content)
         {
-            using (var fileWriter = new StreamWriter(filePath))
+            using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 await fileWriter.WriteAsync(content);
             }
@@ -238,7 +238,7 @@ namespace Cynosura.Studio.Generator
         {
             var coreProject = GetProject("Core");
             var templatesPath = coreProject.GetPath("Templates");
-            var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));
+            var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));            
             var templates = DeserializeMetadata<List<CodeTemplate>>(templatesJson);
             templates.ForEach(f =>
                 {
