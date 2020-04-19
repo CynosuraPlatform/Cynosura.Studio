@@ -30,7 +30,6 @@ export class EntityService {
         return this.httpClient.post(url, updateEntity);
     }
 
-
     createEntity(createEntity: CreateEntity): Observable<CreatedEntity<string>> {
         const url = `${this.apiUrl}/CreateEntity`;
         return this.httpClient.post<CreatedEntity<string>>(url, createEntity);
