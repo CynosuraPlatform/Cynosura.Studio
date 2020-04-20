@@ -4,13 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cynosura.Core.Services;
 using Cynosura.Studio.Generator.Models;
-using Cynosura.Studio.Generator.Infrastructure;
 using Cynosura.Studio.Generator.Merge;
-using Cynosura.Studio.Generator.PackageFeed;
 using Cynosura.Studio.Generator.TemplateEngine;
-using Microsoft.Extensions.Logging;
 
 namespace Cynosura.Studio.Generator
 {

@@ -44,9 +44,14 @@ namespace Cynosura.Studio.Generator
             var views = await solution.GetViewsAsync();
             foreach (var view in views)
             {
-                var model = new EntityViewModel(view, entity, solution);
-                await _codeGenerator.GenerateAsync(solution, model.GetGenerateInfo());
+                await GenerateEntityViewAsync(solution, entity, view);
             }
+        }
+
+        public async Task GenerateEntityViewAsync(SolutionAccessor solution, Entity entity, View view)
+        {
+            var model = new EntityViewModel(view, entity, solution);
+            await _codeGenerator.GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeEntityViewAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)

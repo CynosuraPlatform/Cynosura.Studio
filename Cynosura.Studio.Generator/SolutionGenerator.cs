@@ -19,6 +19,7 @@ namespace Cynosura.Studio.Generator
         private readonly CodeGenerator _codeGenerator;
         private readonly EntityGenerator _entityGenerator;
         private readonly EnumGenerator _enumGenerator;
+        private readonly ViewGenerator _viewGenerator;
         private readonly IDirectoryMerge _directoryMerge;
         private readonly IPackageFeed _packageFeed;
         private readonly ILogger<SolutionGenerator> _logger;
@@ -26,6 +27,7 @@ namespace Cynosura.Studio.Generator
         public SolutionGenerator(CodeGenerator codeGenerator,
             EntityGenerator entityGenerator,
             EnumGenerator enumGenerator,
+            ViewGenerator viewGenerator,
             IDirectoryMerge directoryMerge,
             IPackageFeed packageFeed,
             ILogger<SolutionGenerator> logger)
@@ -33,6 +35,7 @@ namespace Cynosura.Studio.Generator
             _codeGenerator = codeGenerator;
             _entityGenerator = entityGenerator;
             _enumGenerator = enumGenerator;
+            _viewGenerator = viewGenerator;
             _directoryMerge = directoryMerge;
             _packageFeed = packageFeed;
             _logger = logger;
@@ -140,11 +143,13 @@ namespace Cynosura.Studio.Generator
 
             await InitSolutionAsync(solution.Namespace, upgradePackageSolutionPath, templateName, templateVersion);
             var upgradePackageSolution = new SolutionAccessor(upgradePackageSolutionPath);
+            await _viewGenerator.CopyViewsAsync(solution, upgradePackageSolution);
             await _enumGenerator.CopyEnumsAsync(solution, upgradePackageSolution);
             await _entityGenerator.CopyEntitiesAsync(solution, upgradePackageSolution);
 
             await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
+            await _viewGenerator.CopyViewsAsync(solution, currentPackageSolution);
             await _enumGenerator.CopyEnumsAsync(solution, currentPackageSolution);
             await _entityGenerator.CopyEntitiesAsync(solution, currentPackageSolution);
 

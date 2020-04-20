@@ -19,6 +19,7 @@ namespace Cynosura.Studio.Generator
             services.AddTransient<SolutionGenerator>();
             services.AddTransient<EntityGenerator>();
             services.AddTransient<EnumGenerator>();
+            services.AddTransient<ViewGenerator>();
             services.AddTransient<ITemplateEngine, StringTemplateEngine>();
 
             services.AddTransient<LocalFeed>();

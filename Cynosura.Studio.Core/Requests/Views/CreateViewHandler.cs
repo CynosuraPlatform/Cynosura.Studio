@@ -15,12 +15,15 @@ namespace Cynosura.Studio.Core.Requests.Views
     public class CreateViewHandler : IRequestHandler<CreateView, CreatedEntity<Guid>>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
+        private readonly ViewGenerator _viewGenerator;
         private readonly IMapper _mapper;
 
         public CreateViewHandler(IEntityRepository<Solution> solutionRepository,
+            ViewGenerator viewGenerator,
             IMapper mapper)
         {
             _solutionRepository = solutionRepository;
+            _viewGenerator = viewGenerator;
             _mapper = mapper;
         }
 
@@ -33,6 +36,8 @@ namespace Cynosura.Studio.Core.Requests.Views
             var view = _mapper.Map<CreateView, Generator.Models.View>(request);
             view.Id = Guid.NewGuid();
             await solutionAccessor.CreateViewAsync(view);
+
+            await _viewGenerator.GenerateViewAsync(solutionAccessor, view);
             return new CreatedEntity<Guid>() { Id = view.Id };
         }
 

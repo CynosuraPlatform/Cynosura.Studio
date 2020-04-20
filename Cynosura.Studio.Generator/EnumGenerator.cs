@@ -44,9 +44,14 @@ namespace Cynosura.Studio.Generator
             var views = await solution.GetViewsAsync();
             foreach (var view in views)
             {
-                var model = new EnumViewModel(view, @enum, solution);
-                await _codeGenerator.GenerateAsync(solution, model.GetGenerateInfo());
+                await GenerateEnumViewAsync(solution, @enum, view);
             }
+        }
+
+        public async Task GenerateEnumViewAsync(SolutionAccessor solution, Models.Enum @enum, View view)
+        {
+            var model = new EnumViewModel(view, @enum, solution);
+            await _codeGenerator.GenerateAsync(solution, model.GetGenerateInfo());
         }
 
         public async Task UpgradeEnumViewAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
