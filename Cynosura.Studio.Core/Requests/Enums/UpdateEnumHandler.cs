@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -38,7 +38,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             newEnum = (await solutionAccessor.GetEnumsAsync())
                 .FirstOrDefault(e => e.Id == request.Id);
             await _codeGenerator.UpgradeEnumAsync(solutionAccessor, oldEnum, newEnum);
-            await _codeGenerator.UpgradeEnumViewAsync(solutionAccessor, new Generator.Models.View(), oldEnum, newEnum);
+            await _codeGenerator.UpgradeEnumViewAsync(solutionAccessor, oldEnum, newEnum);
             return Unit.Value;
         }
 

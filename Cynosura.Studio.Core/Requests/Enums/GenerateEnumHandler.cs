@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var @enum = (await solutionAccessor.GetEnumsAsync()).FirstOrDefault(e => e.Id == request.Id);
             await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
-            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, new Generator.Models.View(), @enum);
+            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
             return Unit.Value;
         }
 

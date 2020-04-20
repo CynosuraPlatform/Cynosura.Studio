@@ -16,19 +16,14 @@ namespace Cynosura.Studio.Generator
 {
     public class CodeGenerator
     {
-        private string StudioDirectoryPath => Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
-
         private readonly ITemplateEngine _templateEngine;
-        private readonly IPackageFeed _packageFeed;
         private readonly IDirectoryMerge _directoryMerge;
         private readonly ILogger<CodeGenerator> _logger;
         public CodeGenerator(ITemplateEngine templateEngine,
-            IPackageFeed packageFeed,
             IDirectoryMerge directoryMerge,
             ILogger<CodeGenerator> logger)
         {
             _templateEngine = templateEngine;
-            _packageFeed = packageFeed;
             _directoryMerge = directoryMerge;
             _logger = logger;
         }
@@ -39,7 +34,7 @@ namespace Cynosura.Studio.Generator
             return _templateEngine.ProcessTemplate(templatePath, model);
         }
 
-        private string GetTemplateFilePath(CodeTemplate template, SolutionAccessor solution, IGenerationObject generationObject)
+        internal string GetTemplateFilePath(CodeTemplate template, SolutionAccessor solution, IGenerationObject generationObject)
         {
             var dir = FindDirectory(solution.Path, template.FilePath);
             var fileName = generationObject.ProcessTemplate(template.FileName);
@@ -81,38 +76,9 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task GenerateSolutionAsync(string path, string name, string templateName, string templateVersion = null)
-        {
-            _logger.LogInformation($"GenerateSolution {templateName} {templateVersion}");
-            if (string.IsNullOrEmpty(templateVersion))
-            {
-                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
-            }
-            _logger.LogInformation($"Use template: {templateName} {templateVersion}");
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            if (Directory.GetFiles(path).Length > 0 || Directory.GetDirectories(path).Length > 0)
-            {
-                _logger.LogWarning($"Path {path} is not empty. Skipping solution generation");
-                return;
-            }
-            await InitSolutionAsync(name, path, templateName, templateVersion);
-        }
+        
 
-        private async Task InitSolutionAsync(string solutionName, string path, string templateName, string templateVersion)
-        {
-            var packagesPath = Path.Combine(StudioDirectoryPath, "Packages");
-            if (!Directory.Exists(packagesPath))
-                Directory.CreateDirectory(packagesPath);
-            var packageFilePath = await _packageFeed.DownloadPackageAsync(packagesPath, templateName, templateVersion);
-            _logger.LogInformation($"Downloaded version {templateVersion} to {packageFilePath}");
-
-            CopyDirectory(packageFilePath, path);
-            await RenameSolutionAsync(path, templateName, solutionName);
-            _logger.LogInformation($"Created solution in {path}");
-        }
+        
 
         private IEnumerable<Entity> SortByDependency(IEnumerable<Entity> entities)
         {
@@ -136,7 +102,7 @@ namespace Cynosura.Studio.Generator
             return sortedList;
         }
 
-        private async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
+        internal async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
         {
             var fromEntities = await fromSolution.GetEntitiesAsync();
             fromEntities = SortByDependency(fromEntities).ToList();
@@ -152,7 +118,7 @@ namespace Cynosura.Studio.Generator
                     var newEntity = (await toSolution.GetEntitiesAsync())
                         .FirstOrDefault(e => e.Id == entity.Id);
                     await GenerateEntityAsync(toSolution, newEntity);
-                    await GenerateViewAsync(toSolution, new View(), newEntity);
+                    await GenerateEntityViewAsync(toSolution, newEntity);
                 }
                 else
                 {
@@ -180,7 +146,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        private async Task CopyEnumsAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
+        internal async Task CopyEnumsAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
         {
             var fromEnums = await fromSolution.GetEnumsAsync();
             var toEnums = await toSolution.GetEnumsAsync();
@@ -195,7 +161,7 @@ namespace Cynosura.Studio.Generator
                     var newEnum = (await toSolution.GetEnumsAsync())
                         .FirstOrDefault(e => e.Id == @enum.Id);
                     await GenerateEnumAsync(toSolution, newEnum);
-                    await GenerateEnumViewAsync(toSolution, new View(), newEnum);
+                    await GenerateEnumViewAsync(toSolution, newEnum);
                 }
                 else
                 {
@@ -223,200 +189,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task UpgradeSolutionAsync(SolutionAccessor solution, string templateName = null, string templateVersion = null)
-        {
-            _logger.LogInformation($"UpgradeSolution {templateName} {templateVersion}");
-            if (solution.Metadata == null)
-            {
-                _logger.LogWarning("Solution metadata not found. Cannot upgrade.");
-                return;
-            }
-            _logger.LogInformation($"Current version: {solution.Metadata.TemplateName} {solution.Metadata.TemplateVersion}");
-            if (string.IsNullOrEmpty(templateName))
-            {
-                templateName = solution.Metadata.TemplateName;
-            }
-            if (string.IsNullOrEmpty(templateVersion))
-            {
-                templateVersion = (await _packageFeed.GetVersionsAsync(templateName)).First();
-            }
-            _logger.LogInformation($"Upgrade version: {templateName} {templateVersion}");
-            if (solution.Metadata.TemplateName == templateName && solution.Metadata.TemplateVersion == templateVersion)
-            {
-                _logger.LogWarning("Using latest version. Nothing to upgrade");
-                return;
-            }
-
-            var solutionsPath = Path.Combine(StudioDirectoryPath, "Solutions");
-            var upgradePackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{templateName}.{templateVersion}");
-            if (Directory.Exists(upgradePackageSolutionPath))
-                Directory.Delete(upgradePackageSolutionPath, true);
-            var currentPackageSolutionPath = Path.Combine(solutionsPath, $"{solution.Namespace}.{solution.Metadata.TemplateName}.{solution.Metadata.TemplateVersion}");
-            if (Directory.Exists(currentPackageSolutionPath))
-                Directory.Delete(currentPackageSolutionPath, true);
-
-            await InitSolutionAsync(solution.Namespace, upgradePackageSolutionPath, templateName, templateVersion);
-            var upgradePackageSolution = new SolutionAccessor(upgradePackageSolutionPath);
-            await CopyEnumsAsync(solution, upgradePackageSolution);
-            await CopyEntitiesAsync(solution, upgradePackageSolution);
-
-            await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
-            var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
-            await CopyEnumsAsync(solution, currentPackageSolution);
-            await CopyEntitiesAsync(solution, currentPackageSolution);
-
-            var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, upgradePackageSolution);
-            RenameInSolution(solution, upgradeRenames);
-
-            var templateResultRenames = await GetTemplateResultRenames(currentPackageSolution, upgradePackageSolution);
-            var renames = upgradeRenames.Concat(templateResultRenames).ToList();
-
-            _logger.LogInformation($"Merging changes to {solution.Path}");
-            await _directoryMerge.MergeDirectoryAsync(currentPackageSolutionPath, upgradePackageSolutionPath, solution.Path,
-                renames);
-            _logger.LogInformation($"Completed");
-        }
-
-        private void RenameInSolution(SolutionAccessor solution, IList<(string Left, string Right)> renames)
-        {
-            foreach (var rename in renames)
-            {
-                var left = Path.Combine(solution.Path, rename.Left);
-                var path = Path.Combine(solution.Path, rename.Right);
-                Directory.Move(left, path);
-            }
-        }
-
-        private async Task<IList<(string, string)>> GetUpgradeRenames(SolutionAccessor sourceSolution, SolutionAccessor destinationSolution)
-        {
-            var renames = new List<(string, string)>();
-
-            var sourceUpgrade = await sourceSolution.GetUpgradeMetadataAsync();
-            var destinationUpgrade = await destinationSolution.GetUpgradeMetadataAsync();
-            var sourceVersion = sourceUpgrade.Version;
-
-            while (true)
-            {
-                if (sourceVersion == destinationUpgrade.Version)
-                    break;
-                var version = sourceVersion;
-                var upgrade = destinationUpgrade.Upgrades.FirstOrDefault(u => u.From == version);
-                if (upgrade == null)
-                    throw new ServiceException("Can't upgrade template");
-                foreach (var upgradeRename in upgrade.Renames)
-                {
-                    var left = FindDirectory(destinationSolution.Path, upgradeRename.Left);
-                    left = Path.GetRelativePath(destinationSolution.Path, left);
-                    var right = FindDirectory(destinationSolution.Path, upgradeRename.Right);
-                    right = Path.GetRelativePath(destinationSolution.Path, right);
-                    renames.Add((left, right));
-                }
-                sourceVersion = upgrade.To;
-            }
-
-            return renames;
-        }
-
-        private async Task<IList<(string, string)>> GetTemplateResultRenames(SolutionAccessor sourceSolution, SolutionAccessor destinationSolution)
-        {
-            var renames = new List<(string, string)>();
-
-            var sourceTemplates = (await sourceSolution.LoadTemplatesAsync()).ToList();
-            var destinationTemplates = (await destinationSolution.LoadTemplatesAsync()).ToList();
-
-            var sourceEntities = await sourceSolution.GetEntitiesAsync();
-            var destinationEntities = await destinationSolution.GetEntitiesAsync();
-
-            var sourceEnums = await sourceSolution.GetEnumsAsync();
-            var destinationEnums = await destinationSolution.GetEnumsAsync();
-
-            foreach (var sourceTemplate in sourceTemplates)
-            {
-                var destinationTemplate = destinationTemplates.FirstOrDefault(t => t.TemplatePath == sourceTemplate.TemplatePath);
-                if (destinationTemplate == null)
-                    continue;
-                if (sourceTemplate.Types.Contains(TemplateType.Entity))
-                {
-                    foreach (var sourceEntity in sourceEntities)
-                    {
-                        var destinationEntity = destinationEntities.FirstOrDefault(e => e.Id == sourceEntity.Id);
-                        if (destinationEntity == null)
-                            continue;
-                        var sourceFilePath = GetTemplateFilePath(sourceTemplate, sourceSolution, sourceEntity);
-                        var destinationFilePath = GetTemplateFilePath(destinationTemplate, destinationSolution, destinationEntity);
-                        sourceFilePath = Path.GetRelativePath(sourceSolution.Path, sourceFilePath);
-                        destinationFilePath = Path.GetRelativePath(destinationSolution.Path, destinationFilePath);
-                        if (sourceFilePath != destinationFilePath)
-                            renames.Add((sourceFilePath, destinationFilePath));
-                    }
-                }
-                else if (sourceTemplate.Types.Contains(TemplateType.Enum))
-                {
-                    foreach (var sourceEnum in sourceEnums)
-                    {
-                        var destinationEnum = destinationEnums.FirstOrDefault(e => e.Id == sourceEnum.Id);
-                        if (destinationEnum == null)
-                            continue;
-                        var sourceFilePath = GetTemplateFilePath(sourceTemplate, sourceSolution, sourceEnum);
-                        var destinationFilePath = GetTemplateFilePath(destinationTemplate, destinationSolution, destinationEnum);
-                        sourceFilePath = Path.GetRelativePath(sourceSolution.Path, sourceFilePath);
-                        destinationFilePath = Path.GetRelativePath(destinationSolution.Path, destinationFilePath);
-                        if (sourceFilePath != destinationFilePath)
-                            renames.Add((sourceFilePath, destinationFilePath));
-                    }
-                }
-            }
-
-            return renames;
-        }
-
-        private void CopyDirectory(string fromPath, string toPath)
-        {
-            foreach (string dirPath in Directory.GetDirectories(fromPath, "*",
-                SearchOption.AllDirectories))
-                Directory.CreateDirectory(dirPath.Replace(fromPath, toPath));
-
-            foreach (string newPath in Directory.GetFiles(fromPath, "*.*",
-                SearchOption.AllDirectories))
-                File.Copy(newPath, newPath.Replace(fromPath, toPath), true);
-        }
-
-        private async Task RenameSolutionAsync(string path, string oldValue, string newValue)
-        {
-            foreach (var directory in Directory.GetDirectories(path))
-            {
-                var directoryName = Path.GetRelativePath(path, directory);
-                var newDirectoryName = directoryName.Replace(oldValue, newValue);
-                var newDirectory = Path.Combine(path, newDirectoryName);
-                if (directory != newDirectory)
-                {
-                    if (Directory.Exists(newDirectory))
-                        Directory.Delete(newDirectory);
-                    Directory.Move(directory, newDirectory);
-                }
-                await RenameSolutionAsync(newDirectory, oldValue, newValue);
-            }
-
-            foreach (var file in Directory.GetFiles(path))
-            {
-                var fileName = Path.GetRelativePath(path, file);
-                var newFileName = fileName.Replace(oldValue, newValue);
-                var newFile = Path.Combine(path, newFileName);
-                if (file != newFile)
-                {
-                    Directory.Move(file, newFile);
-                }
-
-                var fileContent = await ReadFileAsync(newFile);
-                var newFileContent = fileContent.Replace(oldValue, newValue);
-                if (fileContent != newFileContent)
-                {
-                    await WriteFileAsync(newFile, newFileContent);
-                }
-            }
-        }
-
-        private async Task<string> ReadFileAsync(string filePath)
+        internal async Task<string> ReadFileAsync(string filePath)
         {
             using (var fileReader = new StreamReader(filePath))
             {
@@ -424,7 +197,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        private async Task WriteFileAsync(string filePath, string content)
+        internal async Task WriteFileAsync(string filePath, string content)
         {
             using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
@@ -455,24 +228,29 @@ namespace Cynosura.Studio.Generator
             await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
-        public async Task GenerateViewAsync(SolutionAccessor solution, View view, Entity entity)
+        public async Task GenerateEntityViewAsync(SolutionAccessor solution, Entity entity)
         {
-            var model = new EntityViewModel(view, entity, solution);
-            await GenerateAsync(solution, model.GetGenerateInfo());
+            var views = await solution.GetViewsAsync();
+            foreach (var view in views)
+            {
+                var model = new EntityViewModel(view, entity, solution);
+                await GenerateAsync(solution, model.GetGenerateInfo());
+            }
         }
 
-        public async Task UpgradeViewAsync(SolutionAccessor solution, View view, Entity oldEntity, Entity newEntity)
+        public async Task UpgradeEntityViewAsync(SolutionAccessor solution, Entity oldEntity, Entity newEntity)
         {
-            await UpgradeViewsAsync(solution, view, new[] { oldEntity }, new[] { newEntity });
+            await UpgradeEntityViewsAsync(solution, new[] { oldEntity }, new[] { newEntity });
         }
 
-        public async Task UpgradeViewsAsync(SolutionAccessor solution, View view, IEnumerable<Entity> oldEntities, IEnumerable<Entity> newEntities)
+        public async Task UpgradeEntityViewsAsync(SolutionAccessor solution, IEnumerable<Entity> oldEntities, IEnumerable<Entity> newEntities)
         {
+            var views = await solution.GetViewsAsync();
             var oldGenerateInfos = oldEntities
-                .Select(oldEntity => new EntityViewModel(view, oldEntity, solution))
+                .SelectMany(oldEntity => views.Select(v => new EntityViewModel(v, oldEntity, solution)))
                 .Select(model => model.GetGenerateInfo());
             var newGenerateInfos = newEntities
-                .Select(newEntity => new EntityViewModel(view, newEntity, solution))
+                .SelectMany(newEntity => views.Select(v => new EntityViewModel(v, newEntity, solution)))
                 .Select(model => model.GetGenerateInfo());
 
             await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
@@ -501,24 +279,29 @@ namespace Cynosura.Studio.Generator
             await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
-        public async Task GenerateEnumViewAsync(SolutionAccessor solution, View view, Models.Enum @enum)
+        public async Task GenerateEnumViewAsync(SolutionAccessor solution, Models.Enum @enum)
         {
-            var model = new EnumViewModel(view, @enum, solution);
-            await GenerateAsync(solution, model.GetGenerateInfo());
+            var views = await solution.GetViewsAsync();
+            foreach (var view in views)
+            {
+                var model = new EnumViewModel(view, @enum, solution);
+                await GenerateAsync(solution, model.GetGenerateInfo());
+            }
         }
 
-        public async Task UpgradeEnumViewAsync(SolutionAccessor solution, View view, Models.Enum oldEnum, Models.Enum newEnum)
+        public async Task UpgradeEnumViewAsync(SolutionAccessor solution, Models.Enum oldEnum, Models.Enum newEnum)
         {
-            await UpgradeEnumViewsAsync(solution, view, new[] { oldEnum }, new[] { newEnum });
+            await UpgradeEnumViewsAsync(solution, new[] { oldEnum }, new[] { newEnum });
         }
 
-        public async Task UpgradeEnumViewsAsync(SolutionAccessor solution, View view, IEnumerable<Models.Enum> oldEnums, IEnumerable<Models.Enum> newEnums)
+        public async Task UpgradeEnumViewsAsync(SolutionAccessor solution, IEnumerable<Models.Enum> oldEnums, IEnumerable<Models.Enum> newEnums)
         {
+            var views = await solution.GetViewsAsync();
             var oldGenerateInfos = oldEnums
-                .Select(oldEnum => new EnumViewModel(view, oldEnum, solution))
+                .SelectMany(oldEnum => views.Select(v => new EnumViewModel(v, oldEnum, solution)))
                 .Select(model => model.GetGenerateInfo());
             var newGenerateInfos = newEnums
-                .Select(newEnum => new EnumViewModel(view, newEnum, solution))
+                .SelectMany(newEnum => views.Select(v => new EnumViewModel(v, newEnum, solution)))
                 .Select(model => model.GetGenerateInfo());
 
             await UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
@@ -564,7 +347,7 @@ namespace Cynosura.Studio.Generator
             return path.Contains("*");
         }
 
-        private string FindDirectory(string path, string templatePath)
+        internal string FindDirectory(string path, string templatePath)
         {
             var templatePathItems = templatePath.Split(Path.DirectorySeparatorChar);
             foreach (var templatePathItem in templatePathItems)

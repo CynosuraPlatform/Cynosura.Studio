@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
             await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
-            await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
+            await _codeGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
             return Unit.Value;
         }
 

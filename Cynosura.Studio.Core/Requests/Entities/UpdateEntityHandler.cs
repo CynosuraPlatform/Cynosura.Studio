@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -38,7 +38,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             newEntity = (await solutionAccessor.GetEntitiesAsync())
                 .FirstOrDefault(e => e.Id == request.Id);
             await _codeGenerator.UpgradeEntityAsync(solutionAccessor, oldEntity, newEntity);
-            await _codeGenerator.UpgradeViewAsync(solutionAccessor, new Generator.Models.View(), oldEntity, newEntity);
+            await _codeGenerator.UpgradeEntityViewAsync(solutionAccessor, oldEntity, newEntity);
             return Unit.Value;
         }
 

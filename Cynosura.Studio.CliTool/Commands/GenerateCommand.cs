@@ -87,7 +87,7 @@ namespace Cynosura.Studio.CliTool.Commands
                 throw new Exception($"Enum {name} not found");
             }
             await generator.GenerateEnumAsync(accessor, en);
-            await generator.GenerateEnumViewAsync(accessor, new View(), en);
+            await generator.GenerateEnumViewAsync(accessor, en);
         }
 
         private async Task<bool> GenerateEntityActionAsync(IEnumerable<string> args)
@@ -115,7 +115,7 @@ namespace Cynosura.Studio.CliTool.Commands
                 throw new Exception($"Entity {name} not found");
             }
             await generator.GenerateEntityAsync(accessor, entity);
-            await generator.GenerateViewAsync(accessor, new View(), entity);
+            await generator.GenerateEntityViewAsync(accessor, entity);
         }
 
         public override string Help()

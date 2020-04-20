@@ -40,7 +40,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             entity = (await solutionAccessor.GetEntitiesAsync())
                 .First(e => e.Id == entity.Id);
             await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
-            await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
+            await _codeGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
             return new CreatedEntity<Guid>() { Id = entity.Id };
         }
 

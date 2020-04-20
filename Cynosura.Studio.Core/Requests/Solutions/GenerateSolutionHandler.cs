@@ -11,13 +11,13 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 {
     public class GenerateSolutionHandler : IRequestHandler<GenerateSolution>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly SolutionGenerator _solutionGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public GenerateSolutionHandler(CodeGenerator codeGenerator, 
+        public GenerateSolutionHandler(SolutionGenerator solutionGenerator, 
             IEntityRepository<Solution> solutionRepository)
         {
-            _codeGenerator = codeGenerator;
+            _solutionGenerator = solutionGenerator;
             _solutionRepository = solutionRepository;
         }
 
@@ -28,7 +28,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             if (solution != null)
             {
                 var accessor = new SolutionAccessor(solution.Path);
-                await _codeGenerator.GenerateSolutionAsync(solution.Path, solution.Name, accessor.Metadata.TemplateName);
+                await _solutionGenerator.GenerateSolutionAsync(solution.Path, solution.Name, accessor.Metadata.TemplateName);
             }
             return Unit.Value;
         }
