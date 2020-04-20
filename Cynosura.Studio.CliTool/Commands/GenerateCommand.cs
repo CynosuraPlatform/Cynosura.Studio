@@ -80,7 +80,7 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var enums = await accessor.GetEnumsAsync();
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EnumGenerator>();
             var en = enums.FirstOrDefault(f => f.Name == name);
             if (en == null)
             {
@@ -108,7 +108,7 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var entities = await accessor.GetEntitiesAsync();
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EntityGenerator>();
             var entity = entities.FirstOrDefault(f => f.Name == name);
             if (entity == null)
             {

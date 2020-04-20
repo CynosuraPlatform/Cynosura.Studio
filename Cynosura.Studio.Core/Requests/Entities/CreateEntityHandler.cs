@@ -14,15 +14,15 @@ namespace Cynosura.Studio.Core.Requests.Entities
 {
     public class CreateEntityHandler : IRequestHandler<CreateEntity, CreatedEntity<Guid>>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EntityGenerator _entityGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
 
-        public CreateEntityHandler(CodeGenerator codeGenerator,
+        public CreateEntityHandler(EntityGenerator EntityGenerator,
             IEntityRepository<Solution> solutionRepository,
             IMapper mapper)
         {
-            _codeGenerator = codeGenerator;
+            _entityGenerator = EntityGenerator;
             _solutionRepository = solutionRepository;
             _mapper = mapper;
         }
@@ -39,8 +39,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
             // reload Entity from Solution
             entity = (await solutionAccessor.GetEntitiesAsync())
                 .First(e => e.Id == entity.Id);
-            await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
-            await _codeGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
+            await _entityGenerator.GenerateEntityAsync(solutionAccessor, entity);
+            await _entityGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
             return new CreatedEntity<Guid>() { Id = entity.Id };
         }
 

@@ -11,13 +11,13 @@ namespace Cynosura.Studio.Core.Requests.Enums
 {
     public class GenerateEnumHandler : IRequestHandler<GenerateEnum>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EnumGenerator _enumGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public GenerateEnumHandler(CodeGenerator codeGenerator,
+        public GenerateEnumHandler(EnumGenerator enumGenerator,
             IEntityRepository<Solution> solutionRepository)
         {
-            _codeGenerator = codeGenerator;
+            _enumGenerator = enumGenerator;
             _solutionRepository = solutionRepository;
         }
 
@@ -28,8 +28,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var @enum = (await solutionAccessor.GetEnumsAsync()).FirstOrDefault(e => e.Id == request.Id);
-            await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
-            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
+            await _enumGenerator.GenerateEnumAsync(solutionAccessor, @enum);
+            await _enumGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
             return Unit.Value;
         }
 

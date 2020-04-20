@@ -17,16 +17,22 @@ namespace Cynosura.Studio.Generator
         private string StudioDirectoryPath => Path.Combine(Path.GetTempPath(), "Cynosura.Studio");
 
         private readonly CodeGenerator _codeGenerator;
+        private readonly EntityGenerator _entityGenerator;
+        private readonly EnumGenerator _enumGenerator;
         private readonly IDirectoryMerge _directoryMerge;
         private readonly IPackageFeed _packageFeed;
         private readonly ILogger<SolutionGenerator> _logger;
 
         public SolutionGenerator(CodeGenerator codeGenerator,
+            EntityGenerator entityGenerator,
+            EnumGenerator enumGenerator,
             IDirectoryMerge directoryMerge,
             IPackageFeed packageFeed,
             ILogger<SolutionGenerator> logger)
         {
             _codeGenerator = codeGenerator;
+            _entityGenerator = entityGenerator;
+            _enumGenerator = enumGenerator;
             _directoryMerge = directoryMerge;
             _packageFeed = packageFeed;
             _logger = logger;
@@ -134,13 +140,13 @@ namespace Cynosura.Studio.Generator
 
             await InitSolutionAsync(solution.Namespace, upgradePackageSolutionPath, templateName, templateVersion);
             var upgradePackageSolution = new SolutionAccessor(upgradePackageSolutionPath);
-            await _codeGenerator.CopyEnumsAsync(solution, upgradePackageSolution);
-            await _codeGenerator.CopyEntitiesAsync(solution, upgradePackageSolution);
+            await _enumGenerator.CopyEnumsAsync(solution, upgradePackageSolution);
+            await _entityGenerator.CopyEntitiesAsync(solution, upgradePackageSolution);
 
             await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
-            await _codeGenerator.CopyEnumsAsync(solution, currentPackageSolution);
-            await _codeGenerator.CopyEntitiesAsync(solution, currentPackageSolution);
+            await _enumGenerator.CopyEnumsAsync(solution, currentPackageSolution);
+            await _entityGenerator.CopyEntitiesAsync(solution, currentPackageSolution);
 
             var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, upgradePackageSolution);
             RenameInSolution(solution, upgradeRenames);
