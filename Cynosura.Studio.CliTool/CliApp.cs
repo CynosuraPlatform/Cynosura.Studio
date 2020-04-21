@@ -18,6 +18,8 @@ namespace Cynosura.Studio.CliTool
         private IConfigService _configService;
         private string _solutionDirectory;
         private string _feed;
+        private string _feedUsername;
+        private string _feedPassword;
         private string _src;
         private string _templateName = "Cynosura.Template";
 
@@ -35,6 +37,8 @@ namespace Cynosura.Studio.CliTool
                 {"solution", SetDirectory},
                 {"debug", AttachDebugger },
                 {"feed", value => _feed = value },
+                {"feedUsername", value => _feedUsername = value },
+                {"feedPassword", value => _feedPassword = value },
                 {"src", value => _src = value },
                 {"templateName", value=> _templateName = value },
                 {"set", OverrideSettingsValue }
@@ -69,8 +73,15 @@ namespace Cynosura.Studio.CliTool
             if (!defaultConfig.ContainsKey("LocalFeed:SourcePath"))
                 defaultConfig.Add("LocalFeed:SourcePath", _src);
 
+            var useProfileSettings =
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    Path.Combine(".cynosura", "appsettings.json"));
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(useProfileSettings, optional: true)
+                .AddJsonFile($"appsettings.local.json", optional: true)
                 .AddInMemoryCollection(defaultConfig);
 
             _configurationRoot = builder.Build();

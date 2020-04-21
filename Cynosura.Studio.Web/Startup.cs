@@ -27,20 +27,9 @@ namespace Cynosura.Studio.Web
 {
     public class Startup
     {
-        private readonly IWebHostEnvironment _hostingEnvironment;
-
-        public Startup(IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
-            _hostingEnvironment = hostingEnvironment;
-
-            var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.SetBasePath(_hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true);
-            configurationBuilder.AddEnvironmentVariables();
-
-            Configuration = configurationBuilder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
