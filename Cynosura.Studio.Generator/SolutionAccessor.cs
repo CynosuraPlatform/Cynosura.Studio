@@ -26,13 +26,15 @@ namespace Cynosura.Studio.Generator
         public SolutionAccessor(string path)
         {
             Path = path;
-            var solutionFile = Directory.GetFiles(Path, "*.sln").FirstOrDefault();
-            if (solutionFile == null)
+            Metadata = GetMetadata();
+            var solutionFile = System.IO.Path.Combine(Path, Metadata.SolutionFile ?? $"{Metadata.Name}.sln");
+            if (!File.Exists(solutionFile))
+            {
                 throw new Exception("Solution file not found");
+            }
             var info = new FileInfo(solutionFile);
             Namespace = Regex.Replace(info.Name, "\\.sln$", "");
             Projects = GetProjects(Path);
-            Metadata = GetMetadata();
         }
 
         private string GetMetadataPath()
@@ -42,11 +44,14 @@ namespace Cynosura.Studio.Generator
             {
                 return newLocation;
             }
-            var coreProject = GetProject("Core");
-            var oldLocation = System.IO.Path.Combine(coreProject.Path, "Metadata", "Solution.json");
-            if (File.Exists(oldLocation))
+            var coreDir = Directory.GetDirectories(Path, "*.Core").FirstOrDefault();
+            if (coreDir != null)
             {
-                return oldLocation;
+                var oldLocation = System.IO.Path.Combine(coreDir, "Metadata", "Solution.json");
+                if (File.Exists(oldLocation))
+                {
+                    return oldLocation;
+                }
             }
             throw new FileNotFoundException();
         }
