@@ -33,10 +33,5 @@ namespace Cynosura.Studio.Generator.Models
         {
             return new[] { TemplateType.Enum };
         }
-
-        public IEnumerable<TemplateType> GetViewTemplateTypes()
-        {
-            return new[] { TemplateType.EnumView };
-        }
     }
 }

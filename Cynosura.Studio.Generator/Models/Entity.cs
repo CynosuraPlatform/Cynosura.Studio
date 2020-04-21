@@ -174,12 +174,5 @@ namespace Cynosura.Studio.Generator.Models
                 return new[] { TemplateType.AbstractEntity };
             return new[] { TemplateType.Entity };
         }
-
-        public IEnumerable<TemplateType> GetViewTemplateTypes()
-        {
-            if (IsAbstract)
-                return new TemplateType[] { };
-            return new[] { TemplateType.View };
-        }
     }
 }

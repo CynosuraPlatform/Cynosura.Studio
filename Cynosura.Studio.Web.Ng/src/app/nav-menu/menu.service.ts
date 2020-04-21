@@ -12,6 +12,7 @@ export class MenuService {
 // ADD MENU ITEMS HERE
         this.menu.items.push({ route: '/entity', name: 'Entities', icon: 'notes', roles: [] });
         this.menu.items.push({ route: '/enum', name: 'Enums', icon: 'notes', roles: [''] });
+        this.menu.items.push({ route: '/view', name: 'Views', icon: 'notes', roles: [] });
         this.menu.items.push({ route: '/solution', name: 'Solutions', icon: 'folder', roles: [] });
     }
 

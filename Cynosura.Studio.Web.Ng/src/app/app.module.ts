@@ -28,6 +28,11 @@ import { HomeComponent } from './home/home.component';
             { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [] },
 // ADD ROUTES HERE
             {
+                path: 'view',
+                canActivate: [],
+                loadChildren: () => import('./view/view.module').then(m => m.ViewModule)
+            },
+            {
                 path: 'entity',
                 canActivate: [],
                 loadChildren: () => import('./entity/entity.module').then(m => m.EntityModule)

@@ -12,17 +12,17 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 {
     public class UpdateSolutionHandler : IRequestHandler<UpdateSolution>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly SolutionGenerator _solutionGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateSolutionHandler(CodeGenerator codeGenerator,
+        public UpdateSolutionHandler(SolutionGenerator solutionGenerator,
             IEntityRepository<Solution> solutionRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _codeGenerator = codeGenerator;
+            _solutionGenerator = solutionGenerator;
             _solutionRepository = solutionRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -41,7 +41,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
                 var solutionAccessor = new SolutionAccessor(solution.Path);
                 if (solutionAccessor.Metadata.TemplateName != request.TemplateName || solutionAccessor.Metadata.TemplateVersion != request.TemplateVersion)
                 {
-                    await _codeGenerator.UpgradeSolutionAsync(solutionAccessor, request.TemplateName, request.TemplateVersion);
+                    await _solutionGenerator.UpgradeSolutionAsync(solutionAccessor, request.TemplateName, request.TemplateVersion);
                 }
             }
             return Unit.Value;

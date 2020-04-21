@@ -14,15 +14,15 @@ namespace Cynosura.Studio.Core.Requests.Enums
 {
     public class CreateEnumHandler : IRequestHandler<CreateEnum, CreatedEntity<Guid>>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EnumGenerator _enumGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
 
-        public CreateEnumHandler(CodeGenerator codeGenerator,
+        public CreateEnumHandler(EnumGenerator enumGenerator,
             IEntityRepository<Solution> solutionRepository,
             IMapper mapper)
         {
-            _codeGenerator = codeGenerator;
+            _enumGenerator = enumGenerator;
             _solutionRepository = solutionRepository;
             _mapper = mapper;
         }
@@ -39,8 +39,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
             // reload Enum from Solution
             @enum = (await solutionAccessor.GetEnumsAsync())
                 .First(e => e.Id == @enum.Id);
-            await _codeGenerator.GenerateEnumAsync(solutionAccessor, @enum);
-            await _codeGenerator.GenerateEnumViewAsync(solutionAccessor, new Generator.Models.View(), @enum);
+            await _enumGenerator.GenerateEnumAsync(solutionAccessor, @enum);
+            await _enumGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
             return new CreatedEntity<Guid>() { Id = @enum.Id };
         }
 

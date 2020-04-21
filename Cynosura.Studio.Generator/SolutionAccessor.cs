@@ -223,6 +223,67 @@ namespace Cynosura.Studio.Generator
             File.Delete(filePath);
         }
 
+        public async Task<List<Models.View>> GetViewsAsync()
+        {
+            var coreProject = GetProject("Core");
+            var files = coreProject.GetFiles(System.IO.Path.Combine("Metadata", "Views"));
+            var views = new List<Models.View>();
+            foreach (var file in files)
+            {
+                var view = DeserializeMetadata<Models.View>(await ReadFileAsync(file));
+                views.Add(view);
+            }
+
+            if (views.Count == 0)
+            {
+                var view = new Models.View()
+                {
+                    Id = Guid.NewGuid(),
+                };
+                views.Add(view);
+                await CreateViewAsync(view);
+            }
+
+            return views;
+        }
+
+        public async Task CreateViewAsync(Models.View view)
+        {
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata", "Views");
+            coreProject.VerifyPathExists("Metadata", "Views");
+            var filePath = System.IO.Path.Combine(path, view.Name + MetadataFileExtension);
+            await WriteFileAsync(filePath, SerializeMetadata(view));
+        }
+
+        public async Task UpdateViewAsync(Models.View view)
+        {
+            var existingView = (await GetViewsAsync()).FirstOrDefault(e => e.Id == view.Id);
+            if (existingView == null)
+                throw new Exception($"View with Id = {view.Id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata", "Views");
+            var filePath = System.IO.Path.Combine(path, view.Name + MetadataFileExtension);
+            await WriteFileAsync(filePath, SerializeMetadata(view));
+
+            if (existingView.Name != view.Name)
+            {
+                filePath = System.IO.Path.Combine(path, existingView.Name + MetadataFileExtension);
+                File.Delete(filePath);
+            }
+        }
+
+        public async Task DeleteViewAsync(Guid id)
+        {
+            var existingView = (await GetViewsAsync()).FirstOrDefault(e => e.Id == id);
+            if (existingView == null)
+                throw new Exception($"View with Id = {id} not found");
+            var coreProject = GetProject("Core");
+            var path = coreProject.GetPath("Metadata", "Views");
+            var filePath = System.IO.Path.Combine(path, existingView.Name + MetadataFileExtension);
+            File.Delete(filePath);
+        }
+
         private async Task<string> ReadFileAsync(string filePath)
         {
             using (var fileReader = new StreamReader(filePath))
@@ -233,7 +294,7 @@ namespace Cynosura.Studio.Generator
 
         private async Task WriteFileAsync(string filePath, string content)
         {
-            using (var fileWriter = new StreamWriter(filePath))
+            using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
                 await fileWriter.WriteAsync(content);
             }
@@ -243,7 +304,7 @@ namespace Cynosura.Studio.Generator
         {
             var coreProject = GetProject("Core");
             var templatesPath = coreProject.GetPath("Templates");
-            var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));
+            var templatesJson = await ReadFileAsync(System.IO.Path.Combine(templatesPath, "Templates.json"));            
             var templates = DeserializeMetadata<List<CodeTemplate>>(templatesJson);
             templates.ForEach(f =>
                 {
