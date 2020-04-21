@@ -16,6 +16,10 @@ namespace Cynosura.Studio.Generator
         public static IServiceCollection AddGenerator(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<CodeGenerator>();
+            services.AddTransient<SolutionGenerator>();
+            services.AddTransient<EntityGenerator>();
+            services.AddTransient<EnumGenerator>();
+            services.AddTransient<ViewGenerator>();
             services.AddTransient<ITemplateEngine, StringTemplateEngine>();
 
             services.AddTransient<LocalFeed>();

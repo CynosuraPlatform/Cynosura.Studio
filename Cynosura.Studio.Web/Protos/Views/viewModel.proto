@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Views";
+
+message View {
+    string id = 1;
+    string name = 2;
+}
+
+message ViewPageModel {
+    repeated View pageItems = 1;
+    int32 totalItems = 2;
+    int32 currentPageIndex = 3;
+}

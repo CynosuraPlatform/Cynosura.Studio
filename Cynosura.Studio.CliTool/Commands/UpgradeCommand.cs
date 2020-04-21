@@ -14,7 +14,7 @@ namespace Cynosura.Studio.CliTool.Commands
 
         public override async Task<bool> ExecuteAsync(string[] args)
         {
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<SolutionGenerator>();
             var accessor = new SolutionAccessor(SolutionDirectory);
             await generator.UpgradeSolutionAsync(accessor);
             Console.WriteLine($"Solution {accessor.Namespace} upgraded successfully");

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+import "Protos/Views/viewModel.proto";
+import "Protos/Views/viewFilter.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Views";
+
+service ViewService {
+    rpc GetViews(GetViewsRequest) returns (ViewPageModel);
+    rpc GetView(GetViewRequest) returns (View);
+    rpc UpdateView(UpdateViewRequest) returns (Empty);
+    rpc CreateView(CreateViewRequest) returns (CreatedEntity);
+    rpc DeleteView(DeleteViewRequest) returns (Empty);
+}
+
+message CreateViewRequest {
+    oneof nameOneOf {
+        string name = 2;
+    }
+}
+
+message DeleteViewRequest {
+    string id = 1;
+}
+
+message GetViewRequest {
+    string id = 1;
+}
+
+message GetViewsRequest {
+    oneof pageIndexOneOf {
+        int32 pageIndex = 1;
+    }
+    oneof pageSizeOneOf {
+        int32 pageSize = 2;
+    }
+    ViewFilter filter = 3;
+    string orderBy = 4;
+    oneof orderDirectionOneOf {
+        OrderDirection orderDirection = 5;
+    }
+}
+
+message UpdateViewRequest {
+    string id = 1;
+    oneof nameOneOf {
+        string name = 2;
+    }
+}

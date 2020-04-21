@@ -28,7 +28,8 @@ namespace Cynosura.Studio.Generator
             {
                 GenerationObject = Enum,
                 Model = this,
-                Types = Enum.GetViewTemplateTypes(),
+                Types = Enum.GetTemplateTypes(),
+                View = View,
             };
         }
     }

@@ -23,7 +23,7 @@ namespace Cynosura.Studio.CliTool.Commands
                 Console.WriteLine(Help());
                 return false;
             }
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<SolutionGenerator>();
             if (!Directory.Exists(SolutionDirectory))
             {
                 Directory.CreateDirectory(SolutionDirectory);

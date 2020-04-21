@@ -1,0 +1,36 @@
+{
+  "id": "cbf3c02d-66b4-415b-bf45-d88c178c9a88",
+  "name": "View",
+  "pluralName": "Views",
+  "displayName": "View",
+  "pluralDisplayName": "Views",
+  "isAbstract": false,
+  "baseEntityId": null,
+  "fields": [
+    {
+      "id": "20274282-0aea-4faa-af63-a650e6291062",
+      "name": "Id",
+      "displayName": "Id",
+      "type": "Guid",
+      "size": null,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": true,
+      "properties": {}
+    },
+    {
+      "id": "e38c65e5-f9b1-46f7-9f29-e5354ca618f5",
+      "name": "Name",
+      "displayName": "Name",
+      "type": "String",
+      "size": 100,
+      "entityId": null,
+      "isRequired": true,
+      "enumId": null,
+      "isSystem": false,
+      "properties": {}
+    }
+  ],
+  "properties": {}
+}

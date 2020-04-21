@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,15 +12,15 @@ namespace Cynosura.Studio.Core.Requests.Entities
 {
     public class UpdateEntityHandler : IRequestHandler<UpdateEntity>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EntityGenerator _entityGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
 
-        public UpdateEntityHandler(CodeGenerator codeGenerator,
+        public UpdateEntityHandler(EntityGenerator entityGenerator,
             IEntityRepository<Solution> solutionRepository,
             IMapper mapper)
         {
-            _codeGenerator = codeGenerator;
+            _entityGenerator = entityGenerator;
             _solutionRepository = solutionRepository;
             _mapper = mapper;
         }
@@ -37,8 +37,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
             // reload Entity from Solution
             newEntity = (await solutionAccessor.GetEntitiesAsync())
                 .FirstOrDefault(e => e.Id == request.Id);
-            await _codeGenerator.UpgradeEntityAsync(solutionAccessor, oldEntity, newEntity);
-            await _codeGenerator.UpgradeViewAsync(solutionAccessor, new Generator.Models.View(), oldEntity, newEntity);
+            await _entityGenerator.UpgradeEntityAsync(solutionAccessor, oldEntity, newEntity);
+            await _entityGenerator.UpgradeEntityViewAsync(solutionAccessor, oldEntity, newEntity);
             return Unit.Value;
         }
 

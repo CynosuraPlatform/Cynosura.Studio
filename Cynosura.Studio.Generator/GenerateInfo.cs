@@ -8,5 +8,6 @@ namespace Cynosura.Studio.Generator
         public IGenerationObject GenerationObject { get; set; }
         public object Model { get; set; }
         public IEnumerable<TemplateType> Types { get; set; }
+        public View View { get; set; }
     }
 }

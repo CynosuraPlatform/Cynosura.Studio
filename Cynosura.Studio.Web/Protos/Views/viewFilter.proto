@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Views";
+
+message ViewFilter {
+    oneof nameOneOf {
+        string name = 20;
+    }
+}

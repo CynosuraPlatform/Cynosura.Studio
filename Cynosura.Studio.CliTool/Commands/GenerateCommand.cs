@@ -80,14 +80,14 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var enums = await accessor.GetEnumsAsync();
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EnumGenerator>();
             var en = enums.FirstOrDefault(f => f.Name == name);
             if (en == null)
             {
                 throw new Exception($"Enum {name} not found");
             }
             await generator.GenerateEnumAsync(accessor, en);
-            await generator.GenerateEnumViewAsync(accessor, new View(), en);
+            await generator.GenerateEnumViewAsync(accessor, en);
         }
 
         private async Task<bool> GenerateEntityActionAsync(IEnumerable<string> args)
@@ -108,14 +108,14 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var entities = await accessor.GetEntitiesAsync();
-            var generator = ServiceProvider.GetService<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EntityGenerator>();
             var entity = entities.FirstOrDefault(f => f.Name == name);
             if (entity == null)
             {
                 throw new Exception($"Entity {name} not found");
             }
             await generator.GenerateEntityAsync(accessor, entity);
-            await generator.GenerateViewAsync(accessor, new View(), entity);
+            await generator.GenerateEntityViewAsync(accessor, entity);
         }
 
         public override string Help()
