@@ -3,7 +3,7 @@
 
 ## Overview
 
-Cynosura is a code generator that allows to quickly create projects with .NET and Angular.
+Cynosura is a code generator that allows to quickly create projects with .NET Core and Angular.
 
 Main features:
 1. Backend is written in .NET Core 3.1
