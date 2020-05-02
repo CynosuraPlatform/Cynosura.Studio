@@ -32,7 +32,7 @@ Main features:
 
 ### Metadata
 
-Cynosura.Studio allows you to create entities and enums in web UI. Entities and enums created in UI will be generated into code in your project: models, CQRS classes, EF configurations, API models and controllers, Angular models, services, and compponents, etc. You can change generated code as you like. When later you wish to update entity or enum metadata, those changes will be merged into your code without overwriting your custom changes.
+Cynosura.Studio allows you to create entities and enums in web UI. Entities and enums created in UI will be generated into code in your project: models, CQRS classes, EF configurations, API models and controllers, Angular models, services, and components, etc. You can change generated code as you like. When later you wish to update entity or enum metadata, those changes will be merged into your code without overwriting your custom changes.
 
 ### Solution upgrade
 
