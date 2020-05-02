@@ -9,7 +9,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
         public string FeedUrl { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public NugetListingApi ListingApi { get; set; } = NugetListingApi.RegistrationsBaseUrl;
+        public NugetListingApi ListingApi { get; set; } = NugetListingApi.SearchAutocompleteService;
         public string ListingApiVersion { get; set; }
     }
 }
