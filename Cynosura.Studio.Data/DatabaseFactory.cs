@@ -1,32 +1,29 @@
-﻿using Cynosura.EF;
+using System;
+using Cynosura.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.Data
 {
     public class DatabaseFactory : IDatabaseFactory
     {
-        private readonly string _connectionString;
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly IServiceProvider _serviceProvider;
         private DataContext _dataContext;
 
-        public DatabaseFactory(string connectionString, ILoggerFactory loggerFactory)
+        public DatabaseFactory(IServiceProvider serviceProvider)
         {
-            _connectionString = connectionString;
-            _loggerFactory = loggerFactory;
+            _serviceProvider = serviceProvider;
         }
 
         public DbContext Get()
         {
             if (_dataContext == null)
             {
-                var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-                optionsBuilder.UseSqlServer(_connectionString);
-                optionsBuilder.UseLoggerFactory(_loggerFactory);
-                _dataContext = new DataContext(optionsBuilder.Options);
+                _dataContext = _serviceProvider.GetRequiredService<DataContext>();
             }
             return _dataContext;
         }
+
 
         public void Dispose()
         {

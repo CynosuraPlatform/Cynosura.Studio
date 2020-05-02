@@ -1,5 +1,5 @@
 
-import { Field } from "../field-core/field.model";
+import { Field } from '../field-core/field.model';
 
 export class Entity {
     id: string;

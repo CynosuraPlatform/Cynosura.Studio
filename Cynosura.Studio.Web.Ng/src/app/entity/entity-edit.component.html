@@ -1,53 +1,33 @@
-<mat-card *ngIf="entity">
+<h1 mat-dialog-title>Entity <app-entity-show [value]="entity"></app-entity-show></h1>
+<mat-dialog-content *ngIf="entity" class="mat-dialog-content-edit">
 
-    <mat-card-header>
-        <mat-card-title>Entity <app-entity-show [value]="entity"></app-entity-show></mat-card-title>
-    </mat-card-header>
-
-    <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
-            <button mat-raised-button type="button" (click)="generate()" *ngIf="id">Generate</button>
-        </mat-card-actions>
-        <div>
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" label="Name"></app-text-edit>
-                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Plural Name</mat-label>
-                <app-text-edit formControlName="pluralName" name="pluralName" label="Plural Name"></app-text-edit>
-                <mat-error>{{ error?.modelState?.pluralName | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" label="Display Name"></app-text-edit>
-                <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Plural Display Name</mat-label>
-                <app-text-edit formControlName="pluralDisplayName" name="pluralDisplayName" label="Plural Display Name"></app-text-edit>
-                <mat-error>{{ error?.modelState?.pluralDisplayName | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div>
-            <app-bool-edit formControlName="isAbstract" name="isAbstract" label="Abstract"></app-bool-edit>
-        </div>
-        <div>
-            <mat-form-field>
-                <mat-label>Base Entity</mat-label>
-                <app-entity-select formControlName="baseEntityId" [solutionId]="solutionId" name="baseEntityId" label="Base Entity"></app-entity-select>
-                <mat-error>{{ error?.modelState?.baseEntityId | modelError }}</mat-error>
-            </mat-form-field>
-        </div>
+    <form [formGroup]="entityForm">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
+            <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Plural Name</mat-label>
+            <app-text-edit formControlName="pluralName" name="pluralName" placeholder="Plural Name"></app-text-edit>
+            <mat-error>{{ error?.modelState?.pluralName | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Display Name</mat-label>
+            <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
+            <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Plural Display Name</mat-label>
+            <app-text-edit formControlName="pluralDisplayName" name="pluralDisplayName" placeholder="Plural Display Name"></app-text-edit>
+            <mat-error>{{ error?.modelState?.pluralDisplayName | modelError }}</mat-error>
+        </mat-form-field>
+        <app-bool-edit formControlName="isAbstract" name="isAbstract" label="Abstract"></app-bool-edit>
+        <mat-form-field>
+            <mat-label>Base Entity</mat-label>
+            <app-entity-select formControlName="baseEntityId" [solutionId]="solutionId" name="baseEntityId" placeholder="Base Entity"></app-entity-select>
+            <mat-error>{{ error?.modelState?.baseEntityId | modelError }}</mat-error>
+        </mat-form-field>
         <div>
             <label for="properties">Properties</label>
             <div *ngIf="entity">
@@ -56,8 +36,11 @@
         </div>
     </form>
 
-</mat-card>
-
-<div *ngIf="entity">
-    <app-field-list [fields]="entity.fields" [solutionId]="solutionId"></app-field-list>
-</div>
+    <div *ngIf="entity">
+        <app-field-list [fields]="entity.fields" [solutionId]="solutionId"></app-field-list>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

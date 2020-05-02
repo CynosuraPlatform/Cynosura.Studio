@@ -1,4 +1,4 @@
-<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
-    <mat-option [value]="null" selected="selected">Select Solution</mat-option>
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
+    <mat-option [value]="null"></mat-option>
     <mat-option [value]="solution.id" *ngFor="let solution of solutions">{{ solution.name }}</mat-option>
 </mat-select>

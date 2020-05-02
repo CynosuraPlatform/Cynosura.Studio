@@ -6,6 +6,8 @@ namespace Cynosura.Studio.Core.Requests.Fields
     {
         public UpdateFieldValidator()
         {
+            RuleFor(x => x.Name).MaximumLength(100).NotEmpty().Matches(RegexHelper.CSharpName);
+            RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty();
             RuleFor(x => x.Type).NotEmpty().When(x => x.EntityId == null && x.EnumId == null);
             RuleFor(x => x.Type).Empty().When(x => x.EntityId != null || x.EnumId != null);
             RuleFor(x => x.EntityId).NotEmpty().When(x => x.Type == null && x.EnumId == null);

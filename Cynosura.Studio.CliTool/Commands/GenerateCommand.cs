@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
 using Cynosura.Studio.Generator;
 using Cynosura.Studio.Generator.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
@@ -12,8 +12,8 @@ namespace Cynosura.Studio.CliTool.Commands
     {
         private readonly Dictionary<string, Func<IEnumerable<string>, Task<bool>>> _actions;
 
-        public GenerateCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope)
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public GenerateCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider)
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
             _actions = new Dictionary<string, Func<IEnumerable<string>, Task<bool>>>
             {
@@ -80,14 +80,14 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var enums = await accessor.GetEnumsAsync();
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EnumGenerator>();
             var en = enums.FirstOrDefault(f => f.Name == name);
             if (en == null)
             {
                 throw new Exception($"Enum {name} not found");
             }
             await generator.GenerateEnumAsync(accessor, en);
-            await generator.GenerateEnumViewAsync(accessor, new View(), en);
+            await generator.GenerateEnumViewAsync(accessor, en);
         }
 
         private async Task<bool> GenerateEntityActionAsync(IEnumerable<string> args)
@@ -108,14 +108,14 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var accessor = new SolutionAccessor(SolutionDirectory);
             var entities = await accessor.GetEntitiesAsync();
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<EntityGenerator>();
             var entity = entities.FirstOrDefault(f => f.Name == name);
             if (entity == null)
             {
                 throw new Exception($"Entity {name} not found");
             }
             await generator.GenerateEntityAsync(accessor, entity);
-            await generator.GenerateViewAsync(accessor, new View(), entity);
+            await generator.GenerateEntityViewAsync(accessor, entity);
         }
 
         public override string Help()

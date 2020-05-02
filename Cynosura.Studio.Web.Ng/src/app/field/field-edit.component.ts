@@ -1,24 +1,28 @@
-import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute, Router, Params } from "@angular/router";
-import { MatSnackBar } from "@angular/material";
+import { Component, Input, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { Field, FieldType } from "../field-core/field.model";
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Error } from "../core/error.model";
+import { Field, FieldType } from '../field-core/field.model';
 
+class DialogData {
+    field: Field;
+    solutionId: number;
+}
 
 @Component({
-    selector: "app-field-edit",
-    templateUrl: "./field-edit.component.html",
-    styleUrls: ["./field-edit.component.scss"]
+    selector: 'app-field-edit',
+    templateUrl: './field-edit.component.html',
+    styleUrls: ['./field-edit.component.scss']
 })
 export class FieldEditComponent implements OnInit {
 
     FieldType = FieldType;
 
-    @Input()
     solutionId: number;
+
     fieldForm = this.fb.group({
         id: [],
         name: [],
@@ -30,6 +34,7 @@ export class FieldEditComponent implements OnInit {
         enumId: [],
         isSystem: []
     });
+
     private localField: Field;
 
     get field(): Field {
@@ -43,38 +48,34 @@ export class FieldEditComponent implements OnInit {
         this.fieldForm.patchValue(value);
     }
 
-    @Output()
-    fieldSave = new EventEmitter<Field>();
     error: Error;
 
-    constructor(private route: ActivatedRoute,
-                private router: Router,
+    constructor(public dialogRef: MatDialogRef<FieldEditComponent>,
+                @Inject(MAT_DIALOG_DATA) public data: DialogData,
                 private fb: FormBuilder,
-                private snackBar: MatSnackBar) {
+                private noticeHelper: NoticeHelper) {
+        this.solutionId = data.solutionId;
+        this.field = data.field;
     }
 
     ngOnInit(): void {
 
     }
 
-    cancel(): void {
-        window.history.back();
-    }
-
-    onSubmit(): void {
+    onSave(): void {
         this.saveField();
     }
 
     private saveField(): void {
         const field: Field = this.fieldForm.value;
-        field.properties = this.localField.properties;
-        this.fieldSave.emit(field);
+        field.properties = this.field.properties;
+        this.dialogRef.close(field);
     }
 
     onError(error: Error) {
         this.error = error;
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
             Error.setFormErrors(this.fieldForm, error);
         }
     }

@@ -1,16 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { mergeMap } from 'rxjs/operators';
 
-import { Role } from "../role-core/role.model";
-import { RoleFilter } from "../role-core/role-filter.model";
-import { RoleService } from "../role-core/role.service";
+import { ModalHelper } from '../core/modal.helper';
+import { StoreService } from '../core/store.service';
+import { Error } from '../core/error.model';
+import { Page } from '../core/page.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { ModalHelper } from "../core/modal.helper";
-import { StoreService } from "../core/store.service";
-import { Error } from "../core/error.model";
-import { Page } from "../core/page.model";
+import { Role } from '../role-core/role.model';
+import { RoleFilter } from '../role-core/role-filter.model';
+import { RoleService } from '../role-core/role.service';
+import { RoleEditComponent } from './role-edit.component';
 
 class RoleListState {
     pageSize = 10;
@@ -19,55 +21,69 @@ class RoleListState {
 }
 
 @Component({
-    selector: "app-role-list",
-    templateUrl: "./role-list.component.html",
-    styleUrls: ["./role-list.component.scss"]
+    selector: 'app-role-list',
+    templateUrl: './role-list.component.html',
+    styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent implements OnInit {
     content: Page<Role>;
     state: RoleListState;
     pageSizeOptions = [10, 20];
     columns = [
-        "name",
+        'name',
+        'action'
     ];
 
     constructor(
+        private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private roleService: RoleService,
-        private router: Router,
-        private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get("roleListState", new RoleListState());
+        this.state = this.storeService.get('roleListState', new RoleListState());
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.getRoles();
     }
 
-    getRoles(): void {
-        this.roleService.getRoles({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.onError(error));
+    private getRoles() {
+        this.roleService.getRoles({
+            pageIndex: this.state.pageIndex,
+            pageSize: this.state.pageSize,
+            filter: this.state.filter
+        }).subscribe(content => this.content = content);
     }
 
-    reset(): void {
+    onSearch() {
+        this.getRoles();
+    }
+
+    onReset(): void {
         this.state.filter.text = null;
         this.getRoles();
     }
 
-    delete(id: number): void {
+    onCreate(): void {
+        RoleEditComponent.show(this.dialog, 0).subscribe(() => {
+            this.getRoles();
+        });
+    }
+
+    onEdit(id: number) {
+        RoleEditComponent.show(this.dialog, id).subscribe(() => {
+            this.getRoles();
+        });
+    }
+
+    onDelete(id: number): void {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.roleService.deleteRole({ id })
-                    .then(() => {
-                        this.getRoles();
-                    })
-                    .catch(error => this.onError(error));
-            });
+            .pipe(
+                mergeMap(() => this.roleService.deleteRole({ id }))
+            )
+            .subscribe(() => this.getRoles(),
+                error => this.onError(error));
     }
 
     onPage(page: PageEvent) {
@@ -78,7 +94,7 @@ export class RoleListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Entities;
 using Cynosura.Studio.Core.Requests.Entities.Models;
@@ -10,6 +10,7 @@ namespace Cynosura.Studio.Core.AutoMapper
 		public EntityProfile()
 		{
 			CreateMap<Generator.Models.Entity, EntityModel>();
+            CreateMap<Generator.Models.Entity, EntityShortModel>();
             CreateMap<CreateEntity, Generator.Models.Entity>();
 			CreateMap<UpdateEntity, Generator.Models.Entity>();
         }

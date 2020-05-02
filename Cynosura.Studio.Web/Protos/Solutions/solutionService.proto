@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+import "Protos/Solutions/solutionModel.proto";
+import "Protos/Solutions/solutionFilter.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Solutions";
+
+service SolutionService {
+    rpc GetSolutions(GetSolutionsRequest) returns (SolutionPageModel);
+    rpc GetSolution(GetSolutionRequest) returns (Solution);
+    rpc UpdateSolution(UpdateSolutionRequest) returns (Empty);
+    rpc CreateSolution(CreateSolutionRequest) returns (CreatedEntity);
+    rpc DeleteSolution(DeleteSolutionRequest) returns (Empty);
+}
+
+message CreateSolutionRequest {
+    oneof nameOneOf {
+        string name = 6;
+    }
+    oneof pathOneOf {
+        string path = 7;
+    }
+}
+
+message DeleteSolutionRequest {
+    int32 id = 1;
+}
+
+message GetSolutionRequest {
+    int32 id = 1;
+}
+
+message GetSolutionsRequest {
+    oneof pageIndexOneOf {
+        int32 pageIndex = 1;
+    }
+    oneof pageSizeOneOf {
+        int32 pageSize = 2;
+    }
+    SolutionFilter filter = 3;
+    string orderBy = 4;
+    oneof orderDirectionOneOf {
+        OrderDirection orderDirection = 5;
+    }
+}
+
+message UpdateSolutionRequest {
+    int32 id = 1;
+    oneof nameOneOf {
+        string name = 6;
+    }
+    oneof pathOneOf {
+        string path = 7;
+    }
+}

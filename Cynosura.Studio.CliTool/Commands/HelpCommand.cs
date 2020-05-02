@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
@@ -11,8 +11,8 @@ namespace Cynosura.Studio.CliTool.Commands
         private readonly IDictionary<string, AppCommand> _commands;
         private readonly IEnumerable<KeyValuePair<string, string>> _props;
 
-        public HelpCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope, IDictionary<string, AppCommand> commands, IEnumerable<KeyValuePair<string, string>> props) 
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public HelpCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider, IDictionary<string, AppCommand> commands, IEnumerable<KeyValuePair<string, string>> props) 
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
             _commands = commands;
             _props = props;

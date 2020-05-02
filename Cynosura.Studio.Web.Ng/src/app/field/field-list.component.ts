@@ -1,26 +1,28 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { MatSnackBar, MatTableDataSource } from "@angular/material";
+import { Component, OnInit, Input } from '@angular/core';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 
-import { ModalHelper } from "../core/modal.helper";
+import { ModalHelper } from '../core/modal.helper';
+import { Guid } from '../core/guid';
+import { Error } from '../core/error.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { Field, FieldType } from "../field-core/field.model";
-
-import { Guid } from "../core/guid";
-import { Error } from "../core/error.model";
+import { Field, FieldType } from '../field-core/field.model';
+import { FieldEditComponent } from './field-edit.component';
 
 @Component({
-    selector: "app-field-list",
-    templateUrl: "./field-list.component.html",
-    styleUrls: ["./field-list.component.scss"]
+    selector: 'app-field-list',
+    templateUrl: './field-list.component.html',
+    styleUrls: ['./field-list.component.scss']
 })
 export class FieldListComponent implements OnInit {
 
     columns = [
-        "name",
-        "displayName",
-        "type",
-        "entity",
-        "enum",
+        'name',
+        'displayName',
+        'type',
+        'entity',
+        'enum',
+        'action'
     ];
 
     FieldType = FieldType;
@@ -33,10 +35,10 @@ export class FieldListComponent implements OnInit {
 
     dataSource: MatTableDataSource<Field>;
 
-    field: Field;
     constructor(
         private modalHelper: ModalHelper,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper,
+        private dialog: MatDialog,
         ) {}
 
     ngOnInit(): void {
@@ -47,12 +49,24 @@ export class FieldListComponent implements OnInit {
         return this.fields.find(f => f.id === id);
     }
 
-    edit(id: string): void {
-        this.field = this.findField(id);
+    onEdit(id: string): void {
+        this.openEditDialog(this.findField(id));
     }
 
-    add(): void {
-        this.field = new Field();
+    onCreate() {
+        this.openEditDialog(new Field());
+    }
+
+    openEditDialog(field: Field) {
+        const dialogRef = this.dialog.open(FieldEditComponent, {
+            width: '600px',
+            data: { field: field, solutionId: this.solutionId }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.fieldSave(result);
+            }
+        });
     }
 
     fieldSave(field: Field): void {
@@ -67,8 +81,6 @@ export class FieldListComponent implements OnInit {
             this.fields.push(field);
         }
         this.dataSource.data = this.fields;
-
-        this.field = null;
     }
 
     delete(id: string): void {
@@ -83,7 +95,7 @@ export class FieldListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

@@ -1,6 +1,6 @@
 main(model) ::= <<
-import { $model.Entity.Name$Filter } from "./$model.Entity.NameKebab$-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { $model.Entity.Name$Filter } from './$model.Entity.NameKebab$-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
 
 export class Get$model.Entity.PluralName$ {
@@ -47,5 +47,5 @@ Enum(field) ::= <<
 >>
 
 enumImport(enum) ::= <<
-import { $enum.Name$ } from "../$enum.NameKebab$/$enum.NameKebab$.model";
+import { $enum.Name$ } from '../$enum.NameKebab$/$enum.NameKebab$.model';
 >>

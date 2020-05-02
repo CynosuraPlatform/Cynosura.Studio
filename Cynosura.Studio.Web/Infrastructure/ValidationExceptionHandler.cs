@@ -22,16 +22,54 @@ namespace Cynosura.Studio.Web.Infrastructure
             });
         }
 
-        private Dictionary<string, SimpleModelState> GetModelState(IDictionary<string, string[]> failures)
+        private Dictionary<string, object> GetModelState(IDictionary<string, string[]> failures)
         {
-            return failures.Select(p => new
+            var result = new Dictionary<string, object>();
+
+            foreach (var key in failures.Keys)
+            {
+                var errors = failures[key].Select(e => new ModelStateError() { ErrorMessage = e });
+                var state = new SimpleModelState()
                 {
-                    Property = p.Key,
-                    Errors = p.Value.Select(e => new ModelStateError() { ErrorMessage = e })
-                }).ToDictionary(p => p.Property, p => new SimpleModelState()
+                    Errors = errors.ToList(),
+                };
+                var keys = key.Split(".").Select(k => ToCamelCase(k)).ToArray();
+
+                SetValue(result, keys, state);
+            }
+
+            return result;
+        }
+
+        private string ToCamelCase(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return name;
+            }
+            return char.ToLowerInvariant(name[0]) + name.Substring(1);
+        }
+
+        private void SetValue(Dictionary<string, object> dic, string[] keys, object value)
+        {
+            if (keys.Length > 1)
+            {
+                Dictionary<string, object> innerDic;
+                if (dic.ContainsKey(keys[0]))
                 {
-                    Errors = p.Errors.ToList(),
-                });
+                    innerDic = (Dictionary<string, object>)dic[keys[0]];
+                }
+                else
+                {
+                    innerDic = new Dictionary<string, object>();
+                    dic[keys[0]] = innerDic;
+                }
+                SetValue(innerDic, keys.Skip(1).ToArray(), value);
+            }
+            else
+            {
+                dic[keys[0]] = value;
+            }
         }
     }
 }

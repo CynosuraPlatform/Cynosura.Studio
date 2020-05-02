@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cynosura.Studio.Web.Controllers
 {
     [ServiceFilter(typeof(ApiExceptionFilterAttribute))]
-    [Authorize(Roles = "Administrator")]
+    [Authorize("ReadRole")]
     [ValidateModel]
     [Route("api")]
     public class RoleController : Controller
@@ -36,18 +36,21 @@ namespace Cynosura.Studio.Web.Controllers
             return await _mediator.Send(getRole);
         }
 
+        [Authorize("WriteRole")]
         [HttpPost("UpdateRole")]
         public async Task<Unit> UpdateRoleAsync([FromBody] UpdateRole updateRole)
         {
             return await _mediator.Send(updateRole);
         }
 
+        [Authorize("WriteRole")]
         [HttpPost("CreateRole")]
         public async Task<CreatedEntity<int>> CreateRoleAsync([FromBody] CreateRole createRole)
         {
             return await _mediator.Send(createRole);
         }
 
+        [Authorize("WriteRole")]
         [HttpPost("DeleteRole")]
         public async Task<Unit> DeleteRoleAsync([FromBody] DeleteRole deleteRole)
         {

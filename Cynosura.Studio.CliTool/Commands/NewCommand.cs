@@ -2,15 +2,15 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
 using Cynosura.Studio.Generator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.CliTool.Commands
 {
     public class NewCommand: AppCommand
     {
-        public NewCommand(string solutionDirectory, string feed, string src, string templateName, ILifetimeScope lifetimeScope) 
-            : base(solutionDirectory, feed, src, templateName, lifetimeScope)
+        public NewCommand(string solutionDirectory, string feed, string src, string templateName, ServiceProvider serviceProvider) 
+            : base(solutionDirectory, feed, src, templateName, serviceProvider)
         {
         }
 
@@ -23,7 +23,7 @@ namespace Cynosura.Studio.CliTool.Commands
                 Console.WriteLine(Help());
                 return false;
             }
-            var generator = LifetimeScope.Resolve<CodeGenerator>();
+            var generator = ServiceProvider.GetService<SolutionGenerator>();
             if (!Directory.Exists(SolutionDirectory))
             {
                 Directory.CreateDirectory(SolutionDirectory);

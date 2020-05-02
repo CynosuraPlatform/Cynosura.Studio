@@ -1,20 +1,17 @@
-<mat-card *ngIf="role">
+<h1 mat-dialog-title>Role <app-role-show [value]="role"></app-role-show></h1>
 
-    <mat-card-header>
-        <mat-card-title>Role <app-role-show [value]="role"></app-role-show></mat-card-title>
-    </mat-card-header>
+<mat-dialog-content *ngIf="role" class="mat-dialog-content-edit">
 
-    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit">Save</button>
-            <button mat-raised-button type="button" (click)="cancel()">Back</button>
-        </mat-card-actions>
+    <form [formGroup]="roleForm">
         <mat-form-field>
             <mat-label>Name</mat-label>
             <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
             <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
         </mat-form-field>
-        
     </form>
 
-</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+</mat-dialog-actions>

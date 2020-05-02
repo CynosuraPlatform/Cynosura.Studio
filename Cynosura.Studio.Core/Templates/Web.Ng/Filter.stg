@@ -1,5 +1,5 @@
 main(model) ::= <<
-import { EntityFilter } from "../core/models/entity-filter.model";
+import { EntityFilter } from '../core/models/entity-filter.model';
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
 
 export class $model.Entity.Name$Filter extends EntityFilter {
@@ -25,7 +25,7 @@ Enum(field) ::= <<
 >>
 
 enumImport(enum) ::= <<
-import { $enum.Name$ } from "../$enum.NameKebab$/$enum.NameKebab$.model";
+import { $enum.Name$ } from '../$enum.NameKebab$/$enum.NameKebab$.model';
 >>
 
 String(field) ::= <<

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Users";
+
+message User {
+    int32 id = 1;
+    string userName = 2;
+    string email = 3;
+    repeated int32 roleIds = 4;
+}
+
+message UserPageModel {
+    repeated User pageItems = 1;
+    int32 totalItems = 2;
+    int32 currentPageIndex = 3;
+}

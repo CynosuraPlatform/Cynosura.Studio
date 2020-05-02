@@ -1,10 +1,10 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
-import { Solution } from "./solution.model";
+import { Solution } from './solution.model';
 
 @Component({
-    selector: "app-solution-show",
-    templateUrl: "./solution-show.component.html"
+    selector: 'app-solution-show',
+    templateUrl: './solution-show.component.html'
 })
 
 export class SolutionShowComponent {

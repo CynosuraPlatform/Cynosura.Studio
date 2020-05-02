@@ -1,17 +1,19 @@
 main(model) ::= <<
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { mergeMap } from 'rxjs/operators';
 
-import { $model.Entity.Name$ } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model";
-import { $model.Entity.Name$Filter } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model";
-import { $model.Entity.Name$Service } from "../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service";
+import { ModalHelper } from '../core/modal.helper';
+import { StoreService } from '../core/store.service';
+import { Error } from '../core/error.model';
+import { Page } from '../core/page.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { ModalHelper } from "../core/modal.helper";
-import { StoreService } from "../core/store.service";
-import { Error } from "../core/error.model";
-import { Page } from "../core/page.model";
+import { $model.Entity.Name$ } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model';
+import { $model.Entity.Name$Filter } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model';
+import { $model.Entity.Name$Service } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service';
+import { $model.Entity.Name$EditComponent } from './$model.Entity.NameKebab$-edit.component';
 
 class $model.Entity.Name$ListState {
     pageSize = 10;
@@ -20,9 +22,9 @@ class $model.Entity.Name$ListState {
 }
 
 @Component({
-    selector: "app-$model.Entity.NameKebab$-list",
-    templateUrl: "./$model.Entity.NameKebab$-list.component.html",
-    styleUrls: ["./$model.Entity.NameKebab$-list.component.scss"]
+    selector: 'app-$model.Entity.NameKebab$-list',
+    templateUrl: './$model.Entity.NameKebab$-list.component.html',
+    styleUrls: ['./$model.Entity.NameKebab$-list.component.scss']
 })
 export class $model.Entity.Name$ListComponent implements OnInit {
     content: Page<$model.Entity.Name$>;
@@ -30,45 +32,59 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     pageSizeOptions = [10, 20];
     columns = [
         $model.Entity.AllFields:field(); separator="\r\n"$
+        'action'
     ];
 
     constructor(
+        private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
-        private router: Router,
-        private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get("$model.Entity.NameLower$ListState", new $model.Entity.Name$ListState());
+        this.state = this.storeService.get('$model.Entity.NameLower$ListState', new $model.Entity.Name$ListState());
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.get$model.Entity.PluralName$();
     }
 
-    get$model.Entity.PluralName$(): void {
-        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({ pageIndex: this.state.pageIndex, pageSize: this.state.pageSize, filter: this.state.filter })
-            .then(content => {
-                this.content = content;
-            })
-            .catch(error => this.onError(error));
+    private get$model.Entity.PluralName$() {
+        this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({
+            pageIndex: this.state.pageIndex,
+            pageSize: this.state.pageSize,
+            filter: this.state.filter
+        }).subscribe(content => this.content = content);
     }
 
-    reset(): void {
+    onSearch() {
+        this.get$model.Entity.PluralName$();
+    }
+
+    onReset() {
         this.state.filter.text = null;
         this.get$model.Entity.PluralName$();
     }
 
-    delete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$): void {
+    onCreate() {
+        $model.Entity.Name$EditComponent.show(this.dialog, 0).subscribe(() => {
+            this.get$model.Entity.PluralName$();
+        });
+    }
+
+    onEdit(id: number) {
+        $model.Entity.Name$EditComponent.show(this.dialog, id).subscribe(() => {
+            this.get$model.Entity.PluralName$();
+        });
+    }
+
+    onDelete($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$) {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ })
-                    .then(() => {
-                        this.get$model.Entity.PluralName$();
-                    })
-                    .catch(error => this.onError(error));
-            });
+            .pipe(
+                mergeMap(() => this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ }))
+            )
+            .subscribe(() => this.get$model.Entity.PluralName$(),
+                error => this.onError(error));
     }
 
     onPage(page: PageEvent) {
@@ -79,7 +95,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }
@@ -87,5 +103,5 @@ export class $model.Entity.Name$ListComponent implements OnInit {
 >>
 
 field(field) ::= <<
-"$field.NameLower$",
+'$field.NameLower$',
 >>

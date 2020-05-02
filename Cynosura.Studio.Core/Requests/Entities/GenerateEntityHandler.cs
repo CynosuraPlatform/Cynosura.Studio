@@ -11,13 +11,13 @@ namespace Cynosura.Studio.Core.Requests.Entities
 {
     public class GenerateEntityHandler : IRequestHandler<GenerateEntity>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EntityGenerator _entityGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public GenerateEntityHandler(CodeGenerator codeGenerator,
+        public GenerateEntityHandler(EntityGenerator entityGenerator,
             IEntityRepository<Solution> solutionRepository)
         {
-            _codeGenerator = codeGenerator;
+            _entityGenerator = entityGenerator;
             _solutionRepository = solutionRepository;
         }
 
@@ -28,8 +28,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
-            await _codeGenerator.GenerateEntityAsync(solutionAccessor, entity);
-            await _codeGenerator.GenerateViewAsync(solutionAccessor, new Generator.Models.View(), entity);
+            await _entityGenerator.GenerateEntityAsync(solutionAccessor, entity);
+            await _entityGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
             return Unit.Value;
         }
 

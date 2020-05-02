@@ -1,12 +1,10 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
+import { CoreModule } from '../core/core.module';
 
-import { SolutionService } from "./solution.service";
-import { SolutionSelectComponent } from "./solution-select.component";
-import { SolutionShowComponent } from "./solution-show.component";
-import { TemplateService } from "./template-service";
+import { SolutionService } from './solution.service';
+import { SolutionSelectComponent } from './solution-select.component';
+import { SolutionShowComponent } from './solution-show.component';
 
 @NgModule({
     declarations: [
@@ -15,14 +13,11 @@ import { TemplateService } from "./template-service";
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
         SolutionService,
-        TemplateService
     ],
     exports: [
-        MaterialModule,
         SolutionSelectComponent,
         SolutionShowComponent
     ]

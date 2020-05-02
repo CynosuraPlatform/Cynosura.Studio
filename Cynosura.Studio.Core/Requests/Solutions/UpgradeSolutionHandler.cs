@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cynosura.Core.Data;
@@ -11,13 +11,13 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 {
     public class UpgradeSolutionHandler : IRequestHandler<UpgradeSolution>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly SolutionGenerator _solutionGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public UpgradeSolutionHandler(CodeGenerator codeGenerator, 
+        public UpgradeSolutionHandler(SolutionGenerator solutionGenerator, 
             IEntityRepository<Solution> solutionRepository)
         {
-            _codeGenerator = codeGenerator;
+            _solutionGenerator = solutionGenerator;
             _solutionRepository = solutionRepository;
         }
 
@@ -28,7 +28,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
                 .FirstOrDefaultAsync();
             if (solution != null)
             {
-                await _codeGenerator.UpgradeSolutionAsync(new SolutionAccessor(solution.Path));
+                await _solutionGenerator.UpgradeSolutionAsync(new SolutionAccessor(solution.Path));
             }
             return Unit.Value;
         }

@@ -1,11 +1,10 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CoreModule } from "../core/core.module";
-import { MaterialModule } from "../material.module";
+import { CoreModule } from '../core/core.module';
 
-import { EntityService } from "./entity.service";
-import { EntitySelectComponent } from "./entity-select.component";
-import { EntityShowComponent } from "./entity-show.component";
+import { EntityService } from './entity.service';
+import { EntitySelectComponent } from './entity-select.component';
+import { EntityShowComponent } from './entity-show.component';
 
 @NgModule({
     declarations: [
@@ -14,13 +13,11 @@ import { EntityShowComponent } from "./entity-show.component";
     ],
     imports: [
         CoreModule,
-        MaterialModule
     ],
     providers: [
         EntityService
     ],
     exports: [
-        MaterialModule,
         EntitySelectComponent,
         EntityShowComponent
     ]

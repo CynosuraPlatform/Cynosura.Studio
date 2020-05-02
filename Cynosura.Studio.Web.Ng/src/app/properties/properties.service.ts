@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ConfigService } from "../config/config.service";
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root'
 })
 export class PropertiesService {
-    private propertiesUrl = this.configService.config.apiBaseUrl + "/api/properties";
+    private propertiesUrl = this.configService.config.apiBaseUrl + '/api/properties';
 
     constructor(
         private httpClient: HttpClient,

@@ -1,5 +1,5 @@
-import { FieldFilter } from "./field-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { FieldFilter } from './field-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 
 export class UpdateField {
     id: string;

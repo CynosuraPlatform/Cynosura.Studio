@@ -1,6 +1,6 @@
 main(model) ::= <<
-<mat-select [(ngModel)]="innerValue" [disabled]="disabled">
-    <mat-option [value]="null" selected="selected">Select $model.Entity.DisplayName$</mat-option>
+<mat-select [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
+    <mat-option [value]="null"></mat-option>
     <mat-option [value]="$model.Entity.NameLower$.$model.Entity.IdField.NameLower$" *ngFor="let $model.Entity.NameLower$ of $model.Entity.PluralNameLower$">{{ $model.Entity.NameLower$.$model.Entity.DefaultField.NameLower$ }}</mat-option>
 </mat-select>
 >>

@@ -1,16 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute, Params } from "@angular/router";
-import { PageEvent } from "@angular/material/paginator";
-import { MatSnackBar } from "@angular/material";
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { mergeMap } from 'rxjs/operators';
 
-import { Entity } from "../entity-core/entity.model";
-import { EntityFilter } from "../entity-core/entity-filter.model";
-import { EntityService } from "../entity-core/entity.service";
+import { ModalHelper } from '../core/modal.helper';
+import { StoreService } from '../core/store.service';
+import { Error } from '../core/error.model';
+import { Page } from '../core/page.model';
+import { NoticeHelper } from '../core/notice.helper';
 
-import { ModalHelper } from "../core/modal.helper";
-import { StoreService } from "../core/store.service";
-import { Error } from "../core/error.model";
-import { Page } from "../core/page.model";
+import { Entity } from '../entity-core/entity.model';
+import { EntityFilter } from '../entity-core/entity-filter.model';
+import { EntityService } from '../entity-core/entity.service';
+import { EntityEditComponent } from './entity-edit.component';
 
 class EntityListState {
     pageSize = 10;
@@ -19,77 +21,91 @@ class EntityListState {
 }
 
 @Component({
-    selector: "app-entity-list",
-    templateUrl: "./entity-list.component.html",
-    styleUrls: ["./entity-list.component.scss"]
+    selector: 'app-entity-list',
+    templateUrl: './entity-list.component.html',
+    styleUrls: ['./entity-list.component.scss']
 })
 export class EntityListComponent implements OnInit {
     content: Page<Entity>;
     state: EntityListState;
     pageSizeOptions = [10, 20];
     columns = [
-        "name",
-        "pluralName",
-        "displayName",
-        "pluralDisplayName",
-        "isAbstract",
-        "baseEntity",
+        'name',
+        'pluralName',
+        'displayName',
+        'pluralDisplayName',
+        'isAbstract',
+        'baseEntity',
+        'action'
     ];
     private innerSolutionId: number;
     get solutionId(): number {
         if (!this.innerSolutionId) {
-            this.innerSolutionId = this.storeService.get("entitiesSolutionId", 0);
+            this.innerSolutionId = this.storeService.get('solutionId', 0);
         }
         return this.innerSolutionId;
     }
     set solutionId(val: number) {
         this.innerSolutionId = val;
-        this.storeService.set("entitiesSolutionId", this.innerSolutionId);
+        this.storeService.set('solutionId', this.innerSolutionId);
         this.getEntities();
     }
 
     constructor(
+        private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private entityService: EntityService,
-        private router: Router,
-        private route: ActivatedRoute,
         private storeService: StoreService,
-        private snackBar: MatSnackBar
+        private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get("entityListState", new EntityListState());
+        this.state = this.storeService.get('entityListState', new EntityListState());
     }
 
     ngOnInit(): void {
         this.getEntities();
     }
 
-    getEntities(): void {
+    private getEntities() {
         if (this.solutionId) {
-            this.entityService.getEntities({ solutionId: this.solutionId, pageIndex: this.state.pageIndex, pageSize: this.state.pageSize,
-                filter: this.state.filter })
-                .then(content => {
-                    this.content = content;
-                })
-                .catch(error => this.onError(error));
+            this.entityService.getEntities({
+                solutionId: this.solutionId,
+                pageIndex: this.state.pageIndex,
+                pageSize: this.state.pageSize,
+                filter: this.state.filter
+            }).subscribe(content => this.content = content);
         } else {
             this.content = null;
         }
     }
 
-    reset(): void {
+    onSearch() {
+        this.getEntities();
+    }
+
+    onReset() {
         this.state.filter.text = null;
         this.getEntities();
     }
 
-    delete(id: string): void {
+    onCreate(): void {
+        EntityEditComponent.show(this.dialog, this.solutionId, '').subscribe(() => {
+            this.getEntities();
+        });
+    }
+
+    onEdit(id: string) {
+        EntityEditComponent.show(this.dialog, this.solutionId, id).subscribe(() => {
+            this.getEntities();
+        });
+    }
+
+    onDelete(id: string) {
         this.modalHelper.confirmDelete()
-            .subscribe(() => {
-                this.entityService.deleteEntity({ solutionId: this.solutionId, id })
-                    .then(() => {
-                        this.getEntities();
-                    })
-                    .catch(error => this.onError(error));
-            });
+            .pipe(
+                mergeMap(() => this.entityService.deleteEntity({ solutionId: this.solutionId, id }))
+            )
+            .subscribe(() => this.getEntities(),
+                error => this.onError(error));
     }
 
     onPage(page: PageEvent) {
@@ -100,7 +116,7 @@ export class EntityListComponent implements OnInit {
 
     onError(error: Error) {
         if (error) {
-            this.snackBar.open(error.message, "Ok");
+            this.noticeHelper.showError(error);
         }
     }
 }

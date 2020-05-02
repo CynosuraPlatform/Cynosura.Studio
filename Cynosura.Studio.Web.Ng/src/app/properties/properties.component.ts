@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { MatDialog } from "@angular/material";
+import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
-import { PropertiesPopupComponent } from "./properties-popup.component";
+import { PropertiesPopupComponent } from './properties-popup.component';
 
 @Component({
-    selector: "app-properties",
-    templateUrl: "./properties.component.html",
-    styleUrls: ["./properties.component.css"]
+    selector: 'app-properties',
+    templateUrl: './properties.component.html',
+    styleUrls: ['./properties.component.css']
 })
 export class PropertiesComponent {
 
@@ -21,7 +21,7 @@ export class PropertiesComponent {
 
     open() {
         this.dialog.open(PropertiesPopupComponent, {
-            width: "600px",
+            width: '600px',
             data: {
                 properties: this.properties,
                 target: this.target,

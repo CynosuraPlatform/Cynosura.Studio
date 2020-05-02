@@ -1,5 +1,5 @@
-import { EnumValueFilter } from "./enum-value-filter.model";
-import { OrderDirection } from "../core/models/order-direction.model";
+import { EnumValueFilter } from './enum-value-filter.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 
 export class UpdateEnumValue {
     id: string;

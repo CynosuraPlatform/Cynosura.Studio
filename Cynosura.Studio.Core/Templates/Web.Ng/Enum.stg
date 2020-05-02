@@ -14,5 +14,5 @@ enumValue(value) ::= <<
 >>
 
 enumDisplay(value) ::= <<
-$model.Enum.Name$Display[$model.Enum.Name$.$value.Name$] = "$value.DisplayNameOrName$";
+$model.Enum.Name$Display[$model.Enum.Name$.$value.Name$] = '$value.DisplayNameOrName$';
 >>

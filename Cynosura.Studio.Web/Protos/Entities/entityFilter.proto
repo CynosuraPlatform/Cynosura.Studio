@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Entities";
+
+message EntityFilter {
+    oneof nameOneOf {
+        string name = 10;
+    }
+    oneof pluralNameOneOf {
+        string pluralName = 20;
+    }
+    oneof displayNameOneOf {
+        string displayName = 30;
+    }
+    oneof pluralDisplayNameOneOf {
+        string pluralDisplayName = 40;
+    }
+    oneof isAbstractOneOf {
+        bool isAbstract = 50;
+    }
+    oneof baseEntityIdOneOf {
+        string baseEntityId = 60;
+    }
+}

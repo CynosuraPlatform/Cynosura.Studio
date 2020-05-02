@@ -1,14 +1,14 @@
-import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
-import { Subject } from "rxjs";
+import { Subject } from 'rxjs';
 
 @Component({
-    selector: "app-date-edit",
-    templateUrl: "./date.edit.component.html",
+    selector: 'app-date-edit',
+    templateUrl: './date.edit.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: DateEditComponent }
     ]
@@ -19,9 +19,9 @@ export class DateEditComponent implements ControlValueAccessor, MatFormFieldCont
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-date-edit";
+    controlType = 'app-date-edit';
     id = `date-edit-${DateEditComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -41,10 +41,7 @@ export class DateEditComponent implements ControlValueAccessor, MatFormFieldCont
     placeholder: string;
 
     @Input()
-    label: string;
-
-    @Input()
-    type = "text";
+    type = 'text';
 
     @Input()
     get required(): boolean { return this.innerRequired; }
@@ -115,7 +112,7 @@ export class DateEditComponent implements ControlValueAccessor, MatFormFieldCont
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {
@@ -126,5 +123,9 @@ export class DateEditComponent implements ControlValueAccessor, MatFormFieldCont
             this.errorState = this.ngControl.invalid;
             this.stateChanges.next();
         }
+    }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.disabled = isDisabled;
     }
 }

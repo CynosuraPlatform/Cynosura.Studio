@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -12,15 +12,15 @@ namespace Cynosura.Studio.Core.Requests.Enums
 {
     public class UpdateEnumHandler : IRequestHandler<UpdateEnum>
     {
-        private readonly CodeGenerator _codeGenerator;
+        private readonly EnumGenerator _enumGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
 
-        public UpdateEnumHandler(CodeGenerator codeGenerator,
+        public UpdateEnumHandler(EnumGenerator enumGenerator,
             IEntityRepository<Solution> solutionRepository,
             IMapper mapper)
         {
-            _codeGenerator = codeGenerator;
+            _enumGenerator = enumGenerator;
             _solutionRepository = solutionRepository;
             _mapper = mapper;
         }
@@ -37,8 +37,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
             // reload Enum from Solution
             newEnum = (await solutionAccessor.GetEnumsAsync())
                 .FirstOrDefault(e => e.Id == request.Id);
-            await _codeGenerator.UpgradeEnumAsync(solutionAccessor, oldEnum, newEnum);
-            await _codeGenerator.UpgradeEnumViewAsync(solutionAccessor, new Generator.Models.View(), oldEnum, newEnum);
+            await _enumGenerator.UpgradeEnumAsync(solutionAccessor, oldEnum, newEnum);
+            await _enumGenerator.UpgradeEnumViewAsync(solutionAccessor, oldEnum, newEnum);
             return Unit.Value;
         }
 

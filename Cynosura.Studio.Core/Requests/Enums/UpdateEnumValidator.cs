@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
@@ -6,7 +6,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
     {
         public UpdateEnumValidator()
         {
-            RuleFor(x => x.Name).MaximumLength(100).NotEmpty();
+            RuleFor(x => x.Name).MaximumLength(100).NotEmpty().Matches(RegexHelper.CSharpName);
             RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty();
         }
 

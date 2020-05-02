@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "Protos/common.proto";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.Fields";
+
+message FieldFilter {
+    oneof nameOneOf {
+        string name = 10;
+    }
+    oneof displayNameOneOf {
+        string displayName = 20;
+    }
+    oneof sizeFromOneOf {
+        int32 sizeFrom = 30;
+    }
+    oneof sizeToOneOf {
+        int32 sizeTo = 31;
+    }
+    oneof entityIdOneOf {
+        string entityId = 40;
+    }
+    oneof isRequiredOneOf {
+        bool isRequired = 50;
+    }
+    oneof enumIdOneOf {
+        string enumId = 60;
+    }
+    oneof isSystemOneOf {
+        bool isSystem = 70;
+    }
+}

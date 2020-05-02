@@ -1,31 +1,31 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from "@angular/forms";
-import { MatFormFieldControl } from "@angular/material";
-import { FocusMonitor } from "@angular/cdk/a11y";
-import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
 
-import { Subject } from "rxjs";
-
-import { Solution } from "./solution.model";
-import { SolutionService } from "./solution.service";
+import { Solution } from './solution.model';
+import { SolutionService } from './solution.service';
 
 @Component({
-    selector: "app-solution-select",
-    templateUrl: "./solution-select.component.html",
+    selector: 'app-solution-select',
+    templateUrl: './solution-select.component.html',
     providers: [
         { provide: MatFormFieldControl, useExisting: SolutionSelectComponent }
     ]
 })
 
-export class SolutionSelectComponent implements OnInit, ControlValueAccessor, MatFormFieldControl<number | null>, OnDestroy, DoCheck {
+export class SolutionSelectComponent implements OnInit, ControlValueAccessor,
+    MatFormFieldControl<number | null>, OnDestroy, DoCheck {
 
     static nextId = 0;
 
     stateChanges = new Subject<void>();
     focused = false;
-    controlType = "app-solution-select";
+    controlType = 'app-solution-select';
     id = `solution-select-${SolutionSelectComponent.nextId++}`;
-    describedBy = "";
+    describedBy = '';
 
     errorState = false;
 
@@ -44,9 +44,6 @@ export class SolutionSelectComponent implements OnInit, ControlValueAccessor, Ma
 
     @Input()
     name: string;
-
-    @Input()
-    label: string;
 
     @Input()
     placeholder: string;
@@ -105,7 +102,7 @@ export class SolutionSelectComponent implements OnInit, ControlValueAccessor, Ma
     }
 
     ngOnInit(): void {
-        this.solutionService.getSolutions({}).then((solutions) => {
+        this.solutionService.getSolutions({}).subscribe((solutions) => {
             this.solutions = solutions.pageItems;
             if (solutions.pageItems.length === 1) { this.innerValue = solutions.pageItems[0].id; }
         });
@@ -117,7 +114,7 @@ export class SolutionSelectComponent implements OnInit, ControlValueAccessor, Ma
     }
 
     setDescribedByIds(ids: string[]) {
-        this.describedBy = ids.join(" ");
+        this.describedBy = ids.join(' ');
     }
 
     onContainerClick(event: MouseEvent) {
