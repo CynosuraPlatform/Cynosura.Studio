@@ -70,6 +70,8 @@ namespace Cynosura.Studio.CliTool
 
             if (!defaultConfig.ContainsKey("Nuget:FeedUrl"))
                 defaultConfig.Add("Nuget:FeedUrl", _feed ?? "https://api.nuget.org/v3/index.json");
+            if (!defaultConfig.ContainsKey("Nuget:ListingApi"))
+                defaultConfig.Add("Nuget:ListingApi", "SearchAutocompleteService");
             if (!defaultConfig.ContainsKey("LocalFeed:SourcePath"))
                 defaultConfig.Add("LocalFeed:SourcePath", _src);
 
