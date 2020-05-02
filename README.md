@@ -30,6 +30,14 @@ Main features:
 * .NET Core SDK 3.1
 * Git (used for merging files when updating metadata or upgrading templates)
 
+### Metadata
+
+Cynosura.Studio allows you to create entities and enums in web UI. Entities and enums created in UI will be generated into code in your project: models, CQRS classes, EF configurations, API models and controllers, Angular models, services, and compponents, etc. You can change generated code as you like. When later you wish to update entity or enum metadata, those changes will be merged into your code without overwriting your custom changes.
+
+### Solution upgrade
+
+Upgrade feature lets you upgrade your solution to the latest template version. When you upgrade your project to newer template version, template changes will be merged to your project without overwriting your changes. Sometimes merge conflict might occur.
+
 ### Templates
 
 Cynosura.Studio creates projects from default template [Cynosura.Template](https://github.com/CynosuraPlatform/Cynosura.Template). However you can use custom templates. 
@@ -41,16 +49,6 @@ If you want to create your own template then start by forking Cynosura.Template.
 Cynosura.Studio supports private NuGet feeds in appsettings with keys Nuget/FeedUrl, and Nuget/Username and Nuget/Password.
 
 For Template development, you can set local folder feed LocalFeed/SourcePath.
-
-### Entities and Enums
-
-Cynosura.Studio is entity based code-generator and entity manager. For entities cynosura generates all necessary code for CQRS, EF, API, Angular web UI. For customization Cynosura supports Entity properties behavior.
-
-Entity and enum information stored in Core project/Metadata.
-
-### Solution upgrade
-
-Upgrade feature let's you upgrade your solution to the latest template version. All your changes and new template version changes merges in upgrade process.
 
 ## Contributing
 
