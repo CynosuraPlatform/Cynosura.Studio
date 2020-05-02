@@ -32,9 +32,9 @@ The interface name must have the prefix "I"
 
 Whenever possible, avoid the use of abbreviations. When using, apply the policy, perceiving the abbreviation as one whole word.
 
-### `Task`, `Task <>`
+### `Task`, `Task<>`
 
-For Task, Task <> methods name must have `Async` postfix.
+For Task, Task<> methods name must have `Async` postfix.
 
 
 ## Language optimization
@@ -46,7 +46,7 @@ For Task, Task <> methods name must have `Async` postfix.
 * Prefer to use autoproperties
 * Use language special type names instead of build-in classes
 * Prefer to use new language features
-* Prefer to use `.?`, `??`, and et. operators
+* Prefer to use `.?`, `??`, etc.
 
 ## Other
 
@@ -59,7 +59,7 @@ For Task, Task <> methods name must have `Async` postfix.
 # ES/TS Code Styling
 
 * Use 4 spaces instead of tab
-* Use double quotes (`"`) for literals
+* Use single quotes (`'`) for literals
 * We use semicolon;
 * Prefer to use `const` instead of `let`
 * Do not use `var`

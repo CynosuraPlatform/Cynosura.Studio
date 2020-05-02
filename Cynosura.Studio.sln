@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -17,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48F41545-21BC-4CA3-A882-690B13AD506D}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		CONTRIBUTING.md = CONTRIBUTING.md
 		docker-compose.Development.yaml = docker-compose.Development.yaml
 		docker-compose.yaml = docker-compose.yaml
 		README.md = README.md
@@ -32,9 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool.UnitTests", "Tests\Cynosura.Studio.CliTool.UnitTests\Cynosura.Studio.CliTool.UnitTests.csproj", "{2D20317F-B1CF-4670-9001-797DAD1BC0DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.Infrastructure", "Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj", "{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.Infrastructure", "Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj", "{4900DE66-3A8A-4D67-8C77-D3E2A7DA4381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynosura.Studio.CliTool.FunctionalTests", "Tests\Cynosura.Studio.CliTool.FunctionalTests\Cynosura.Studio.CliTool.FunctionalTests.csproj", "{74362532-D617-4B31-A901-95AB0D57D312}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cynosura.Studio.CliTool.FunctionalTests", "Tests\Cynosura.Studio.CliTool.FunctionalTests\Cynosura.Studio.CliTool.FunctionalTests.csproj", "{74362532-D617-4B31-A901-95AB0D57D312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
