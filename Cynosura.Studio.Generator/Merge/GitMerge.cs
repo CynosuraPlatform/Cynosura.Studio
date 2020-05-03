@@ -43,7 +43,7 @@ namespace Cynosura.Studio.Generator.Merge
 
             try
             {
-                DeleteDirectory(exportPath);
+                FileHelper.DeleteDirectory(exportPath);
             }
             catch (Exception e)
             {
@@ -51,7 +51,7 @@ namespace Cynosura.Studio.Generator.Merge
             }
             try
             {
-                DeleteDirectory(repositoryPath);
+                FileHelper.DeleteDirectory(repositoryPath);
             }
             catch (Exception e)
             {
@@ -69,7 +69,7 @@ namespace Cynosura.Studio.Generator.Merge
 
         private async Task CommitOriginal(string repositoryPath, string originalDirectoryPath)
         {
-            CopyAllFiles(originalDirectoryPath, repositoryPath);
+            FileHelper.CopyAllFiles(originalDirectoryPath, repositoryPath);
             await RunCommandAsync("git", "add -A", repositoryPath);
             await RunCommandAsync("git", "commit -m \"Original\"", repositoryPath);
         }
@@ -77,8 +77,8 @@ namespace Cynosura.Studio.Generator.Merge
         private async Task CommitUpgrade(string repositoryPath, string upgradeDirectoryPath)
         {
             await RunCommandAsync("git", "checkout -b upgrade", repositoryPath);
-            DeleteAllFiles(repositoryPath, ".git");
-            CopyAllFiles(upgradeDirectoryPath, repositoryPath);
+            FileHelper.DeleteAllFiles(repositoryPath, ".git");
+            FileHelper.CopyAllFiles(upgradeDirectoryPath, repositoryPath);
             await RunCommandAsync("git", "add -A", repositoryPath);
             await RunCommandAsync("git", "commit -m \"Upgrade\"", repositoryPath);
             await RunCommandAsync("git", "checkout master", repositoryPath);
@@ -87,13 +87,13 @@ namespace Cynosura.Studio.Generator.Merge
         private void ExportCurrent(string currentDirectoryPath, string exportPath)
         {
             Directory.CreateDirectory(exportPath);
-            CopyAllFiles(currentDirectoryPath, exportPath, _copyFilesIgnores);
+            FileHelper.CopyAllFiles(currentDirectoryPath, exportPath, _copyFilesIgnores);
         }
 
         private async Task CommitCurrent(string repositoryPath, string currentDirectoryPath)
         {
-            DeleteAllFiles(repositoryPath, ".git");
-            CopyAllFiles(currentDirectoryPath, repositoryPath);
+            FileHelper.DeleteAllFiles(repositoryPath, ".git");
+            FileHelper.CopyAllFiles(currentDirectoryPath, repositoryPath);
             await RunCommandAsync("git", "add -A", repositoryPath);
             await RunCommandAsync("git", "commit -m \"Current\"", repositoryPath);
         }
@@ -193,85 +193,6 @@ namespace Cynosura.Studio.Generator.Merge
             process.BeginErrorReadLine();
 
             return tcs.Task;
-        }
-
-        private void CopyAllFiles(string sourceDirectory, string destinationDirectory, IList<string> ignores = null)
-        {
-            var dir = new DirectoryInfo(sourceDirectory);
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException("Source directory does not exist or could not be found: " + sourceDirectory);
-            }
-
-            var dirs = dir.GetDirectories();
-            
-            if (!Directory.Exists(destinationDirectory))
-            {
-                Directory.CreateDirectory(destinationDirectory);
-            }
-
-            var files = dir.GetFiles();
-            foreach (var file in files)
-            {
-                if (ignores != null && ignores.Contains(file.Name))
-                {
-                    continue;
-                }
-                var destinationPath = Path.Combine(destinationDirectory, file.Name);
-                file.CopyTo(destinationPath, false);
-            }
-
-            foreach (var subdir in dirs)
-            {
-                if (ignores != null && ignores.Contains(subdir.Name))
-                {
-                    continue;
-                }
-                var destinationPath = Path.Combine(destinationDirectory, subdir.Name);
-                CopyAllFiles(subdir.FullName, destinationPath, ignores);
-            }
-        }
-
-        private void DeleteAllFiles(string directory, string except)
-        {
-            var dir = new DirectoryInfo(directory);
-
-            foreach (var file in dir.GetFiles())
-            {
-                if (file.Name == except)
-                    continue;
-                file.Delete();
-            }
-            foreach (var subdir in dir.GetDirectories())
-            {
-                if (subdir.Name == except)
-                    continue;
-                subdir.Delete(true);
-            }
-        }
-        
-        private bool HasDirectory(string directory, string subdirectory)
-        {
-            var dir = new DirectoryInfo(directory);
-            foreach (var subdir in dir.GetDirectories())
-            {
-                if (subdir.Name == subdirectory)
-                    return true;
-            }
-            return false;
-        }
-
-        private void DeleteDirectory(string path)
-        {
-            var directory = new DirectoryInfo(path) { Attributes = FileAttributes.Normal };
-
-            foreach (var info in directory.GetFileSystemInfos("*", SearchOption.AllDirectories))
-            {
-                info.Attributes = FileAttributes.Normal;
-            }
-
-            directory.Delete(true);
         }
 
         private string GetTempPath()

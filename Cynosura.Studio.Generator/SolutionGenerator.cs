@@ -145,13 +145,13 @@ namespace Cynosura.Studio.Generator
             var upgradePackageSolution = new SolutionAccessor(upgradePackageSolutionPath);
             await _viewGenerator.CopyViewsAsync(solution, upgradePackageSolution);
             await _enumGenerator.CopyEnumsAsync(solution, upgradePackageSolution);
-            await _entityGenerator.CopyEntitiesAsync(solution, upgradePackageSolution);
 
             await InitSolutionAsync(solution.Namespace, currentPackageSolutionPath, solution.Metadata.TemplateName, solution.Metadata.TemplateVersion);
             var currentPackageSolution = new SolutionAccessor(currentPackageSolutionPath);
             await _viewGenerator.CopyViewsAsync(solution, currentPackageSolution);
             await _enumGenerator.CopyEnumsAsync(solution, currentPackageSolution);
-            await _entityGenerator.CopyEntitiesAsync(solution, currentPackageSolution);
+
+            await _entityGenerator.CopyEntitiesAsync(solution, currentPackageSolution, upgradePackageSolution);
 
             var upgradeRenames = await GetUpgradeRenames(currentPackageSolution, upgradePackageSolution);
             RenameInSolution(solution, upgradeRenames);

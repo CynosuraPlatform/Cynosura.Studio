@@ -10,11 +10,8 @@ namespace Cynosura.Studio.Generator.Infrastructure
 {
     public class EntityTypeHandler: CustomCreationConverter<Entity>
     {
-        private readonly SolutionMetadata _solution;
-
-        public EntityTypeHandler(SolutionMetadata solution)
+        public EntityTypeHandler()
         {
-            _solution = solution;
         }
 
         public Entity Create(Type objectType, JObject jObject)

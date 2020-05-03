@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cynosura.Studio.Generator.Infrastructure;
 using Cynosura.Studio.Generator.Models;
 
 namespace Cynosura.Studio.Generator
@@ -72,16 +73,20 @@ namespace Cynosura.Studio.Generator
             await _codeGenerator.UpgradeAsync(solution, oldGenerateInfos, newGenerateInfos);
         }
 
-        internal async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution)
+        internal async Task CopyEntitiesAsync(SolutionAccessor fromSolution, SolutionAccessor toSolution, SolutionAccessor mergeToSolution)
         {
             var fromEntities = await fromSolution.GetEntitiesAsync();
             fromEntities = SortByDependency(fromEntities).ToList();
             var toEntities = await toSolution.GetEntitiesAsync();
+            var mergeToEntities = await mergeToSolution.GetEntitiesAsync();
             var oldEntitiesToUpgrade = new List<Entity>();
             var newEntitiesToUpgrade = new List<Entity>();
+            var oldMergeEntitiesToUpgrade = new List<Entity>();
+            var newMergeEntitiesToUpgrade = new List<Entity>();
             foreach (var entity in fromEntities)
             {
                 var toEntity = toEntities.FirstOrDefault(e => e.Id == entity.Id);
+                var mergeToEntity = mergeToEntities.FirstOrDefault(e => e.Id == entity.Id);
                 if (toEntity == null)
                 {
                     await toSolution.CreateEntityAsync(entity);
@@ -89,6 +94,12 @@ namespace Cynosura.Studio.Generator
                         .FirstOrDefault(e => e.Id == entity.Id);
                     await GenerateEntityAsync(toSolution, newEntity);
                     await GenerateEntityViewAsync(toSolution, newEntity);
+
+                    await mergeToSolution.CreateEntityAsync(entity);
+                    var newMergeEntity = (await mergeToSolution.GetEntitiesAsync())
+                        .FirstOrDefault(e => e.Id == entity.Id);
+                    await GenerateEntityAsync(mergeToSolution, newMergeEntity);
+                    await GenerateEntityViewAsync(mergeToSolution, newMergeEntity);
                 }
                 else
                 {
@@ -97,6 +108,13 @@ namespace Cynosura.Studio.Generator
                         .FirstOrDefault(e => e.Id == entity.Id);
                     oldEntitiesToUpgrade.Add(toEntity);
                     newEntitiesToUpgrade.Add(newEntity);
+
+                    var newMergeEntity = MergeEntity(entity, toEntity, mergeToEntity);
+                    await mergeToSolution.UpdateEntityAsync(newMergeEntity);
+                    newMergeEntity = (await mergeToSolution.GetEntitiesAsync())
+                        .FirstOrDefault(e => e.Id == entity.Id);
+                    oldMergeEntitiesToUpgrade.Add(mergeToEntity);
+                    newMergeEntitiesToUpgrade.Add(newMergeEntity);
                 }
             }
 
@@ -114,6 +132,64 @@ namespace Cynosura.Studio.Generator
                     });
                 await _codeGenerator.UpgradeAsync(toSolution, oldGenerateInfos, newGenerateInfos);
             }
+
+            if (oldMergeEntitiesToUpgrade.Count > 0)
+            {
+                var oldGenerateInfos = oldMergeEntitiesToUpgrade
+                    .SelectMany(oldEntity => new[] {
+                        new EntityModel(oldEntity, mergeToSolution).GetGenerateInfo(),
+                        new EntityViewModel(new View(), oldEntity, mergeToSolution).GetGenerateInfo()
+                    });
+                var newGenerateInfos = newMergeEntitiesToUpgrade
+                    .SelectMany(newEntity => new[] {
+                        new EntityModel(newEntity, mergeToSolution).GetGenerateInfo(),
+                        new EntityViewModel(new View(), newEntity, mergeToSolution).GetGenerateInfo()
+                    });
+                await _codeGenerator.UpgradeAsync(mergeToSolution, oldGenerateInfos, newGenerateInfos);
+            }
+        }
+
+        private Entity MergeEntity(Entity fromEntity, Entity toEntity, Entity mergeToEntity)
+        {
+            var newMergeEntity = mergeToEntity.SerializeToJson().DeserializeFromJson<Entity>();
+            if (fromEntity.Name != toEntity.Name) newMergeEntity.Name = fromEntity.Name;
+            if (fromEntity.PluralName != toEntity.PluralName) newMergeEntity.PluralName = fromEntity.PluralName;
+            if (fromEntity.DisplayName != toEntity.DisplayName) newMergeEntity.DisplayName = fromEntity.DisplayName;
+            if (fromEntity.PluralDisplayName != toEntity.PluralDisplayName) newMergeEntity.PluralDisplayName = fromEntity.PluralDisplayName;
+            if (fromEntity.IsAbstract != toEntity.IsAbstract) newMergeEntity.IsAbstract = fromEntity.IsAbstract;
+            if (fromEntity.BaseEntityId != toEntity.BaseEntityId) newMergeEntity.BaseEntityId = fromEntity.BaseEntityId;
+            foreach (var field in fromEntity.Fields)
+            {
+                var toField = toEntity.Fields.FirstOrDefault(f => f.Id == field.Id);
+                var newMergeField = newMergeEntity.Fields.FirstOrDefault(f => f.Id == field.Id);
+                if (toField == null)
+                {
+                    newMergeEntity.Fields.Add(field);
+                }
+                else
+                {
+                    MergeField(field, toField, newMergeField);
+                }
+            }
+            var fromProperties = fromEntity.Properties.SerializeToJson();
+            var toProperties = fromEntity.Properties.SerializeToJson();
+            if (fromProperties != toProperties) newMergeEntity.Properties = fromProperties.DeserializeFromJson<PropertyCollection>();
+            return newMergeEntity;
+        }
+
+        private void MergeField(Field fromField, Field toField, Field mergeToField)
+        {
+            if (fromField.Name != toField.Name) mergeToField.Name = fromField.Name;
+            if (fromField.DisplayName != toField.DisplayName) mergeToField.DisplayName = fromField.DisplayName;
+            if (fromField.Type != toField.Type) mergeToField.Type = fromField.Type;
+            if (fromField.Size != toField.Size) mergeToField.Size = fromField.Size;
+            if (fromField.EntityId != toField.EntityId) mergeToField.EntityId = fromField.EntityId;
+            if (fromField.IsRequired != toField.IsRequired) mergeToField.IsRequired = fromField.IsRequired;
+            if (fromField.EnumId != toField.EnumId) mergeToField.EnumId = fromField.EnumId;
+            if (fromField.IsSystem != toField.IsSystem) mergeToField.IsSystem = fromField.IsSystem;
+            var fromProperties = fromField.Properties.SerializeToJson();
+            var toProperties = toField.Properties.SerializeToJson();
+            if (fromProperties != toProperties) mergeToField.Properties = fromProperties.DeserializeFromJson<PropertyCollection>();
         }
 
         private IEnumerable<Entity> SortByDependency(IEnumerable<Entity> entities)

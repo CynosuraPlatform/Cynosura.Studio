@@ -37,7 +37,7 @@ namespace Cynosura.Studio.Generator
             Projects = GetProjects(Path);
         }
 
-        private string GetMetadataPath()
+        private string GetSolutionMetadataPath()
         {
             var newLocation = System.IO.Path.Combine(Path, ".cynosura.json");
             if (File.Exists(newLocation))
@@ -58,7 +58,7 @@ namespace Cynosura.Studio.Generator
 
         private SolutionMetadata GetMetadata()
         {
-            var metadataPath = GetMetadataPath();
+            var metadataPath = GetSolutionMetadataPath();
             return DeserializeMetadata<SolutionMetadata>(File.ReadAllText(metadataPath));
         }
 
@@ -100,7 +100,7 @@ namespace Cynosura.Studio.Generator
             var entities = new List<Entity>();
             foreach (var file in files)
             {
-                var entity = DeserializeMetadata<Entity>(await ReadFileAsync(file), new EntityTypeHandler(Metadata));
+                var entity = DeserializeMetadata<Entity>(await ReadFileAsync(file), new EntityTypeHandler());
                 entities.Add(entity);
             }
 
@@ -115,7 +115,7 @@ namespace Cynosura.Studio.Generator
                     entity.BaseEntity = entities.First(e => e.Id == entity.BaseEntityId);
                     i += entity.BaseEntity.AllFields.Count + entity.BaseEntity.AllSystemFields.Count;
                 }
-                
+
                 foreach (var field in entity.Fields)
                 {
                     if (field.EntityId != null)
@@ -284,7 +284,7 @@ namespace Cynosura.Studio.Generator
             File.Delete(filePath);
         }
 
-        private async Task<string> ReadFileAsync(string filePath)
+        private static async Task<string> ReadFileAsync(string filePath)
         {
             using (var fileReader = new StreamReader(filePath))
             {
@@ -292,7 +292,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        private async Task WriteFileAsync(string filePath, string content)
+        private static async Task WriteFileAsync(string filePath, string content)
         {
             using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
             {
