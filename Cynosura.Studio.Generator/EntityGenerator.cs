@@ -109,7 +109,8 @@ namespace Cynosura.Studio.Generator
                     oldEntitiesToUpgrade.Add(toEntity);
                     newEntitiesToUpgrade.Add(newEntity);
 
-                    var newMergeEntity = MergeEntity(entity, toEntity, mergeToEntity);
+                    var newMergeEntity = mergeToEntity.SerializeToJson().DeserializeFromJson<Entity>();
+                    MergeEntity(entity, toEntity, newMergeEntity);
                     await mergeToSolution.UpdateEntityAsync(newMergeEntity);
                     newMergeEntity = (await mergeToSolution.GetEntitiesAsync())
                         .FirstOrDefault(e => e.Id == entity.Id);
@@ -149,32 +150,43 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        private Entity MergeEntity(Entity fromEntity, Entity toEntity, Entity mergeToEntity)
+        public void MergeEntity(Entity fromEntity, Entity toEntity, Entity mergeToEntity)
         {
-            var newMergeEntity = mergeToEntity.SerializeToJson().DeserializeFromJson<Entity>();
-            if (fromEntity.Name != toEntity.Name) newMergeEntity.Name = fromEntity.Name;
-            if (fromEntity.PluralName != toEntity.PluralName) newMergeEntity.PluralName = fromEntity.PluralName;
-            if (fromEntity.DisplayName != toEntity.DisplayName) newMergeEntity.DisplayName = fromEntity.DisplayName;
-            if (fromEntity.PluralDisplayName != toEntity.PluralDisplayName) newMergeEntity.PluralDisplayName = fromEntity.PluralDisplayName;
-            if (fromEntity.IsAbstract != toEntity.IsAbstract) newMergeEntity.IsAbstract = fromEntity.IsAbstract;
-            if (fromEntity.BaseEntityId != toEntity.BaseEntityId) newMergeEntity.BaseEntityId = fromEntity.BaseEntityId;
+            if (fromEntity.Name != toEntity.Name) mergeToEntity.Name = fromEntity.Name;
+            if (fromEntity.PluralName != toEntity.PluralName) mergeToEntity.PluralName = fromEntity.PluralName;
+            if (fromEntity.DisplayName != toEntity.DisplayName) mergeToEntity.DisplayName = fromEntity.DisplayName;
+            if (fromEntity.PluralDisplayName != toEntity.PluralDisplayName) mergeToEntity.PluralDisplayName = fromEntity.PluralDisplayName;
+            if (fromEntity.IsAbstract != toEntity.IsAbstract) mergeToEntity.IsAbstract = fromEntity.IsAbstract;
+            if (fromEntity.BaseEntityId != toEntity.BaseEntityId) mergeToEntity.BaseEntityId = fromEntity.BaseEntityId;
             foreach (var field in fromEntity.Fields)
             {
                 var toField = toEntity.Fields.FirstOrDefault(f => f.Id == field.Id);
-                var newMergeField = newMergeEntity.Fields.FirstOrDefault(f => f.Id == field.Id);
+                var newMergeField = mergeToEntity.Fields.FirstOrDefault(f => f.Id == field.Id);
                 if (toField == null)
                 {
-                    newMergeEntity.Fields.Add(field);
+                    mergeToEntity.Fields.Add(field);
                 }
                 else
                 {
                     MergeField(field, toField, newMergeField);
                 }
             }
+            foreach (var toField in toEntity.Fields.ToList())
+            {
+                var field = fromEntity.Fields.FirstOrDefault(f => f.Id == toField.Id);
+                var newMergeField = mergeToEntity.Fields.FirstOrDefault(f => f.Id == toField.Id);
+                if (field == null)
+                {
+                    toEntity.Fields.Remove(toField);
+                    if (newMergeField != null)
+                    {
+                        mergeToEntity.Fields.Remove(newMergeField);
+                    }
+                }
+            }
             var fromProperties = fromEntity.Properties.SerializeToJson();
-            var toProperties = fromEntity.Properties.SerializeToJson();
-            if (fromProperties != toProperties) newMergeEntity.Properties = fromProperties.DeserializeFromJson<PropertyCollection>();
-            return newMergeEntity;
+            var toProperties = toEntity.Properties.SerializeToJson();
+            if (fromProperties != toProperties) mergeToEntity.Properties = fromProperties.DeserializeFromJson<PropertyCollection>();
         }
 
         private void MergeField(Field fromField, Field toField, Field mergeToField)
