@@ -125,7 +125,12 @@ namespace Cynosura.Studio.Web
                 {
                 });
             }
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+
+            if (HybridSupport.IsElectronActive)
+            {
+                Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+                Electron.App.WindowAllClosed += () => Electron.App.Exit();   
+            }
         }
     }
 }
