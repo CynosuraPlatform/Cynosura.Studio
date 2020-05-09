@@ -59,37 +59,5 @@ namespace Cynosura.Studio.CliTool
                 settingsOverrides.Add(key, value);
             return settingsOverrides;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns>Item1 - commands, Items2 - properties</returns>
-        public Tuple<string[], IEnumerable<KeyValuePair<string, string>>> PrepareProperties(string[] args)
-        {
-            var commandArguments = new List<string>();
-            var properties = new List<KeyValuePair<string, string>>();
-            var skipIndex = -1;
-            for (var i = 0; i < args.Length; i++)
-            {
-                var part = args[i];
-                if (part.StartsWith("--"))
-                {
-                    skipIndex = i + 1;
-                    var prop = part.Substring(2);
-                    var value = args.Length < i ? "" : args[i + 1];
-                    properties.Add(new KeyValuePair<string, string>(prop, value));
-                    continue;
-                }
-
-                if (skipIndex != i)
-                {
-                    commandArguments.Add(part);
-                }
-            }
-
-            return new Tuple<string[], IEnumerable<KeyValuePair<string, string>>>(commandArguments.ToArray(), properties);
-        }
-
     }
 }

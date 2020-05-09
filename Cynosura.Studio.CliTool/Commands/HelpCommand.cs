@@ -24,14 +24,15 @@ namespace Cynosura.Studio.CliTool.Commands
             if (string.IsNullOrEmpty(name))
             {
                 var commands = string.Join("\r\n", _commands.Keys.Select(s => $"\t{s}"));
+                var props = string.Join(" ", _props.Select(s => $"[{s.Key} prop-value]"));
                 Console.WriteLine("cyn <command> [command arguments] {0}\r\n\r\nAvailable commands: \r\n{1}",
-                    string.Join(" ", _props.Select(s => $"[--{s.Key} {s.Value}]")),
+                    props,
                     commands);
                 return Task.FromResult(true);
             }
             if (!_commands.ContainsKey(name))
             {
-                Console.WriteLine($"Command not found\r\n {Help()}");
+                Console.WriteLine($"Command {name} not found\r\n {Help()}");
                 return Task.FromResult(false);
             }
             var helpString = _commands[name].Help();

@@ -11,12 +11,5 @@ namespace Cynosura.Studio.CliTool
         /// </summary>
         /// <param name="expression"></param>
         Dictionary<string, string> OverrideSettingsValue(string expression);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns>Item1 - commands, Items2 - properties</returns>
-        Tuple<string[], IEnumerable<KeyValuePair<string, string>>> PrepareProperties(string[] args);
     }
 }
