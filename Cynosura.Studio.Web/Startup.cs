@@ -43,8 +43,7 @@ namespace Cynosura.Studio.Web
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddDefaultIdentity<User>()
-                .AddRoles<Role>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddSpaStaticFiles(configuration =>
