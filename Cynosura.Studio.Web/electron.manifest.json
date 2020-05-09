@@ -1,7 +1,7 @@
 {
   "executable": "Cynosura.Studio.Web",
   "splashscreen": {
-    "imageFile": ""
+    "imageFile": "/wwwroot/assets/logo.png"
   },
   "name": "Cynosura.Studio.Web",
   "author": "",
@@ -9,11 +9,23 @@
   "build": {
     "appId": "com.Cynosura.Studio.Web.app",
     "productName": "Cynosura.Studio.Web",
-    "copyright": "Copyright © 2020",
+    "copyright": "No Copyright",
     "buildVersion": "1.0.0",
     "compression": "maximum",
+    "win": {
+      "icon": "Assets/app.ico",
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "CynosuraPlatform",
+          "repo": "Cynosura.Studio",
+          "token": ">> Insert GH_TOKEN here! <<"
+        }
+      ]
+    },
     "directories": {
-      "output": "../../../bin/Desktop"
+      "output": "../../../bin/Desktop",
+      "buildResources": "Assets"
     },
     "extraResources": [
       {

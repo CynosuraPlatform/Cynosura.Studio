@@ -9,6 +9,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="cynosura.db" />
+    <None Update="Assets\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Cynosura.Web" Version="0.2.1-b157" />
@@ -29,14 +32,15 @@
     <Protobuf Include="Protos\**\*.proto" />
   </ItemGroup>
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-    <Message Text="exec npm install"/>
+    <Message Text="exec npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install  &gt; NUL" />
-    <Message Text="exec npm run build"/>
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build --silent -- --prod --outputPath=../Cynosura.Studio.Web/NgApp &gt; NUL 2&gt; NUL">
+    <Message Text="exec npm run build" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build --silent -- --prod --outputPath=../Cynosura.Studio.Web/NgApp &gt; NUL 2&gt; NUL" Condition=" '$(OS)' != 'Unix' ">
     </Exec>
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build --silent -- --prod --outputPath=../Cynosura.Studio.Web/NgApp &gt; /dev/null 2&gt; /dev/null" Condition=" '$(OS)' == 'Unix' " />
     <ItemGroup>
       <DistFiles Include="NgApp\**" />
-      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
