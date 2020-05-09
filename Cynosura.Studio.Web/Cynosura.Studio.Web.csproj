@@ -33,7 +33,8 @@
   </ItemGroup>
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <Message Text="exec npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install  &gt; NUL" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install  &gt; NUL" Condition=" '$(OS)' != 'Unix' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install  &gt; /dev/null" Condition=" '$(OS)' == 'Unix' " />
     <Message Text="exec npm run build" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build --silent -- --prod --outputPath=../Cynosura.Studio.Web/NgApp &gt; NUL 2&gt; NUL" Condition=" '$(OS)' != 'Unix' ">
     </Exec>
