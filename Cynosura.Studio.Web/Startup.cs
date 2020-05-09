@@ -19,8 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using Cynosura.Studio.Generator;
 
 namespace Cynosura.Studio.Web
@@ -73,31 +71,6 @@ namespace Cynosura.Studio.Web
 
             services.AddCors();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cynosura.Studio API", Version = "v1" });
-                c.AddFluentValidationRules();
-                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows
-                    {
-                        AuthorizationCode = new OpenApiOAuthFlow
-                        {
-                            AuthorizationUrl = new Uri("/connect/authorize", UriKind.Relative),
-                            TokenUrl = new Uri("/connect/token", UriKind.Relative),
-                            Scopes = new Dictionary<string, string>
-                            {
-                                { "Cynosura.Studio.WebAPI", "" },
-                                { "openid", "" },
-                                { "profile", "" },
-                            }
-                        }
-                    }
-                });
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
-            });
-
             services.AddGrpc();
 
             services.AddWeb(Configuration);
@@ -126,18 +99,6 @@ namespace Cynosura.Studio.Web
             {
                 app.UseSpaStaticFiles();
             }
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cynosura.Studio API V1");
-                c.OAuthClientId("Swagger");
-                c.OAuthAppName("Cynosura.Studio.Web");
-                c.OAuthScopeSeparator(" ");
-                c.OAuthUsePkce();
-                c.ConfigObject.DeepLinking = true;
-            });
 
             app.UseRouting();
 

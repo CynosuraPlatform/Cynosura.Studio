@@ -16,7 +16,6 @@
   <ItemGroup>
     <PackageReference Include="Cynosura.Web" Version="0.2.1-b157" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
-    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="3.0.0-rc.5" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
@@ -24,7 +23,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
