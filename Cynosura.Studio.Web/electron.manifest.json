@@ -1,0 +1,34 @@
+{
+  "executable": "Cynosura.Studio.Web",
+  "splashscreen": {
+    "imageFile": ""
+  },
+  "name": "Cynosura.Studio.Web",
+  "author": "",
+  "singleInstance": false,
+  "build": {
+    "appId": "com.Cynosura.Studio.Web.app",
+    "productName": "Cynosura.Studio.Web",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "1.0.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": ["**/*"]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": ["**/*"]
+      },
+      "**/*"
+    ]
+  }
+}

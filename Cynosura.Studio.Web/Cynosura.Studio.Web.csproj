@@ -1,5 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -8,13 +7,12 @@
     <SpaRoot>..\Cynosura.Studio.Web.Ng\</SpaRoot>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="cynosura.db" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Cynosura.Web" Version="0.2.1-b157" />
+    <PackageReference Include="ElectronNET.API" Version="8.31.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
@@ -22,31 +20,32 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Cynosura.Studio.Core\Cynosura.Studio.Core.csproj" />
     <ProjectReference Include="..\Cynosura.Studio.Data\Cynosura.Studio.Data.csproj" />
     <ProjectReference Include="..\Cynosura.Studio.Infrastructure\Cynosura.Studio.Infrastructure.csproj" />
   </ItemGroup>
-
-   <ItemGroup>
+  <ItemGroup>
     <Protobuf Include="Protos\**\*.proto" />
   </ItemGroup>
-
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod --outputPath=../Cynosura.Studio.Web/NgApp" />
-
-    <!-- Include the newly-built files in the publish output -->
+    <Message Text="exec npm install"/>
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install  &gt; NUL" />
+    <Message Text="exec npm run build"/>
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build --silent -- --prod --outputPath=../Cynosura.Studio.Web/NgApp &gt; NUL 2&gt; NUL">
+    </Exec>
     <ItemGroup>
       <DistFiles Include="NgApp\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-  
+  <ItemGroup>
+    <Content Update="electron.manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
