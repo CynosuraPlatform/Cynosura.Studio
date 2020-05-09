@@ -23,6 +23,10 @@
         }
       ]
     },
+    "mac": {
+      "icon": "Assets/applogo.icns",
+      "category": "public.app-category.developer-tools"
+    },
     "directories": {
       "output": "../../../bin/Desktop",
       "buildResources": "Assets"
