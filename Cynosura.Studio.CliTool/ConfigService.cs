@@ -9,7 +9,7 @@ namespace Cynosura.Studio.CliTool
         /// Format "key1=value1"
         /// "key1=value1,key1.sub1=someValue"
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="expression"></param>
         public Dictionary<string, string> OverrideSettingsValue(string expression)
         {
             if (!expression.Contains('='))
