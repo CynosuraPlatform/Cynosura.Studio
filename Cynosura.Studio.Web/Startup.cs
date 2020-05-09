@@ -49,20 +49,10 @@ namespace Cynosura.Studio.Web
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<DataContext>();
 
-            services.AddIdentityServer(o =>
-                {
-                    var authority = Configuration["Authority"];
-                    if (!string.IsNullOrEmpty(authority))
-                    {
-                        o.IssuerUri = authority;
-                        o.PublicOrigin = authority;
-                    }
-                })
-                .AddApiAuthorization<User, DataContext>()
-                .AddProfileService<MyProfileService>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "NgApp";
+            });
 
             services.AddMvc()
                 .AddMvcOptions(o =>
@@ -131,8 +121,11 @@ namespace Cynosura.Studio.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            if (!env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
 
             app.UseSwagger();
 
@@ -156,7 +149,6 @@ namespace Cynosura.Studio.Web
             });
 
             app.UseAuthentication();
-            app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
@@ -165,6 +157,12 @@ namespace Cynosura.Studio.Web
                 var provider = new ConfigurationProvider<IEndpointRouteBuilder>();
                 provider.Configure(endpoints);
             });
+
+            if (!env.IsDevelopment()) { 
+                app.UseSpa(spa =>
+                {
+                });
+            }
         }
     }
 }
