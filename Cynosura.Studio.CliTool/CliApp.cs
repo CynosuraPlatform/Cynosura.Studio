@@ -75,8 +75,8 @@ namespace Cynosura.Studio.CliTool
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile(_useProfileSettingsFile, optional: true)
-                .AddInMemoryCollection(defaultConfig);
+                .AddInMemoryCollection(defaultConfig)
+                .AddJsonFile(_useProfileSettingsFile, optional: true);
 
             _configurationRoot = builder.Build();
         }
