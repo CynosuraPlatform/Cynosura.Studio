@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Cynosura.Core.Services;
 using Cynosura.Studio.Generator.PackageFeed.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -19,10 +20,12 @@ namespace Cynosura.Studio.Generator.PackageFeed
 {
     public class NugetFeed : IPackageFeed
     {
+        private readonly ILogger<NugetFeed> _logger;
         private readonly NugetSettings _settings;
 
-        public NugetFeed(IOptions<NugetSettings> settings)
+        public NugetFeed(IOptions<NugetSettings> settings, ILogger<NugetFeed> logger)
         {
+            _logger = logger;
             _settings = settings.Value;
         }
 
@@ -75,8 +78,11 @@ namespace Cynosura.Studio.Generator.PackageFeed
             var httpClient = GetHttpClient();
             if (_settings.ListingApi == NugetListingApi.RegistrationsBaseUrl)
             {
-                var registrationsBase =  new Uri(await GetRegistrationsBaseUrlAsync());
+                var registrationBaseUrl = await GetRegistrationsBaseUrlAsync();
+                _logger.LogInformation($"RegistrationsBaseUrl: {registrationBaseUrl}");
+                var registrationsBase =  new Uri(registrationBaseUrl);
                 var versionsUrl = new Uri(registrationsBase, $"{packageName.ToLower()}/index.json");
+                _logger.LogInformation($"GET {versionsUrl}");
                 var versionsResult = await httpClient.GetStringAsync(versionsUrl);
                 var response = versionsResult.DeserializeFromJson<RegistrationResponse>();
                 var versions = response.Items.SelectMany(s => s.Items)
@@ -87,7 +93,10 @@ namespace Cynosura.Studio.Generator.PackageFeed
             else
             {
                 var searchAutocompleteService = await GetSearchAutocompleteServiceAsync();
+                _logger.LogInformation($"SearchAutocompleteService: {searchAutocompleteService}");
+
                 var versionsUrl = $"{searchAutocompleteService}?id={packageName.ToLower()}&prerelease=true";
+                _logger.LogInformation($"GET {versionsUrl}");
                 var versionsResult = await httpClient.GetStringAsync(versionsUrl);
                 var versions = versionsResult.DeserializeFromJson<VersionData>();
                 return OrderVersionsDescending(versions.Data);
@@ -100,20 +109,24 @@ namespace Cynosura.Studio.Generator.PackageFeed
             var filePath = Path.Combine(path, fileName);
             if (!File.Exists(filePath))
             {
+                _logger.LogInformation($"Cached file not found in {filePath}");
                 var baseAddress = new Uri(await GetPackageBaseAddressAsync());
+                _logger.LogInformation($"Using base address {baseAddress}");
                 var packageUrl = new Uri(baseAddress, $"{packageName.ToLower()}/{version.ToLower()}/{packageName.ToLower()}.{version.ToLower()}.nupkg");
+                _logger.LogInformation($"Downloading {packageUrl}");
                 var httpClient = GetHttpClient();
                 using (var resultStream = await httpClient.GetStreamAsync(packageUrl))
+                using (var streamWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                 {
-                    using (var streamWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        await resultStream.CopyToAsync(streamWriter);
-                    }
+                    await resultStream.CopyToAsync(streamWriter);
                 }
             }
             var extractedPath = Path.Combine(path, $"{packageName}.{version}");
             if (Directory.Exists(extractedPath))
+            {
+                _logger.LogInformation($"Extracting path {extractedPath} is not empty. Deleting path recursive");
                 Directory.Delete(extractedPath, true);
+            }
             Extract(filePath, extractedPath);
             var systemPath = Path.Combine(extractedPath, "content", ".template.config");
             if (Directory.Exists(systemPath))
