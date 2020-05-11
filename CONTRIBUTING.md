@@ -1,6 +1,41 @@
 # Contributing
 
-Please, create an Issue before your PR. Describe in maximum detail what you want to do.
+## Bug reports
+A bug is a _demonstrable problem_ that is caused by the code in the repository.
+Good bug reports are extremely helpful - thank you!
+
+Guidelines for bug reports:
+
+1. **Use the GitHub issue search** &mdash; check if the issue has already been
+   reported.
+
+2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
+   latest `master` or `development` branch in the repository.
+
+Example of a bug issue:
+
+> # Exception or Error
+> <ErrorType, ErrorMessage>
+> <StackTrace>
+> # Description
+> What have you tried? Any specific information like platform, custom template and other
+> # Steps to Reproduce Bug
+> 1. ...
+> 
+
+## Feature requests
+Please, create an Issue before your [Pull Request](https://help.github.com/articles/using-pull-requests/). 
+Provide as much detail and context as possible.
+
+Example of a feature request issue:
+
+> # The problem description
+> Describe problem and context for new feature. We need to understand why this is necessary
+> # Implementation
+> If you have plan for implementation describe it here
+> 
+
+**IMPORTANT**: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.
 
 # C# Code styling
 
