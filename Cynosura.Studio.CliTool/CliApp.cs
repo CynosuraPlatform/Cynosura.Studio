@@ -79,6 +79,8 @@ namespace Cynosura.Studio.CliTool
                 .AddJsonFile(_useProfileSettingsFile, optional: true);
 
             _configurationRoot = builder.Build();
+
+            _feed = _configurationRoot.GetValue<string>("Nuget:FeedUrl");
         }
 
         public string[] ParseArguments(string[] args)
