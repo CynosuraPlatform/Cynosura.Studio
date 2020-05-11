@@ -22,7 +22,7 @@ namespace Cynosura.Studio.CliTool
             }
             catch (Exception exception)
             {
-                Console.WriteLine($"{exception.GetType().Name}: {exception}");
+                Console.WriteLine(exception);
                 Console.WriteLine("You can track issues on https://github.com/CynosuraPlatform/Cynosura.Studio/issues");
                 Environment.ExitCode = 1;
             }
