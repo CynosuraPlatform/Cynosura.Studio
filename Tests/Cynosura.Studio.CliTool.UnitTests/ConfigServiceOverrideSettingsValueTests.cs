@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using AutoFixture.Xunit2;
 using Xunit;
 
 namespace Cynosura.Studio.CliTool.UnitTests
 {
-    public class ConfigServiceTests
+    public class ConfigServiceOverrideSettingsValueTests
     {
         [Theory]
         [InlineData("key1=value1")]

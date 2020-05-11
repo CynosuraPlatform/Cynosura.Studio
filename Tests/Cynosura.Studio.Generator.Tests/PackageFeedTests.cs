@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Cynosura.Studio.Generator.PackageFeed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
@@ -16,7 +17,7 @@ namespace Cynosura.Studio.Generator.Tests
             var config = GetConfig();
             var configMock = new Mock<IOptions<NugetSettings>>();
             configMock.Setup(s => s.Value).Returns(config);
-            var feed = new NugetFeed(configMock.Object);
+            var feed = new NugetFeed(configMock.Object, new NullLogger<NugetFeed>());
             var versions = await feed.GetVersionsAsync("Cynosura.Template");
             Assert.NotEmpty(versions);
         }

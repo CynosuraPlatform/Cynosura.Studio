@@ -20,9 +20,10 @@ namespace Cynosura.Studio.CliTool
                     Environment.ExitCode = 1;
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+                Console.WriteLine(exception);
+                Console.WriteLine("You can track issues on https://github.com/CynosuraPlatform/Cynosura.Studio/issues");
                 Environment.ExitCode = 1;
             }
         }
