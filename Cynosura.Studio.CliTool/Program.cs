@@ -24,7 +24,7 @@ namespace Cynosura.Studio.CliTool
             {
                 var ex = exception;
                 var message = "";
-                while (ex !=null)
+                while (ex != null)
                 {
                     message += ex.Message + "\r\n";
                     ex = ex.InnerException;
