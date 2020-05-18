@@ -53,37 +53,13 @@ namespace Cynosura.Studio.Generator
 
             if (!string.IsNullOrEmpty(template.InsertAfter))
             {
-                var fileContent = await ReadFileAsync(filePath);
-
-                if (!fileContent.Contains(content))
-                {
-                    fileContent = fileContent.Replace(template.InsertAfter + Environment.NewLine,
-                        template.InsertAfter + Environment.NewLine + content + Environment.NewLine);
-
-                    await WriteFileAsync(fileSavePath, fileContent);
-                }
+                await FileHelper.InsertTextAsync(filePath, content, template.InsertAfter, fileSavePath);
             }
             else
             {
-                await WriteFileAsync(fileSavePath, content);
+                await FileHelper.WriteFileAsync(fileSavePath, content);
             }
-        }
-
-        internal async Task<string> ReadFileAsync(string filePath)
-        {
-            using (var fileReader = new StreamReader(filePath))
-            {
-                return await fileReader.ReadToEndAsync();
-            }
-        }
-
-        internal async Task WriteFileAsync(string filePath, string content)
-        {
-            using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
-            {
-                await fileWriter.WriteAsync(content);
-            }
-        }
+        }        
 
         internal async Task GenerateAsync(SolutionAccessor solution, GenerateInfo generateInfo, string overrideSolutionPath = null)
         {

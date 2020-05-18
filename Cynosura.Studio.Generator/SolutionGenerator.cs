@@ -100,11 +100,11 @@ namespace Cynosura.Studio.Generator
                     Directory.Move(file, newFile);
                 }
 
-                var fileContent = await _codeGenerator.ReadFileAsync(newFile);
+                var fileContent = await FileHelper.ReadFileAsync(newFile);
                 var newFileContent = fileContent.Replace(oldValue, newValue);
                 if (fileContent != newFileContent)
                 {
-                    await _codeGenerator.WriteFileAsync(newFile, newFileContent);
+                    await FileHelper.WriteFileAsync(newFile, newFileContent);
                 }
             }
         }

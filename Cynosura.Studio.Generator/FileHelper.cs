@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Cynosura.Studio.Generator
 {
@@ -73,6 +74,41 @@ namespace Cynosura.Studio.Generator
             }
 
             directory.Delete(true);
+        }
+
+        public static async Task<string> ReadFileAsync(string filePath)
+        {
+            using (var fileReader = new StreamReader(filePath))
+            {
+                return await fileReader.ReadToEndAsync();
+            }
+        }
+
+        public static async Task WriteFileAsync(string filePath, string content)
+        {
+            using (var fileWriter = new StreamWriter(filePath, false, Encoding.UTF8))
+            {
+                await fileWriter.WriteAsync(content);
+            }
+        }
+
+        public static async Task InsertTextAsync(string filePath, string content, string insertAfter, string fileSavePath)
+        {
+            var fileContent = await ReadFileAsync(filePath);
+
+            if (!fileContent.Contains(content))
+            {
+                fileContent = fileContent.Replace(insertAfter + "\r\n",
+                    insertAfter + "\r\n" + content + "\r\n");
+
+                if (!fileContent.Contains(content))
+                {
+                    fileContent = fileContent.Replace(insertAfter + "\n",
+                        insertAfter + "\n" + content + "\n");
+                }
+
+                await WriteFileAsync(fileSavePath, fileContent);
+            }
         }
     }
 }
