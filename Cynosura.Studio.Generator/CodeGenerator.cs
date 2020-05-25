@@ -59,7 +59,23 @@ namespace Cynosura.Studio.Generator
             {
                 await FileHelper.WriteFileAsync(fileSavePath, content);
             }
-        }        
+        }
+
+        private async Task DeleteFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject)
+        {
+            var filePath = GetTemplateFilePath(template, solution, generationObject);
+
+            if (!string.IsNullOrEmpty(template.InsertAfter))
+            {
+                var content = ProcessTemplate(template, solution, model);
+                await FileHelper.RemoveTextAsync(filePath, content);
+            }
+            else
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+        }
 
         internal async Task GenerateAsync(SolutionAccessor solution, GenerateInfo generateInfo, string overrideSolutionPath = null)
         {
@@ -94,6 +110,17 @@ namespace Cynosura.Studio.Generator
 
             Directory.Delete(oldPath, true);
             Directory.Delete(newPath, true);
+        }
+
+        internal async Task DeleteAsync(SolutionAccessor solution, GenerateInfo generateInfo)
+        {
+            var templates = await solution.LoadTemplatesAsync();
+            foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))
+                .Where(t => t.CheckView(generateInfo.View))
+                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties)))
+            {
+                await DeleteFileAsync(template, generateInfo.Model, solution, generateInfo.GenerationObject);
+            }
         }
 
         private bool HasWildcards(string path)

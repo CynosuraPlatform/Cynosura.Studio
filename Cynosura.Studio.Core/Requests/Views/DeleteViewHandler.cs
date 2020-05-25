@@ -12,13 +12,13 @@ namespace Cynosura.Studio.Core.Requests.Views
     public class DeleteViewHandler : IRequestHandler<DeleteView>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ViewGenerator _viewGenerator;
 
         public DeleteViewHandler(IEntityRepository<Solution> solutionRepository,
-            IUnitOfWork unitOfWork)
+            ViewGenerator viewGenerator)
         {
             _solutionRepository = solutionRepository;
-            _unitOfWork = unitOfWork;
+            _viewGenerator = viewGenerator;
         }
 
         public async Task<Unit> Handle(DeleteView request, CancellationToken cancellationToken)
@@ -27,6 +27,8 @@ namespace Cynosura.Studio.Core.Requests.Views
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
+            var view = (await solutionAccessor.GetViewsAsync()).FirstOrDefault(e => e.Id == request.Id);
+            await _viewGenerator.DeleteViewAsync(solutionAccessor, view);
             await solutionAccessor.DeleteViewAsync(request.Id);
             return Unit.Value;
         }

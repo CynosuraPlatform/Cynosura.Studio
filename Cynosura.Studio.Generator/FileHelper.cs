@@ -110,5 +110,22 @@ namespace Cynosura.Studio.Generator
                 await WriteFileAsync(fileSavePath, fileContent);
             }
         }
+
+        public static async Task RemoveTextAsync(string filePath, string content)
+        {
+            var fileContent = await ReadFileAsync(filePath);
+
+            if (fileContent.Contains(content))
+            {
+                fileContent = fileContent.Replace(content + "\r\n", "");
+
+                if (fileContent.Contains(content))
+                {
+                    fileContent = fileContent.Replace(content + "\n", "");
+                }
+
+                await WriteFileAsync(filePath, fileContent);
+            }
+        }
     }
 }

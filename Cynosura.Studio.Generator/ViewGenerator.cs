@@ -53,5 +53,20 @@ namespace Cynosura.Studio.Generator
                 }
             }
         }
+
+        public async Task DeleteViewAsync(SolutionAccessor solution, View view)
+        {
+            var entities = await solution.GetEntitiesAsync();
+            foreach (var entity in entities)
+            {
+                await _entityGenerator.DeleteEntityViewAsync(solution, entity, view);
+            }
+
+            var enums = await solution.GetEnumsAsync();
+            foreach (var @enum in enums)
+            {
+                await _enumGenerator.DeleteEnumViewAsync(solution, @enum, view);
+            }
+        }
     }
 }

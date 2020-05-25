@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cynosura.Core.Data;
@@ -11,10 +11,13 @@ namespace Cynosura.Studio.Core.Requests.Entities
 {
     public class DeleteEntityHandler : IRequestHandler<DeleteEntity>
     {
+        private readonly EntityGenerator _entityGenerator;
         private readonly IEntityRepository<Solution> _solutionRepository;
 
-        public DeleteEntityHandler(IEntityRepository<Solution> solutionRepository)
+        public DeleteEntityHandler(EntityGenerator entityGenerator,
+            IEntityRepository<Solution> solutionRepository)
         {
+            _entityGenerator = entityGenerator;
             _solutionRepository = solutionRepository;
         }
 
@@ -24,6 +27,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
+            var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
+            await _entityGenerator.DeleteEntityAsync(solutionAccessor, entity);
+            await _entityGenerator.DeleteEntityViewAsync(solutionAccessor, entity);
             await solutionAccessor.DeleteEntityAsync(request.Id);
             return Unit.Value;
         }

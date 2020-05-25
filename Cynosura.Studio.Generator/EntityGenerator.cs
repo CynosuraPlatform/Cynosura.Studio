@@ -225,5 +225,26 @@ namespace Cynosura.Studio.Generator
 
             return sortedList;
         }
+
+        public async Task DeleteEntityAsync(SolutionAccessor solution, Entity entity)
+        {
+            var model = new EntityModel(entity, solution);
+            await _codeGenerator.DeleteAsync(solution, model.GetGenerateInfo());
+        }
+
+        public async Task DeleteEntityViewAsync(SolutionAccessor solution, Entity entity)
+        {
+            var views = await solution.GetViewsAsync();
+            foreach (var view in views)
+            {
+                await DeleteEntityViewAsync(solution, entity, view);
+            }
+        }
+
+        public async Task DeleteEntityViewAsync(SolutionAccessor solution, Entity entity, View view)
+        {
+            var model = new EntityViewModel(view, entity, solution);
+            await _codeGenerator.DeleteAsync(solution, model.GetGenerateInfo());
+        }
     }
 }

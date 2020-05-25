@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Core.Requests.Views
                 .FirstOrDefaultAsync();
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var newView = _mapper.Map<UpdateView, Generator.Models.View>(request);
-            var oldView = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
+            var oldView = (await solutionAccessor.GetViewsAsync()).FirstOrDefault(e => e.Id == request.Id);
             await solutionAccessor.UpdateViewAsync(newView);
             return Unit.Value;
         }

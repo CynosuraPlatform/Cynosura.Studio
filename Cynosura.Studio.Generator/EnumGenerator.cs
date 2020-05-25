@@ -114,5 +114,26 @@ namespace Cynosura.Studio.Generator
                 await _codeGenerator.UpgradeAsync(toSolution, oldGenerateInfos, newGenerateInfos);
             }
         }
+
+        public async Task DeleteEnumAsync(SolutionAccessor solution, Models.Enum @enum)
+        {
+            var model = new EnumModel(@enum, solution);
+            await _codeGenerator.DeleteAsync(solution, model.GetGenerateInfo());
+        }
+
+        public async Task DeleteEnumViewAsync(SolutionAccessor solution, Models.Enum @enum)
+        {
+            var views = await solution.GetViewsAsync();
+            foreach (var view in views)
+            {
+                await DeleteEnumViewAsync(solution, @enum, view);
+            }
+        }
+
+        public async Task DeleteEnumViewAsync(SolutionAccessor solution, Models.Enum @enum, View view)
+        {
+            var model = new EnumViewModel(view, @enum, solution);
+            await _codeGenerator.DeleteAsync(solution, model.GetGenerateInfo());
+        }
     }
 }
