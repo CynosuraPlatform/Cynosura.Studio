@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Cynosura.Studio.Data;
+using ElectronNET.API;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -30,6 +31,7 @@ namespace Cynosura.Studio.Web
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseElectron(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var useProfileSettings =

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Config } from './config.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,13 @@ export class ConfigService {
     constructor(private http: HttpClient) { }
 
     public load(): Promise<any> {
+        if (environment.production) {
+            this.config = {
+                apiBaseUrl: ""
+            };
+            return Promise.resolve();
+        }
+        
         return this.http.get(this.buildUrl())
             .toPromise()
             .then(config => {

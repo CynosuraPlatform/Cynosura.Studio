@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cynosura.Studio.Core;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Cynosura.Studio.Generator;
+using ElectronNET.API;
 
 namespace Cynosura.Studio.Web
 {
@@ -94,7 +96,7 @@ namespace Cynosura.Studio.Web
             }
 
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
+            if (!env.IsDevelopment() || HybridSupport.IsElectronActive)
             {
                 app.UseSpaStaticFiles();
             }
@@ -118,10 +120,16 @@ namespace Cynosura.Studio.Web
                 provider.Configure(endpoints);
             });
 
-            if (!env.IsDevelopment()) { 
+            if (!env.IsDevelopment() || HybridSupport.IsElectronActive) { 
                 app.UseSpa(spa =>
                 {
                 });
+            }
+
+            if (HybridSupport.IsElectronActive)
+            {
+                Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+                Electron.App.WindowAllClosed += () => Electron.App.Exit();   
             }
         }
     }

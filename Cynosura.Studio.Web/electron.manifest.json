@@ -1,0 +1,50 @@
+{
+  "executable": "Cynosura.Studio.Web",
+  "splashscreen": {
+    "imageFile": "/wwwroot/assets/logo.png"
+  },
+  "name": "Cynosura.Studio.Web",
+  "author": "",
+  "singleInstance": false,
+  "build": {
+    "appId": "com.Cynosura.Studio.Web.app",
+    "productName": "Cynosura.Studio.Web",
+    "copyright": "No Copyright",
+    "buildVersion": "1.0.0",
+    "compression": "maximum",
+    "win": {
+      "icon": "Assets/app.ico",
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "CynosuraPlatform",
+          "repo": "Cynosura.Studio",
+          "token": ">> Insert GH_TOKEN here! <<"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "Assets/applogo.icns",
+      "category": "public.app-category.developer-tools"
+    },
+    "directories": {
+      "output": "../../../bin/Desktop",
+      "buildResources": "Assets"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": ["**/*"]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": ["**/*"]
+      },
+      "**/*"
+    ]
+  }
+}
