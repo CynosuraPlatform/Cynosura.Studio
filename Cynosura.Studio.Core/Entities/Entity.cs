@@ -25,7 +25,7 @@ namespace Cynosura.Studio.Core.Entities
 
         public IList<Field> Fields { get; set; }
 
-        public Dictionary<string, object> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; }
         [Required()]
         public bool IsAbstract { get; set; }
         

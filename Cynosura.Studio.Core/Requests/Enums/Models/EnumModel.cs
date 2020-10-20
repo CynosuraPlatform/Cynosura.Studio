@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Cynosura.Studio.Core.Requests.EnumValues.Models;
 
@@ -11,6 +11,6 @@ namespace Cynosura.Studio.Core.Requests.Enums.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public IList<EnumValueModel> Values { get; set; }
-        public Dictionary<string, object> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; }
     }
 }

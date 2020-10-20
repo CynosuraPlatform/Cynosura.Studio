@@ -13,7 +13,7 @@ namespace Cynosura.Studio.Web.Controllers
     public class PropertiesController: ControllerBase
     {
         [HttpGet("")]
-        public Dictionary<string, object> GetDefaults()
+        public Dictionary<string, bool> GetDefaults()
         {
             return PropertyCollection.Defaults;
         }

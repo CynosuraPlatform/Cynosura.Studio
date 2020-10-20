@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Cynosura.Studio.Generator.Infrastructure
 {
-    public class PropertyCollection : Dictionary<string, object>
+    public class PropertyCollection : Dictionary<string, bool?>
     {
         public PropertyCollection() : base(StringComparer.InvariantCultureIgnoreCase)
         {
 
         }
 
-        public static Dictionary<string, object> Defaults = new Dictionary<string, object>()
+        public static Dictionary<string, bool> Defaults = new Dictionary<string, bool>()
         {
             {PropertyNames.View, true},
             {PropertyNames.ViewList, true},
@@ -20,9 +20,9 @@ namespace Cynosura.Studio.Generator.Infrastructure
             {PropertyNames.Data, true}
         };
 
-        public new object this[string key]
+        public new bool? this[string key]
         {
-            get => (ContainsKey(key) ? base[key] : Defaults[key]) ?? new object();
+            get => (ContainsKey(key) ? base[key] : Defaults[key]) ?? null;
             set => base[key] = value;
         }
     }
