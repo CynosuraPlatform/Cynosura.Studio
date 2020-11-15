@@ -8,29 +8,26 @@ import { debounceTime, map, tap, first } from 'rxjs/operators';
 import { LoadingService } from './core/loading.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
     title = 'app';
     isLoading = false;
 
-    // FlexLayout
     isHandset$: Observable<boolean> = this.media.asObservable().pipe(
         map(
-          () =>
-            this.media.isActive('xs') ||
-            this.media.isActive('sm') ||
-            this.media.isActive('lt-md')
+            () =>
+                this.media.isActive('xs') ||
+                this.media.isActive('sm') ||
+                this.media.isActive('lt-md')
         ),
-        tap(() => this.changeDetectorRef.detectChanges()));
+        tap(() => this.cdRef.detectChanges()));
 
     constructor(private loadingService: LoadingService,
                 private cdRef: ChangeDetectorRef,
-                private media: MediaObserver,
-                private changeDetectorRef: ChangeDetectorRef,
-                private router: Router) {
+                private media: MediaObserver) {
         loadingService
             .onLoadingChanged
             .pipe(debounceTime(500))

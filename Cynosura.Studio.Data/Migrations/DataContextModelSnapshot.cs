@@ -14,7 +14,135 @@ namespace Cynosura.Studio.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0");
+                .HasAnnotation("ProductVersion", "3.1.9");
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.EntityChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Action")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreationUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EntityName")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("From")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("To")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreationUserId");
+
+                    b.ToTable("EntityChanges");
+                });
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("Content")
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreationUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ModificationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ModificationUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Url")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreationUserId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("ModificationUserId");
+
+                    b.ToTable("Files");
+                });
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.FileGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Accept")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(1000);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CreationUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("ModificationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ModificationUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreationUserId");
+
+                    b.HasIndex("ModificationUserId");
+
+                    b.ToTable("FileGroups");
+                });
 
             modelBuilder.Entity("Cynosura.Studio.Core.Entities.Role", b =>
                 {
@@ -24,6 +152,17 @@ namespace Cynosura.Studio.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("ModificationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -93,6 +232,9 @@ namespace Cynosura.Studio.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
@@ -100,10 +242,21 @@ namespace Cynosura.Studio.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(200);
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModificationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -273,12 +426,10 @@ namespace Cynosura.Studio.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("TEXT");
@@ -314,12 +465,10 @@ namespace Cynosura.Studio.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
@@ -327,6 +476,41 @@ namespace Cynosura.Studio.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.EntityChange", b =>
+                {
+                    b.HasOne("Cynosura.Studio.Core.Entities.User", "CreationUser")
+                        .WithMany()
+                        .HasForeignKey("CreationUserId");
+                });
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.File", b =>
+                {
+                    b.HasOne("Cynosura.Studio.Core.Entities.User", "CreationUser")
+                        .WithMany()
+                        .HasForeignKey("CreationUserId");
+
+                    b.HasOne("Cynosura.Studio.Core.Entities.FileGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Cynosura.Studio.Core.Entities.User", "ModificationUser")
+                        .WithMany()
+                        .HasForeignKey("ModificationUserId");
+                });
+
+            modelBuilder.Entity("Cynosura.Studio.Core.Entities.FileGroup", b =>
+                {
+                    b.HasOne("Cynosura.Studio.Core.Entities.User", "CreationUser")
+                        .WithMany()
+                        .HasForeignKey("CreationUserId");
+
+                    b.HasOne("Cynosura.Studio.Core.Entities.User", "ModificationUser")
+                        .WithMany()
+                        .HasForeignKey("ModificationUserId");
                 });
 
             modelBuilder.Entity("Cynosura.Studio.Core.Entities.Solution", b =>

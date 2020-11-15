@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Cynosura.Core.Data;
 using Cynosura.EF;
 using Cynosura.Studio.Core.Entities;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Cynosura.Studio.Data
 {
@@ -15,23 +17,26 @@ namespace Cynosura.Studio.Data
         {
             services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
             services.AddScoped<IDatabaseFactory, DatabaseFactory>();
-            services.AddBaseEntityRepositories();
+            services.AddEntityRepositories<TrackedEntity>(typeof(TrackedEntityRepository<>));
+            services.AddEntityRepositories<BaseEntity>(typeof(BaseEntityRepository<>));
+            services.AddTransient<IUserStore<User>, CustomUserStore>();
+            services.AddTransient<IRoleStore<Role>, CustomRoleStore>();
             services.AddCynosuraEF();
             return services;
         }
 
-        private static void AddBaseEntityRepositories(this IServiceCollection services)
+        private static void AddEntityRepositories<T>(this IServiceCollection services, Type entityRepository)
         {
-            var type = typeof(BaseEntity);
-            var baseEntities = type.Assembly
+            var type = typeof(T);
+            var entityTypes = type.Assembly
                 .GetTypes()
                 .Where(p => type.IsAssignableFrom(p) && p.IsClass)
                 .ToList();
-            foreach (var baseEntity in baseEntities)
+            foreach (var entityType in entityTypes)
             {
-                var baseEntityRepositoryType = typeof(BaseEntityRepository<>).MakeGenericType(baseEntity);
-                var entityRepositoryInterface = typeof(IEntityRepository<>).MakeGenericType(baseEntity);
-                services.AddScoped(entityRepositoryInterface, baseEntityRepositoryType);
+                var entityRepositoryType = entityRepository.MakeGenericType(entityType);
+                var entityRepositoryInterface = typeof(IEntityRepository<>).MakeGenericType(entityType);
+                services.TryAddScoped(entityRepositoryInterface, entityRepositoryType);
             }
         }
     }

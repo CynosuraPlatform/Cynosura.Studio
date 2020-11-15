@@ -1,4 +1,4 @@
-
+import { EnumFilter } from './enum-filter.model';
 import { EnumValue } from '../enum-value-core/enum-value.model';
 
 export class Enum {
@@ -12,4 +12,10 @@ export class Enum {
         this.values = new Array<EnumValue>();
         this.properties = {};
     }
+}
+
+export class EnumListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new EnumFilter();
 }

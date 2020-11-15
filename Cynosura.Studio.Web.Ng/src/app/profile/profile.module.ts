@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ProfileCommonModule } from './profile-common.module';
 
-import { ProfileEditComponent } from './edit.component';
+import { ProfileEditComponent } from './profile-edit.component';
 
 
 @NgModule({

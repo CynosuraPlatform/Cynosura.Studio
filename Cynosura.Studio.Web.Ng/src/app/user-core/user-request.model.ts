@@ -13,11 +13,20 @@ export class GetUser {
     id: number;
 }
 
+export class ExportUsers {
+    filter?: UserFilter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class UpdateUser {
     id: number;
+    email: string;
     password?: string;
     confirmPassword?: string;
     roleIds: number[];
+    firstName: string;
+    lastName: string;
 }
 
 export class CreateUser {
@@ -25,6 +34,8 @@ export class CreateUser {
     password?: string;
     confirmPassword?: string;
     roleIds: number[];
+    firstName: string;
+    lastName: string;
 }
 
 export class DeleteUser {

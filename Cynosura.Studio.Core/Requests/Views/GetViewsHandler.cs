@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Views.Models;
 using Cynosura.Studio.Generator;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Core.Requests.Views
 {

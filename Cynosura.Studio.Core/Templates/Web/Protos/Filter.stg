@@ -8,7 +8,7 @@ import "google/protobuf/duration.proto";
 import "Protos/common.proto";
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
 
-option csharp_namespace = "Cynosura.Studio.Web.Protos.$model.Entity.PluralName$";
+option csharp_namespace = "$model.Solution.Namespace$.Web.Protos.$model.Entity.PluralName$";
 
 message $model.Entity.Name$Filter {
 $model.Entity.AllFields:field(); separator="\n"$

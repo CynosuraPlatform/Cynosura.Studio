@@ -1,15 +1,16 @@
-<h1 mat-dialog-title>Field <app-field-show [value]="field"></app-field-show></h1>
-<mat-dialog-content *ngIf="field" class="mat-dialog-content-edit">
-    <div>
+<ng-container *transloco="let t">
+    <h1 mat-dialog-title>{{ t('Field') }} <app-field-show [value]="field"></app-field-show></h1>
+    <mat-dialog-content *ngIf="field" class="mat-dialog-content-edit">
+
         <form [formGroup]="fieldForm">
             <mat-form-field>
-                <mat-label>Name</mat-label>
-                <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
+                <mat-label>{{ t('Name') }}</mat-label>
+                <app-text-edit formControlName="name" name="name" [placeholder]="t('Name')"></app-text-edit>
                 <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Display Name</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" placeholder="Display Name"></app-text-edit>
+                <mat-label>{{ t('Display Name') }}</mat-label>
+                <app-text-edit formControlName="displayName" name="displayName" [placeholder]="t('Display Name')"></app-text-edit>
                 <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -21,25 +22,25 @@
                 <mat-error>{{ error?.modelState?.size | modelError }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Size</mat-label>
-                <app-number-edit formControlName="size" name="size" placeholder="Size"></app-number-edit>
+                <mat-label>{{ t('Size') }}</mat-label>
+                <app-number-edit formControlName="size" name="size" [placeholder]="t('Size')"></app-number-edit>
                 <mat-error>{{ error?.modelState?.size | modelError }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Entity</mat-label>
-                <app-entity-select formControlName="entityId" [solutionId]="solutionId" name="entityId" placeholder="Entity"></app-entity-select>
+                <mat-label>{{ t('Entity') }}</mat-label>
+                <app-entity-select formControlName="entityId" [solutionId]="solutionId" name="entityId" [placeholder]="t('Entity')"></app-entity-select>
                 <mat-error>{{ error?.modelState?.entityId | modelError }}</mat-error>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Enum</mat-label>
-                <app-enum-select formControlName="enumId" [solutionId]="solutionId" name="enumId" placeholder="Enum"></app-enum-select>
+                <mat-label>{{ t('Enum') }}</mat-label>
+                <app-enum-select formControlName="enumId" [solutionId]="solutionId" name="enumId" [placeholder]="t('Enum')"></app-enum-select>
                 <mat-error>{{ error?.modelState?.enumId | modelError }}</mat-error>
             </mat-form-field>
             <div>
-                <app-bool-edit formControlName="isRequired" name="isRequired" label="Required"></app-bool-edit>
+                <app-bool-edit formControlName="isRequired" name="isRequired" [label]="t('Required')"></app-bool-edit>
             </div>
             <div>
-                <app-bool-edit formControlName="isSystem" name="isSystem" label="System"></app-bool-edit>
+                <app-bool-edit formControlName="isSystem" name="isSystem" [label]="t('System')"></app-bool-edit>
             </div>
             <div>
                 <label for="properties">Properties</label>
@@ -48,9 +49,10 @@
                 </div>
             </div>
         </form>
-    </div>
-</mat-dialog-content>
-<mat-dialog-actions class="mat-dialog-actions-edit">
-    <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
-</mat-dialog-actions>
+
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions-edit">
+        <button mat-raised-button mat-dialog-close>{{ t('shared.cancel') }}</button>
+        <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>{{ t('shared.save') }}</button>
+    </mat-dialog-actions>
+</ng-container>

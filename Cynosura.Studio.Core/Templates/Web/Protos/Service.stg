@@ -10,7 +10,7 @@ import "Protos/$model.Entity.PluralName$/$model.Entity.NameLower$Model.proto";
 import "Protos/$model.Entity.PluralName$/$model.Entity.NameLower$Filter.proto";
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
 
-option csharp_namespace = "Cynosura.Studio.Web.Protos.$model.Entity.PluralName$";
+option csharp_namespace = "$model.Solution.Namespace$.Web.Protos.$model.Entity.PluralName$";
 
 service $model.Entity.Name$Service {
     rpc Get$model.Entity.PluralName$(Get$model.Entity.PluralName$Request) returns ($model.Entity.Name$PageModel);

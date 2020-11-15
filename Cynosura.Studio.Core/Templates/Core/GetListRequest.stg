@@ -1,8 +1,8 @@
 main(model) ::= <<
+using MediatR;
 using Cynosura.Core.Services.Models;
 using $model.Solution.Namespace$.Core.Infrastructure;
 using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
-using MediatR;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {

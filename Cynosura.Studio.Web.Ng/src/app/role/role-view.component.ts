@@ -1,6 +1,8 @@
-import { Component,  OnInit } from '@angular/core';
+﻿import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+
+import { ConvertStringTo } from '../core/converter.helper';
 
 import { Role } from '../role-core/role.model';
 import { RoleService } from '../role-core/role.service';
@@ -22,7 +24,7 @@ export class RoleViewComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            this.id = +params.id;
+            this.id = ConvertStringTo.number(params.id);
             this.getRole();
         });
     }
@@ -41,5 +43,4 @@ export class RoleViewComponent implements OnInit {
     onBack(): void {
         window.history.back();
     }
-
 }

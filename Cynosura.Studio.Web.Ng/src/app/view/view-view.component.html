@@ -1,18 +1,20 @@
-<mat-card *ngIf="view" class="mat-card-view">
+<mat-card class="mat-card-view" *transloco="let t">
 
     <mat-card-header>
-        <mat-card-title>View <app-view-show [value]="view"></app-view-show></mat-card-title>
+        <mat-card-title>{{ t('View') }} <app-view-show [value]="view"></app-view-show></mat-card-title>
     </mat-card-header>
 
     <mat-card-actions>
-        <button mat-raised-button color="primary" type="button" (click)="onEdit()">Edit</button>
-        <button mat-raised-button type="button" (click)="onBack()">Back</button>
+        <button mat-raised-button color="primary" type="button" (click)="onEdit()">{{ t('shared.edit') }}</button>
+        <button mat-raised-button type="button" (click)="onBack()">{{ t('shared.back') }}</button>
     </mat-card-actions>
 
-    <div class="field-view">
-        <label>Name</label>
-        <div>
-            <app-text-view [value]="view.name"></app-text-view>
+    <div *ngIf="view">
+        <div class="field-view">
+            <label>{{ t('Name') }}</label>
+            <div>
+                <app-text-view [value]="view.name"></app-text-view>
+            </div>
         </div>
     </div>
 

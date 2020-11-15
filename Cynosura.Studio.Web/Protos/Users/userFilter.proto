@@ -3,6 +3,16 @@ syntax = "proto3";
 option csharp_namespace = "Cynosura.Studio.Web.Protos.Users";
 
 message UserFilter {
-    string userName = 1;
-    string email = 2;
+    oneof userNameOneOf {
+        string userName = 10;
+    }
+    oneof emailOneOf {
+        string email = 20;
+    }
+    oneof firstNameOneOf {
+        string firstName = 50;
+    }
+    oneof lastNameOneOf {
+        string lastName = 60;
+    }
 }

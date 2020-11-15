@@ -1,6 +1,6 @@
 ﻿using System;
-using Cynosura.Studio.Core.Requests.Enums.Models;
 using MediatR;
+using Cynosura.Studio.Core.Requests.Enums.Models;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {

@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Cynosura.Studio.Web.Protos.FileGroupType";
+
+enum FileGroupType {
+    Database = 0;
+    Storage = 1;
+}

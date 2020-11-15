@@ -9,9 +9,9 @@ namespace Cynosura.Studio.Core.Requests.Views
     public class UpdateView : IRequest
     {
         public int SolutionId { get; set; }
+
         public Guid Id { get; set; }
 
-        [DisplayName("Name")]
         public string Name { get; set; }
     }
 }

@@ -3,12 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Cynosura.Core.Data;
-using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Requests.Solutions.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Cynosura.Core.Data;
+using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Requests.Solutions.Models;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {

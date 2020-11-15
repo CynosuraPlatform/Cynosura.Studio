@@ -1,9 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Cynosura.Studio.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
+using Cynosura.Core.Services;
+using Cynosura.Studio.Core.Entities;
 
 namespace Cynosura.Studio.Core.Requests.Roles
 {
@@ -11,16 +13,22 @@ namespace Cynosura.Studio.Core.Requests.Roles
     {
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public UpdateRoleHandler(RoleManager<Role> roleManager, IMapper mapper)
+        public UpdateRoleHandler(RoleManager<Role> roleManager, IMapper mapper, IStringLocalizer<SharedResource> localizer)
         {
             _roleManager = roleManager;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         public async Task<Unit> Handle(UpdateRole request, CancellationToken cancellationToken)
         {
             var role = await _roleManager.FindByIdAsync(request.Id.ToString());
+            if (role == null)
+            {
+                throw new ServiceException(_localizer["{0} {1} not found", _localizer["Role"], request.Id]);
+            }
             _mapper.Map(request, role);
             var result = await _roleManager.UpdateAsync(role);
             result.CheckIfSucceeded();

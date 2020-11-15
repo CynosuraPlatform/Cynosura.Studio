@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Solutions;
 using Cynosura.Studio.Core.Requests.Solutions.Models;
 using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +34,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<SolutionModel> GetSolutionAsync([FromBody] GetSolution getSolution)
         {
             return await _mediator.Send(getSolution);
+        }
+
+        [HttpPost("ExportSolutions")]
+        public async Task<FileResult> ExportSolutionsAsync([FromBody] ExportSolutions exportSolutions)
+        {
+            var file = await _mediator.Send(exportSolutions);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [HttpPost("UpdateSolution")]

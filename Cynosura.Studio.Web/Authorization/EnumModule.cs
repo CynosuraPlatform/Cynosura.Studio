@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Cynosura.Web.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Cynosura.Web.Authorization;
 
 namespace Cynosura.Studio.Web.Authorization
 {

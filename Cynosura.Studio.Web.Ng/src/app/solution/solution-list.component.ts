@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -9,17 +9,10 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { Solution } from '../solution-core/solution.model';
-import { SolutionFilter } from '../solution-core/solution-filter.model';
+import { Solution, SolutionListState } from '../solution-core/solution.model';
 import { SolutionService } from '../solution-core/solution.service';
 import { SolutionEditComponent } from './solution-edit.component';
 import { SolutionOpenComponent } from './solution-open.component';
-
-class SolutionListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new SolutionFilter();
-}
 
 @Component({
     selector: 'app-solution-list',
@@ -28,7 +21,6 @@ class SolutionListState {
 })
 export class SolutionListComponent implements OnInit {
     content: Page<Solution>;
-    state: SolutionListState;
     pageSizeOptions = [10, 20];
     columns = [
         'name',
@@ -38,14 +30,18 @@ export class SolutionListComponent implements OnInit {
         'action'
     ];
 
+    @Input()
+    state: SolutionListState;
+
+    @Input()
+    baseRoute = '/solution';
+
     constructor(
+        private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private solutionService: SolutionService,
-        private storeService: StoreService,
-        private dialog: MatDialog,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get('solutionListState', new SolutionListState());
     }
 
     ngOnInit() {
@@ -70,9 +66,16 @@ export class SolutionListComponent implements OnInit {
     }
 
     onCreate() {
-        SolutionEditComponent.show(this.dialog, 0).subscribe(() => {
+        SolutionEditComponent.show(this.dialog, null).subscribe(() => {
             this.getSolutions();
         });
+    }
+
+    onExport(): void {
+        this.solutionService.exportSolutions({ filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
     }
 
     onEdit(id: number) {

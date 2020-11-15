@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from '../core/core.module';
+import { TranslocoRootModule } from '../transloco-root.module';
 
 import { ProfileService } from './profile.service';
-import { ProfileEditComponent } from './edit.component';
+import { ProfileEditComponent } from './profile-edit.component';
 
 @NgModule({
     declarations: [
@@ -12,6 +13,7 @@ import { ProfileEditComponent } from './edit.component';
     ],
     imports: [
         CoreModule,
+        TranslocoRootModule,
         RouterModule,
     ],
     providers: [

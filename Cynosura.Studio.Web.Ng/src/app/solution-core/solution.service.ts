@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ConfigService } from '../config/config.service';
 import { CreatedEntity } from '../core/models/created-entity.model';
 import { Page } from '../core/page.model';
+import { FileResult } from '../core/file-result.model';
 
 import { Solution } from './solution.model';
-import { GetSolutions, GetSolution, UpdateSolution, CreateSolution, DeleteSolution,
-         GenerateSolution, UpgradeSolution } from './solution-request.model';
+import { GetSolutions, GetSolution, ExportSolutions,
+    UpdateSolution, CreateSolution, DeleteSolution, GenerateSolution, UpgradeSolution } from './solution-request.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SolutionService {
     private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
@@ -24,6 +26,14 @@ export class SolutionService {
     getSolution(getSolution: GetSolution): Observable<Solution> {
         const url = `${this.apiUrl}/GetSolution`;
         return this.httpClient.post<Solution>(url, getSolution);
+    }
+
+    exportSolutions(exportSolutions: ExportSolutions): Observable<FileResult> {
+        const url = `${this.apiUrl}/ExportSolutions`;
+        return this.httpClient.post(url, exportSolutions, {
+            responseType: 'blob' as 'json',
+            observe: 'response',
+        }).pipe(map((response => new FileResult(response))));
     }
 
     updateSolution(updateSolution: UpdateSolution): Observable<{}> {

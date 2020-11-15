@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Cynosura.Core.Services;
 using Microsoft.AspNetCore.Identity;
+using Cynosura.Core.Services;
 
 namespace Cynosura.Studio.Core.Requests
 {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cynosura.Studio.Core.Security;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Cynosura.Studio.Core.Security;
 
 namespace Cynosura.Studio.Web.Infrastructure
 {

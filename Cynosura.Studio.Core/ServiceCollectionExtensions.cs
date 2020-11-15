@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Cynosura.Studio.Core.Infrastructure;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Cynosura.Studio.Core.FileStorage;
+using Cynosura.Studio.Core.Infrastructure;
 
 namespace Cynosura.Studio.Core
 {
@@ -27,6 +28,7 @@ namespace Cynosura.Studio.Core
 
             services.AddTransient<ITemplateProvider, TemplateJsonProvider>();
 
+            services.Configure<FileSystemStorageSettings>(configuration.GetSection("FileSystemStorage"));
             return services;
         }
 

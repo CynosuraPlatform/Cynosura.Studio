@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Error } from '../core/error.model';
 

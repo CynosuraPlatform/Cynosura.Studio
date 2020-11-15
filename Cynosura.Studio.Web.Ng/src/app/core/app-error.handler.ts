@@ -1,5 +1,6 @@
-import { ErrorHandler } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 
+@Injectable()
 export class AppErrorHandler implements ErrorHandler {
     handleError(error) {
         if (error.message) {

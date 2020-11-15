@@ -20,6 +20,14 @@ namespace Cynosura.Studio.Core.Requests.Users
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.Email)
                         : queryable.OrderBy(e => e.Email);
+                case "FirstName":
+                    return direction == OrderDirection.Descending
+                        ? queryable.OrderByDescending(e => e.FirstName)
+                        : queryable.OrderBy(e => e.FirstName);
+                case "LastName":
+                    return direction == OrderDirection.Descending
+                        ? queryable.OrderByDescending(e => e.LastName)
+                        : queryable.OrderBy(e => e.LastName);
                 case "":
                 case null:
                     return queryable.OrderBy(e => e.Id);
@@ -32,7 +40,7 @@ namespace Cynosura.Studio.Core.Requests.Users
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.UserName.Contains(filter.Text) || e.Email.Contains(filter.Text));
+                queryable = queryable.Where(e => e.UserName.Contains(filter.Text) || e.Email.Contains(filter.Text) || e.FirstName.Contains(filter.Text) || e.LastName.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.UserName))
             {
@@ -41,6 +49,14 @@ namespace Cynosura.Studio.Core.Requests.Users
             if (!string.IsNullOrEmpty(filter?.Email))
             {
                 queryable = queryable.Where(e => e.Email.Contains(filter.Email));
+            }
+            if (!string.IsNullOrEmpty(filter?.FirstName))
+            {
+                queryable = queryable.Where(e => e.FirstName.Contains(filter.FirstName));
+            }
+            if (!string.IsNullOrEmpty(filter?.LastName))
+            {
+                queryable = queryable.Where(e => e.LastName.Contains(filter.LastName));
             }
             return queryable;
         }

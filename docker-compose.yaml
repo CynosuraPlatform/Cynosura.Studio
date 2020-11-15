@@ -1,10 +1,10 @@
-version: '2.2'
+version: '3'
 services:
   web:
     build:
       context: .
       dockerfile: Cynosura.Studio.Web/Dockerfile
-    links:
+    depends_on:
       - db
   webng:
     build:
@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: Cynosura.Studio.Worker/Dockerfile
-    links:
+    depends_on:
       - db
   db:
     image: 'mcr.microsoft.com/mssql/server:2017-latest-ubuntu'

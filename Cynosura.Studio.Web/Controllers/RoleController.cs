@@ -1,13 +1,13 @@
+﻿using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Requests.Roles;
-using Cynosura.Studio.Core.Requests.Roles.Models;
-using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Core.Requests.Roles;
+using Cynosura.Studio.Core.Requests.Roles.Models;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +34,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<RoleModel> GetRoleAsync([FromBody] GetRole getRole)
         {
             return await _mediator.Send(getRole);
+        }
+
+        [HttpPost("ExportRoles")]
+        public async Task<FileResult> ExportRolesAsync([FromBody] ExportRoles exportRoles)
+        {
+            var file = await _mediator.Send(exportRoles);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [Authorize("WriteRole")]

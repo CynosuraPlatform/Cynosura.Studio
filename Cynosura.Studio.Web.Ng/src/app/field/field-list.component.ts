@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { Guid } from '../core/guid';
@@ -66,7 +68,7 @@ export class FieldListComponent implements OnInit {
             if (result) {
                 this.fieldSave(result);
             }
-        });
+       });
     }
 
     fieldSave(field: Field): void {
@@ -83,7 +85,7 @@ export class FieldListComponent implements OnInit {
         this.dataSource.data = this.fields;
     }
 
-    delete(id: string): void {
+    onDelete(id: string): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {
                 const foundField = this.findField(id);

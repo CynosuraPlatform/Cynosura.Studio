@@ -1,13 +1,13 @@
+﻿using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Requests.Users;
-using Cynosura.Studio.Core.Requests.Users.Models;
-using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Core.Requests.Users;
+using Cynosura.Studio.Core.Requests.Users.Models;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +34,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<UserModel> GetUserAsync([FromBody] GetUser getUser)
         {
             return await _mediator.Send(getUser);
+        }
+
+        [HttpPost("ExportUsers")]
+        public async Task<FileResult> ExportUsersAsync([FromBody] ExportUsers exportUsers)
+        {
+            var file = await _mediator.Send(exportUsers);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [Authorize("WriteUser")]

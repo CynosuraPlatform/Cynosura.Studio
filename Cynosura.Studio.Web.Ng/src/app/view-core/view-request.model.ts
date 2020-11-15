@@ -15,6 +15,13 @@ export class GetView {
     id: string;
 }
 
+export class ExportViews {
+    solutionId: number;
+    filter?: ViewFilter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class UpdateView {
     solutionId: number;
     id: string;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -9,16 +9,9 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { Enum } from '../enum-core/enum.model';
-import { EnumFilter } from '../enum-core/enum-filter.model';
+import { Enum, EnumListState } from '../enum-core/enum.model';
 import { EnumService } from '../enum-core/enum.service';
 import { EnumEditComponent } from './enum-edit.component';
-
-class EnumListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new EnumFilter();
-}
 
 @Component({
     selector: 'app-enum-list',
@@ -27,7 +20,6 @@ class EnumListState {
 })
 export class EnumListComponent implements OnInit {
     content: Page<Enum>;
-    state: EnumListState;
     pageSizeOptions = [10, 20];
     columns = [
         'name',
@@ -47,6 +39,12 @@ export class EnumListComponent implements OnInit {
         this.getEnums();
     }
 
+    @Input()
+    state: EnumListState;
+
+    @Input()
+    baseRoute = '/enum';
+
     constructor(
         private dialog: MatDialog,
         private modalHelper: ModalHelper,
@@ -54,7 +52,6 @@ export class EnumListComponent implements OnInit {
         private storeService: StoreService,
         private noticeHelper: NoticeHelper
         ) {
-            this.state = this.storeService.get('enumListState', new EnumListState());
     }
 
     ngOnInit(): void {
@@ -84,9 +81,16 @@ export class EnumListComponent implements OnInit {
     }
 
     onCreate() {
-        EnumEditComponent.show(this.dialog, this.solutionId, '').subscribe(() => {
+        EnumEditComponent.show(this.dialog, this.solutionId, null).subscribe(() => {
             this.getEnums();
         });
+    }
+
+    onExport(): void {
+        this.enumService.exportEnums({ filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
     }
 
     onEdit(id: string) {

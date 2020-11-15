@@ -2,15 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Web.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
 
 namespace Cynosura.Studio.Web.Infrastructure
 {
     public class ValidationExceptionHandler : IExceptionHandler
     {
-        public Type ExceptionType => typeof(ValidationException);
+        public int Priority => 0;
+
+        public bool CanHandleException(Exception exception)
+        {
+            return exception is ValidationException;
+        }
 
         public ObjectResult HandleException(Exception exception)
         {

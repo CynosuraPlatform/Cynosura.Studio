@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Requests.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Requests.Users.Models;
 
 namespace Cynosura.Studio.Core.Requests.Users
 {

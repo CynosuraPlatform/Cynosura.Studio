@@ -10,6 +10,13 @@ namespace Cynosura.Studio.Web.Infrastructure
 {
     public class StudioExceptionHandler: IExceptionHandler
     {
+        public int Priority => 0;
+
+        public bool CanHandleException(Exception exception)
+        {
+            return exception is StudioException;
+        }
+
         public ObjectResult HandleException(StudioException exception)
         {
             return new BadRequestObjectResult(new
@@ -25,7 +32,5 @@ namespace Cynosura.Studio.Web.Infrastructure
         {
             return HandleException((StudioException) exception);
         }
-
-        public Type ExceptionType { get; } = typeof(StudioException);
     }
 }

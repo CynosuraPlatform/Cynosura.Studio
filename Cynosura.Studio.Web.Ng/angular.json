@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Cynosura.Studio.Web": {
+    "web-ng-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -29,6 +30,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -50,19 +57,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Cynosura.Studio.Web:build",
+            "browserTarget": "web-ng-app:build",
             "port": 4300
           },
           "configurations": {
             "production": {
-              "browserTarget": "Cynosura.Studio.Web:build:production"
+              "browserTarget": "web-ng-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Cynosura.Studio.Web:build"
+            "browserTarget": "web-ng-app:build"
           }
         },
         "test": {
@@ -95,7 +102,7 @@
         }
       }
     },
-    "Cynosura.Studio.Web-e2e": {
+    "web-ng-app-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -104,7 +111,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "Cynosura.Studio.Web:serve"
+            "devServerTarget": "web-ng-app:serve"
           }
         },
         "lint": {
@@ -121,11 +128,11 @@
       }
     }
   },
-  "defaultProject": "Cynosura.Studio.Web",
+  "defaultProject": "web-ng-app",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "scss"
+      "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

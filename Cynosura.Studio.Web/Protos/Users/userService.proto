@@ -15,10 +15,18 @@ service UserService {
 }
 
 message CreateUserRequest {
-    string email = 1;
-    string password = 2;
-    string confirmPassword = 3;
-    repeated int32 roleIds = 4;
+    oneof emailOneOf {
+        string email = 2;
+    }
+    string password = 52;
+    string confirmPassword = 53;
+    repeated int32 roleIds = 51;
+    oneof firstNameOneOf {
+        string firstName = 5;
+    }
+    oneof lastNameOneOf {
+        string lastName = 6;
+    }
 }
 
 message DeleteUserRequest {
@@ -44,8 +52,14 @@ message GetUsersRequest {
 }
 
 message UpdateUserRequest {
-    int32 id = 1;
-    string password = 2;
-    string confirmPassword = 3;
-    repeated int32 roleIds = 4;
+    int32 id = 50;
+    string password = 52;
+    string confirmPassword = 53;
+    repeated int32 roleIds = 51;
+    oneof firstNameOneOf {
+        string firstName = 5;
+    }
+    oneof lastNameOneOf {
+        string lastName = 6;
+    }
 }

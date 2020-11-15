@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -9,16 +9,9 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { Role } from '../role-core/role.model';
-import { RoleFilter } from '../role-core/role-filter.model';
+import { Role, RoleListState } from '../role-core/role.model';
 import { RoleService } from '../role-core/role.service';
 import { RoleEditComponent } from './role-edit.component';
-
-class RoleListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new RoleFilter();
-}
 
 @Component({
     selector: 'app-role-list',
@@ -27,21 +20,25 @@ class RoleListState {
 })
 export class RoleListComponent implements OnInit {
     content: Page<Role>;
-    state: RoleListState;
     pageSizeOptions = [10, 20];
     columns = [
         'name',
+        'displayName',
         'action'
     ];
+
+    @Input()
+    state: RoleListState = new RoleListState();
+
+    @Input()
+    baseRoute = '/role';
 
     constructor(
         private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private roleService: RoleService,
-        private storeService: StoreService,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get('roleListState', new RoleListState());
     }
 
     ngOnInit() {
@@ -60,15 +57,22 @@ export class RoleListComponent implements OnInit {
         this.getRoles();
     }
 
-    onReset(): void {
+    onReset() {
         this.state.filter.text = null;
         this.getRoles();
     }
 
-    onCreate(): void {
-        RoleEditComponent.show(this.dialog, 0).subscribe(() => {
+    onCreate() {
+        RoleEditComponent.show(this.dialog, null).subscribe(() => {
             this.getRoles();
         });
+    }
+
+    onExport(): void {
+        this.roleService.exportRoles({ filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
     }
 
     onEdit(id: number) {
@@ -77,7 +81,7 @@ export class RoleListComponent implements OnInit {
         });
     }
 
-    onDelete(id: number): void {
+    onDelete(id: number) {
         this.modalHelper.confirmDelete()
             .pipe(
                 mergeMap(() => this.roleService.deleteRole({ id }))

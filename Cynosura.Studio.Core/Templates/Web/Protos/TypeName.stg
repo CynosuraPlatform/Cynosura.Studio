@@ -41,3 +41,7 @@ google.protobuf.Duration
 typeNameGuid(field) ::= <<
 string
 >>
+
+typeNameBlob(field) ::= <<
+bytes
+>>

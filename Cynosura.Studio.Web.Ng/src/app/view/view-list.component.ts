@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -9,16 +9,9 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { View } from '../view-core/view.model';
-import { ViewFilter } from '../view-core/view-filter.model';
+import { View, ViewListState } from '../view-core/view.model';
 import { ViewService } from '../view-core/view.service';
 import { ViewEditComponent } from './view-edit.component';
-
-class ViewListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new ViewFilter();
-}
 
 @Component({
     selector: 'app-view-list',
@@ -27,7 +20,6 @@ class ViewListState {
 })
 export class ViewListComponent implements OnInit {
     content: Page<View>;
-    state: ViewListState;
     pageSizeOptions = [10, 20];
     columns = [
         'name',
@@ -46,6 +38,12 @@ export class ViewListComponent implements OnInit {
         this.getViews();
     }
 
+    @Input()
+    state: ViewListState;
+
+    @Input()
+    baseRoute = '/view';
+
     constructor(
         private dialog: MatDialog,
         private modalHelper: ModalHelper,
@@ -53,7 +51,6 @@ export class ViewListComponent implements OnInit {
         private storeService: StoreService,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get('viewListState', new ViewListState());
     }
 
     ngOnInit() {
@@ -83,9 +80,16 @@ export class ViewListComponent implements OnInit {
     }
 
     onCreate() {
-        ViewEditComponent.show(this.dialog, this.solutionId, '').subscribe(() => {
+        ViewEditComponent.show(this.dialog, this.solutionId, null).subscribe(() => {
             this.getViews();
         });
+    }
+
+    onExport(): void {
+        this.viewService.exportViews({ solutionId: this.solutionId, filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
     }
 
     onEdit(id: string) {

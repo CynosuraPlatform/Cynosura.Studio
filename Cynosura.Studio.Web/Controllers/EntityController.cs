@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Requests.Entities;
-using Cynosura.Studio.Core.Requests.Entities.Models;
-using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Core.Requests.Entities;
+using Cynosura.Studio.Core.Requests.Entities.Models;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +33,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<EntityModel> GetEntityAsync([FromBody] GetEntity getEntity)
         {
             return await _mediator.Send(getEntity);
+        }
+
+        [HttpPost("ExportEntities")]
+        public async Task<FileResult> ExportEntitiesAsync([FromBody] ExportEntities exportEntities)
+        {
+            var file = await _mediator.Send(exportEntities);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [HttpPost("UpdateEntity")]

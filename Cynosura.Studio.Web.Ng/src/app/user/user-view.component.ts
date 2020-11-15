@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
+import { ConvertStringTo } from '../core/converter.helper';
+
 import { User } from '../user-core/user.model';
 import { UserService } from '../user-core/user.service';
 import { Role } from '../role-core/role.model';
@@ -27,7 +29,7 @@ export class UserViewComponent implements OnInit {
      ngOnInit() {
         this.roleService.getRoles({}).subscribe(roles => this.roles = roles.pageItems);
         this.route.params.forEach((params: Params) => {
-            this.id = +params.id;
+            this.id = ConvertStringTo.number(params.id);
             this.getUser();
         });
     }

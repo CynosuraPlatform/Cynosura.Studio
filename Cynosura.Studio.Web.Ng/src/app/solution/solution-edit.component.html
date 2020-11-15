@@ -1,31 +1,33 @@
-<h1 mat-dialog-title>Solution <app-solution-show [value]="solution"></app-solution-show></h1>
-<mat-dialog-content *ngIf="solution" class="mat-dialog-content-edit">
+<ng-container *transloco="let t">
+    <h1 mat-dialog-title>{{ t('Solution') }} <app-solution-show [value]="solution"></app-solution-show></h1>
+    <mat-dialog-content *ngIf="solution" class="mat-dialog-content-edit">
 
-    <form [formGroup]="solutionForm">
-        <mat-form-field>
-            <mat-label>Name</mat-label>        
-            <app-text-edit formControlName="name" name="name" placeholder="Name"></app-text-edit>
-            <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Path</mat-label>
-            <app-text-edit formControlName="path" name="path" placeholder="Path"></app-text-edit>
-            <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Template Name</mat-label>
-            <app-template-select formControlName="templateName" name="templateName" placeholder="Template Name"></app-template-select>
-            <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Template Version</mat-label>
-            <app-template-version-select formControlName="templateVersion" name="templateVersion" [templateName]="solutionForm.controls.templateName.value" placeholder="Template Version"></app-template-version-select>
-            <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
-        </mat-form-field>
-    </form>
+        <form [formGroup]="solutionForm">
+            <mat-form-field>
+                <mat-label>{{ t('Name') }}</mat-label>
+                <app-text-edit formControlName="name" name="name" [placeholder]="t('Name')"></app-text-edit>
+                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>{{ t('Path') }}</mat-label>
+                <app-text-edit formControlName="path" name="path" [placeholder]="t('Path')"></app-text-edit>
+                <mat-error>{{ error?.modelState?.path | modelError }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>{{ t('Template Name') }}</mat-label>
+                <app-template-select formControlName="templateName" name="templateName" [placeholder]="t('Template Name')"></app-template-select>
+                <mat-error>{{ error?.modelState?.templateName | modelError }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>{{ t('Template Version') }}</mat-label>
+                <app-template-version-select formControlName="templateVersion" name="templateVersion" [templateName]="solutionForm.controls.templateName.value" [placeholder]="t('Template Version')"></app-template-version-select>
+                <mat-error>{{ error?.modelState?.templateVersion | modelError }}</mat-error>
+            </mat-form-field>
+        </form>
 
-</mat-dialog-content>
-<mat-dialog-actions class="mat-dialog-actions-edit">
-    <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
-</mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions-edit">
+        <button mat-raised-button mat-dialog-close>{{ t('shared.cancel') }}</button>
+        <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>{{ t('shared.save') }}</button>
+    </mat-dialog-actions>
+</ng-container>

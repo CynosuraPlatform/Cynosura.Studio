@@ -1,5 +1,6 @@
-using Cynosura.Studio.Core.Requests.Roles.Models;
+﻿using System;
 using MediatR;
+using Cynosura.Studio.Core.Requests.Roles.Models;
 
 namespace Cynosura.Studio.Core.Requests.Roles
 {

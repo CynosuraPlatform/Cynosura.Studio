@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Requests.Views;
-using Cynosura.Studio.Core.Requests.Views.Models;
-using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Core.Requests.Views;
+using Cynosura.Studio.Core.Requests.Views.Models;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +33,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<ViewModel> GetViewAsync([FromBody] GetView getView)
         {
             return await _mediator.Send(getView);
+        }
+
+        [HttpPost("ExportViews")]
+        public async Task<FileResult> ExportViewsAsync([FromBody] ExportViews exportViews)
+        {
+            var file = await _mediator.Send(exportViews);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [HttpPost("UpdateView")]

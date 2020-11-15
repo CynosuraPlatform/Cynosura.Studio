@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Requests.Profile;
 using Cynosura.Studio.Core.Requests.Profile.Models;
 
 namespace Cynosura.Studio.Core.AutoMapper
@@ -12,6 +13,7 @@ namespace Cynosura.Studio.Core.AutoMapper
         public ProfileProfile()
         {
             CreateMap<User, ProfileModel>();
+            CreateMap<UpdateProfile, User>();
         }
     }
 }

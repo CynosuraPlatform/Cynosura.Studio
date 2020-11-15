@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Cynosura.EF;
 using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Enums;
 using Cynosura.Studio.Core.Security;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cynosura.Studio.Data
 {
@@ -19,34 +23,55 @@ namespace Cynosura.Studio.Data
             _userInfoProvider = userInfoProvider;
 
             ((DataContext)Context).SavingChanges += OnSavingChanges;
+            ((DataContext)Context).SavedChanges += OnSavedChanges;
         }
 
-        private void OnSavingChanges(object sender, EventArgs eventArgs)
+        private void OnSavingChanges(object sender, DataContext.SaveEventArgs e)
         {
-            var entities = Context.ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Modified || e.State == EntityState.Added)
+            var entityEntries = Context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Modified || e.State == EntityState.Added || e.State == EntityState.Deleted)
                 .Where(e => e.Entity is T)
-                .Select(e => new
-                {
-                    Entity = (T)e.Entity,
-                    State = e.State
-                })
                 .ToList();
 
-            if (entities.Count > 0)
+            if (entityEntries.Count > 0)
             {
-                foreach (var entity in entities)
+                foreach (var entityEntry in entityEntries)
                 {
-                    entity.Entity.ModificationDate = DateTime.UtcNow;
-                    entity.Entity.ModificationUserId = UserId;
-
-                    if (entity.State == EntityState.Added)
+                    var entity = (T)entityEntry.Entity;
+                    if (entityEntry.State == EntityState.Added)
                     {
-                        entity.Entity.CreationDate = entity.Entity.ModificationDate;
-                        entity.Entity.CreationUserId = entity.Entity.ModificationUserId;
+                        entity.CreationDate = entity.ModificationDate = DateTime.UtcNow;
+                        entity.CreationUserId = entity.ModificationUserId = UserId;
+                        e.AddedEntities.Add(entityEntry);
+                    }
+                    else if (entityEntry.State == EntityState.Deleted)
+                    {
+                        TrackChange(entityEntry, ChangeAction.Delete);
+                    }
+                    else if (entityEntry.State == EntityState.Modified)
+                    {
+                        entity.ModificationDate = DateTime.UtcNow;
+                        entity.ModificationUserId = UserId;
+                        TrackChange(entityEntry, ChangeAction.Update);
                     }
                 }
             }
+        }
+
+        private void OnSavedChanges(object sender, DataContext.SaveEventArgs e)
+        {
+            if (e.AddedEntities.Count > 0)
+            {
+                foreach (var entry in e.AddedEntities)
+                {
+                    TrackChange(entry, ChangeAction.Add);
+                }
+            }
+        }
+
+        protected virtual void TrackChange(EntityEntry entityEntry, ChangeAction action)
+        {
+
         }
     }
 }

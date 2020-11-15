@@ -16,6 +16,12 @@ export class GetEnum {
     id: string;
 }
 
+export class ExportEnums {
+    filter?: EnumFilter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class UpdateEnum {
     solutionId: number;
     id: string;

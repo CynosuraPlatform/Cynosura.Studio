@@ -1,12 +1,18 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option csharp_namespace = "Cynosura.Studio.Web.Protos.Users";
 
 message User {
-    int32 id = 1;
-    string userName = 2;
-    string email = 3;
-    repeated int32 roleIds = 4;
+    int32 id = 50;
+    google.protobuf.Timestamp creationDate = 3;
+    google.protobuf.Timestamp modificationDate = 4;
+    string userName = 1;
+    string email = 2;
+    repeated int32 roleIds = 51;
+    string firstName = 5;
+    string lastName = 6;
 }
 
 message UserPageModel {

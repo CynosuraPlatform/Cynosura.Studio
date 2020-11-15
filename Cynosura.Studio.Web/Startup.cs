@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cynosura.Studio.Core;
-using Cynosura.Studio.Core.Entities;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Generator.PackageFeed.Models;
-using Cynosura.Studio.Generator.PackageFeed;
-using Cynosura.Studio.Data;
-using Cynosura.Studio.Infrastructure;
-using Cynosura.Studio.Web.Infrastructure;
-using Cynosura.Web;
-using Cynosura.Web.Authorization;
-using Cynosura.Web.Infrastructure;
+using System.Globalization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Cynosura.Web;
+using Cynosura.Web.Authorization;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core;
+using Cynosura.Studio.Core.Entities;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Data;
 using Cynosura.Studio.Generator;
+using Cynosura.Studio.Generator.PackageFeed;
+using Cynosura.Studio.Generator.PackageFeed.Models;
+using Cynosura.Studio.Infrastructure;
+using Cynosura.Studio.Web.Infrastructure;
 
 namespace Cynosura.Studio.Web
 {
@@ -51,6 +54,8 @@ namespace Cynosura.Studio.Web
                 configuration.RootPath = "NgApp";
             });
 
+            services.AddPortableObjectLocalization(options => options.ResourcesPath = "Localization");
+
             services.AddMvc()
                 .AddMvcOptions(o =>
                 {
@@ -61,7 +66,10 @@ namespace Cynosura.Studio.Web
                 {
                     o.JsonSerializerOptions.IgnoreNullValues = true;
                     o.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
-                });
+                })
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+            services.AddRazorPages();
 
             services.AddAuthorization(options =>
             {
@@ -93,6 +101,18 @@ namespace Cynosura.Studio.Web
                 app.UseHsts();
             }
 
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("ru-RU")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
@@ -105,7 +125,8 @@ namespace Cynosura.Studio.Web
             {
                 builder.WithOrigins(Configuration["Cors:Origin"])
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Content-Disposition");
             });
 
             app.UseAuthentication();

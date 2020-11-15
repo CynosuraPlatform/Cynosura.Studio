@@ -1,3 +1,4 @@
+﻿import { SolutionFilter } from './solution-filter.model';
 
 export class Solution {
     id: number;
@@ -9,4 +10,10 @@ export class Solution {
     path: string;
     templateName: string;
     templateVersion: string;
+}
+
+export class SolutionListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new SolutionFilter();
 }

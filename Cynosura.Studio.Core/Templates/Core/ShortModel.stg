@@ -8,7 +8,7 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Mod
     {
         public $model.Entity.IdField.TypeName$ $model.Entity.IdField.Name$ { get; set; }
 
-$model.Entity.DefaultField:field()$
+        $model.Entity.DefaultField:field()$
     }
 }
 
@@ -19,9 +19,28 @@ $field:(field.Template)()$
 >>
 
 Type(field) ::= <<
-        public $field.TypeName$ $field.Name$ { get; set; }
+public $field.TypeName$ $field.Name$ { get; set; }
+
+public override string ToString()
+{
+    return \$"{$field.Name$}";
+}
 >>
 
 Entity(field) ::= <<
-        public int $field.Name$Id { get; set; }
+public $field.EntityIdTypeName$$ $field.Name$Id { get; set; }
+
+public override string ToString()
+{
+    return \$"{$field.Name$Id}";
+}
+>>
+
+Enum(field) ::= <<
+public $field.TypeName$ $field.Name$ { get; set; }
+
+public override string ToString()
+{
+    return \$"{$field.Name$}";
+}
 >>

@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Cynosura.Core.Data;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Generator;
-using MediatR;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {

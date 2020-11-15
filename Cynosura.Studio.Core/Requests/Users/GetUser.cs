@@ -1,5 +1,6 @@
-using Cynosura.Studio.Core.Requests.Users.Models;
+﻿using System;
 using MediatR;
+using Cynosura.Studio.Core.Requests.Users.Models;
 
 namespace Cynosura.Studio.Core.Requests.Users
 {

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using Cynosura.Studio.Core.Infrastructure;
-using Cynosura.Studio.Core.Requests.Enums;
-using Cynosura.Studio.Core.Requests.Enums.Models;
-using Cynosura.Studio.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using Cynosura.Studio.Core.Infrastructure;
+using Cynosura.Studio.Core.Requests.Enums;
+using Cynosura.Studio.Core.Requests.Enums.Models;
 
 namespace Cynosura.Studio.Web.Controllers
 {
@@ -34,6 +33,13 @@ namespace Cynosura.Studio.Web.Controllers
         public async Task<EnumModel> GetEnumAsync([FromBody] GetEnum getEnum)
         {
             return await _mediator.Send(getEnum);
+        }
+
+        [HttpPost("ExportEnums")]
+        public async Task<FileResult> ExportEnumsAsync([FromBody] ExportEnums exportEnums)
+        {
+            var file = await _mediator.Send(exportEnums);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [HttpPost("UpdateEnum")]

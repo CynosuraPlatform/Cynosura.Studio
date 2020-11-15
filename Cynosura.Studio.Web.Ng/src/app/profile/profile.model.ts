@@ -1,4 +1,5 @@
 export class Profile {
     id: number;
-    email: string;
+    firstName: string;
+    lastName: string;
 }

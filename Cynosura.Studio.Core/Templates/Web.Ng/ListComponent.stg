@@ -1,5 +1,5 @@
 main(model) ::= <<
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -10,16 +10,9 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { $model.Entity.Name$ } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model';
-import { $model.Entity.Name$Filter } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$-filter.model';
+import { $model.Entity.Name$, $model.Entity.Name$ListState } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.model';
 import { $model.Entity.Name$Service } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service';
 import { $model.Entity.Name$EditComponent } from './$model.Entity.NameKebab$-edit.component';
-
-class $model.Entity.Name$ListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new $model.Entity.Name$Filter();
-}
 
 @Component({
     selector: 'app-$model.Entity.NameKebab$-list',
@@ -28,21 +21,24 @@ class $model.Entity.Name$ListState {
 })
 export class $model.Entity.Name$ListComponent implements OnInit {
     content: Page<$model.Entity.Name$>;
-    state: $model.Entity.Name$ListState;
     pageSizeOptions = [10, 20];
     columns = [
         $model.Entity.AllFields:field(); separator="\r\n"$
         'action'
     ];
 
+    @Input()
+    state: $model.Entity.Name$ListState;
+    
+    @Input()
+    baseRoute = '/$model.Entity.NameKebab$';
+
     constructor(
         private dialog: MatDialog,
         private modalHelper: ModalHelper,
         private $model.Entity.NameLower$Service: $model.Entity.Name$Service,
-        private storeService: StoreService,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get('$model.Entity.NameLower$ListState', new $model.Entity.Name$ListState());
     }
 
     ngOnInit() {
@@ -67,12 +63,19 @@ export class $model.Entity.Name$ListComponent implements OnInit {
     }
 
     onCreate() {
-        $model.Entity.Name$EditComponent.show(this.dialog, 0).subscribe(() => {
+        $model.Entity.Name$EditComponent.show(this.dialog, null).subscribe(() => {
             this.get$model.Entity.PluralName$();
         });
     }
 
-    onEdit(id: number) {
+    onExport(): void {
+        this.$model.Entity.NameLower$Service.export$model.Entity.PluralName$({ filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
+    }
+
+    onEdit($model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$) {
         $model.Entity.Name$EditComponent.show(this.dialog, id).subscribe(() => {
             this.get$model.Entity.PluralName$();
         });

@@ -3,16 +3,18 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, Route } from '@angular/router';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 import { MaterialModule } from './material.module';
 import { CoreModule } from './core/core.module';
-import { AccountModule } from './account/account.module';
 
 import { ConfigService } from './config/config.service';
 import { MenuService } from './nav-menu/menu.service';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { MatPaginatorIntlCustom } from './mat-paginator-intl';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
     declarations: [
@@ -29,38 +31,44 @@ import { HomeComponent } from './home/home.component';
 // ADD ROUTES HERE
             {
                 path: 'view',
-                canActivate: [],
-                loadChildren: () => import('./view/view.module').then(m => m.ViewModule)
+                loadChildren: () => import('./view/view-routed.module').then(m => m.ViewRoutedModule)
             },
             {
                 path: 'entity',
-                canActivate: [],
-                loadChildren: () => import('./entity/entity.module').then(m => m.EntityModule)
+                loadChildren: () => import('./entity/entity-routed.module').then(m => m.EntityRoutedModule)
             },
             {
                 path: 'enum',
-                canActivate: [],
-                loadChildren: () => import('./enum/enum.module').then(m => m.EnumModule)
+                loadChildren: () => import('./enum/enum-routed.module').then(m => m.EnumRoutedModule)
             },
             {
                 path: 'solution',
-                canActivate: [],
-                loadChildren: () => import('./solution/solution.module').then(m => m.SolutionModule)
+                loadChildren: () => import('./solution/solution-routed.module').then(m => m.SolutionRoutedModule)
+            },
+            {
+                path: 'file',
+                loadChildren: () => import('./file/file-routed.module').then(m => m.FileRoutedModule)
+            },
+            {
+                path: 'file-group',
+                loadChildren: () => import('./file-group/file-group-routed.module').then(m => m.FileGroupRoutedModule)
+            },
+            {
+                path: 'profile',
+                loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
             },
             {
                 path: 'role',
-                canActivate: [],
-                loadChildren: () => import('./role/role.module').then(m => m.RoleModule)
+                loadChildren: () => import('./role/role-routed.module').then(m => m.RoleRoutedModule)
             },
             {
                 path: 'user',
-                canActivate: [],
-                loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+                loadChildren: () => import('./user/user-routed.module').then(m => m.UserRoutedModule)
             },
         ]),
         MaterialModule,
         CoreModule,
-        AccountModule,
+        TranslocoRootModule,
     ],
     exports: [
         MaterialModule
@@ -75,7 +83,8 @@ import { HomeComponent } from './home/home.component';
             },
             multi: true,
             deps: [ConfigService]
-        }
+        },
+        { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCustom}
     ],
     bootstrap: [AppComponent]
 })

@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ConfigService } from '../config/config.service';
 import { CreatedEntity } from '../core/models/created-entity.model';
 import { Page } from '../core/page.model';
+import { FileResult } from '../core/file-result.model';
 
 import { User } from './user.model';
-import { GetUsers, GetUser, UpdateUser, CreateUser, DeleteUser } from './user-request.model';
+import { GetUsers, GetUser, ExportUsers,
+    UpdateUser, CreateUser, DeleteUser } from './user-request.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class UserService {
     private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
@@ -23,6 +26,14 @@ export class UserService {
     getUser(getUser: GetUser): Observable<User> {
         const url = `${this.apiUrl}/GetUser`;
         return this.httpClient.post<User>(url, getUser);
+    }
+
+    exportUsers(exportUsers: ExportUsers): Observable<FileResult> {
+        const url = `${this.apiUrl}/ExportUsers`;
+        return this.httpClient.post(url, exportUsers, {
+            responseType: 'blob' as 'json',
+            observe: 'response',
+        }).pipe(map((response => new FileResult(response))));
     }
 
     updateUser(updateUser: UpdateUser): Observable<{}> {

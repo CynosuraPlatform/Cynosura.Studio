@@ -1,7 +1,7 @@
 main(model) ::= <<
 syntax = "proto3";
 
-option csharp_namespace = "Cynosura.Studio.Web.Protos.$model.Enum.Name$";
+option csharp_namespace = "$model.Solution.Namespace$.Web.Protos.$model.Enum.Name$";
 
 enum $model.Enum.Name$ {
 $model.Enum.Values:enumValue(); separator="\n"$

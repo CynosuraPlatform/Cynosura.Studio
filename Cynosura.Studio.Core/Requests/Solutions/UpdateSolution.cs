@@ -10,13 +10,12 @@ namespace Cynosura.Studio.Core.Requests.Solutions
     {
         public int Id { get; set; }
 
-        [DisplayName("Name")]
         public string Name { get; set; }
-        [DisplayName("Path")]
+
         public string Path { get; set; }
-        [DisplayName("Template Name")]
+        
         public string TemplateName { get; set; }
-        [DisplayName("Template Version")]
+        
         public string TemplateVersion { get; set; }
     }
 }

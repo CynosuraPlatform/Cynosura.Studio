@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ConfigService } from '../config/config.service';
 import { CreatedEntity } from '../core/models/created-entity.model';
 import { Page } from '../core/page.model';
+import { FileResult } from '../core/file-result.model';
 
 import { Entity } from './entity.model';
-import { GetEntities, GetEntity, UpdateEntity, CreateEntity, DeleteEntity, GenerateEntity } from './entity-request.model';
+import { GetEntities, GetEntity, ExportEntities,
+    UpdateEntity, CreateEntity, DeleteEntity, GenerateEntity } from './entity-request.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EntityService {
     private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
@@ -23,6 +26,14 @@ export class EntityService {
     getEntity(getEntity: GetEntity): Observable<Entity> {
         const url = `${this.apiUrl}/GetEntity`;
         return this.httpClient.post<Entity>(url, getEntity);
+    }
+
+    exportEntities(exportEntities: ExportEntities): Observable<FileResult> {
+        const url = `${this.apiUrl}/ExportEntities`;
+        return this.httpClient.post(url, exportEntities, {
+            responseType: 'blob' as 'json',
+            observe: 'response',
+        }).pipe(map((response => new FileResult(response))));
     }
 
     updateEntity(updateEntity: UpdateEntity): Observable<{}> {

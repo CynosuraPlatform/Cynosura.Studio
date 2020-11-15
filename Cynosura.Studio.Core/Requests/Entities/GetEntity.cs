@@ -1,6 +1,6 @@
 ﻿using System;
-using Cynosura.Studio.Core.Requests.Entities.Models;
 using MediatR;
+using Cynosura.Studio.Core.Requests.Entities.Models;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {

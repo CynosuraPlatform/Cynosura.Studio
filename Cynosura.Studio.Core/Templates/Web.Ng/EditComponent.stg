@@ -13,7 +13,7 @@ import { $model.Entity.Name$ } from '../$model.Entity.NameKebab$-core/$model.Ent
 import { $model.Entity.Name$Service } from '../$model.Entity.NameKebab$-core/$model.Entity.NameKebab$.service';
 
 class DialogData {
-    id: number;
+    id: $model.Entity.IdField.JsTypeName$;
 }
 
 @Component({
@@ -38,7 +38,7 @@ $model.Entity.AllFields:field(); separator=",\n"$
         this.id = data.id;
     }
 
-    static show(dialog: MatDialog, id: number): Observable<any> {
+    static show(dialog: MatDialog, id: $model.Entity.IdField.JsTypeName$): Observable<any> {
         const dialogRef = dialog.open($model.Entity.Name$EditComponent, {
             width: '600px',
             data: { id: id }

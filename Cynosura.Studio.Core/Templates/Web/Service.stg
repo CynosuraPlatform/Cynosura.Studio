@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Grpc.Core;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Cynosura.Core.Services.Models;
 using $model.Solution.Namespace$.Core.Infrastructure;
 using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$;
 using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
 using $model.Solution.Namespace$.Web.Protos;
 using $model.Solution.Namespace$.Web.Protos.$model.Entity.PluralName$;
-using Grpc.Core;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace $model.Solution.Namespace$.Web.Services
 {
@@ -51,7 +51,7 @@ namespace $model.Solution.Namespace$.Web.Services
         public override async Task<CreatedEntity> Create$model.Entity.Name$(Create$model.Entity.Name$Request create$model.Entity.Name$Request, ServerCallContext context)
         {
             var create$model.Entity.Name$ = _mapper.Map<Create$model.Entity.Name$Request, Create$model.Entity.Name$>(create$model.Entity.Name$Request);
-            return _mapper.Map<CreatedEntity<int>, CreatedEntity>(await _mediator.Send(create$model.Entity.Name$));
+            return _mapper.Map<CreatedEntity<$model.Entity.IdField.TypeName$>, CreatedEntity>(await _mediator.Send(create$model.Entity.Name$));
         }
 
         [Authorize("Write$model.Entity.Name$")]

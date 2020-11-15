@@ -25,10 +25,12 @@ export class UserEditComponent implements OnInit {
     id: number;
     userForm = this.fb.group({
         id: [],
-        userName: [],
         email: [],
+        emailConfirmed: [],
         password: [],
-        confirmPassword: []
+        confirmPassword: [],
+        firstName: [],
+        lastName: []
     });
     user: User;
     roles: Role[] = [];
@@ -58,7 +60,7 @@ export class UserEditComponent implements OnInit {
     }
 
     private getUser() {
-        const getUser$ = this.id === 0 ?
+        const getUser$ = !this.id ?
             of(new User()) :
             this.userService.getUser({ id: this.id });
         getUser$.subscribe(user => {

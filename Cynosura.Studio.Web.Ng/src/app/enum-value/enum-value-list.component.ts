@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ModalHelper } from '../core/modal.helper';
 import { Error } from '../core/error.model';
@@ -77,7 +78,7 @@ export class EnumValueListComponent implements OnInit {
         this.dataSource.data = this.enumValues;
     }
 
-    delete(id: string): void {
+    onDelete(id: string): void {
         this.modalHelper.confirmDelete()
             .subscribe(() => {
                 const foundEnumValue = this.findEnumValue(id);

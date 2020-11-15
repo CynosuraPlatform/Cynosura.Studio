@@ -16,6 +16,12 @@ export class GetEntity {
     id: string;
 }
 
+export class ExportEntities {
+    filter?: EntityFilter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class UpdateEntity {
     solutionId: number;
     id: string;

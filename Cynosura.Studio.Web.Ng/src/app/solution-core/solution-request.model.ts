@@ -13,6 +13,12 @@ export class GetSolution {
     id: number;
 }
 
+export class ExportSolutions {
+    filter?: SolutionFilter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class UpdateSolution {
     id: number;
     name: string;

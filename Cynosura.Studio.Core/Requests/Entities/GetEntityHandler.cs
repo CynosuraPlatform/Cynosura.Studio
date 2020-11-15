@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Generator;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using EntityModel = Cynosura.Studio.Core.Requests.Entities.Models.EntityModel;
 
 namespace Cynosura.Studio.Core.Requests.Entities

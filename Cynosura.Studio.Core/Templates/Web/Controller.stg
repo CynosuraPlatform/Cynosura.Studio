@@ -1,15 +1,14 @@
 main(model) ::= <<
 using System;
 using System.Threading.Tasks;
-using Cynosura.Core.Services.Models;
-using $model.Solution.Namespace$.Core.Infrastructure;
-using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$;
-using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
-using $model.Solution.Namespace$.Web.Models;
-using Cynosura.Web.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Cynosura.Core.Services.Models;
+using Cynosura.Web.Infrastructure;
+using $model.Solution.Namespace$.Core.Infrastructure;
+using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$;
+using $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Models;
 
 namespace $model.Solution.Namespace$.Web.Controllers
 {
@@ -36,6 +35,13 @@ namespace $model.Solution.Namespace$.Web.Controllers
         public async Task<$model.Entity.Name$Model> Get$model.Entity.Name$Async([FromBody] Get$model.Entity.Name$ get$model.Entity.Name$)
         {
             return await _mediator.Send(get$model.Entity.Name$);
+        }
+
+        [HttpPost("Export$model.Entity.PluralName$")]
+        public async Task<FileResult> Export$model.Entity.PluralName$Async([FromBody] Export$model.Entity.PluralName$ export$model.Entity.PluralName$)
+        {
+            var file = await _mediator.Send(export$model.Entity.PluralName$);
+            return File(file.Content, file.ContentType, file.Name);
         }
 
         [Authorize("Write$model.Entity.Name$")]

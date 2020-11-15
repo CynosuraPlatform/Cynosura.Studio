@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ConfigService } from '../config/config.service';
 import { CreatedEntity } from '../core/models/created-entity.model';
 import { Page } from '../core/page.model';
+import { FileResult } from '../core/file-result.model';
 
 import { Role } from './role.model';
-import { GetRoles, GetRole, UpdateRole, CreateRole, DeleteRole } from './role-request.model';
+import { GetRoles, GetRole, ExportRoles,
+    UpdateRole, CreateRole, DeleteRole } from './role-request.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RoleService {
     private apiUrl = this.configService.config.apiBaseUrl + '/api';
 
@@ -23,6 +26,14 @@ export class RoleService {
     getRole(getRole: GetRole): Observable<Role> {
         const url = `${this.apiUrl}/GetRole`;
         return this.httpClient.post<Role>(url, getRole);
+    }
+
+    exportRoles(exportRoles: ExportRoles): Observable<FileResult> {
+        const url = `${this.apiUrl}/ExportRoles`;
+        return this.httpClient.post(url, exportRoles, {
+            responseType: 'blob' as 'json',
+            observe: 'response',
+        }).pipe(map((response => new FileResult(response))));
     }
 
     updateRole(updateRole: UpdateRole): Observable<{}> {

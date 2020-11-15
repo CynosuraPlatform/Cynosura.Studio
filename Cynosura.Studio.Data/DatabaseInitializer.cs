@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-using Cynosura.Studio.Core.Entities;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Cynosura.Studio.Core.Entities;
 
 namespace Cynosura.Studio.Data
 {
@@ -25,16 +25,21 @@ namespace Cynosura.Studio.Data
             var administratorRoleName = "Administrator";
             if (await _roleManager.FindByNameAsync(administratorRoleName) == null)
             {
-                await _roleManager.CreateAsync(new Role() { Name = administratorRoleName });
+                await _roleManager.CreateAsync(new Role() 
+                { 
+                    Name = administratorRoleName,
+                    DisplayName = administratorRoleName,
+                });
             }
 
-            var administratorEmail = "admin@cynosura.ru";
+            var administratorEmail = "admin@cynosura.dev";
             if (!(await _userManager.Users.AnyAsync()))
             {
                 var user = new User()
                 {
                     UserName = administratorEmail,
                     Email = administratorEmail,
+                    FirstName = "Administrator",
                     EmailConfirmed = true
                 };
                 await _userManager.CreateAsync(user);

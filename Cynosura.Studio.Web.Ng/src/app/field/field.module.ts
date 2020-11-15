@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CoreModule } from '../core/core.module';
+import { TranslocoRootModule } from '../transloco-root.module';
 import { FieldCoreModule } from '../field-core/field-core.module';
 import { EntityCoreModule } from '../entity-core/entity-core.module';
 import { EnumCoreModule } from '../enum-core/enum-core.module';
@@ -18,7 +19,10 @@ import { FieldViewComponent } from './field-view.component';
         FieldViewComponent,
     ],
     imports: [
+        RouterModule,
         CoreModule,
+        TranslocoRootModule,
+        EntityCoreModule,
         EnumCoreModule,
         FieldCoreModule,
         EntityCoreModule,

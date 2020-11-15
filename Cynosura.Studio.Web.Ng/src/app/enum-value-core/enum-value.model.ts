@@ -1,3 +1,4 @@
+import { EnumValueFilter } from './enum-value-filter.model';
 
 export class EnumValue {
     id: string;
@@ -11,3 +12,8 @@ export class EnumValue {
     }
 }
 
+export class EnumValueListState {
+    pageSize = 10;
+    pageIndex = 0;
+    filter = new EnumValueFilter();
+}

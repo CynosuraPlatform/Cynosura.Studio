@@ -15,6 +15,12 @@ export class Get$model.Entity.Name$ {
     $model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$;
 }
 
+export class Export$model.Entity.PluralName$ {
+    filter?: $model.Entity.Name$Filter;
+    orderBy?: string;
+    orderDirection?: OrderDirection;
+}
+
 export class Update$model.Entity.Name$ {
     $model.Entity.IdField.NameLower$: $model.Entity.IdField.JsTypeName$;
 $model.Entity.AllFields:field(); separator="\n"$

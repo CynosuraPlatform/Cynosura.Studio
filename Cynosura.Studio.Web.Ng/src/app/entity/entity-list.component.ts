@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
@@ -9,16 +9,9 @@ import { Error } from '../core/error.model';
 import { Page } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 
-import { Entity } from '../entity-core/entity.model';
-import { EntityFilter } from '../entity-core/entity-filter.model';
+import { Entity, EntityListState } from '../entity-core/entity.model';
 import { EntityService } from '../entity-core/entity.service';
 import { EntityEditComponent } from './entity-edit.component';
-
-class EntityListState {
-    pageSize = 10;
-    pageIndex = 0;
-    filter = new EntityFilter();
-}
 
 @Component({
     selector: 'app-entity-list',
@@ -27,7 +20,6 @@ class EntityListState {
 })
 export class EntityListComponent implements OnInit {
     content: Page<Entity>;
-    state: EntityListState;
     pageSizeOptions = [10, 20];
     columns = [
         'name',
@@ -51,6 +43,12 @@ export class EntityListComponent implements OnInit {
         this.getEntities();
     }
 
+    @Input()
+    state: EntityListState;
+
+    @Input()
+    baseRoute = '/entity';
+
     constructor(
         private dialog: MatDialog,
         private modalHelper: ModalHelper,
@@ -58,7 +56,6 @@ export class EntityListComponent implements OnInit {
         private storeService: StoreService,
         private noticeHelper: NoticeHelper
         ) {
-        this.state = this.storeService.get('entityListState', new EntityListState());
     }
 
     ngOnInit(): void {
@@ -88,9 +85,16 @@ export class EntityListComponent implements OnInit {
     }
 
     onCreate(): void {
-        EntityEditComponent.show(this.dialog, this.solutionId, '').subscribe(() => {
+        EntityEditComponent.show(this.dialog, this.solutionId, null).subscribe(() => {
             this.getEntities();
         });
+    }
+
+    onExport(): void {
+        this.entityService.exportEntities({ filter: this.state.filter })
+            .subscribe(file => {
+                file.download();
+            });
     }
 
     onEdit(id: string) {

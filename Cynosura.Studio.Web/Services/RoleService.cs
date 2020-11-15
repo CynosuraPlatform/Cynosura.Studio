@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Grpc.Core;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Roles;
 using Cynosura.Studio.Core.Requests.Roles.Models;
 using Cynosura.Studio.Web.Protos;
 using Cynosura.Studio.Web.Protos.Roles;
-using Grpc.Core;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Cynosura.Studio.Web.Services
 {
@@ -51,7 +51,7 @@ namespace Cynosura.Studio.Web.Services
         {
             var createRole = _mapper.Map<CreateRoleRequest, CreateRole>(createRoleRequest);
             return _mapper.Map<CreatedEntity<int>, CreatedEntity>(await _mediator.Send(createRole));
-        }        
+        }
 
         [Authorize("WriteRole")]
         public override async Task<Empty> DeleteRole(DeleteRoleRequest deleteRoleRequest, ServerCallContext context)

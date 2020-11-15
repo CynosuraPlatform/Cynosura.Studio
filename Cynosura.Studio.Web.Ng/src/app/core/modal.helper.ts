@@ -2,23 +2,25 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { ModalComponent } from './modal.component';
 
 
 @Injectable()
 export class ModalHelper {
-    constructor(private dialog: MatDialog) {
+    constructor(private dialog: MatDialog,
+                private translocoService: TranslocoService) {
     }
 
     confirmDelete(): Observable<any> {
         const dialogRef = this.dialog.open(ModalComponent, {
             width: '300px',
             data: {
-                title: 'Delete?',
-                body: 'Are you sure you want to delete?',
-                okButton: 'Delete',
-                cancelButton: 'Cancel'
+                title: this.translocoService.translate('shared.deleteTitle'),
+                body: this.translocoService.translate('shared.deleteMessage'),
+                okButton: this.translocoService.translate('shared.delete'),
+                cancelButton: this.translocoService.translate('shared.cancel')
             }
         });
 
@@ -33,7 +35,7 @@ export class ModalHelper {
                 title: title,
                 body: message,
                 okButton: okButton,
-                cancelButton: 'Cancel'
+                cancelButton: this.translocoService.translate('shared.cancel')
             }
         });
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Cynosura.Web.Infrastructure;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Security;
 using Cynosura.Studio.Web.Infrastructure;
-using Cynosura.Web.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Cynosura.Studio.Web
 {
@@ -23,6 +23,7 @@ namespace Cynosura.Studio.Web
 
             services.AddTransient<IExceptionHandler, StudioExceptionHandler>();
 
+            services.AddFromConfiguration(configuration, assemblies);
             return services;
         }
     }

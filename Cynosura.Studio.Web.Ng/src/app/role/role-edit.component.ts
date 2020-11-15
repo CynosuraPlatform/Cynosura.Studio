@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject } from '@angular/core';
+﻿import { Component, Input, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 
 import { Error } from '../core/error.model';
 import { NoticeHelper } from '../core/notice.helper';
+import { ConvertStringTo } from '../core/converter.helper';
 
 import { Role } from '../role-core/role.model';
 import { RoleService } from '../role-core/role.service';
@@ -23,7 +24,8 @@ export class RoleEditComponent implements OnInit {
     id: number;
     roleForm = this.fb.group({
         id: [],
-        name: []
+        name: [],
+        displayName: []
     });
     role: Role;
     error: Error;
@@ -50,7 +52,7 @@ export class RoleEditComponent implements OnInit {
     }
 
     private getRole() {
-        const getRole$ = this.id === 0 ?
+        const getRole$ = !this.id ?
             of(new Role()) :
             this.roleService.getRole({ id: this.id });
         getRole$.subscribe(role => {

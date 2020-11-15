@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Cynosura.Core.Data;
 using $model.Solution.Namespace$.Core.Entities;
 using $model.Solution.Namespace$.Core.Infrastructure;
-using MediatR;
 
 namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 {
