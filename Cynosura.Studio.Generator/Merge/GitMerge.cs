@@ -100,7 +100,7 @@ namespace Cynosura.Studio.Generator.Merge
 
         private async Task MergeUpgrade(string repositoryPath)
         {
-            await RunCommandAsync("git", "merge upgrade", repositoryPath);
+            await RunCommandAsync("git", "merge -Xignore-space-change upgrade", repositoryPath);
         }
 
         private void Sync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath)
