@@ -167,6 +167,16 @@ namespace Cynosura.Studio.Generator.Models
             }
         }
 
+        [JsonIgnore]
+        public IList<Field> RequiredReferenceTypeFields
+        {
+            get
+            {
+                return AllFields.Where(f => f.IsRequired && f.NetType != null && !f.NetType.IsValueType)
+                    .ToList();
+            }
+        }
+
         public string ProcessTemplate(string template)
         {
             template = template.Replace("{Name}", Name);
