@@ -34,8 +34,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
                         : queryable.OrderBy(e => e.IsAbstract);
                 case "BaseEntity":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.BaseEntity)
-                        : queryable.OrderBy(e => e.BaseEntity);
+                        ? queryable.OrderByDescending(e => e.BaseEntity!.Name)
+                        : queryable.OrderBy(e => e.BaseEntity!.Name);
                 case "":
                 case null:
                     return queryable.OrderBy(e => e.Id);

@@ -1,4 +1,5 @@
 import { Field } from '../field-core/field.model';
+import { OrderDirection } from '../core/models/order-direction.model';
 import { PageSettings } from '../core/page.model';
 import { EntityFilter } from './entity-filter.model';
 
@@ -25,4 +26,6 @@ export class EntityListState {
   pageSize = PageSettings.pageSize;
   pageIndex = 0;
   filter = new EntityFilter();
+  orderBy?: string;
+  orderDirection?: OrderDirection;
 }

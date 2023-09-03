@@ -8,12 +8,10 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
 {
     public class FieldModel
     {
-        public FieldModel(string name, string displayName, bool isRequired, bool isSystem)
+        public FieldModel(string name, string displayName)
         {
             Name = name;
             DisplayName = displayName;
-            IsRequired = isRequired;
-            IsSystem = isSystem;
         }
 
         [DisplayName("Id")]

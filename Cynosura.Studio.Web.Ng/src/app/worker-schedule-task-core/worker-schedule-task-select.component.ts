@@ -124,7 +124,8 @@ export class WorkerScheduleTaskSelectComponent implements OnInit, ControlValueAc
 
   ngOnInit(): void {
     if (this.mode === 'select') {
-      this.workerScheduleTaskService.getWorkerScheduleTasks({}).subscribe(workerScheduleTasks => this.workerScheduleTasks = workerScheduleTasks.pageItems);
+      this.workerScheduleTaskService.getWorkerScheduleTasks({})
+        .subscribe(workerScheduleTasks => this.workerScheduleTasks = workerScheduleTasks.pageItems);
     } else if (this.mode === 'autocomplete') {
       this.autocompleteWorkerScheduleTasks = this.autocompleteControl.valueChanges
         .pipe(

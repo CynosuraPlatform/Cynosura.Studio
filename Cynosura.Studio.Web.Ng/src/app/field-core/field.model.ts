@@ -1,3 +1,4 @@
+import { OrderDirection } from '../core/models/order-direction.model';
 import { PageSettings } from '../core/page.model';
 import { FieldFilter } from './field-filter.model';
 
@@ -38,4 +39,6 @@ export class FieldListState {
   pageSize = PageSettings.pageSize;
   pageIndex = 0;
   filter = new FieldFilter();
+  orderBy?: string;
+  orderDirection?: OrderDirection;
 }

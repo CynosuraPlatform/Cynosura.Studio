@@ -21,18 +21,14 @@ namespace Cynosura.Studio.Core.Requests.Files
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.ContentType)
                         : queryable.OrderBy(e => e.ContentType);
-                case "Content":
-                    return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.Content)
-                        : queryable.OrderBy(e => e.Content);
                 case "Url":
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.Url)
                         : queryable.OrderBy(e => e.Url);
                 case "Group":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.Group)
-                        : queryable.OrderBy(e => e.Group);
+                        ? queryable.OrderByDescending(e => e.Group.Name)
+                        : queryable.OrderBy(e => e.Group.Name);
                 case "":
                 case null:
                     return queryable.OrderBy(e => e.Id);

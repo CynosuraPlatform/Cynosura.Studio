@@ -37,10 +37,28 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$
 >>
 
 orderByField(field) ::= <<
+$field:({orderBy$field.Template$})()$
+>>
+
+orderByType(field) ::= <<
+case "$field.Name$":
+    return direction == OrderDirection.Descending
+        ? queryable.OrderByDescending(e => e.$field.Name$)
+        : queryable.OrderBy(e => e.$field.Name$);
+>>
+
+orderByEnum(field) ::= <<
 case "$field.Name$":
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.$field.Name$)
                         : queryable.OrderBy(e => e.$field.Name$);
+>>
+
+orderByEntity(field) ::= <<
+case "$field.Name$":
+    return direction == OrderDirection.Descending
+        ? queryable.OrderByDescending(e => e.$field.Name$.$field.Entity.DefaultField.Name$)
+        : queryable.OrderBy(e => e.$field.Name$.$field.Entity.DefaultField.Name$);
 >>
 
 filterFieldByText(field) ::= <<
@@ -48,35 +66,35 @@ e.$field.Name$!.Contains(filter.Text)
 >>
 
 filterByField(field) ::= <<
-$field:(field.Template)()$
+$field:({filterBy$field.Template$})()$
 >>
 
-Type(field) ::= <<
-$field:(field.TypeTemplate)()$
+filterByType(field) ::= <<
+$field:({filterBy$field.TypeTemplate$})()$
 >>
 
-Entity(field) ::= <<
+filterByEntity(field) ::= <<
 if (filter?.$field.Name$$field.Entity.IdField.Name$ != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$$field.Entity.IdField.Name$ == filter.$field.Name$$field.Entity.IdField.Name$);
 }
 >>
 
-Enum(field) ::= <<
+filterByEnum(field) ::= <<
 if (filter?.$field.Name$ != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ == filter.$field.Name$);
 }
 >>
 
-String(field) ::= <<
+filterByString(field) ::= <<
 if (!string.IsNullOrEmpty(filter?.$field.Name$))
 {
     queryable = queryable.Where(e => e.$field.Name$!.Contains(filter.$field.Name$));
 }
 >>
 
-Int32(field) ::= <<
+filterByInt32(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -87,7 +105,7 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Int64(field) ::= <<
+filterByInt64(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -98,7 +116,7 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Decimal(field) ::= <<
+filterByDecimal(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -109,7 +127,7 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Double(field) ::= <<
+filterByDouble(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -120,14 +138,14 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Boolean(field) ::= <<
+filterByBoolean(field) ::= <<
 if (filter?.$field.Name$ != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ == filter.$field.Name$);
 }
 >>
 
-DateTime(field) ::= <<
+filterByDateTime(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -138,7 +156,7 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Date(field) ::= <<
+filterByDate(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -149,7 +167,7 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Time(field) ::= <<
+filterByTime(field) ::= <<
 if (filter?.$field.Name$From != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ >= filter.$field.Name$From);
@@ -160,12 +178,12 @@ if (filter?.$field.Name$To != null)
 }
 >>
 
-Guid(field) ::= <<
+filterByGuid(field) ::= <<
 if (filter?.$field.Name$ != null)
 {
                 queryable = queryable.Where(e => e.$field.Name$ == filter.$field.Name$);
 }
 >>
 
-Blob(field) ::= <<
+filterByBlob(field) ::= <<
 >>

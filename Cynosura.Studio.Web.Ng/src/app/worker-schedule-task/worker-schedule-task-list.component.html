@@ -24,52 +24,52 @@
 
   <mat-card-content class="mat-elevation-z8">
 
-    <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
+    <table *ngIf="content" mat-table [dataSource]="content.pageItems" [matSortActive]="state | sortActive" [matSortDirection]="state | sortDirection" multiTemplateDataRows matSort (matSortChange)="onSortChange($event)">
 
       <ng-container matColumnDef="workerInfo">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Worker') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Worker') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-worker-info-show [value]="item.workerInfo"></app-worker-info-show>
         </td>
       </ng-container>
       <ng-container matColumnDef="seconds">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Seconds') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Seconds') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.seconds"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="minutes">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Minutes') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Minutes') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.minutes"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="hours">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Hours') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Hours') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.hours"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="dayOfMonth">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Day of Month') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Day of Month') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.dayOfMonth"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="month">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Month') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Month') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.month"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="dayOfWeek">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Day of Week') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Day of Week') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.dayOfWeek"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="year">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Year') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Year') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.year"></app-text-view>
         </td>

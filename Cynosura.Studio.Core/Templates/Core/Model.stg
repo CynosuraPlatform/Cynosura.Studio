@@ -9,9 +9,9 @@ namespace $model.Solution.Namespace$.Core.Requests.$model.Entity.PluralName$.Mod
 {
     public class $model.Entity.Name$Model
     {
-        public $model.Entity.Name$Model($model.Entity.RequiredFields:constructorParam(); separator=", "$)
+        public $model.Entity.Name$Model($model.Entity.RequiredReferenceTypeFields:constructorParam(); separator=", "$)
         {
-            $model.Entity.RequiredFields:constructorInit(); separator="\n"$
+            $model.Entity.RequiredReferenceTypeFields:constructorInit(); separator="\n"$
         }
 
         $model.Entity.AllSystemFields:field(); separator="\n\n"$

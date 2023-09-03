@@ -1,4 +1,5 @@
-﻿import { PageSettings } from '../core/page.model';
+﻿import { OrderDirection } from '../core/models/order-direction.model';
+import { PageSettings } from '../core/page.model';
 import { SolutionFilter } from './solution-filter.model';
 
 export class Solution {
@@ -17,4 +18,6 @@ export class SolutionListState {
   pageSize = PageSettings.pageSize;
   pageIndex = 0;
   filter = new SolutionFilter();
+  orderBy?: string;
+  orderDirection?: OrderDirection;
 }

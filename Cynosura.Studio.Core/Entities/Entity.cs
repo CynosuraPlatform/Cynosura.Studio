@@ -7,13 +7,12 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Entity
     {
-        public Entity(string name, string pluralName, string displayName, string pluralDisplayName, bool isAbstract)
+        public Entity(string name, string pluralName, string displayName, string pluralDisplayName)
         {
             Name = name;
             PluralName = pluralName;
             DisplayName = displayName;
             PluralDisplayName = pluralDisplayName;
-            IsAbstract = isAbstract;
         }
 
 		[Required()]

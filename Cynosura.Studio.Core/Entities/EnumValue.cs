@@ -8,10 +8,9 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class EnumValue
     {
-        public EnumValue(string name, Guid enumId)
+        public EnumValue(string name)
         {
             Name = name;
-            EnumId = enumId;
         }
 
         [Required()]

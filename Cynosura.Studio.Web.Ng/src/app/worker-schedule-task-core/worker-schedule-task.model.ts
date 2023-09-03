@@ -1,4 +1,5 @@
-﻿import { PageSettings } from '../core/page.model';
+﻿import { OrderDirection } from '../core/models/order-direction.model';
+import { PageSettings } from '../core/page.model';
 import { WorkerScheduleTaskFilter } from './worker-schedule-task-filter.model';
 
 export class WorkerScheduleTask {
@@ -25,6 +26,8 @@ export class WorkerScheduleTaskListState {
   pageSize = PageSettings.pageSize;
   pageIndex = 0;
   filter = new WorkerScheduleTaskFilter();
+  orderBy?: string;
+  orderDirection?: OrderDirection;
 
   constructor(filter?: WorkerScheduleTaskFilter) {
     this.filter = filter;

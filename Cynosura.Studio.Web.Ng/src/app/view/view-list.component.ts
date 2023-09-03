@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
 import { mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
@@ -8,6 +9,7 @@ import { StoreService } from '../core/store.service';
 import { Error } from '../core/error.model';
 import { Page, PageSettings } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
+import { OrderDirectionManager } from '../core/models/order-direction.model';
 
 import { View, ViewListState } from '../view-core/view.model';
 import { ViewService } from '../view-core/view.service';
@@ -63,7 +65,9 @@ export class ViewListComponent implements OnInit {
         solutionId: this.solutionId,
         pageIndex: this.state.pageIndex,
         pageSize: this.state.pageSize,
-        filter: this.state.filter
+        filter: this.state.filter,
+        orderBy: this.state.orderBy,
+        orderDirection: this.state.orderDirection
       }).subscribe(content => this.content = content);
     } else {
       this.content = null;
@@ -112,6 +116,12 @@ export class ViewListComponent implements OnInit {
   onPage(page: PageEvent) {
     this.state.pageIndex = page.pageIndex;
     this.state.pageSize = page.pageSize;
+    this.getViews();
+  }
+
+  onSortChange(sortState: Sort) {
+    this.state.orderDirection = OrderDirectionManager.getOrderDirectionBySort(sortState);
+    this.state.orderBy = OrderDirectionManager.getOrderByBySort(sortState);
     this.getViews();
   }
 

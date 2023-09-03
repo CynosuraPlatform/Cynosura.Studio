@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Infrastructure;
@@ -26,16 +26,16 @@ namespace Cynosura.Studio.Core.Requests.Fields
                         : queryable.OrderBy(e => e.Size);
                 case "Entity":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.Entity)
-                        : queryable.OrderBy(e => e.Entity);
+                        ? queryable.OrderByDescending(e => e.Entity!.Name)
+                        : queryable.OrderBy(e => e.Entity!.Name);
                 case "IsRequired":
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.IsRequired)
                         : queryable.OrderBy(e => e.IsRequired);
                 case "Enum":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.Enum)
-                        : queryable.OrderBy(e => e.Enum);
+                        ? queryable.OrderByDescending(e => e.Enum!.Name)
+                        : queryable.OrderBy(e => e.Enum!.Name);
                 case "IsSystem":
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.IsSystem)

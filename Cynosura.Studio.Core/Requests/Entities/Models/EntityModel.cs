@@ -7,13 +7,12 @@ namespace Cynosura.Studio.Core.Requests.Entities.Models
 {
     public class EntityModel
     {
-        public EntityModel(string name, string pluralName, string displayName, string pluralDisplayName, bool isAbstract)
+        public EntityModel(string name, string pluralName, string displayName, string pluralDisplayName)
         {
             Name = name;
             PluralName = pluralName;
             DisplayName = displayName;
             PluralDisplayName = pluralDisplayName;
-            IsAbstract = isAbstract;
         }
 
         [DisplayName("Id")]

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 main(model) ::= <<
+=======
+﻿main(model) ::= <<
+import { OrderDirection } from '../core/models/order-direction.model';
+>>>>>>> upgrade
 import { PageSettings } from '../core/page.model';
 import { $model.Entity.Name$Filter } from './$model.Entity.NameKebab$-filter.model';
 $model.Entity.DependentEnums:enumImport(); separator="\n"$
@@ -12,6 +17,8 @@ export class $model.Entity.Name$ListState {
   pageSize = PageSettings.pageSize;
   pageIndex = 0;
   filter = new $model.Entity.Name$Filter();
+  orderBy?: string;
+  orderDirection?: OrderDirection;
 }
 
 >>

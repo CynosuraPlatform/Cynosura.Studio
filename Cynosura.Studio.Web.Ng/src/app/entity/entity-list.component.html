@@ -28,40 +28,40 @@
 
   <mat-card-content *ngIf="solutionId" class="mat-elevation-z8">
 
-    <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
+    <table *ngIf="content" mat-table [dataSource]="content.pageItems" [matSortActive]="state | sortActive" [matSortDirection]="state | sortDirection" multiTemplateDataRows matSort (matSortChange)="onSortChange($event)">
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.name"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="pluralName">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Plural Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Plural Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.pluralName"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="displayName">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Display Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Display Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.displayName"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="pluralDisplayName">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Plural Display Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Plural Display Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.pluralDisplayName"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="isAbstract">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Abstract') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Abstract') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-bool-view [value]="item.isAbstract"></app-bool-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="baseEntity">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Base Entity') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Base Entity') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-entity-show [value]="item.baseEntity"></app-entity-show>
         </td>

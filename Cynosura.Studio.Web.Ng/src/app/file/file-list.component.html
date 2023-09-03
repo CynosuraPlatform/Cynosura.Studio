@@ -24,28 +24,28 @@
 
   <mat-card-content class="mat-elevation-z8">
 
-    <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
+    <table *ngIf="content" mat-table [dataSource]="content.pageItems" [matSortActive]="state | sortActive" [matSortDirection]="state | sortDirection" multiTemplateDataRows matSort (matSortChange)="onSortChange($event)">
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.name"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="contentType">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Content Type') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Content Type') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.contentType"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="url">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Url') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Url') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.url"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="group">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Group') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Group') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-file-group-show [value]="item.group"></app-file-group-show>
         </td>

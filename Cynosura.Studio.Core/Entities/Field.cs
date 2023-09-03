@@ -8,12 +8,10 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Field
     {
-        public Field(string name, string displayName, bool isRequired, bool isSystem)
+        public Field(string name, string displayName)
         {
             Name = name;
             DisplayName = displayName;
-            IsRequired = isRequired;
-            IsSystem = isSystem;
         }
 
         [Required()]

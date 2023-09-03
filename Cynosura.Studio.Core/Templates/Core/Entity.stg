@@ -11,9 +11,9 @@ namespace $model.Solution.Namespace$.Core.Entities
 {
     public $if(model.Entity.IsAbstract)$abstract $endif$class $model.Entity.Name$$if(model.Entity.BaseEntity)$ : $model.Entity.BaseEntity.Name$$endif$
     {
-        public $model.Entity.Name$($model.Entity.RequiredFields:constructorParam(); separator=", "$)
+        public $model.Entity.Name$($model.Entity.RequiredReferenceTypeFields:constructorParam(); separator=", "$)
         {
-            $model.Entity.RequiredFields:constructorInit(); separator="\n"$
+            $model.Entity.RequiredReferenceTypeFields:constructorInit(); separator="\n"$
         }
 
         $model.Entity.Fields:field(); separator="\n"$

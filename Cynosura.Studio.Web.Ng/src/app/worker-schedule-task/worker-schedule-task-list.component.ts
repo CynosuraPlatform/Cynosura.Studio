@@ -12,6 +12,8 @@ import { NoticeHelper } from '../core/notice.helper';
 import { WorkerScheduleTask, WorkerScheduleTaskListState } from '../worker-schedule-task-core/worker-schedule-task.model';
 import { WorkerScheduleTaskService } from '../worker-schedule-task-core/worker-schedule-task.service';
 import { WorkerScheduleTaskEditComponent } from './worker-schedule-task-edit.component';
+import { Sort } from '@angular/material/sort';
+import { OrderDirectionManager } from '../core/models/order-direction.model';
 
 @Component({
   selector: 'app-worker-schedule-task-list',
@@ -54,7 +56,9 @@ export class WorkerScheduleTaskListComponent implements OnInit {
     this.workerScheduleTaskService.getWorkerScheduleTasks({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
-      filter: this.state.filter
+      filter: this.state.filter,
+      orderBy: this.state.orderBy,
+      orderDirection: this.state.orderDirection
     }).subscribe(content => this.content = content);
   }
 
@@ -100,6 +104,12 @@ export class WorkerScheduleTaskListComponent implements OnInit {
   onPage(page: PageEvent) {
     this.state.pageIndex = page.pageIndex;
     this.state.pageSize = page.pageSize;
+    this.getWorkerScheduleTasks();
+  }
+
+  onSortChange(sortState: Sort) {
+    this.state.orderDirection = OrderDirectionManager.getOrderDirectionBySort(sortState);
+    this.state.orderBy = OrderDirectionManager.getOrderByBySort(sortState);
     this.getWorkerScheduleTasks();
   }
 

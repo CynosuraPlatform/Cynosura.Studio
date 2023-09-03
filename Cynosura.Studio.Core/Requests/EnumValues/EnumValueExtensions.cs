@@ -26,8 +26,8 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
                         : queryable.OrderBy(e => e.Value);
                 case "Enum":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.Enum)
-                        : queryable.OrderBy(e => e.Enum);
+                        ? queryable.OrderByDescending(e => e.Enum.Name)
+                        : queryable.OrderBy(e => e.Enum.Name);
                 case "":
                 case null:
                     return queryable.OrderBy(e => e.Id);

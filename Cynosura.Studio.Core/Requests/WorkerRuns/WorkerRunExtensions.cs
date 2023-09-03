@@ -14,8 +14,8 @@ namespace Cynosura.Studio.Core.Requests.WorkerRuns
             {                
                 case "WorkerInfo":
                     return direction == OrderDirection.Descending
-                        ? queryable.OrderByDescending(e => e.WorkerInfo)
-                        : queryable.OrderBy(e => e.WorkerInfo);
+                        ? queryable.OrderByDescending(e => e.WorkerInfo.Name)
+                        : queryable.OrderBy(e => e.WorkerInfo.Name);
                 case "Status":
                     return direction == OrderDirection.Descending
                         ? queryable.OrderByDescending(e => e.Status)

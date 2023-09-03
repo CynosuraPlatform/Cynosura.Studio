@@ -28,16 +28,16 @@
 
   <mat-card-content *ngIf="solutionId" class="mat-elevation-z8">
 
-    <table *ngIf="content" mat-table [dataSource]="content.pageItems" multiTemplateDataRows>
+    <table *ngIf="content" mat-table [dataSource]="content.pageItems" [matSortActive]="state | sortActive" [matSortDirection]="state | sortDirection" multiTemplateDataRows matSort (matSortChange)="onSortChange($event)">
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.name"></app-text-view>
         </td>
       </ng-container>
       <ng-container matColumnDef="displayName">
-        <th mat-header-cell *matHeaderCellDef>{{ t('Display Name') }}</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ t('Display Name') }}</th>
         <td mat-cell *matCellDef="let item">
           <app-text-view [value]="item.displayName"></app-text-view>
         </td>

@@ -23,5 +23,5 @@ $if(field.Size)$.MaximumLength($field.Size$)$endif$
 >>
 
 name(field) ::= <<
-$if(field.IsRequired||field.Size)$.WithName(x => localizer["$field.DisplayName$"])$endif$
+$if(field.IsRequired||field.Size||field.Enum)$.WithName(x => localizer["$field.DisplayName$"])$endif$
 >>
