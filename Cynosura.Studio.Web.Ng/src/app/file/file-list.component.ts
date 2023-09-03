@@ -2,7 +2,8 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,12 +25,14 @@ export class FileListComponent implements OnInit {
   content: Page<File>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'contentType',
     'url',
     'group',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: FileListState;
@@ -50,6 +53,7 @@ export class FileListComponent implements OnInit {
   }
 
   private getFiles() {
+    this.selectedIds = new Set<number>();
     this.fileService.getFiles({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -67,6 +71,7 @@ export class FileListComponent implements OnInit {
   onReset() {
     this.state.pageIndex = 0;
     this.state.filter.text = null;
+    this.state.filter.groupId = null;
     this.getFiles();
   }
 
@@ -96,6 +101,18 @@ export class FileListComponent implements OnInit {
       )
       .subscribe(() => this.getFiles(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.fileService.deleteFile({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getFiles());
   }
 
   onPage(page: PageEvent) {

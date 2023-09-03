@@ -1,9 +1,11 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Core.Requests.Users.Models;
 
@@ -24,21 +26,15 @@ namespace Cynosura.Studio.Core.Requests.Users
 
         public async Task<UserModel?> Handle(GetUser request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.Id.ToString());
+            var user = await _userManager.Users
+                .Include(e => e.Roles)
+                .Where(e => e.Id == request.Id)
+                .FirstOrDefaultAsync(cancellationToken);
             if (user == null)
             {
                 return null;
             }
-            var model = _mapper.Map<User, UserModel>(user);
-            var userRoleNames = await _userManager.GetRolesAsync(user);
-
-            foreach (var roleName in userRoleNames)
-            {
-                var role = await _roleManager.FindByNameAsync(roleName);
-                model.RoleIds.Add(role.Id);
-            }
-
-            return model;
+            return _mapper.Map<User, UserModel>(user);
         }
     }
 }

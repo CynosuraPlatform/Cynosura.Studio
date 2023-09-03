@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Cynosura.Core.Data;
 using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
@@ -24,7 +25,8 @@ namespace Cynosura.Studio.Core.Requests.Users
 
         public async Task<PageModel<UserModel>> Handle(GetUsers request, CancellationToken cancellationToken)
         {
-            IQueryable<User> query = _userManager.Users;
+            IQueryable<User> query = _userManager.Users
+                .Include(e => e.Roles);
             query = query.Filter(request.Filter);
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
             var users = await query.ToPagedListAsync(request.PageIndex, request.PageSize, cancellationToken);

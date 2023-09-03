@@ -2,7 +2,8 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,12 +25,14 @@ export class WorkerRunListComponent implements OnInit {
   content: Page<WorkerRun>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'workerInfo',
     'status',
     'startDateTime',
     'endDateTime',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: WorkerRunListState;
@@ -50,6 +53,7 @@ export class WorkerRunListComponent implements OnInit {
   }
 
   private getWorkerRuns() {
+    this.selectedIds = new Set<number>();
     this.workerRunService.getWorkerRuns({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -67,6 +71,7 @@ export class WorkerRunListComponent implements OnInit {
   onReset() {
     this.state.pageIndex = 0;
     this.state.filter.text = null;
+    this.state.filter.workerInfoId = null;
     this.getWorkerRuns();
   }
 
@@ -90,6 +95,18 @@ export class WorkerRunListComponent implements OnInit {
       )
       .subscribe(() => this.getWorkerRuns(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.workerRunService.deleteWorkerRun({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getWorkerRuns());
   }
 
   onPage(page: PageEvent) {

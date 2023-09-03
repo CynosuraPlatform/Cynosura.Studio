@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -25,12 +26,14 @@ export class SolutionListComponent implements OnInit {
   content: Page<Solution>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'path',
     'templateName',
     'templateVersion',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: SolutionListState;
@@ -51,6 +54,7 @@ export class SolutionListComponent implements OnInit {
   }
 
   private getSolutions() {
+    this.selectedIds = new Set<number>();
     this.solutionService.getSolutions({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -97,6 +101,18 @@ export class SolutionListComponent implements OnInit {
       )
       .subscribe(() => this.getSolutions(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.solutionService.deleteSolution({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getSolutions());
   }
 
   onPage(page: PageEvent) {

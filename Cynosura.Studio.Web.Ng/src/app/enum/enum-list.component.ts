@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,6 +25,7 @@ export class EnumListComponent implements OnInit {
   content: Page<Enum>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'displayName',
     'action'
@@ -40,6 +42,7 @@ export class EnumListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getEnums();
   }
+  selectedIds = new Set<string>();
 
   @Input()
   state: EnumListState;
@@ -61,6 +64,7 @@ export class EnumListComponent implements OnInit {
   }
 
   private getEnums() {
+    this.selectedIds = new Set<string>();
     if (this.solutionId) {
       this.enumService.getEnums({
         solutionId: this.solutionId,
@@ -112,6 +116,18 @@ export class EnumListComponent implements OnInit {
       )
       .subscribe(() => this.getEnums(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.enumService.deleteEnum({ solutionId: this.solutionId, id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getEnums());
   }
 
   onPage(page: PageEvent) {

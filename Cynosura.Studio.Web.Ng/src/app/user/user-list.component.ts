@@ -2,7 +2,8 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,6 +25,7 @@ export class UserListComponent implements OnInit {
   content: Page<User>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'userName',
     'email',
     'emailConfirmed',
@@ -31,6 +33,7 @@ export class UserListComponent implements OnInit {
     'lastName',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: UserListState = new UserListState();
@@ -51,6 +54,7 @@ export class UserListComponent implements OnInit {
   }
 
   private getUsers() {
+    this.selectedIds = new Set<number>();
     this.userService.getUsers({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -68,6 +72,7 @@ export class UserListComponent implements OnInit {
   onReset() {
     this.state.pageIndex = 0;
     this.state.filter.text = null;
+    this.state.filter.roleId = null;
     this.getUsers();
   }
 
@@ -97,6 +102,18 @@ export class UserListComponent implements OnInit {
       )
       .subscribe(() => this.getUsers(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.userService.deleteUser({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getUsers());
   }
 
   onPage(page: PageEvent) {

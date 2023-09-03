@@ -58,6 +58,10 @@ namespace Cynosura.Studio.Core.Requests.Users
             {
                 queryable = queryable.Where(e => e.LastName!.Contains(filter.LastName));
             }
+            if (filter?.RoleId != null)
+            {
+                queryable = queryable.Where(e => e.Roles.Any(r => r.Id == filter.RoleId));
+            }
             return queryable;
         }
     }

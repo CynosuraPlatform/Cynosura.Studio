@@ -21,5 +21,7 @@ namespace Cynosura.Studio.Core.Entities
         [StringLength(200)]
         public string? LastName { get; set; }
         
+        public ICollection<Role> Roles { get; set; } = null!;
+        
     }
 }

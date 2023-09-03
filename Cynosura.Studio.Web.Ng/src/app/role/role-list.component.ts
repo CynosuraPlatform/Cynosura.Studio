@@ -2,7 +2,8 @@
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,10 +25,12 @@ export class RoleListComponent implements OnInit {
   content: Page<Role>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'displayName',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: RoleListState = new RoleListState();
@@ -48,6 +51,7 @@ export class RoleListComponent implements OnInit {
   }
 
   private getRoles() {
+    this.selectedIds = new Set<number>();
     this.roleService.getRoles({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -94,6 +98,18 @@ export class RoleListComponent implements OnInit {
       )
       .subscribe(() => this.getRoles(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.roleService.deleteRole({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getRoles());
   }
 
   onPage(page: PageEvent) {

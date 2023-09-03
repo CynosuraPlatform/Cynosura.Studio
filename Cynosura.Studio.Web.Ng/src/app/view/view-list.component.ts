@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,6 +25,7 @@ export class ViewListComponent implements OnInit {
   content: Page<View>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'action'
   ];
@@ -39,6 +41,7 @@ export class ViewListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getViews();
   }
+  selectedIds = new Set<string>();
 
   @Input()
   state: ViewListState;
@@ -60,6 +63,7 @@ export class ViewListComponent implements OnInit {
   }
 
   private getViews() {
+    this.selectedIds = new Set<string>();
     if (this.solutionId) {
       this.viewService.getViews({
         solutionId: this.solutionId,
@@ -111,6 +115,18 @@ export class ViewListComponent implements OnInit {
       )
       .subscribe(() => this.getViews(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.viewService.deleteView({ solutionId: this.solutionId, id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getViews());
   }
 
   onPage(page: PageEvent) {

@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,6 +25,7 @@ export class EntityListComponent implements OnInit {
   content: Page<Entity>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'name',
     'pluralName',
     'displayName',
@@ -44,6 +46,7 @@ export class EntityListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getEntities();
   }
+  selectedIds = new Set<string>();
 
   @Input()
   state: EntityListState;
@@ -65,6 +68,7 @@ export class EntityListComponent implements OnInit {
   }
 
   private getEntities() {
+    this.selectedIds = new Set<string>();
     if (this.solutionId) {
       this.entityService.getEntities({
         solutionId: this.solutionId,
@@ -116,6 +120,18 @@ export class EntityListComponent implements OnInit {
       )
       .subscribe(() => this.getEntities(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.entityService.deleteEntity({ solutionId: this.solutionId, id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getEntities());
   }
 
   onPage(page: PageEvent) {

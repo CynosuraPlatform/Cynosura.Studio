@@ -3,7 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -25,9 +26,11 @@ export class $model.Entity.Name$ListComponent implements OnInit {
   content: Page<$model.Entity.Name$>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     $model.Entity.AllFields:field(); separator="\r\n"$
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: $model.Entity.Name$ListState;
@@ -48,6 +51,7 @@ export class $model.Entity.Name$ListComponent implements OnInit {
   }
 
   private get$model.Entity.PluralName$() {
+    this.selectedIds = new Set<number>();
     this.$model.Entity.NameLower$Service.get$model.Entity.PluralName$({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -94,6 +98,18 @@ export class $model.Entity.Name$ListComponent implements OnInit {
       )
       .subscribe(() => this.get$model.Entity.PluralName$(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map($model.Entity.IdField.NameLower$ => this.$model.Entity.NameLower$Service.delete$model.Entity.Name$({ $model.Entity.IdField.NameLower$ })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.get$model.Entity.PluralName$());
   }
 
   onPage(page: PageEvent) {

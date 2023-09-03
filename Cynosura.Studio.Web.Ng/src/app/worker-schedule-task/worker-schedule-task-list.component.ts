@@ -1,7 +1,8 @@
 ﻿import { Component, OnInit, Input } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs/operators';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -24,6 +25,7 @@ export class WorkerScheduleTaskListComponent implements OnInit {
   content: Page<WorkerScheduleTask>;
   pageSizeOptions = PageSettings.pageSizeOptions;
   columns = [
+    'select',
     'seconds',
     'minutes',
     'hours',
@@ -33,6 +35,7 @@ export class WorkerScheduleTaskListComponent implements OnInit {
     'year',
     'action'
   ];
+  selectedIds = new Set<number>();
 
   @Input()
   state: WorkerScheduleTaskListState;
@@ -53,6 +56,7 @@ export class WorkerScheduleTaskListComponent implements OnInit {
   }
 
   private getWorkerScheduleTasks() {
+    this.selectedIds = new Set<number>();
     this.workerScheduleTaskService.getWorkerScheduleTasks({
       pageIndex: this.state.pageIndex,
       pageSize: this.state.pageSize,
@@ -99,6 +103,18 @@ export class WorkerScheduleTaskListComponent implements OnInit {
       )
       .subscribe(() => this.getWorkerScheduleTasks(),
         error => this.onError(error));
+  }
+
+  onDeleteSelected() {
+    this.modalHelper.confirmDelete()
+      .pipe(
+        mergeMap(() => forkJoin([...this.selectedIds]
+          .map(id => this.workerScheduleTaskService.deleteWorkerScheduleTask({ id })
+            .pipe(
+              catchError(error => { this.onError(error); return of({}); })
+            ))))
+      )
+      .subscribe(() => this.getWorkerScheduleTasks());
   }
 
   onPage(page: PageEvent) {
