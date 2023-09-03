@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cynosura.Core" Version="0.2.0-b75" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
+    <PackageReference Include="Cynosura.Core" Version="0.4.0-b372" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
   </ItemGroup>
