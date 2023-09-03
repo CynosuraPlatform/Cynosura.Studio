@@ -48,7 +48,7 @@ namespace Cynosura.Studio.Web
                         })
                         .ConfigureLogging(logging =>
                         {
-                            logging.AddConsole(c =>
+                            logging.AddSimpleConsole(c =>
                             {
                                 c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
                             });
