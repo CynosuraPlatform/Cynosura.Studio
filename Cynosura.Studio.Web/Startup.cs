@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.Json.Serialization;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Cynosura.Web;
 using Cynosura.Web.Authorization;
 using Cynosura.Web.Infrastructure;
@@ -64,7 +67,7 @@ namespace Cynosura.Studio.Web
                 })
                 .AddJsonOptions(o =>
                 {
-                    o.JsonSerializerOptions.IgnoreNullValues = true;
+                    o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                     o.JsonSerializerOptions.Converters.Add(new TimeSpanConverter());
                 })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)

@@ -22,7 +22,7 @@ namespace Cynosura.Studio.Worker
             services.AddScoped<IUserInfoProvider, UserInfoProvider>();
             services.AddQuartz(q =>
             {
-                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+                q.UseMicrosoftDependencyInjectionJobFactory();
             });
             services.AddQuartzHostedService(
                 q => q.WaitForJobsToComplete = true);
