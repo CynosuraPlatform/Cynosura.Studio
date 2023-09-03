@@ -6,19 +6,19 @@ import { EntityViewComponent } from './entity-view.component';
 import { EntityModule } from '../entity/entity.module';
 
 @NgModule({
-    declarations: [
-    ],
-    imports: [
-        RouterModule.forChild([
-            { path: '', component: EntitiesComponent },
-            { path: ':id', component: EntityViewComponent }
-        ]),
-        EntityModule,
-    ],
-    providers: [
-    ],
-    entryComponents: [
-    ]
+  declarations: [
+  ],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: EntitiesComponent },
+      { path: ':id', component: EntityViewComponent }
+    ]),
+    EntityModule,
+  ],
+  providers: [
+  ],
+  entryComponents: [
+  ]
 })
 export class EntityRoutedModule {
 

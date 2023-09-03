@@ -1,5 +1,7 @@
 <ng-container *transloco="let t">
-    <h1 mat-dialog-title>{{ t('Solution') }} <app-solution-show [value]="solution"></app-solution-show></h1>
+  <h1 mat-dialog-title>
+    {{ t('Solution') }} <app-solution-show [value]="solution"></app-solution-show>
+  </h1>
     <mat-dialog-content *ngIf="solution" class="mat-dialog-content-edit">
 
         <form [formGroup]="solutionForm">

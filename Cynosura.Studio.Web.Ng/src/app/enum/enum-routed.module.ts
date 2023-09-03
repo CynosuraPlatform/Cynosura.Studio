@@ -6,19 +6,19 @@ import { EnumViewComponent } from './enum-view.component';
 import { EnumModule } from '../enum/enum.module';
 
 @NgModule({
-    declarations: [
-    ],
-    imports: [
-        RouterModule.forChild([
-            { path: '', component: EnumsComponent },
-            { path: ':id', component: EnumViewComponent }
-        ]),
-        EnumModule,
-    ],
-    providers: [
-    ],
-    entryComponents: [
-    ]
+  declarations: [
+  ],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: EnumsComponent },
+      { path: ':id', component: EnumViewComponent }
+    ]),
+    EnumModule,
+  ],
+  providers: [
+  ],
+  entryComponents: [
+  ]
 })
 export class EnumRoutedModule {
 

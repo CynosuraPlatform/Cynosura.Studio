@@ -7,20 +7,20 @@ import { RoleSelectComponent } from './role-select.component';
 import { RoleShowComponent } from './role-show.component';
 
 @NgModule({
-    declarations: [
-        RoleSelectComponent,
-        RoleShowComponent
-    ],
-    imports: [
-        CoreModule,
-    ],
-    providers: [
-        RoleService
-    ],
-    exports: [
-        RoleSelectComponent,
-        RoleShowComponent
-    ]
+  declarations: [
+    RoleSelectComponent,
+    RoleShowComponent
+  ],
+  imports: [
+    CoreModule,
+  ],
+  providers: [
+    RoleService
+  ],
+  exports: [
+    RoleSelectComponent,
+    RoleShowComponent
+  ]
 })
 export class RoleCoreModule {
 

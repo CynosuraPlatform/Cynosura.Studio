@@ -1,34 +1,37 @@
 <ng-container *transloco="let t">
-    <h1 mat-dialog-title>{{ t('Enum Value') }} <app-enum-value-show [value]="enumValue"></app-enum-value-show></h1>
-    <mat-dialog-content *ngIf="enumValue" class="mat-dialog-content-edit">
+  <h1 mat-dialog-title>
+    {{ t('Enum Value') }} <app-enum-value-show [value]="enumValue"></app-enum-value-show>
+  </h1>
+  <mat-dialog-content *ngIf="enumValue" class="mat-dialog-content-edit">
 
-        <form [formGroup]="enumValueForm">
-            <mat-form-field>
-                <mat-label>{{ t('Name') }}</mat-label>
-                <app-text-edit formControlName="name" name="name" [placeholder]="t('Name')"></app-text-edit>
-                <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>{{ t('Display Name') }}</mat-label>
-                <app-text-edit formControlName="displayName" name="displayName" [placeholder]="t('Display Name')"></app-text-edit>
-                <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>{{ t('Value') }}</mat-label>
-                <app-number-edit formControlName="value" name="value" [placeholder]="t('Value')"></app-number-edit>
-                <mat-error>{{ error?.modelState?.value | modelError }}</mat-error>
-            </mat-form-field>
-            <div>
-                <label for="properties">Properties</label>
-                <div *ngIf="enumValue">
-                    <app-properties [target]="enumValue.name" [properties]="enumValue.properties"></app-properties>
-                </div>
-            </div>
-        </form>
+    <form [formGroup]="enumValueForm">
+      <mat-form-field>
+        <mat-label>{{ t('Name') }}</mat-label>
+        <app-text-edit formControlName="name" name="name" [placeholder]="t('Name')"></app-text-edit>
+        <mat-error>{{ error?.modelState?.name | modelError }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ t('Display Name') }}</mat-label>
+        <app-text-edit formControlName="displayName" name="displayName"
+          [placeholder]="t('Display Name')"></app-text-edit>
+        <mat-error>{{ error?.modelState?.displayName | modelError }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ t('Value') }}</mat-label>
+        <app-number-edit formControlName="value" name="value" [placeholder]="t('Value')"></app-number-edit>
+        <mat-error>{{ error?.modelState?.value | modelError }}</mat-error>
+      </mat-form-field>
+      <div>
+        <label for="properties">Properties</label>
+        <div *ngIf="enumValue">
+          <app-properties [target]="enumValue.name" [properties]="enumValue.properties"></app-properties>
+        </div>
+      </div>
+    </form>
 
-    </mat-dialog-content>
-    <mat-dialog-actions class="mat-dialog-actions-edit">
-        <button mat-raised-button mat-dialog-close>{{ t('shared.cancel') }}</button>
-        <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>{{ t('shared.save') }}</button>
-    </mat-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mat-dialog-actions-edit">
+    <button mat-raised-button mat-dialog-close>{{ t('shared.cancel') }}</button>
+    <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>{{ t('shared.save') }}</button>
+  </mat-dialog-actions>
 </ng-container>
