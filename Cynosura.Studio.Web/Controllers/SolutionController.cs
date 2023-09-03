@@ -31,7 +31,7 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetSolution")]
-        public async Task<SolutionModel> GetSolutionAsync([FromBody] GetSolution getSolution)
+        public async Task<SolutionModel?> GetSolutionAsync([FromBody] GetSolution getSolution)
         {
             return await _mediator.Send(getSolution);
         }

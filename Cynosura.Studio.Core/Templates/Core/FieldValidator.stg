@@ -11,7 +11,7 @@ RuleFor(x => x.$field.Name$Id)
 >>
 
 Enum(field) ::= <<
-RuleFor(x => x.$field.Name$)
+RuleFor(x => x.$field.Name$).IsInEnum()
 >>
 
 required(field) ::= <<

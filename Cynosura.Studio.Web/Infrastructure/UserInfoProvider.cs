@@ -14,7 +14,7 @@ namespace Cynosura.Studio.Web.Infrastructure
 {
     public class UserInfoProvider : IUserInfoProvider
     {
-        private UserInfoModel _userInfoModel;
+        private UserInfoModel? _userInfoModel;
         private readonly IEntityRepository<User> _userRepository;
         private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -35,14 +35,20 @@ namespace Cynosura.Studio.Web.Infrastructure
                 var context = _httpContextAccessor.HttpContext;
                 if (context != null)
                 {
-                    var identity = (ClaimsIdentity)context.User.Identity;
-                    var userName = identity.Claims.Where(e => e.Type == ClaimTypes.Name).Select(e => e.Value).FirstOrDefault();
+                    var identity = (ClaimsIdentity?)context.User.Identity;
+                    var userName = identity?.Claims.Where(e => e.Type == ClaimTypes.Name).Select(e => e.Value).FirstOrDefault();
                     _userInfoModel = new UserInfoModel
                     {
                         User = await _userRepository.GetEntities().FirstOrDefaultAsync(e => e.UserName == userName),
                     };
                     if (_userInfoModel.User != null)
+                    {
                         _userInfoModel.Roles = await _userManager.GetRolesAsync(_userInfoModel.User);
+                    }   
+                }
+                if (_userInfoModel == null)
+                {
+                    _userInfoModel = new UserInfoModel();
                 }
             }
             return _userInfoModel;

@@ -7,8 +7,8 @@ namespace Cynosura.Studio.Core.Requests.Views
     public class ExportViews : IRequest<FileContentModel>
     {
         public int SolutionId { get; set; }
-        public ViewFilter Filter { get; set; }
-        public string OrderBy { get; set; }
+        public ViewFilter? Filter { get; set; }
+        public string? OrderBy { get; set; }
         public OrderDirection? OrderDirection { get; set; }
     }
 }

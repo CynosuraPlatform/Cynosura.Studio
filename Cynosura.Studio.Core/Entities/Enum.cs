@@ -8,6 +8,12 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Enum
     {
+        public Enum(string name, string displayName)
+        {
+            Name = name;
+            DisplayName = displayName;
+        }
+
         [Required()]
         [StringLength(100)]
         public string Name { get; set; }

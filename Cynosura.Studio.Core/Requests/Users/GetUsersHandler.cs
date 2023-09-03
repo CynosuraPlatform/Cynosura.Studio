@@ -27,7 +27,7 @@ namespace Cynosura.Studio.Core.Requests.Users
             IQueryable<User> query = _userManager.Users;
             query = query.Filter(request.Filter);
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
-            var users = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
+            var users = await query.ToPagedListAsync(request.PageIndex, request.PageSize, cancellationToken);
             return users.Map<User, UserModel>(_mapper);
         }
 

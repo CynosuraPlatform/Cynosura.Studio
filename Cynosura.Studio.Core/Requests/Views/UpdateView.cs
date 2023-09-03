@@ -12,6 +12,6 @@ namespace Cynosura.Studio.Core.Requests.Views
 
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

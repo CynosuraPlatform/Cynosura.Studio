@@ -11,6 +11,6 @@ namespace Cynosura.Studio.Core.Requests.Views
     {
         public int SolutionId { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
 
-        public EnumFilter Filter { get; set; }
-        public string OrderBy { get; set; }
+        public EnumFilter? Filter { get; set; }
+        public string? OrderBy { get; set; }
         public OrderDirection? OrderDirection { get; set; }
     }
 }

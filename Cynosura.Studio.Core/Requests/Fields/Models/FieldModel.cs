@@ -8,6 +8,14 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
 {
     public class FieldModel
     {
+        public FieldModel(string name, string displayName, bool isRequired, bool isSystem)
+        {
+            Name = name;
+            DisplayName = displayName;
+            IsRequired = isRequired;
+            IsSystem = isSystem;
+        }
+
         [DisplayName("Id")]
         public Guid Id { get; set; }
 
@@ -23,14 +31,14 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
 
         [DisplayName("Entity")]
         public Guid? EntityId { get; set; }
-        public EntityShortModel Entity { get; set; }
+        public EntityShortModel? Entity { get; set; }
 
         [DisplayName("Required")]
         public bool IsRequired { get; set; }
 
         [DisplayName("Enum")]
         public Guid? EnumId { get; set; }
-        public Enums.Models.EnumShortModel Enum { get; set; }
+        public Enums.Models.EnumShortModel? Enum { get; set; }
 
         public Dictionary<string, bool?> Properties { get; set; }
 

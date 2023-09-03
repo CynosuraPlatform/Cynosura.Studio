@@ -22,9 +22,9 @@ namespace Cynosura.Studio.Data
     {
         private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
 
-        public event EventHandler<SaveEventArgs> CustomSavingChanges;
+        public event EventHandler<SaveEventArgs>? CustomSavingChanges;
 
-        public event EventHandler<SaveEventArgs> CustomSavedChanges;
+        public event EventHandler<SaveEventArgs>? CustomSavedChanges;
 
         public DataContext(DbContextOptions<DataContext> options, 
             IOptions<OperationalStoreOptions> operationalStoreOptions)
@@ -33,11 +33,11 @@ namespace Cynosura.Studio.Data
             _operationalStoreOptions = operationalStoreOptions;
         }
 
-        public DbSet<PersistedGrant> PersistedGrants { get; set; }
+        public DbSet<PersistedGrant> PersistedGrants { get; set; } = null!;
 
-        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; } = null!;
 
-        public DbSet<Key> Keys { get; set; }
+        public DbSet<Key> Keys { get; set; } = null!;
 
         public override int SaveChanges()
         {

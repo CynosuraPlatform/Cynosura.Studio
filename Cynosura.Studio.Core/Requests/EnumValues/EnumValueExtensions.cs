@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
 {
     public static class EnumValueExtensions
     {
-        public static IOrderedQueryable<EnumValue> OrderBy(this IQueryable<EnumValue> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<EnumValue> OrderBy(this IQueryable<EnumValue> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -36,19 +36,19 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
             }
         }
 
-        public static IQueryable<EnumValue> Filter(this IQueryable<EnumValue> queryable, EnumValueFilter filter)
+        public static IQueryable<EnumValue> Filter(this IQueryable<EnumValue> queryable, EnumValueFilter? filter)
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Text) || e.DisplayName.Contains(filter.Text));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Text) || e.DisplayName!.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Name));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Name));
             }
             if (!string.IsNullOrEmpty(filter?.DisplayName))
             {
-                queryable = queryable.Where(e => e.DisplayName.Contains(filter.DisplayName));
+                queryable = queryable.Where(e => e.DisplayName!.Contains(filter.DisplayName));
             }
             if (filter?.ValueFrom != null)
             {

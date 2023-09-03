@@ -7,6 +7,12 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
 {
     public class SolutionModel
     {
+        public SolutionModel(string name, string path)
+        {
+            Name = name;
+            Path = path;
+        }
+
         [DisplayName("Id")]
         public int Id { get; set; }
 
@@ -18,11 +24,11 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
 
         [DisplayName("Creation User")]
         public int? CreationUserId { get; set; }
-        public Users.Models.UserShortModel CreationUser { get; set; }
+        public Users.Models.UserShortModel? CreationUser { get; set; }
 
         [DisplayName("Modification User")]
         public int? ModificationUserId { get; set; }
-        public Users.Models.UserShortModel ModificationUser { get; set; }
+        public Users.Models.UserShortModel? ModificationUser { get; set; }
 
         [DisplayName("Name")]
         public string Name { get; set; }

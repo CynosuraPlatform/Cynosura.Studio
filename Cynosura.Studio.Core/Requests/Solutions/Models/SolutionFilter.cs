@@ -5,7 +5,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
 {
     public class SolutionFilter : EntityFilter
     {
-        public string Name { get; set; }
-        public string Path { get; set; }
+        public string? Name { get; set; }
+        public string? Path { get; set; }
     }
 }

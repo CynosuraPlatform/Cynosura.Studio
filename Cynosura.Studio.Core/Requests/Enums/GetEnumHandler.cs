@@ -11,7 +11,7 @@ using EnumModel = Cynosura.Studio.Core.Requests.Enums.Models.EnumModel;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
-    public class GetEnumHandler : IRequestHandler<GetEnum, EnumModel>
+    public class GetEnumHandler : IRequestHandler<GetEnum, EnumModel?>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             _mapper = mapper;
         }
 
-        public async Task<EnumModel> Handle(GetEnum request, CancellationToken cancellationToken)
+        public async Task<EnumModel?> Handle(GetEnum request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -31,6 +31,10 @@ namespace Cynosura.Studio.Core.Requests.Enums
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var enums = await solutionAccessor.GetEnumsAsync();
             var @enum = enums.FirstOrDefault(e => e.Id == request.Id);
+            if (@enum == null)
+            {
+                return null;
+            }
             return _mapper.Map<Generator.Models.Enum, EnumModel>(@enum);
         }
 

@@ -30,7 +30,7 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetView")]
-        public async Task<ViewModel> GetViewAsync([FromBody] GetView getView)
+        public async Task<ViewModel?> GetViewAsync([FromBody] GetView getView)
         {
             return await _mediator.Send(getView);
         }

@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 {
     public static class SolutionExtensions
     {
-        public static IOrderedQueryable<Solution> OrderBy(this IQueryable<Solution> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<Solution> OrderBy(this IQueryable<Solution> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -28,19 +28,19 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             }
         }
 
-        public static IQueryable<Solution> Filter(this IQueryable<Solution> queryable, SolutionFilter filter)
+        public static IQueryable<Solution> Filter(this IQueryable<Solution> queryable, SolutionFilter? filter)
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Text) || e.Path.Contains(filter.Text));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Text) || e.Path!.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Name));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Name));
             }
             if (!string.IsNullOrEmpty(filter?.Path))
             {
-                queryable = queryable.Where(e => e.Path.Contains(filter.Path));
+                queryable = queryable.Where(e => e.Path!.Contains(filter.Path));
             }
             return queryable;
         }

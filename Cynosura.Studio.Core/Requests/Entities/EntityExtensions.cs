@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
 {
     public static class EntityExtensions
     {
-        public static IOrderedQueryable<Entity> OrderBy(this IQueryable<Entity> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<Entity> OrderBy(this IQueryable<Entity> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -55,19 +55,19 @@ namespace Cynosura.Studio.Core.Requests.Entities
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Name));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Name));
             }
             if (!string.IsNullOrEmpty(filter?.PluralName))
             {
-                queryable = queryable.Where(e => e.PluralName.Contains(filter.PluralName));
+                queryable = queryable.Where(e => e.PluralName!.Contains(filter.PluralName));
             }
             if (!string.IsNullOrEmpty(filter?.DisplayName))
             {
-                queryable = queryable.Where(e => e.DisplayName.Contains(filter.DisplayName));
+                queryable = queryable.Where(e => e.DisplayName!.Contains(filter.DisplayName));
             }
             if (!string.IsNullOrEmpty(filter?.PluralDisplayName))
             {
-                queryable = queryable.Where(e => e.PluralDisplayName.Contains(filter.PluralDisplayName));
+                queryable = queryable.Where(e => e.PluralDisplayName!.Contains(filter.PluralDisplayName));
             }
             if (filter?.IsAbstract != null)
             {

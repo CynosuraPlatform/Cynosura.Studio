@@ -30,34 +30,39 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<ViewPageModel> GetViews(GetViewsRequest getViewsRequest, ServerCallContext context)
         {
             var getViews = _mapper.Map<GetViewsRequest, GetViews>(getViewsRequest);
-            return _mapper.Map<PageModel<ViewModel>, ViewPageModel>(await _mediator.Send(getViews));
+            var model = await _mediator.Send(getViews);
+            return _mapper.Map<PageModel<ViewModel>, ViewPageModel>(model);
         }
 
         public override async Task<View> GetView(GetViewRequest getViewRequest, ServerCallContext context)
         {
             var getView = _mapper.Map<GetViewRequest, GetView>(getViewRequest);
-            return _mapper.Map<ViewModel, View>(await _mediator.Send(getView));
+            var model = await _mediator.Send(getView);
+            return _mapper.Map<ViewModel, View>(model!);
         }
 
         [Authorize("WriteView")]
         public override async Task<Empty> UpdateView(UpdateViewRequest updateViewRequest, ServerCallContext context)
         {
             var updateView = _mapper.Map<UpdateViewRequest, UpdateView>(updateViewRequest);
-            return _mapper.Map<Unit, Empty>(await _mediator.Send(updateView));
+            var model = await _mediator.Send(updateView);
+            return _mapper.Map<Unit, Empty>(model);
         }
 
         [Authorize("WriteView")]
         public override async Task<CreatedEntity> CreateView(CreateViewRequest createViewRequest, ServerCallContext context)
         {
             var createView = _mapper.Map<CreateViewRequest, CreateView>(createViewRequest);
-            return _mapper.Map<CreatedEntity<Guid>, CreatedEntity>(await _mediator.Send(createView));
+            var model = await _mediator.Send(createView);
+            return _mapper.Map<CreatedEntity<Guid>, CreatedEntity>(model);
         }
 
         [Authorize("WriteView")]
         public override async Task<Empty> DeleteView(DeleteViewRequest deleteViewRequest, ServerCallContext context)
         {
             var deleteView = _mapper.Map<DeleteViewRequest, DeleteView>(deleteViewRequest);
-            return _mapper.Map<Unit, Empty>(await _mediator.Send(deleteView));
+            var model = await _mediator.Send(deleteView);
+            return _mapper.Map<Unit, Empty>(model);
         }
     }
 }

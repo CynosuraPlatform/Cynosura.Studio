@@ -6,6 +6,10 @@ namespace Cynosura.Studio.Core.Requests.Users.Models
 {
     public class UserModel
     {
+        public UserModel()
+        {
+        }
+
         public int Id { get; set; }
 
         [DisplayName("Creation Date")]
@@ -15,10 +19,10 @@ namespace Cynosura.Studio.Core.Requests.Users.Models
         public DateTime ModificationDate { get; set; }
 
         [DisplayName("UserName")]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         [DisplayName("Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [DisplayName("Email Confirmed")]
         public bool EmailConfirmed { get; set; }
@@ -26,9 +30,9 @@ namespace Cynosura.Studio.Core.Requests.Users.Models
         public IList<int> RoleIds { get; } = new List<int>();
 
         [DisplayName("First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [DisplayName("Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetEnum")]
-        public async Task<EnumModel> GetEnumAsync([FromBody] GetEnum getEnum)
+        public async Task<EnumModel?> GetEnumAsync([FromBody] GetEnum getEnum)
         {
             return await _mediator.Send(getEnum);
         }

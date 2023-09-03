@@ -34,7 +34,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             IQueryable<Solution> query = _solutionRepository.GetEntities();            
             query = query.Filter(request.Filter);
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
-            var solutions = await query.ToPagedListAsync(request.PageIndex, request.PageSize);
+            var solutions = await query.ToPagedListAsync(request.PageIndex, request.PageSize, cancellationToken);
             var solutionsModels = solutions.Map<Solution, SolutionModel>(_mapper);
             solutionsModels.PageItems = solutionsModels.PageItems
                 .Select(s =>

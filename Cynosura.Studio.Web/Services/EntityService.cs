@@ -30,34 +30,39 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<EntityPageModel> GetEntities(GetEntitiesRequest getEntitiesRequest, ServerCallContext context)
         {
             var getEntities = _mapper.Map<GetEntitiesRequest, GetEntities>(getEntitiesRequest);
-            return _mapper.Map<PageModel<EntityModel>, EntityPageModel>(await _mediator.Send(getEntities));
+            var model = await _mediator.Send(getEntities);
+            return _mapper.Map<PageModel<EntityModel>, EntityPageModel>(model);
         }
 
         public override async Task<Entity> GetEntity(GetEntityRequest getEntityRequest, ServerCallContext context)
         {
             var getEntity = _mapper.Map<GetEntityRequest, GetEntity>(getEntityRequest);
-            return _mapper.Map<EntityModel, Entity>(await _mediator.Send(getEntity));
+            var model = await _mediator.Send(getEntity);
+            return _mapper.Map<EntityModel, Entity>(model!);
         }
 
         [Authorize("WriteEntity")]
         public override async Task<Empty> UpdateEntity(UpdateEntityRequest updateEntityRequest, ServerCallContext context)
         {
             var updateEntity = _mapper.Map<UpdateEntityRequest, UpdateEntity>(updateEntityRequest);
-            return _mapper.Map<Unit, Empty>(await _mediator.Send(updateEntity));
+            var model = await _mediator.Send(updateEntity);
+            return _mapper.Map<Unit, Empty>(model);
         }
 
         [Authorize("WriteEntity")]
         public override async Task<CreatedEntity> CreateEntity(CreateEntityRequest createEntityRequest, ServerCallContext context)
         {
             var createEntity = _mapper.Map<CreateEntityRequest, CreateEntity>(createEntityRequest);
-            return _mapper.Map<CreatedEntity<Guid>, CreatedEntity>(await _mediator.Send(createEntity));
+            var model = await _mediator.Send(createEntity);
+            return _mapper.Map<CreatedEntity<Guid>, CreatedEntity>(model);
         }
 
         [Authorize("WriteEntity")]
         public override async Task<Empty> DeleteEntity(DeleteEntityRequest deleteEntityRequest, ServerCallContext context)
         {
             var deleteEntity = _mapper.Map<DeleteEntityRequest, DeleteEntity>(deleteEntityRequest);
-            return _mapper.Map<Unit, Empty>(await _mediator.Send(deleteEntity));
+            var model = await _mediator.Send(deleteEntity);
+            return _mapper.Map<Unit, Empty>(model);
         }
     }
 }

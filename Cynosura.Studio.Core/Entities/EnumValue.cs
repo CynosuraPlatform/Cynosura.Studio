@@ -8,12 +8,18 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class EnumValue
     {
+        public EnumValue(string name, Guid enumId)
+        {
+            Name = name;
+            EnumId = enumId;
+        }
+
         [Required()]
         [StringLength(100)]
         public string Name { get; set; }
         
         [StringLength(100)]
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
         
 
         public int? Value { get; set; }
@@ -23,7 +29,7 @@ namespace Cynosura.Studio.Core.Entities
         
         [Required()]
         public Guid EnumId { get; set; }
-        public Enum Enum { get; set; }
+        public Enum Enum { get; set; } = null!;
 
         public Dictionary<string, bool?> Properties { get; set; }
     }

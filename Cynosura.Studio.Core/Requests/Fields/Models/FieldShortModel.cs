@@ -5,6 +5,11 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
 {
     public class FieldShortModel
     {
+        public FieldShortModel(string name)
+        {
+            Name = name;
+        }
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }

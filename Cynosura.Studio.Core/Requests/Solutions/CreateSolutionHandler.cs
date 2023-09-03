@@ -41,7 +41,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             _solutionRepository.Add(solution);
             await _unitOfWork.CommitAsync();
             await _solutionGenerator.GenerateSolutionAsync(solution.Path, solution.Name, template.Name, request.TemplateVersion);
-            return new CreatedEntity<int>() { Id = solution.Id };
+            return new CreatedEntity<int>(solution.Id);
         }
 
     }

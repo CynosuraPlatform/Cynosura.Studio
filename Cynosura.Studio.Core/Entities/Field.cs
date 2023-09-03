@@ -8,6 +8,14 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Field
     {
+        public Field(string name, string displayName, bool isRequired, bool isSystem)
+        {
+            Name = name;
+            DisplayName = displayName;
+            IsRequired = isRequired;
+            IsSystem = isSystem;
+        }
+
         [Required()]
         [StringLength(100)]
         public string Name { get; set; }
@@ -23,7 +31,7 @@ namespace Cynosura.Studio.Core.Entities
 
         public Guid? EntityId { get; set; }
 
-        public Entity Entity { get; set; }
+        public Entity? Entity { get; set; }
 
         [Required()]
         public bool IsRequired { get; set; }
@@ -36,7 +44,7 @@ namespace Cynosura.Studio.Core.Entities
         
         public Guid? EnumId { get; set; }
 
-        public Enum Enum { get; set; }
+        public Enum? Enum { get; set; }
 
         public Dictionary<string, bool?> Properties { get; set; }
     }

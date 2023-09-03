@@ -7,6 +7,12 @@ namespace Cynosura.Studio.Core.Requests.Enums.Models
 {
     public class EnumModel
     {
+        public EnumModel(string name, string displayName)
+        {
+            Name = name;
+            DisplayName = displayName;
+        }
+
         [DisplayName("Id")]
         public Guid Id { get; set; }
 

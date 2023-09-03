@@ -10,9 +10,9 @@ namespace Cynosura.Studio.Core.Requests.Solutions
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Path { get; set; }
+        public string? Path { get; set; }
         
         public string TemplateName { get; set; }
         

@@ -12,7 +12,7 @@ using EntityModel = Cynosura.Studio.Core.Requests.Entities.Models.EntityModel;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
-    public class GetEntityHandler : IRequestHandler<GetEntity, EntityModel>
+    public class GetEntityHandler : IRequestHandler<GetEntity, EntityModel?>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             _mapper = mapper;
         }
 
-        public async Task<EntityModel> Handle(GetEntity request, CancellationToken cancellationToken)
+        public async Task<EntityModel?> Handle(GetEntity request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -32,6 +32,10 @@ namespace Cynosura.Studio.Core.Requests.Entities
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entities = await solutionAccessor.GetEntitiesAsync();
             var entity = entities.FirstOrDefault(e => e.Id == request.Id);
+            if (entity == null)
+            {
+                return null;
+            }
             return _mapper.Map<Generator.Models.Entity, EntityModel>(entity);
         }
 

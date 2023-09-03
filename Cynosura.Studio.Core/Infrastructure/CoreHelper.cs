@@ -12,7 +12,7 @@ namespace Cynosura.Studio.Core.Infrastructure
         {
             var platformAndAppNames = new[] { "Cynosura", "Cynosura.Studio" };
             return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => platformAndAppNames.Any(n => a.FullName.Contains(n)) ||
+                .Where(a => platformAndAppNames.Any(n => a.FullName!.Contains(n)) ||
                             a.GetReferencedAssemblies()
                                 .Any(ra => platformAndAppNames.Any(n => ra.FullName.Contains(n))))
                 .ToArray();

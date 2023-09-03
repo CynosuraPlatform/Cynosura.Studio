@@ -34,7 +34,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             IQueryable<Solution> query = _solutionRepository.GetEntities();            
             query = query.Filter(request.Filter);
             query = query.OrderBy(request.OrderBy, request.OrderDirection);
-            var solutions = await query.ToListAsync();
+            var solutions = await query.ToListAsync(cancellationToken);
             var models = _mapper.Map<List<Solution>, List<SolutionModel>>(solutions);
             return await _excelFormatter.GetExcelFileAsync(models, "Solutions");
         }

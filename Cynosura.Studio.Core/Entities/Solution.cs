@@ -8,6 +8,12 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Solution : BaseEntity
     {
+        public Solution(string name, string path)
+        {
+            Name = name;
+            Path = path;
+        }
+
         [Required()]
         [StringLength(50)]
         public string Name { get; set; }

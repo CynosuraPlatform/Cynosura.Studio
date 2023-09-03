@@ -5,6 +5,11 @@ namespace Cynosura.Studio.Core.Requests.Enums.Models
 {
     public class EnumShortModel
     {
+        public EnumShortModel(string name)
+        {
+            Name = name;
+        }
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }

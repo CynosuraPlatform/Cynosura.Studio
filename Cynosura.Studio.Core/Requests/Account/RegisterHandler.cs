@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -31,7 +31,7 @@ namespace Cynosura.Studio.Core.Requests.Account
             var result = await _userManager.CreateAsync(user, request.Password);
             result.CheckIfSucceeded();
 
-            return new CreatedEntity<int>() { Id = user.Id };
+            return new CreatedEntity<int>(user.Id);
 
         }
 

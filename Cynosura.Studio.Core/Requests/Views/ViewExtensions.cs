@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Views
 {
     public static class ViewExtensions
     {
-        public static IOrderedQueryable<View> OrderBy(this IQueryable<View> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<View> OrderBy(this IQueryable<View> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -24,15 +24,15 @@ namespace Cynosura.Studio.Core.Requests.Views
             }
         }
 
-        public static IQueryable<View> Filter(this IQueryable<View> queryable, ViewFilter filter)
+        public static IQueryable<View> Filter(this IQueryable<View> queryable, ViewFilter? filter)
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Text));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Name));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Name));
             }
             return queryable;
         }

@@ -6,6 +6,11 @@ namespace Cynosura.Studio.Core.Requests.EnumValues.Models
 {
     public class EnumValueModel
     {
+        public EnumValueModel(string name)
+        {
+            Name = name;
+        }
+
         [DisplayName("Id")]
         public Guid Id { get; set; }
 
@@ -13,7 +18,7 @@ namespace Cynosura.Studio.Core.Requests.EnumValues.Models
         public string Name { get; set; }
 
         [DisplayName("Display Name")]
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         [DisplayName("Value")]
         public int? Value { get; set; }

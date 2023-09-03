@@ -13,13 +13,13 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public int SolutionId { get; set; }
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string PluralName { get; set; }
+        public string? PluralName { get; set; }
 
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
-        public string PluralDisplayName { get; set; }
+        public string? PluralDisplayName { get; set; }
 
         public IList<UpdateField> Fields { get; set; }
 

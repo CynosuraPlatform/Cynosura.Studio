@@ -19,11 +19,11 @@ namespace Cynosura.Studio.Core.Entities
         
 
         public int? CreationUserId { get; set; }
-        public User CreationUser { get; set; }
+        public User? CreationUser { get; set; }
         
 
         public int? ModificationUserId { get; set; }
-        public User ModificationUser { get; set; }
+        public User? ModificationUser { get; set; }
         
     }
 }

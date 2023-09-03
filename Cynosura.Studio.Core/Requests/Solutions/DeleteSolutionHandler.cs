@@ -29,13 +29,13 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
             if (solution == null)
             {
                 throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.Id]);
             }
             _solutionRepository.Delete(solution);
-            await _unitOfWork.CommitAsync();
+            await _unitOfWork.CommitAsync(cancellationToken);
             return Unit.Value;
         }
 

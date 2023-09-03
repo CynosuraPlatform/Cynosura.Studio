@@ -30,7 +30,7 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetEntity")]
-        public async Task<EntityModel> GetEntityAsync([FromBody] GetEntity getEntity)
+        public async Task<EntityModel?> GetEntityAsync([FromBody] GetEntity getEntity)
         {
             return await _mediator.Send(getEntity);
         }

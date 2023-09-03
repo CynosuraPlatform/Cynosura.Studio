@@ -8,6 +8,12 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class WorkerInfo : BaseEntity
     {
+        public WorkerInfo(string name, string className)
+        {
+            Name = name;
+            ClassName = className;
+        }
+
         [Required()]
         [StringLength(200)]
         public string Name { get; set; }
@@ -15,6 +21,8 @@ namespace Cynosura.Studio.Core.Entities
         [Required()]
         [StringLength(200)]
         public string ClassName { get; set; }
-        
+
+        public IList<WorkerScheduleTask> ScheduleTasks { get; set; } = null!;
+
     }
 }

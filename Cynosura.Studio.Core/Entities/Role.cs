@@ -9,6 +9,11 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class Role : IdentityRole<int>
     {
+        public Role(string displayName)
+        {
+            DisplayName = displayName;
+        }
+
         [Required()]
         public DateTime CreationDate { get; set; }
         

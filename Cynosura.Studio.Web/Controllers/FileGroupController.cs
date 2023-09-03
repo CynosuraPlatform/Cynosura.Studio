@@ -31,7 +31,7 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("GetFileGroup")]
-        public async Task<FileGroupModel> GetFileGroupAsync([FromBody] GetFileGroup getFileGroup)
+        public async Task<FileGroupModel?> GetFileGroupAsync([FromBody] GetFileGroup getFileGroup)
         {
             return await _mediator.Send(getFileGroup);
         }

@@ -15,9 +15,9 @@ namespace Cynosura.Studio.Core.Email.Models
             FileName = fileName;
         }
 
-        public byte[] Data { get; set; }
-        public string FileName { get; set; }
-        public string ContentType { get; set; }
+        public byte[]? Data { get; set; }
+        public string? FileName { get; set; }
+        public string? ContentType { get; set; }
 
         public static async Task<EmailAttachment> FromStreamAsync(Stream stream, string fileName)
         {

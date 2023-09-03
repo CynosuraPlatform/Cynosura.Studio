@@ -11,8 +11,8 @@ namespace Cynosura.Studio.Core.Requests.Entities
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
 
-        public Models.EntityFilter Filter { get; set; }
-        public string OrderBy { get; set; }
+        public Models.EntityFilter? Filter { get; set; }
+        public string? OrderBy { get; set; }
         public OrderDirection? OrderDirection { get; set; }
     }
 }

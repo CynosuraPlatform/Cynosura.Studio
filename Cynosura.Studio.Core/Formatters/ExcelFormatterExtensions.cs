@@ -13,12 +13,7 @@ namespace Cynosura.Studio.Core.Formatters
         {
             using var ms = new MemoryStream();
             await excelFormatter.SaveToAsync(ms, data, true);
-            return new FileContentModel()
-            {
-                Name = $"{filename}.xlsx",
-                Content = ms.ToArray(),
-                ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            };
+            return new FileContentModel($"{filename}.xlsx", ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
     }
 }

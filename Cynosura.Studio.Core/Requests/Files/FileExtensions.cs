@@ -9,7 +9,7 @@ namespace Cynosura.Studio.Core.Requests.Files
 {
     public static class FileExtensions
     {
-        public static IOrderedQueryable<File> OrderBy(this IQueryable<File> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<File> OrderBy(this IQueryable<File> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -41,11 +41,11 @@ namespace Cynosura.Studio.Core.Requests.Files
             }
         }
 
-        public static IQueryable<File> Filter(this IQueryable<File> queryable, FileFilter filter)
+        public static IQueryable<File> Filter(this IQueryable<File> queryable, FileFilter? filter)
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Text) || e.ContentType.Contains(filter.Text) || e.Url.Contains(filter.Text));
+                queryable = queryable.Where(e => e.Name.Contains(filter.Text) || e.ContentType.Contains(filter.Text) || e.Url!.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
@@ -58,7 +58,7 @@ namespace Cynosura.Studio.Core.Requests.Files
 
             if (!string.IsNullOrEmpty(filter?.Url))
             {
-                queryable = queryable.Where(e => e.Url.Contains(filter.Url));
+                queryable = queryable.Where(e => e.Url!.Contains(filter.Url));
             }
             if (filter?.GroupId != null)
             {
@@ -67,7 +67,7 @@ namespace Cynosura.Studio.Core.Requests.Files
             return queryable;
         }
 
-        public static void Validate(this string accept, string filename, string contentType)
+        public static void Validate(this string? accept, string filename, string contentType)
         {
             if (string.IsNullOrEmpty(accept))
                 return;

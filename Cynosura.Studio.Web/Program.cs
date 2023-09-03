@@ -21,7 +21,7 @@ namespace Cynosura.Studio.Web
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var databaseInitializer = (IDatabaseInitializer)services.GetService(typeof(IDatabaseInitializer));
+                var databaseInitializer = (IDatabaseInitializer)services.GetService(typeof(IDatabaseInitializer))!;
                 databaseInitializer.SeedAsync().GetAwaiter().GetResult();
             }
             host.Run();

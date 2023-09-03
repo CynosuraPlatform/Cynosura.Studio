@@ -46,6 +46,10 @@ import { TranslocoRootModule } from './transloco-root.module';
         loadChildren: () => import('./solution/solution-routed.module').then(m => m.SolutionRoutedModule)
       },
       {
+        path: 'worker-schedule-task',
+        loadChildren: () => import('./worker-schedule-task/worker-schedule-task-routed.module').then(m => m.WorkerScheduleTaskRoutedModule)
+      },
+      {
         path: 'worker-run',
         loadChildren: () => import('./worker-run/worker-run-routed.module').then(m => m.WorkerRunRoutedModule)
       },

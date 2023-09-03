@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Core.Requests.Fields
 {
     public static class FieldExtensions
     {
-        public static IOrderedQueryable<Field> OrderBy(this IQueryable<Field> queryable, string propertyName, OrderDirection? direction)
+        public static IOrderedQueryable<Field> OrderBy(this IQueryable<Field> queryable, string? propertyName, OrderDirection? direction)
         {
             switch (propertyName)
             {                
@@ -48,19 +48,19 @@ namespace Cynosura.Studio.Core.Requests.Fields
             }
         }
 
-        public static IQueryable<Field> Filter(this IQueryable<Field> queryable, FieldFilter filter)
+        public static IQueryable<Field> Filter(this IQueryable<Field> queryable, FieldFilter? filter)
         {
             if (!string.IsNullOrEmpty(filter?.Text))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Text) || e.DisplayName.Contains(filter.Text));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Text) || e.DisplayName!.Contains(filter.Text));
             }
             if (!string.IsNullOrEmpty(filter?.Name))
             {
-                queryable = queryable.Where(e => e.Name.Contains(filter.Name));
+                queryable = queryable.Where(e => e.Name!.Contains(filter.Name));
             }
             if (!string.IsNullOrEmpty(filter?.DisplayName))
             {
-                queryable = queryable.Where(e => e.DisplayName.Contains(filter.DisplayName));
+                queryable = queryable.Where(e => e.DisplayName!.Contains(filter.DisplayName));
             }
             if (filter?.SizeFrom != null)
             {

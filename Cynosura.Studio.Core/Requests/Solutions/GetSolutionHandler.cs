@@ -12,7 +12,7 @@ using Cynosura.Studio.Core.Requests.Solutions.Models;
 
 namespace Cynosura.Studio.Core.Requests.Solutions
 {
-    public class GetSolutionHandler : IRequestHandler<GetSolution, SolutionModel>
+    public class GetSolutionHandler : IRequestHandler<GetSolution, SolutionModel?>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly ILogger<GetSolutionHandler> _logger;
@@ -27,10 +27,14 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             _mapper = mapper;
         }
 
-        public async Task<SolutionModel> Handle(GetSolution request, CancellationToken cancellationToken)
+        public async Task<SolutionModel?> Handle(GetSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+            if (solution == null)
+            {
+                return null;
+            }
             var solutionModel = _mapper.Map<Solution, SolutionModel>(solution);
             if (solutionModel != null)
             {

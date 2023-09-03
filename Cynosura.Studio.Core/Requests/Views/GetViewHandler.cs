@@ -11,7 +11,7 @@ using Cynosura.Studio.Generator;
 
 namespace Cynosura.Studio.Core.Requests.Views
 {
-    public class GetViewHandler : IRequestHandler<GetView, ViewModel>
+    public class GetViewHandler : IRequestHandler<GetView, ViewModel?>
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace Cynosura.Studio.Core.Requests.Views
             _mapper = mapper;
         }
 
-        public async Task<ViewModel> Handle(GetView request, CancellationToken cancellationToken)
+        public async Task<ViewModel?> Handle(GetView request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -31,6 +31,10 @@ namespace Cynosura.Studio.Core.Requests.Views
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var views = await solutionAccessor.GetViewsAsync();
             var view = views.FirstOrDefault(e => e.Id == request.Id);
+            if (view == null)
+            {
+                return null;
+            }
             return _mapper.Map<Generator.Models.View, ViewModel>(view);
         }
 

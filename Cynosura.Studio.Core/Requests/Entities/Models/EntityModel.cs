@@ -7,6 +7,15 @@ namespace Cynosura.Studio.Core.Requests.Entities.Models
 {
     public class EntityModel
     {
+        public EntityModel(string name, string pluralName, string displayName, string pluralDisplayName, bool isAbstract)
+        {
+            Name = name;
+            PluralName = pluralName;
+            DisplayName = displayName;
+            PluralDisplayName = pluralDisplayName;
+            IsAbstract = isAbstract;
+        }
+
         [DisplayName("Id")]
         public Guid Id { get; set; }
 
@@ -31,6 +40,6 @@ namespace Cynosura.Studio.Core.Requests.Entities.Models
 
         [DisplayName("Base Entity")]
         public Guid? BaseEntityId { get; set; }
-        public Entities.Models.EntityShortModel BaseEntity { get; set; }
+        public Entities.Models.EntityShortModel? BaseEntity { get; set; }
     }
 }

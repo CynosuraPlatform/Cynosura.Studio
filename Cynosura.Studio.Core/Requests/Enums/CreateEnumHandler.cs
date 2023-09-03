@@ -41,7 +41,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 .First(e => e.Id == @enum.Id);
             await _enumGenerator.GenerateEnumAsync(solutionAccessor, @enum);
             await _enumGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
-            return new CreatedEntity<Guid>() { Id = @enum.Id };
+            return new CreatedEntity<Guid>(@enum.Id);
         }
 
     }

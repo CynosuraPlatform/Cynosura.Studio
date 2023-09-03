@@ -10,7 +10,7 @@ using Cynosura.Studio.Core.Requests.WorkerInfos.Models;
 
 namespace Cynosura.Studio.Core.Requests.WorkerInfos
 {
-    public class GetWorkerInfoHandler : IRequestHandler<GetWorkerInfo, WorkerInfoModel>
+    public class GetWorkerInfoHandler : IRequestHandler<GetWorkerInfo, WorkerInfoModel?>
     {
         private readonly IEntityRepository<WorkerInfo> _workerInfoRepository;
         private readonly IMapper _mapper;
@@ -22,11 +22,15 @@ namespace Cynosura.Studio.Core.Requests.WorkerInfos
             _mapper = mapper;
         }
 
-        public async Task<WorkerInfoModel> Handle(GetWorkerInfo request, CancellationToken cancellationToken)
+        public async Task<WorkerInfoModel?> Handle(GetWorkerInfo request, CancellationToken cancellationToken)
         {
             var workerInfo = await _workerInfoRepository.GetEntities()
                 .Where(e => e.Id == request.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
+            if (workerInfo == null)
+            {
+                return null;
+            }
             return _mapper.Map<WorkerInfo, WorkerInfoModel>(workerInfo);
         }
 

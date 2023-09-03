@@ -13,9 +13,9 @@ namespace Cynosura.Studio.Core.Requests.Enums
     {
         public int SolutionId { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         public IList<CreateEnumValue> Values { get; set; }
 

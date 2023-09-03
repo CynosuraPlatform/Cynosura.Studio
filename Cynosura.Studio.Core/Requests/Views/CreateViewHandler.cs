@@ -38,7 +38,7 @@ namespace Cynosura.Studio.Core.Requests.Views
             await solutionAccessor.CreateViewAsync(view);
 
             await _viewGenerator.GenerateViewAsync(solutionAccessor, view);
-            return new CreatedEntity<Guid>() { Id = view.Id };
+            return new CreatedEntity<Guid>(view.Id);
         }
 
     }

@@ -8,6 +8,11 @@ namespace Cynosura.Studio.Core.Entities
 {
     public class View
     {
+        public View(string name)
+        {
+            Name = name;
+        }
+
         [Required()]
         public Guid Id { get; set; }
         

@@ -10,8 +10,8 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public int? PageIndex { get; set; }
         public int? PageSize { get; set; }
 
-        public SolutionFilter Filter { get; set; }
-        public string OrderBy { get; set; }
+        public SolutionFilter? Filter { get; set; }
+        public string? OrderBy { get; set; }
         public OrderDirection? OrderDirection { get; set; }
     }
 }
