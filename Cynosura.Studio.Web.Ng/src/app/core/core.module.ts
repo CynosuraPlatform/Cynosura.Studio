@@ -35,6 +35,8 @@ import { SortActivePipe } from './pipes/sort-active.pipe';
 import { SortDirectionPipe } from './pipes/sort-direction.pipe';
 import { SelectItemDirective } from './directives/select-item.directive';
 import { SelectAllItemsDirective } from './directives/select-all-items.directive';
+import { ColumnSettingsComponent } from './column-settings.component';
+import { StoredValueService } from './stored-value.service';
 
 export const MY_MOMENT_FORMATS = {
   parseInput: 'L LT',
@@ -68,7 +70,8 @@ export const MY_MOMENT_FORMATS = {
     DateEditComponent,
     DateViewComponent,
     TimeEditComponent,
-    TimeViewComponent
+    TimeViewComponent,
+    ColumnSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -93,7 +96,8 @@ export const MY_MOMENT_FORMATS = {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    StoredValueService,
   ],
   entryComponents: [
     ModalComponent
@@ -122,7 +126,8 @@ export const MY_MOMENT_FORMATS = {
     DateEditComponent,
     DateViewComponent,
     TimeEditComponent,
-    TimeViewComponent
+    TimeViewComponent,
+    ColumnSettingsComponent,
   ]
 })
 export class CoreModule {

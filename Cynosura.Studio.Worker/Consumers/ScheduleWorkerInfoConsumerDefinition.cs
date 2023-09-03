@@ -8,9 +8,9 @@ using Cynosura.Studio.Core.Messaging.WorkerInfos;
 
 namespace Cynosura.Studio.Worker.Consumers
 {
-    class ScheduleWorkerInfoConsumerDefinition : ConsumerDefinition<ScheduleWorkerInfoConsumer>
+    public class ScheduleWorkerInfoConsumerDefinition : ConsumerDefinition<ScheduleWorkerInfoConsumer>
     {
-        protected ScheduleWorkerInfoConsumerDefinition()
+        public ScheduleWorkerInfoConsumerDefinition()
         {
             EndpointName = ScheduleWorkerInfo.QueueName;
         }

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { forkJoin, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -11,6 +12,8 @@ import { Error } from '../core/error.model';
 import { Page, PageSettings } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 import { OrderDirectionManager } from '../core/models/order-direction.model';
+import { ColumnDescription } from '../core/column-settings.component';
+import { StoredValueService } from '../core/stored-value.service';
 
 import { Solution, SolutionListState } from '../solution-core/solution.model';
 import { SolutionService } from '../solution-core/solution.service';
@@ -25,13 +28,22 @@ import { SolutionOpenComponent } from './solution-open.component';
 export class SolutionListComponent implements OnInit {
   content: Page<Solution>;
   pageSizeOptions = PageSettings.pageSizeOptions;
-  columns = [
+  defaultColumns = [
     'select',
     'name',
     'path',
     'templateName',
     'templateVersion',
     'action'
+  ];
+  columns = this.storedValueService.getStoredValue('solutionColumns', this.defaultColumns);
+  columnDescriptions: ColumnDescription[] = [
+    { name: 'select', isSystem: true },
+    { name: 'name', displayName: this.translocoService.translate('Name') },
+    { name: 'path', displayName: this.translocoService.translate('Path') },
+    { name: 'templateName', displayName: this.translocoService.translate('Template Name') },
+    { name: 'templateVersion', displayName: this.translocoService.translate('Template Version') },
+    { name: 'action', isSystem: true },
   ];
   selectedIds = new Set<number>();
 
@@ -45,7 +57,9 @@ export class SolutionListComponent implements OnInit {
     private dialog: MatDialog,
     private modalHelper: ModalHelper,
     private solutionService: SolutionService,
-    private noticeHelper: NoticeHelper
+    private noticeHelper: NoticeHelper,
+    private translocoService: TranslocoService,
+    private storedValueService: StoredValueService
   ) {
   }
 

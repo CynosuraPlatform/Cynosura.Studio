@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { forkJoin, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { ModalHelper } from '../core/modal.helper';
 import { StoreService } from '../core/store.service';
@@ -11,6 +12,8 @@ import { Error } from '../core/error.model';
 import { Page, PageSettings } from '../core/page.model';
 import { NoticeHelper } from '../core/notice.helper';
 import { OrderDirectionManager } from '../core/models/order-direction.model';
+import { ColumnDescription } from '../core/column-settings.component';
+import { StoredValueService } from '../core/stored-value.service';
 
 import { Entity, EntityListState } from '../entity-core/entity.model';
 import { EntityService } from '../entity-core/entity.service';
@@ -24,7 +27,7 @@ import { EntityEditComponent } from './entity-edit.component';
 export class EntityListComponent implements OnInit {
   content: Page<Entity>;
   pageSizeOptions = PageSettings.pageSizeOptions;
-  columns = [
+  defaultColumns = [
     'select',
     'name',
     'pluralName',
@@ -46,6 +49,17 @@ export class EntityListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getEntities();
   }
+  columns = this.storedValueService.getStoredValue('entityColumns', this.defaultColumns);
+  columnDescriptions: ColumnDescription[] = [
+    { name: 'select', isSystem: true },
+    { name: 'name', displayName: this.translocoService.translate('Name') },
+    { name: 'pluralName', displayName: this.translocoService.translate('Plural Name') },
+    { name: 'displayName', displayName: this.translocoService.translate('Display Name') },
+    { name: 'pluralDisplayName', displayName: this.translocoService.translate('Plural Display Name') },
+    { name: 'isAbstract', displayName: this.translocoService.translate('Abstract') },
+    { name: 'baseEntity', displayName: this.translocoService.translate('Base Entity') },
+    { name: 'action', isSystem: true },
+  ];
   selectedIds = new Set<string>();
 
   @Input()
@@ -59,7 +73,9 @@ export class EntityListComponent implements OnInit {
     private modalHelper: ModalHelper,
     private entityService: EntityService,
     private storeService: StoreService,
-    private noticeHelper: NoticeHelper
+    private noticeHelper: NoticeHelper,
+    private translocoService: TranslocoService,
+    private storedValueService: StoredValueService
   ) {
   }
 
