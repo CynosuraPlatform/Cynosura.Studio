@@ -21,9 +21,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
 
         public string? PluralDisplayName { get; set; }
 
-        public IList<CreateField> Fields { get; set; }
+        public IList<CreateField> Fields { get; set; } = null!;
 
-        public PropertyCollection Properties { get; set; }
+        public PropertyCollection Properties { get; set; } = null!;
 
         public bool? IsAbstract { get; set; }
 

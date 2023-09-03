@@ -35,7 +35,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
         public async Task<CreatedEntity<int>> Handle(CreateSolution request, CancellationToken cancellationToken)
         {
             var solution = _mapper.Map<CreateSolution, Solution>(request);
-            var template = await _templateProvider.GetTemplateAsync(request.TemplateName);
+            var template = await _templateProvider.GetTemplateAsync(request.TemplateName!);
             if (template == null)
                 throw new ArgumentException($"Template '{request.TemplateName}' not found");
             _solutionRepository.Add(solution);

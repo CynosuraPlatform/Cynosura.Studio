@@ -23,6 +23,6 @@ namespace Cynosura.Studio.Core.Requests.EnumValues.Models
         [DisplayName("Value")]
         public int? Value { get; set; }
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
     }
 }

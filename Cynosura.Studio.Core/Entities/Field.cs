@@ -46,6 +46,6 @@ namespace Cynosura.Studio.Core.Entities
 
         public Enum? Enum { get; set; }
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
     }
 }

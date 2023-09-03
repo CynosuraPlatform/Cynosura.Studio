@@ -35,6 +35,10 @@ namespace Cynosura.Studio.Core.Requests.Enums
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
+            if (solution == null)
+            {
+                throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.SolutionId]);
+            }
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var newEnum = _mapper.Map<UpdateEnum, Generator.Models.Enum>(request);
             var oldEnum = (await solutionAccessor.GetEnumsAsync()).FirstOrDefault(e => e.Id == request.Id);

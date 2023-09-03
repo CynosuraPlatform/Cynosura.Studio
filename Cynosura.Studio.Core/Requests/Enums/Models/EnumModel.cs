@@ -22,8 +22,8 @@ namespace Cynosura.Studio.Core.Requests.Enums.Models
         [DisplayName("Display Name")]
         public string DisplayName { get; set; }
 
-        public IList<EnumValueModel> Values { get; set; }
+        public IList<EnumValueModel> Values { get; set; } = null!;
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
     }
 }

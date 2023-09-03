@@ -25,6 +25,6 @@ namespace Cynosura.Studio.Core.Entities
         [Required()]
         public Guid Id { get; set; }
         
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
     }
 }

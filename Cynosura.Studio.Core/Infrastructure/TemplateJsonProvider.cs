@@ -19,7 +19,7 @@ namespace Cynosura.Studio.Core.Infrastructure
             return Task.FromResult(_options.AsEnumerable());
         }
 
-        public Task<TemplateModel> GetTemplateAsync(string name)
+        public Task<TemplateModel?> GetTemplateAsync(string name)
         {
             return Task.FromResult(_options.FirstOrDefault(f => f.Name == name));
         }

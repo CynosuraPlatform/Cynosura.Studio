@@ -18,6 +18,6 @@ namespace Cynosura.Studio.Core.Requests.EnumValues
 
         public int? Value { get; set; }
 
-        public PropertyCollection Properties { get; set; }
+        public PropertyCollection Properties { get; set; } = null!;
     }
 }

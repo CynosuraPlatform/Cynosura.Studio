@@ -18,8 +18,8 @@ namespace Cynosura.Studio.Core.Requests.Enums
 
         public string? DisplayName { get; set; }
 
-        public IList<UpdateEnumValue> Values { get; set; }
+        public IList<UpdateEnumValue> Values { get; set; } = null!;
 
-        public PropertyCollection Properties { get; set; }
+        public PropertyCollection Properties { get; set; } = null!;
     }
 }

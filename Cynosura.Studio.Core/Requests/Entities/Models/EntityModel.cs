@@ -31,9 +31,9 @@ namespace Cynosura.Studio.Core.Requests.Entities.Models
         [DisplayName("Plural Display Name")]
         public string PluralDisplayName { get; set; }
 
-        public IList<FieldModel> Fields { get; set; }
+        public IList<FieldModel> Fields { get; set; } = null!;
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
 
         [DisplayName("Abstract")]
         public bool IsAbstract { get; set; }

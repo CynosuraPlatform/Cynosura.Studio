@@ -36,9 +36,9 @@ namespace Cynosura.Studio.Core.Requests.Solutions.Models
         [DisplayName("Path")]
         public string Path { get; set; }
 
-        public string TemplateName { get; set; }
+        public string? TemplateName { get; set; }
 
-        public string TemplateVersion { get; set; }
+        public string? TemplateVersion { get; set; }
 
         public void LoadMetadata()
         {

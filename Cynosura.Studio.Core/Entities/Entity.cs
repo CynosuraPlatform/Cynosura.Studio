@@ -32,9 +32,9 @@ namespace Cynosura.Studio.Core.Entities
 		[StringLength(100)]
 		public string PluralDisplayName { get; set; }
 
-        public IList<Field> Fields { get; set; }
+        public IList<Field> Fields { get; set; } = null!;
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
         [Required()]
         public bool IsAbstract { get; set; }
         

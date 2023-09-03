@@ -31,6 +31,6 @@ namespace Cynosura.Studio.Core.Entities
         public Guid EnumId { get; set; }
         public Enum Enum { get; set; } = null!;
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
     }
 }

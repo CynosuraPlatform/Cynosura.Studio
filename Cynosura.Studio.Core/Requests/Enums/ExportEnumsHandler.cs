@@ -14,6 +14,8 @@ using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Requests.Enums.Models;
 using Cynosura.Studio.Generator;
 using EnumModel = Cynosura.Studio.Core.Requests.Enums.Models.EnumModel;
+using Cynosura.Core.Services;
+using Microsoft.Extensions.Localization;
 
 namespace Cynosura.Studio.Core.Requests.Enums
 {
@@ -22,14 +24,17 @@ namespace Cynosura.Studio.Core.Requests.Enums
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IExcelFormatter _excelFormatter;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public ExportEnumsHandler(IEntityRepository<Solution> solutionRepository,
             IExcelFormatter excelFormatter,
-            IMapper mapper)
+            IMapper mapper,
+            IStringLocalizer<SharedResource> localizer)
         {
             _solutionRepository = solutionRepository;
             _excelFormatter = excelFormatter;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         public async Task<FileContentModel> Handle(ExportEnums request, CancellationToken cancellationToken)
@@ -37,6 +42,10 @@ namespace Cynosura.Studio.Core.Requests.Enums
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
+            if (solution == null)
+            {
+                throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.SolutionId]);
+            }
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var enums = await solutionAccessor.GetEnumsAsync();
             if (!string.IsNullOrEmpty(request.Filter?.Text))

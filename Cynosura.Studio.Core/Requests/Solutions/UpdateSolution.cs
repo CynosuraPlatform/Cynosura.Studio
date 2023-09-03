@@ -14,8 +14,8 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 
         public string? Path { get; set; }
         
-        public string TemplateName { get; set; }
+        public string? TemplateName { get; set; }
         
-        public string TemplateVersion { get; set; }
+        public string? TemplateVersion { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace Cynosura.Studio.Core.Requests.Fields.Models
         public Guid? EnumId { get; set; }
         public Enums.Models.EnumShortModel? Enum { get; set; }
 
-        public Dictionary<string, bool?> Properties { get; set; }
+        public Dictionary<string, bool?> Properties { get; set; } = null!;
 
         [DisplayName("System")]
         public bool IsSystem { get; set; }

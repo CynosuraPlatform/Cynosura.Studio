@@ -10,6 +10,8 @@ using Cynosura.Core.Services.Models;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Generator;
 using EntityModel = Cynosura.Studio.Core.Requests.Entities.Models.EntityModel;
+using Cynosura.Core.Services;
+using Microsoft.Extensions.Localization;
 
 namespace Cynosura.Studio.Core.Requests.Entities
 {
@@ -17,12 +19,15 @@ namespace Cynosura.Studio.Core.Requests.Entities
     {
         private readonly IEntityRepository<Solution> _solutionRepository;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public GetEntitiesHandler(IEntityRepository<Solution> solutionRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IStringLocalizer<SharedResource> localizer)
         {
             _solutionRepository = solutionRepository;
             _mapper = mapper;
+            _localizer = localizer;
         }
 
         public async Task<PageModel<EntityModel>> Handle(GetEntities request, CancellationToken cancellationToken)
@@ -30,6 +35,10 @@ namespace Cynosura.Studio.Core.Requests.Entities
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
                 .FirstOrDefaultAsync();
+            if (solution == null)
+            {
+                throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.SolutionId]);
+            }
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var entities = await solutionAccessor.GetEntitiesAsync();
             if (!string.IsNullOrEmpty(request.Filter?.Text))
