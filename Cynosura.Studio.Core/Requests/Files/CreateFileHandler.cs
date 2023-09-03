@@ -57,7 +57,8 @@ namespace Cynosura.Studio.Core.Requests.Files
             else if (fileGroup.Type == Core.Enums.FileGroupType.Storage)
             {
                 var filename = Guid.NewGuid() + Path.GetExtension(request.Name);
-                file.Url = await _fileStorage.SaveFileAsync($"{fileGroup.Location}/{filename}", request.Content, request.ContentType);
+                var filePath = $"{fileGroup.Location}/{DateTime.Today:yyyy'/'MM}/{filename}";
+                file.Url = await _fileStorage.SaveFileAsync(filePath, request.Content, request.ContentType);
             }
             else
             {

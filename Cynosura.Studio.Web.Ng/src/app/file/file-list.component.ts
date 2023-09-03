@@ -56,10 +56,12 @@ export class FileListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.getFiles();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.getFiles();
   }

@@ -54,10 +54,12 @@ export class $model.Entity.Name$ListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.get$model.Entity.PluralName$();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.get$model.Entity.PluralName$();
   }

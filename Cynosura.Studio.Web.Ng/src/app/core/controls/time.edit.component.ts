@@ -37,17 +37,22 @@ export class TimeEditComponent implements ControlValueAccessor, MatFormFieldCont
 
   private valueLocal: Date;
 
-  get innerValue(): Date {
+  get innerValue(): string {
     if (this.value && !this.valueLocal) {
       this.valueLocal = new Date(`2000-01-01T${this.value}`);
     }
-    return this.valueLocal;
-  }
-  set innerValue(val: Date) {
-    this.valueLocal = val;
-    if (val) {
-      this.value = val.toTimeString().substring(0, 5);
+    if (this.valueLocal) {
+      return this.valueLocal.toISOString();
     } else {
+      return null;
+    }
+  }
+  set innerValue(val: string) {
+    if (val) {
+      this.valueLocal = new Date(val);
+      this.value = this.valueLocal.toTimeString().substring(0, 5);
+    } else {
+      this.valueLocal = null;
       this.value = null;
     }
     this.onChange(this.value);

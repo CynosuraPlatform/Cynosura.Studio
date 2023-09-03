@@ -42,9 +42,7 @@
     </div>
     <div class="field-view">
       <label>{{ t('Roles') }}</label>
-      <div *ngFor="let role of userRoles">
-        {{ role.displayName }}
-      </div>
+      <app-roles-show [value]="user.roleIds"></app-roles-show>
     </div>
   </div>
 

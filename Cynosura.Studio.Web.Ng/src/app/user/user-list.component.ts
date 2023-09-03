@@ -57,10 +57,12 @@ export class UserListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.getUsers();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.getUsers();
   }

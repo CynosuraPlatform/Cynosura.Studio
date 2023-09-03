@@ -36,9 +36,7 @@
       </mat-form-field>
       <div class="field-view">
         <label>{{ t('Roles') }}</label>
-        <div *ngFor="let role of roles; let i = index ">
-          <mat-checkbox [name]="'roleIds' + i" [(ngModel)]="role.isSelected" [ngModelOptions]="{standalone: true}">{{ role.displayName }}</mat-checkbox>
-        </div>
+        <app-roles-select formControlName="roleIds"></app-roles-select>
       </div>
     </form>
 

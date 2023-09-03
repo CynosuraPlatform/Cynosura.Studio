@@ -54,10 +54,12 @@ export class RoleListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.getRoles();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.getRoles();
   }

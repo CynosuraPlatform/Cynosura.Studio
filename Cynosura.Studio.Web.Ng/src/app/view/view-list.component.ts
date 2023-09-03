@@ -71,10 +71,12 @@ export class ViewListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.getViews();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.getViews();
   }

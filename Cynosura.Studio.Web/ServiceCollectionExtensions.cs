@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Cynosura.Messaging;
 using Cynosura.Web.Infrastructure;
 using Cynosura.Studio.Core.Infrastructure;
 using Cynosura.Studio.Core.Security;
+using Cynosura.Studio.Infrastructure.Messaging;
 using Cynosura.Studio.Web.Infrastructure;
+using MassTransit;
 
 namespace Cynosura.Studio.Web
 {
@@ -24,6 +28,16 @@ namespace Cynosura.Studio.Web
             services.AddTransient<IExceptionHandler, StudioExceptionHandler>();
 
             services.AddFromConfiguration(configuration, assemblies);
+            services.Configure<MassTransitServiceOptions>(configuration.GetSection("Messaging"));
+            services.AddCynosuraMessaging(null, x =>
+            {
+                x.AddInMemoryBus((context, sbc) =>
+                {
+                    sbc.ConfigureEndpoints(context);
+                });
+                x.AddConsumers(assemblies);
+            });
+            services.AddTransient<IHostedService, MessagingWorker>();
             return services;
         }
     }

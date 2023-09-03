@@ -56,10 +56,12 @@ export class FileGroupListComponent implements OnInit {
   }
 
   onSearch() {
+    this.state.pageIndex = 0;
     this.getFileGroups();
   }
 
   onReset() {
+    this.state.pageIndex = 0;
     this.state.filter.text = null;
     this.getFileGroups();
   }
