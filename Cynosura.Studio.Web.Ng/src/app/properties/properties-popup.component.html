@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Properties ({{ target }})</h1>
 <mat-dialog-content>
     <div>
-        <div *ngFor="let item of boolProperties | keyvalue" [class.defaults]="defaults[item.key] == boolProperties[item.key]">
-            <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="boolProperties[item.key]" 
+        <div *ngFor="let item of boolProperties | keyvalue" [class.defaults]="defaults[item.key] === boolProperties[item.key]">
+            <label class="checkbox-inline"><input type="checkbox" [(ngModel)]="boolProperties[item.key]"
                 (ngModelChange)="handleChange(item.key, $event)">{{ item.key }}</label>
         </div>
         <div class="input-group">
@@ -13,6 +13,6 @@
         </div>
     </div>
 </mat-dialog-content>
-<mat-dialog-actions>    
+<mat-dialog-actions>
     <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Close</button>
 </mat-dialog-actions>

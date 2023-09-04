@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-conflicting-lifecycle */
 import { Component, Input, OnInit, forwardRef, OnDestroy, ElementRef, Optional, Self, DoCheck, OnChanges,
     SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';

@@ -12,15 +12,12 @@ import { FieldEditComponent } from './field-edit.component';
     templateUrl: './field-view.component.html',
     styleUrls: ['./field-view.component.scss']
 })
-export class FieldViewComponent implements OnInit {
+export class FieldViewComponent {
     id: string;
     field: Field;
 
     constructor(private dialog: MatDialog,
                 private route: ActivatedRoute) {
-    }
-
-    ngOnInit(): void {
     }
 
     onEdit() {

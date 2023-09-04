@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<mat-select *ngIf="mode == 'select'" [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
-=======
-﻿<mat-select *ngIf="mode === 'select'" [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
->>>>>>> upgrade
+<mat-select *ngIf="mode === 'select'" [(ngModel)]="innerValue" [disabled]="disabled" [placeholder]="placeholder">
     <mat-option [value]="null"></mat-option>
     <mat-option [value]="view.id" *ngFor="let view of views">{{ view.name }}</mat-option>
 </mat-select>

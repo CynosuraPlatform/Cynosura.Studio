@@ -17,7 +17,7 @@ class DialogData {
     templateUrl: './field-edit.component.html',
     styleUrls: ['./field-edit.component.scss']
 })
-export class FieldEditComponent implements OnInit {
+export class FieldEditComponent {
 
     FieldType = FieldType;
 
@@ -56,10 +56,6 @@ export class FieldEditComponent implements OnInit {
                 private noticeHelper: NoticeHelper) {
         this.solutionId = data.solutionId;
         this.field = data.field;
-    }
-
-    ngOnInit(): void {
-
     }
 
     onSave(): void {

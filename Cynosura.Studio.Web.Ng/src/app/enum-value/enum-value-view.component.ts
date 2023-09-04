@@ -12,15 +12,12 @@ import { EnumValueEditComponent } from './enum-value-edit.component';
     templateUrl: './enum-value-view.component.html',
     styleUrls: ['./enum-value-view.component.scss']
 })
-export class EnumValueViewComponent implements OnInit {
+export class EnumValueViewComponent {
     id: string;
     enumValue: EnumValue;
 
     constructor(private dialog: MatDialog,
                 private route: ActivatedRoute) {
-    }
-
-    ngOnInit(): void {
     }
 
     onEdit() {

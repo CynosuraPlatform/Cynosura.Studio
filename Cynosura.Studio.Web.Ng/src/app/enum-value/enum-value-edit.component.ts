@@ -17,7 +17,7 @@ class DialogData {
     templateUrl: './enum-value-edit.component.html',
     styleUrls: ['./enum-value-edit.component.scss']
 })
-export class EnumValueEditComponent implements OnInit {
+export class EnumValueEditComponent {
     @Input()
     solutionId: number;
     enumValueForm = this.fb.group({
@@ -47,10 +47,6 @@ export class EnumValueEditComponent implements OnInit {
                 private noticeHelper: NoticeHelper) {
         this.solutionId = data.solutionId;
         this.enumValue = data.enumValue;
-    }
-
-    ngOnInit(): void {
-
     }
 
     onSave(): void {
