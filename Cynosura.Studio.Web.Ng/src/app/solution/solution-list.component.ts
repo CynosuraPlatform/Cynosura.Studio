@@ -36,7 +36,6 @@ export class SolutionListComponent implements OnInit {
     'templateVersion',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('solutionColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'name', displayName: this.translocoService.translate('Name') },
@@ -45,6 +44,8 @@ export class SolutionListComponent implements OnInit {
     { name: 'templateVersion', displayName: this.translocoService.translate('Template Version') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('solutionColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<number>();
 
   @Input()

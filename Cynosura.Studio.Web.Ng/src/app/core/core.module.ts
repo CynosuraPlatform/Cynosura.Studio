@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { OwlDateTimeModule, OwlMomentDateTimeModule, OWL_DATE_TIME_FORMATS } from '@danielmoncada/angular-datetime-picker';
+import { OwlDateTimeModule, OWL_DATE_TIME_FORMATS } from '@danielmoncada/angular-datetime-picker';
+import { OwlMomentDateTimeModule } from '@danielmoncada/angular-datetime-picker-moment-adapter';
 import { MaterialModule } from '../material.module';
 
 import { ErrorInterceptor } from './error.interceptor';
@@ -98,9 +99,6 @@ export const MY_MOMENT_FORMATS = {
       multi: true
     },
     StoredValueService,
-  ],
-  entryComponents: [
-    ModalComponent
   ],
   exports: [
     CommonModule,

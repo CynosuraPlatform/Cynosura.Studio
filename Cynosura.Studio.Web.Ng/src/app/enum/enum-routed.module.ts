@@ -16,8 +16,6 @@ import { EnumModule } from '../enum/enum.module';
     EnumModule,
   ],
   providers: [
-  ],
-  entryComponents: [
   ]
 })
 export class EnumRoutedModule {

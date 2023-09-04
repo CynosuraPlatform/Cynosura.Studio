@@ -25,13 +25,14 @@ export class EnumValueListComponent implements OnInit {
     'value',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('enumValueColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'name', displayName: this.translocoService.translate('Name') },
     { name: 'displayName', displayName: this.translocoService.translate('Display Name') },
     { name: 'value', displayName: this.translocoService.translate('Value') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('enumValueColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
 
   @Input()
   solutionId: number;

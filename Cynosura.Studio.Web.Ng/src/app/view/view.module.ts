@@ -29,9 +29,6 @@ import { ViewsComponent } from './views.component';
         ViewListComponent,
     ],
     providers: [
-    ],
-    entryComponents: [
-        ViewEditComponent
     ]
 })
 export class ViewModule {

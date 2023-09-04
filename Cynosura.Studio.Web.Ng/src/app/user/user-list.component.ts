@@ -36,7 +36,6 @@ export class UserListComponent implements OnInit {
     'lastName',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('userColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'userName', displayName: this.translocoService.translate('UserName') },
@@ -47,6 +46,8 @@ export class UserListComponent implements OnInit {
     { name: 'roles', displayName: this.translocoService.translate('Roles') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('userColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<number>();
 
   @Input()

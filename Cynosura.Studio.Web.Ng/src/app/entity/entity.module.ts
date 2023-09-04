@@ -33,9 +33,6 @@ import { EntitiesComponent } from './entities.component';
         EntityListComponent,
     ],
     providers: [
-    ],
-    entryComponents: [
-        EntityEditComponent
     ]
 })
 export class EntityModule {

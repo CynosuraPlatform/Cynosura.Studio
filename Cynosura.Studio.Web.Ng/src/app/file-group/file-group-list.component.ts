@@ -35,7 +35,6 @@ export class FileGroupListComponent implements OnInit {
     'accept',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('fileGroupColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'name', displayName: this.translocoService.translate('Name') },
@@ -44,6 +43,8 @@ export class FileGroupListComponent implements OnInit {
     { name: 'accept', displayName: this.translocoService.translate('Accept') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('fileGroupColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<number>();
 
   @Input()

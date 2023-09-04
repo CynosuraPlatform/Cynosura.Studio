@@ -33,13 +33,14 @@ export class WorkerInfoListComponent implements OnInit {
     'className',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('workerInfoColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'name', displayName: this.translocoService.translate('Name') },
     { name: 'className', displayName: this.translocoService.translate('Class Name') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('workerInfoColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<number>();
 
   @Input()

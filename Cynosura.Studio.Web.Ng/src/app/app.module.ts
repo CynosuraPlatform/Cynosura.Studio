@@ -77,7 +77,7 @@ import { TranslocoRootModule } from './transloco-root.module';
         path: 'user',
         loadChildren: () => import('./user/user-routed.module').then(m => m.UserRoutedModule)
       },
-    ]),
+    ], { relativeLinkResolution: 'legacy' }),
     MaterialModule,
     CoreModule,
     TranslocoRootModule,

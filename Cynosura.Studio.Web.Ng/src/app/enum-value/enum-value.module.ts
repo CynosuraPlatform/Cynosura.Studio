@@ -29,9 +29,6 @@ import { EnumValueViewComponent } from './enum-value-view.component';
         EnumValueListComponent,
     ],
     providers: [
-    ],
-    entryComponents: [
-        EnumValueEditComponent
     ]
 })
 export class EnumValueModule {

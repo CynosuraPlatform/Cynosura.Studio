@@ -49,7 +49,6 @@ export class EntityListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getEntities();
   }
-  columns = this.storedValueService.getStoredValue('entityColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'name', displayName: this.translocoService.translate('Name') },
@@ -60,6 +59,8 @@ export class EntityListComponent implements OnInit {
     { name: 'baseEntity', displayName: this.translocoService.translate('Base Entity') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('entityColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<string>();
 
   @Input()

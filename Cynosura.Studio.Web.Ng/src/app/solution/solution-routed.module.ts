@@ -16,8 +16,6 @@ import { SolutionModule } from '../solution/solution.module';
     SolutionModule,
   ],
   providers: [
-  ],
-  entryComponents: [
   ]
 })
 export class SolutionRoutedModule {

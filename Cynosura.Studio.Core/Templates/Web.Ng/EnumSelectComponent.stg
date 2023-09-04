@@ -17,7 +17,7 @@ import { $model.Enum.Name$, $model.Enum.Name$Display } from './$model.Enum.NameK
   ]
 })
 
-export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAccessor,
+export class $model.Enum.Name$SelectComponent implements ControlValueAccessor,
   MatFormFieldControl<$model.Enum.Name$ | null>, OnDestroy, DoCheck {
 
   static nextId = 0;
@@ -100,10 +100,6 @@ export class $model.Enum.Name$SelectComponent implements OnInit, ControlValueAcc
     this.innerValue = value;
   }
 
-  ngOnInit(): void {
-    
-  }
-  
   ngOnDestroy() {
     this.stateChanges.complete();
     this.fm.stopMonitoring(this.elRef);

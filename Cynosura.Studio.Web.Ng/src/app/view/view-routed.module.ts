@@ -16,8 +16,6 @@ import { ViewModule } from '../view/view.module';
     ViewModule,
   ],
   providers: [
-  ],
-  entryComponents: [
   ]
 })
 export class ViewRoutedModule {

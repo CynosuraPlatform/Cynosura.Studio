@@ -33,9 +33,6 @@ import { EnumsComponent } from './enums.component';
         EnumListComponent,
     ],
     providers: [
-    ],
-    entryComponents: [
-        EnumEditComponent
     ]
 })
 export class EnumModule {

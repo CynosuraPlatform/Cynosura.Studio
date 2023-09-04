@@ -32,9 +32,6 @@ import { FieldViewComponent } from './field-view.component';
     ],
     exports: [
         FieldListComponent
-    ],
-    entryComponents: [
-        FieldEditComponent
     ]
 })
 export class FieldModule {

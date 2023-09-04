@@ -44,12 +44,13 @@ export class ViewListComponent implements OnInit {
     this.storeService.set('solutionId', this.innerSolutionId);
     this.getViews();
   }
-  columns = this.storedValueService.getStoredValue('viewColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'name', displayName: this.translocoService.translate('Name') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('viewColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<string>();
 
   @Input()

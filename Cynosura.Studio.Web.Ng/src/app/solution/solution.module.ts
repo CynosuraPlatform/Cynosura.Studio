@@ -13,29 +13,25 @@ import { SolutionViewComponent } from './solution-view.component';
 import { SolutionsComponent } from './solutions.component';
 
 @NgModule({
-    declarations: [
-        SolutionListComponent,
-        SolutionEditComponent,
-        SolutionOpenComponent,
-        SolutionViewComponent,
-        SolutionsComponent,
-    ],
-    imports: [
-        RouterModule,
-        CoreModule,
-        TranslocoRootModule,
-        SolutionCoreModule,
-        TemplateCoreModule
-    ],
-    exports: [
-        SolutionListComponent,
-    ],
-    providers: [
-    ],
-    entryComponents: [
-        SolutionEditComponent,
-        SolutionOpenComponent
-    ],
+  declarations: [
+    SolutionListComponent,
+    SolutionEditComponent,
+    SolutionOpenComponent,
+    SolutionViewComponent,
+    SolutionsComponent,
+  ],
+  imports: [
+    RouterModule,
+    CoreModule,
+    TranslocoRootModule,
+    SolutionCoreModule,
+    TemplateCoreModule
+  ],
+  exports: [
+    SolutionListComponent,
+  ],
+  providers: [
+  ],
 })
 export class SolutionModule {
 

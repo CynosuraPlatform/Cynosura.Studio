@@ -35,7 +35,6 @@ export class WorkerRunListComponent implements OnInit {
     'endDateTime',
     'action'
   ];
-  columns = this.storedValueService.getStoredValue('workerRunColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'select', isSystem: true },
     { name: 'workerInfo', displayName: this.translocoService.translate('Worker') },
@@ -47,6 +46,8 @@ export class WorkerRunListComponent implements OnInit {
     { name: 'resultData', displayName: this.translocoService.translate('Result Data') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('workerRunColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
   selectedIds = new Set<number>();
 
   @Input()

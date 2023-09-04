@@ -29,7 +29,6 @@ export class FieldListComponent implements OnInit {
   ];
 
   FieldType = FieldType;
-  columns = this.storedValueService.getStoredValue('fieldColumns', this.defaultColumns);
   columnDescriptions: ColumnDescription[] = [
     { name: 'name', displayName: this.translocoService.translate('Name') },
     { name: 'displayName', displayName: this.translocoService.translate('Display Name') },
@@ -40,6 +39,8 @@ export class FieldListComponent implements OnInit {
     { name: 'isSystem', displayName: this.translocoService.translate('System') },
     { name: 'action', isSystem: true },
   ];
+  columns = this.storedValueService.getStoredValue('fieldColumns', this.defaultColumns,
+    ColumnDescription.filter(this.columnDescriptions));
 
   @Input()
   solutionId: number;

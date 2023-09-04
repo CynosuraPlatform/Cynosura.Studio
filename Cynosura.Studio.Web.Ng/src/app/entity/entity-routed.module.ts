@@ -16,8 +16,6 @@ import { EntityModule } from '../entity/entity.module';
     EntityModule,
   ],
   providers: [
-  ],
-  entryComponents: [
   ]
 })
 export class EntityRoutedModule {
