@@ -1,12 +1,12 @@
-name: $(version)-b$(BuildID)
-
 trigger:
-- development
+  tags:
+    include:
+    - '*'
 
 pr: none
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-22.04'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -15,7 +15,6 @@ steps:
     command: 'pack'
     packagesToPack: 'Cynosura.Studio.CliTool/*.csproj'
     versioningScheme: 'off'
-    buildProperties: 'PackageVersion=$(Build.BuildNumber)'
 
 - task: NuGetToolInstaller@1
   inputs:
