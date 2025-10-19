@@ -43,9 +43,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("UpdateEntity")]
-        public async Task<Unit> UpdateEntityAsync([FromBody] UpdateEntity updateEntity)
+        public async Task UpdateEntityAsync([FromBody] UpdateEntity updateEntity)
         {
-            return await _mediator.Send(updateEntity);
+            await _mediator.Send(updateEntity);
         }
 
         [HttpPost("CreateEntity")]
@@ -55,15 +55,15 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("DeleteEntity")]
-        public async Task<Unit> DeleteEntityAsync([FromBody] DeleteEntity deleteEntity)
+        public async Task DeleteEntityAsync([FromBody] DeleteEntity deleteEntity)
         {
-            return await _mediator.Send(deleteEntity);
+            await _mediator.Send(deleteEntity);
         }
 
         [HttpPost("GenerateEntity")]
-        public async Task<Unit> GenerateEntityAsync([FromBody] GenerateEntity generateEntity)
+        public async Task GenerateEntityAsync([FromBody] GenerateEntity generateEntity)
         {
-            return await _mediator.Send(generateEntity);
+            await _mediator.Send(generateEntity);
         }
     }
 }

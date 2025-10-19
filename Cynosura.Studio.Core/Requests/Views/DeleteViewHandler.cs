@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Views
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(DeleteView request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteView request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -43,7 +43,6 @@ namespace Cynosura.Studio.Core.Requests.Views
             }
             await _viewGenerator.DeleteViewAsync(solutionAccessor, view);
             await solutionAccessor.DeleteViewAsync(request.Id);
-            return Unit.Value;
         }
 
     }

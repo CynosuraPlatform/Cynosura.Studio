@@ -44,9 +44,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("UpdateSolution")]
-        public async Task<Unit> UpdateSolutionAsync([FromBody] UpdateSolution updateSolution)
+        public async Task UpdateSolutionAsync([FromBody] UpdateSolution updateSolution)
         {
-            return await _mediator.Send(updateSolution);
+            await _mediator.Send(updateSolution);
         }
 
         [HttpPost("CreateSolution")]
@@ -56,21 +56,21 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("DeleteSolution")]
-        public async Task<Unit> DeleteSolutionAsync([FromBody] DeleteSolution deleteSolution)
+        public async Task DeleteSolutionAsync([FromBody] DeleteSolution deleteSolution)
         {
-            return await _mediator.Send(deleteSolution);
+            await _mediator.Send(deleteSolution);
         }
 
         [HttpPost("GenerateSolution")]
-        public async Task<Unit> GenerateSolutionAsync([FromBody] GenerateSolution generateSolution)
+        public async Task GenerateSolutionAsync([FromBody] GenerateSolution generateSolution)
         {
-            return await _mediator.Send(generateSolution);
+            await _mediator.Send(generateSolution);
         }
 
         [HttpPost("UpgradeSolution")]
-        public async Task<Unit> UpgradeSolutionAsync([FromBody] UpgradeSolution upgradeSolution)
+        public async Task UpgradeSolutionAsync([FromBody] UpgradeSolution upgradeSolution)
         {
-            return await _mediator.Send(upgradeSolution);
+            await _mediator.Send(upgradeSolution);
         }
 
         [HttpPost("OpenSolution")]

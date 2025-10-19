@@ -45,8 +45,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> UpdateEntity(UpdateEntityRequest updateEntityRequest, ServerCallContext context)
         {
             var updateEntity = _mapper.Map<UpdateEntityRequest, UpdateEntity>(updateEntityRequest);
-            var model = await _mediator.Send(updateEntity);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(updateEntity);
+            return new Empty();
         }
 
         [Authorize("WriteEntity")]
@@ -61,8 +61,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> DeleteEntity(DeleteEntityRequest deleteEntityRequest, ServerCallContext context)
         {
             var deleteEntity = _mapper.Map<DeleteEntityRequest, DeleteEntity>(deleteEntityRequest);
-            var model = await _mediator.Send(deleteEntity);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(deleteEntity);
+            return new Empty();
         }
     }
 }

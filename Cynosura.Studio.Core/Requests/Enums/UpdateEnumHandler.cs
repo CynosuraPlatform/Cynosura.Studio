@@ -30,7 +30,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(UpdateEnum request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateEnum request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -52,7 +52,6 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 .FirstOrDefault(e => e.Id == request.Id);
             await _enumGenerator.UpgradeEnumAsync(solutionAccessor, oldEnum, newEnum);
             await _enumGenerator.UpgradeEnumViewAsync(solutionAccessor, oldEnum, newEnum);
-            return Unit.Value;
         }
 
     }

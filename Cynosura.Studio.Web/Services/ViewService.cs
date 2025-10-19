@@ -45,8 +45,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> UpdateView(UpdateViewRequest updateViewRequest, ServerCallContext context)
         {
             var updateView = _mapper.Map<UpdateViewRequest, UpdateView>(updateViewRequest);
-            var model = await _mediator.Send(updateView);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(updateView);
+            return new Empty();
         }
 
         [Authorize("WriteView")]
@@ -61,8 +61,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> DeleteView(DeleteViewRequest deleteViewRequest, ServerCallContext context)
         {
             var deleteView = _mapper.Map<DeleteViewRequest, DeleteView>(deleteViewRequest);
-            var model = await _mediator.Send(deleteView);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(deleteView);
+            return new Empty();
         }
     }
 }

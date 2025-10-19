@@ -45,8 +45,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> UpdateEnum(UpdateEnumRequest updateEnumRequest, ServerCallContext context)
         {
             var updateEnum = _mapper.Map<UpdateEnumRequest, UpdateEnum>(updateEnumRequest);
-            var model = await _mediator.Send(updateEnum);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(updateEnum);
+            return new Empty();
         }
 
         [Authorize("WriteEnum")]
@@ -61,8 +61,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> DeleteEnum(DeleteEnumRequest deleteEnumRequest, ServerCallContext context)
         {
             var deleteEnum = _mapper.Map<DeleteEnumRequest, DeleteEnum>(deleteEnumRequest);
-            var model = await _mediator.Send(deleteEnum);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(deleteEnum);
+            return new Empty();
         }
     }
 }

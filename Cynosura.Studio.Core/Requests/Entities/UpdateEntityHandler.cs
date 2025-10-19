@@ -30,7 +30,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(UpdateEntity request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateEntity request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -52,7 +52,6 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 .FirstOrDefault(e => e.Id == request.Id);
             await _entityGenerator.UpgradeEntityAsync(solutionAccessor, oldEntity, newEntity);
             await _entityGenerator.UpgradeEntityViewAsync(solutionAccessor, oldEntity, newEntity);
-            return Unit.Value;
         }
 
     }

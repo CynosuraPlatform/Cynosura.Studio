@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(GenerateEntity request, CancellationToken cancellationToken)
+        public async Task Handle(GenerateEntity request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -39,7 +39,6 @@ namespace Cynosura.Studio.Core.Requests.Entities
             var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
             await _entityGenerator.GenerateEntityAsync(solutionAccessor, entity);
             await _entityGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
-            return Unit.Value;
         }
 
     }

@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(DeleteEntity request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteEntity request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -44,7 +44,6 @@ namespace Cynosura.Studio.Core.Requests.Entities
             await _entityGenerator.DeleteEntityAsync(solutionAccessor, entity);
             await _entityGenerator.DeleteEntityViewAsync(solutionAccessor, entity);
             await solutionAccessor.DeleteEntityAsync(request.Id);
-            return Unit.Value;
         }
 
     }

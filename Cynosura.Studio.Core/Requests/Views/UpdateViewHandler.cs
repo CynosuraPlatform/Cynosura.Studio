@@ -27,7 +27,7 @@ namespace Cynosura.Studio.Core.Requests.Views
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(UpdateView request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateView request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -44,7 +44,6 @@ namespace Cynosura.Studio.Core.Requests.Views
                 throw new ServiceException(_localizer["{0} {1} not found", _localizer["View"], request.Id]);
             }
             await solutionAccessor.UpdateViewAsync(newView);
-            return Unit.Value;
         }
 
     }

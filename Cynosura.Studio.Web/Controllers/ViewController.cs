@@ -43,9 +43,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("UpdateView")]
-        public async Task<Unit> UpdateViewAsync([FromBody] UpdateView updateView)
+        public async Task UpdateViewAsync([FromBody] UpdateView updateView)
         {
-            return await _mediator.Send(updateView);
+            await _mediator.Send(updateView);
         }
 
         [HttpPost("CreateView")]
@@ -55,9 +55,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("DeleteView")]
-        public async Task<Unit> DeleteViewAsync([FromBody] DeleteView deleteView)
+        public async Task DeleteViewAsync([FromBody] DeleteView deleteView)
         {
-            return await _mediator.Send(deleteView);
+            await _mediator.Send(deleteView);
         }
     }
 }

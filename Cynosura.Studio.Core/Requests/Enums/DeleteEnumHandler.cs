@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(DeleteEnum request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteEnum request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.SolutionId)
@@ -44,7 +44,6 @@ namespace Cynosura.Studio.Core.Requests.Enums
             await _enumGenerator.DeleteEnumAsync(solutionAccessor, @enum);
             await _enumGenerator.DeleteEnumViewAsync(solutionAccessor, @enum);
             await solutionAccessor.DeleteEnumAsync(request.Id);
-            return Unit.Value;
         }
 
     }

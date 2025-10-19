@@ -33,7 +33,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(UpdateSolution request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.Id)
@@ -50,7 +50,6 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             {
                 await _solutionGenerator.UpgradeSolutionAsync(solutionAccessor, request.TemplateName, request.TemplateVersion);
             }
-            return Unit.Value;
         }
 
     }

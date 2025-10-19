@@ -53,8 +53,8 @@ namespace Cynosura.Studio.Web.Services
         public override async Task<Empty> DeleteWorkerRun(DeleteWorkerRunRequest deleteWorkerRunRequest, ServerCallContext context)
         {
             var deleteWorkerRun = _mapper.Map<DeleteWorkerRunRequest, DeleteWorkerRun>(deleteWorkerRunRequest);
-            var model = await _mediator.Send(deleteWorkerRun);
-            return _mapper.Map<Unit, Empty>(model);
+            await _mediator.Send(deleteWorkerRun);
+            return new Empty();
         }
     }
 }

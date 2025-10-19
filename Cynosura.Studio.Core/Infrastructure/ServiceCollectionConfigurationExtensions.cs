@@ -26,7 +26,11 @@ namespace Cynosura.Studio.Core.Infrastructure
                 {
                     foreach (var componentSection in serviceSection.GetChildren())
                     {
-                        components.Add(componentSection.Value);
+                        var value = componentSection.Value;
+                        if (value != null)
+                        {
+                            components.Add(value);
+                        }                        
                     }
                 }
                 foreach (var component in components)

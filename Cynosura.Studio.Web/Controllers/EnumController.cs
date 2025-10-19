@@ -43,9 +43,9 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("UpdateEnum")]
-        public async Task<Unit> UpdateEnumAsync([FromBody] UpdateEnum updateEnum)
+        public async Task UpdateEnumAsync([FromBody] UpdateEnum updateEnum)
         {
-            return await _mediator.Send(updateEnum);
+            await _mediator.Send(updateEnum);
         }
 
         [HttpPost("CreateEnum")]
@@ -55,15 +55,15 @@ namespace Cynosura.Studio.Web.Controllers
         }
 
         [HttpPost("DeleteEnum")]
-        public async Task<Unit> DeleteEnumAsync([FromBody] DeleteEnum deleteEnum)
+        public async Task DeleteEnumAsync([FromBody] DeleteEnum deleteEnum)
         {
-            return await _mediator.Send(deleteEnum);
+            await _mediator.Send(deleteEnum);
         }
 
         [HttpPost("GenerateEnum")]
-        public async Task<Unit> GenerateEnumAsync([FromBody] GenerateEnum generateEnum)
+        public async Task GenerateEnumAsync([FromBody] GenerateEnum generateEnum)
         {
-            return await _mediator.Send(generateEnum);
+            await _mediator.Send(generateEnum);
         }
     }
 }

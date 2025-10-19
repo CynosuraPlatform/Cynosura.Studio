@@ -25,7 +25,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             _localizer = localizer;
         }
 
-        public async Task<Unit> Handle(DeleteSolution request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .Where(e => e.Id == request.Id)
@@ -36,7 +36,6 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             }
             _solutionRepository.Delete(solution);
             await _unitOfWork.CommitAsync(cancellationToken);
-            return Unit.Value;
         }
 
     }

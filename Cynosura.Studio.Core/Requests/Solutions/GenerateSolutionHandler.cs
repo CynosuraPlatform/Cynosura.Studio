@@ -21,7 +21,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
             _solutionRepository = solutionRepository;
         }
 
-        public async Task<Unit> Handle(GenerateSolution request, CancellationToken cancellationToken)
+        public async Task Handle(GenerateSolution request, CancellationToken cancellationToken)
         {
             var solution = await _solutionRepository.GetEntities()
                 .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
@@ -30,7 +30,6 @@ namespace Cynosura.Studio.Core.Requests.Solutions
                 var accessor = new SolutionAccessor(solution.Path);
                 await _solutionGenerator.GenerateSolutionAsync(solution.Path, solution.Name, accessor.Metadata.TemplateName);
             }
-            return Unit.Value;
         }
 
     }
