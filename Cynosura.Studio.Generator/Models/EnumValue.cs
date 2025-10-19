@@ -9,10 +9,10 @@ namespace Cynosura.Studio.Generator.Models
     public class EnumValue
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
+        public string Name { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
         public int? Value { get; set; }
-        public PropertyCollection Properties { get; set; }
+        public PropertyCollection? Properties { get; set; }
 
         [JsonIgnore]
         public string DisplayNameOrName => !string.IsNullOrEmpty(DisplayName) ? DisplayName : Name;

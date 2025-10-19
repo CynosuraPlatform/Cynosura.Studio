@@ -54,7 +54,7 @@ namespace Cynosura.Studio.Generator.TemplateEngine
 
         class PropertyCollectionAdapter : IModelAdaptor
         {
-            public object GetProperty(Interpreter interpreter, TemplateFrame frame, object obj, object property, string propertyName)
+            public object? GetProperty(Interpreter interpreter, TemplateFrame frame, object obj, object property, string propertyName)
             {
                 if (obj is PropertyCollection collection)
                 {

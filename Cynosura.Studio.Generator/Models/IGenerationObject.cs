@@ -8,6 +8,6 @@ namespace Cynosura.Studio.Generator.Models
     public interface IGenerationObject
     {
         string ProcessTemplate(string template);
-        PropertyCollection Properties { get; }
+        PropertyCollection? Properties { get; }
     }
 }

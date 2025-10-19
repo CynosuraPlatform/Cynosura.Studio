@@ -191,14 +191,17 @@ namespace Cynosura.Studio.Generator
                 var upgrade = destinationUpgrade.Upgrades.FirstOrDefault(u => u.From == version);
                 if (upgrade == null)
                     throw new ServiceException("Can't upgrade template");
-                foreach (var upgradeRename in upgrade.Renames)
+                if (upgrade.Renames != null)
                 {
-                    var left = _codeGenerator.FindDirectory(destinationSolution.Path, upgradeRename.Left);
-                    left = Path.GetRelativePath(destinationSolution.Path, left);
-                    var right = _codeGenerator.FindDirectory(destinationSolution.Path, upgradeRename.Right);
-                    right = Path.GetRelativePath(destinationSolution.Path, right);
-                    renames.Add((left, right));
-                }
+                    foreach (var upgradeRename in upgrade.Renames)
+                    {
+                        var left = _codeGenerator.FindDirectory(destinationSolution.Path, upgradeRename.Left);
+                        left = Path.GetRelativePath(destinationSolution.Path, left);
+                        var right = _codeGenerator.FindDirectory(destinationSolution.Path, upgradeRename.Right);
+                        right = Path.GetRelativePath(destinationSolution.Path, right);
+                        renames.Add((left, right));
+                    }
+                }                
                 sourceVersion = upgrade.To;
             }
 

@@ -146,8 +146,8 @@ namespace Cynosura.Studio.Generator.PackageFeed
 
         public class FeedData
         {
-            public string Version { get; set; }
-            public IList<FeedResource> Resources { get; set; }
+            public string Version { get; set; } = null!;
+            public IList<FeedResource> Resources { get; set; } = null!;
 
             public string GetExplicitService(string explicitType)
             {

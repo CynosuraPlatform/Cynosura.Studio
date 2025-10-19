@@ -36,7 +36,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
                 throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.SolutionId]);
             }
             var solutionAccessor = new SolutionAccessor(solution.Path);
-            var entity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
+            var entity = (await solutionAccessor.GetEntitiesAsync()).First(e => e.Id == request.Id);
             await _entityGenerator.GenerateEntityAsync(solutionAccessor, entity);
             await _entityGenerator.GenerateEntityViewAsync(solutionAccessor, entity);
         }

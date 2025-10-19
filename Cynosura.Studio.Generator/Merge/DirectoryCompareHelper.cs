@@ -67,8 +67,8 @@ namespace Cynosura.Studio.Generator.Merge
 
     public class FileCompare
     {
-        public string OriginalName { get; set; }
-        public string Name { get; set; }
+        public string? OriginalName { get; set; }
+        public required string Name { get; set; }
         public string? LeftPath { get; set; }
         public string? RightPath { get; set; }
     }

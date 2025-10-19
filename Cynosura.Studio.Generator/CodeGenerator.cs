@@ -82,7 +82,7 @@ namespace Cynosura.Studio.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))
                 .Where(t => t.CheckView(generateInfo.View))
-                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties)))
+                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties!)))
             {
                 await CreateFileAsync(template, generateInfo.Model, solution, generateInfo.GenerationObject, overrideSolutionPath);
             }
@@ -117,7 +117,7 @@ namespace Cynosura.Studio.Generator
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))
                 .Where(t => t.CheckView(generateInfo.View))
-                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties)))
+                .Where(t => t.CheckTargets(generateInfo.GenerationObject.Properties!)))
             {
                 await DeleteFileAsync(template, generateInfo.Model, solution, generateInfo.GenerationObject);
             }

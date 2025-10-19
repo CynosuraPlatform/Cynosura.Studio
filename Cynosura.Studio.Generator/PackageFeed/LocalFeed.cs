@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
 
         public Task<IList<string>> GetVersionsAsync(string packageName)
         {
-            var result = Directory.GetFiles(_options.SourcePath)
+            var result = Directory.GetFiles(_options.SourcePath!)
                 .Select(s => new FileInfo(s))
                 .Where(w => w.Name.EndsWith(Extension))
                 .Where(w => w.Name.StartsWith(packageName))
@@ -41,24 +41,24 @@ namespace Cynosura.Studio.Generator.PackageFeed
             using (var file = File.OpenRead(path))
             using (var zip = new ZipArchive(file, ZipArchiveMode.Read))
             {
-                var nuspec = zip.GetEntry($"{packageName}.nuspec");
+                var nuspec = zip.GetEntry($"{packageName}.nuspec")!;
                 using (var info = nuspec.Open())
                 using (var reader = new StreamReader(info, Encoding.UTF8))
                 {
                     var xml = reader.ReadToEnd();
                     var xmlDoc = new XmlDocument();
                     xmlDoc.LoadXml(xml);
-                    switch (xmlDoc.DocumentElement.NamespaceURI)
+                    switch (xmlDoc.DocumentElement!.NamespaceURI)
                     {
                         case "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd":
-                            var package201007 = xml.DeserializeDataContract<NugetPackage201007>();
+                            var package201007 = xml.DeserializeDataContract<NugetPackage201007>()!;
                             if (package201007.Metadata.Id != packageName)
                             {
                                 return null;
                             }
                             return package201007.Metadata.Version;
                         case "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd":
-                            var package201305 = xml.DeserializeDataContract<NugetPackage201305>();
+                            var package201305 = xml.DeserializeDataContract<NugetPackage201305>()!;
                             if (package201305.Metadata.Id != packageName)
                             {
                                 return null;
@@ -74,11 +74,11 @@ namespace Cynosura.Studio.Generator.PackageFeed
         public async Task<string> DownloadPackageAsync(string path, string packageName, string version)
         {
             var fileName = version == ZeroVersion ? $"{packageName}{Extension}" : $"{packageName}.{version}{Extension}";
-            var targetPath = Path.Combine(_options.SourcePath, fileName);
+            var targetPath = Path.Combine(_options.SourcePath!, fileName);
 
             if (!File.Exists(targetPath))
             {
-                var item = Directory.GetFiles(_options.SourcePath)
+                var item = Directory.GetFiles(_options.SourcePath!)
                     .Select(s => new FileInfo(s))
                     .Where(w => w.Name.EndsWith(Extension))
                     .Where(w => w.Name.StartsWith(packageName))

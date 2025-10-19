@@ -6,8 +6,8 @@ namespace Cynosura.Studio.Generator.PackageFeed.Models
     public class NugetPackage201007 : IExtensibleDataObject
     {
         [DataMember(Name = "metadata")]
-        public NugetMetadata201007 Metadata { get; set; }
+        public NugetMetadata201007 Metadata { get; set; } = null!;
 
-        public ExtensionDataObject ExtensionData { get; set; }
+        public ExtensionDataObject? ExtensionData { get; set; }
     }
 }

@@ -11,8 +11,8 @@ namespace Cynosura.Studio.Generator.Models
     public class Field
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
+        public string Name { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
         [JsonConverter(typeof(StringEnumConverter))]
         public FieldType? Type { get; set; }
         public int? Size { get; set; }
@@ -20,7 +20,7 @@ namespace Cynosura.Studio.Generator.Models
         public bool IsRequired { get; set; }
         public Guid? EnumId { get; set; }
         public bool IsSystem { get; set; }
-        public PropertyCollection Properties { get; set; }
+        public PropertyCollection? Properties { get; set; }
 
         [JsonIgnore]
         public Entity? Entity { get; set; }

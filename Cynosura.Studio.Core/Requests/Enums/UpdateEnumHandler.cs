@@ -49,7 +49,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
             await solutionAccessor.UpdateEnumAsync(newEnum);
             // reload Enum from Solution
             newEnum = (await solutionAccessor.GetEnumsAsync())
-                .FirstOrDefault(e => e.Id == request.Id);
+                .First(e => e.Id == request.Id);
             await _enumGenerator.UpgradeEnumAsync(solutionAccessor, oldEnum, newEnum);
             await _enumGenerator.UpgradeEnumViewAsync(solutionAccessor, oldEnum, newEnum);
         }

@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Core.Requests.Solutions
 
         public async Task<int> Handle(OpenSolution request, CancellationToken cancellationToken)
         {
-            var accessor = new SolutionAccessor(request.Path);
+            var accessor = new SolutionAccessor(request.Path!);
             var solution = new Solution(accessor.Metadata.Name, accessor.Path);
             _solutionRepository.Add(solution);
             await _unitOfWork.CommitAsync();

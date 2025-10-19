@@ -18,7 +18,7 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2);
-                Assert.Equal(1, compares.Count);
+                Assert.Single(compares);
                 Assert.Equal("file.txt", compares[0].Name);
             }
             finally
@@ -37,7 +37,7 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2);
-                Assert.Equal(1, compares.Count);
+                Assert.Single(compares);
                 Assert.Equal($"path{Path.DirectorySeparatorChar}file.txt", compares[0].Name);
             }
             finally
@@ -59,7 +59,7 @@ namespace Cynosura.Studio.Generator.Tests
             try
             {
                 var compares = DirectoryCompareHelper.Compare(dir1, dir2, ignores: new[] { $"path{Path.DirectorySeparatorChar}" });
-                Assert.Equal(1, compares.Count);
+                Assert.Single(compares);
                 Assert.Equal($"path2{Path.DirectorySeparatorChar}file.txt", compares[0].Name);
             }
             finally

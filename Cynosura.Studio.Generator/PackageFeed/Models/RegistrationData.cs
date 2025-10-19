@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Cynosura.Studio.Generator.PackageFeed.Models
 {
     public class RegistrationData
     {
-        public IEnumerable<RegistrationDataItem> Items { get; set; }
+        public IEnumerable<RegistrationDataItem> Items { get; set; } = null!;
     }
 }

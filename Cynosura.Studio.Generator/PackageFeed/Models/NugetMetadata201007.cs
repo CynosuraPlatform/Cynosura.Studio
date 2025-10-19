@@ -6,11 +6,11 @@ namespace Cynosura.Studio.Generator.PackageFeed.Models
     public class NugetMetadata201007 : IExtensibleDataObject
     {
         [DataMember(Name = "id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [DataMember(Name = "version")]
-        public string Version { get; set; }
+        public string Version { get; set; } = null!;
         
-        public ExtensionDataObject ExtensionData { get; set; }
+        public ExtensionDataObject? ExtensionData { get; set; }
     }
 }

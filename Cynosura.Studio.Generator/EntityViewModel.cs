@@ -4,10 +4,6 @@ namespace Cynosura.Studio.Generator
 {
     public class EntityViewModel
     {
-        public EntityViewModel()
-        {
-        }
-
         public EntityViewModel(View view, Entity entity, SolutionAccessor solution)
         {
             View = view;

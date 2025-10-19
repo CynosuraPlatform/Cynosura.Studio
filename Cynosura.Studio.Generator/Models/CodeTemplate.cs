@@ -15,9 +15,9 @@ namespace Cynosura.Studio.Generator.Models
         {
             Targets = new string[0];
         }
-        public string FilePath { get; set; }
-        public string FileName { get; set; }
-        public string TemplatePath { get; set; }
+        public string FilePath { get; set; } = null!;
+        public string FileName { get; set; } = null!;
+        public string TemplatePath { get; set; } = null!;
         [Obsolete]
         public TemplateType Type
         {
@@ -54,9 +54,9 @@ namespace Cynosura.Studio.Generator.Models
                 }).ToList();
             }
         }
-        public string InsertAfter { get; set; }
-        public IEnumerable<string> Targets { get; set; }
-        public string View { get; set; }
+        public string? InsertAfter { get; set; }
+        public IEnumerable<string>? Targets { get; set; }
+        public string? View { get; set; }
 
         public bool ShouldSerializeType()
         {
@@ -80,7 +80,7 @@ namespace Cynosura.Studio.Generator.Models
             return Types.Any(t => templateTypeList.Contains(t));
         }
 
-        public bool CheckView(View view)
+        public bool CheckView(View? view)
         {
             if (view == null && string.IsNullOrEmpty(View))
             {

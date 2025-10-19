@@ -17,17 +17,17 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string PluralName { get; set; }
-        public string DisplayName { get; set; }
-        public string PluralDisplayName { get; set; }
+        public string Name { get; set; } = null!;
+        public string PluralName { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
+        public string PluralDisplayName { get; set; } = null!;
         public bool IsAbstract { get; set; }
         public Guid? BaseEntityId { get; set; }
-        public IList<Field> Fields { get; set; }
-        public PropertyCollection Properties { get; set; }
+        public IList<Field> Fields { get; set; } = null!;
+        public PropertyCollection? Properties { get; set; }
 
         [JsonIgnore]
-        public Entity BaseEntity { get; set; }
+        public Entity? BaseEntity { get; set; }
 
         [JsonIgnore]
         public Field IdField {

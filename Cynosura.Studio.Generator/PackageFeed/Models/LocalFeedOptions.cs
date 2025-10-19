@@ -5,6 +5,6 @@
         /// <summary>
         /// Path of the local NuGet artifacts
         /// </summary>
-        public string SourcePath { get; set; }
+        public string? SourcePath { get; set; }
     }
 }

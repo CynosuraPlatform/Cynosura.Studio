@@ -19,7 +19,7 @@ namespace Cynosura.Studio.Core.Requests.Templates
 
         public async Task<IEnumerable<string>> Handle(GetTemplateVersions request, CancellationToken cancellationToken)
         {
-            return await _packageFeed.GetVersionsAsync(request.TemplateName);
+            return await _packageFeed.GetVersionsAsync(request.TemplateName!);
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Cynosura.Studio.Generator.Models
     {
         private string? _nameKebab;
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string DisplayName { get; set; }
-        public IList<EnumValue> Values { get; set; }
-        public PropertyCollection Properties { get; set; }
+        public string Name { get; set; } = null!;
+        public string DisplayName { get; set; } = null!;
+        public IList<EnumValue> Values { get; set; } = null!;
+        public PropertyCollection? Properties { get; set; }
 
         [JsonIgnore]
         public string NameLower => Name.ToLowerCamelCase();

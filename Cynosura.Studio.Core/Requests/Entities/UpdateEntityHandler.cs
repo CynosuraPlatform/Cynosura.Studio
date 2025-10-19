@@ -49,7 +49,7 @@ namespace Cynosura.Studio.Core.Requests.Entities
             await solutionAccessor.UpdateEntityAsync(newEntity);
             // reload Entity from Solution
             newEntity = (await solutionAccessor.GetEntitiesAsync())
-                .FirstOrDefault(e => e.Id == request.Id);
+                .First(e => e.Id == request.Id);
             await _entityGenerator.UpgradeEntityAsync(solutionAccessor, oldEntity, newEntity);
             await _entityGenerator.UpgradeEntityViewAsync(solutionAccessor, oldEntity, newEntity);
         }

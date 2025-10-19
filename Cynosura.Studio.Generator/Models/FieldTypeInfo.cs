@@ -21,8 +21,8 @@ namespace Cynosura.Studio.Generator.Models
             { FieldType.Blob, new FieldTypeInfo() { NetType = typeof(byte[]), NetTypeName = "byte[]", JsTypeName = "Uint8Array"} },
         };
 
-        public Type NetType { get; set; }
-        public string JsTypeName { get; set; }
-        public string NetTypeName { get; set; }
+        public required Type NetType { get; set; }
+        public required string JsTypeName { get; set; }
+        public required string NetTypeName { get; set; }
     }
 }

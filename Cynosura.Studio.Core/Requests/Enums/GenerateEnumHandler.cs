@@ -36,7 +36,7 @@ namespace Cynosura.Studio.Core.Requests.Enums
                 throw new ServiceException(_localizer["{0} {1} not found", _localizer["Solution"], request.SolutionId]);
             }
             var solutionAccessor = new SolutionAccessor(solution.Path);
-            var @enum = (await solutionAccessor.GetEnumsAsync()).FirstOrDefault(e => e.Id == request.Id);
+            var @enum = (await solutionAccessor.GetEnumsAsync()).First(e => e.Id == request.Id);
             await _enumGenerator.GenerateEnumAsync(solutionAccessor, @enum);
             await _enumGenerator.GenerateEnumViewAsync(solutionAccessor, @enum);
         }

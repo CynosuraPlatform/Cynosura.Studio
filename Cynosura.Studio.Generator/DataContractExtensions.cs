@@ -18,7 +18,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public static T DeserializeDataContract<T>(this string json, params JsonConverter[] converters) where T : new()
+        public static T? DeserializeDataContract<T>(this string json, params JsonConverter[] converters) where T : new()
         {
             var ser = new DataContractSerializer(typeof(T));
             using (var stream = new MemoryStream())
@@ -26,7 +26,7 @@ namespace Cynosura.Studio.Generator
                 var buffer = Encoding.UTF8.GetBytes(json);
                 stream.Write(buffer, 0, buffer.Length);
                 stream.Seek(0, 0);
-                var result = (T) ser.ReadObject(stream);
+                var result = (T?)ser.ReadObject(stream);
                 return result;
             }
         }

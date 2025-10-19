@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Generator.Tests
                 .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile(path: "appsettings.local.json", optional: true);
             var configuration = builder.Build();
-            return configuration.GetSection("Nuget").Get<NugetSettings>();
+            return configuration.GetSection("Nuget").Get<NugetSettings>()!;
         }
     }
 }

@@ -6,14 +6,14 @@ namespace Cynosura.Studio.Generator.Models
 {
     public class SolutionMetadata
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         [Obsolete]
         public string Version
         {
             get => TemplateVersion;
             set => TemplateVersion = value;
         }
-        public string TemplateVersion { get; set; }
+        public string TemplateVersion { get; set; } = null!;
         public string TemplateName { get; set; } = "Cynosura.Template";
 
         public bool ShouldSerializeVersion()

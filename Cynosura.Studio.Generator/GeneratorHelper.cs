@@ -1,11 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Cynosura.Studio.Generator
 {
     public static class GeneratorHelper
     {
-        // TODO: Enable later
-        //[return: NotNullIfNotNull(nameof(str))]
+        [return: NotNullIfNotNull(nameof(str))]
         public static string? ToLowerCamelCase(this string? str)
         {
             if (str == null)
@@ -14,8 +14,7 @@ namespace Cynosura.Studio.Generator
             return str;
         }
 
-        // TODO: Enable later
-        //[return: NotNullIfNotNull(nameof(str))]
+        [return: NotNullIfNotNull(nameof(str))]
         public static string? ToKebabCase(this string? str)
         {
             return string.IsNullOrEmpty(str)

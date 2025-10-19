@@ -114,7 +114,7 @@ namespace Cynosura.Studio.Generator.Tests
             Assert.Equal(4, mergeToEntity.Fields.Count);
             Assert.Equal("Field 1", mergeToEntity.Fields[0].Name);
             Assert.Equal("Field 2 Changed", mergeToEntity.Fields[1].Name);
-            Assert.Equal(true, mergeToEntity.Fields[1].Properties["View"]);
+            Assert.Equal(true, mergeToEntity.Fields[1].Properties?["View"]);
             Assert.Equal("Field 4 Not Deleted", mergeToEntity.Fields[2].Name);
             Assert.Equal("Field 3 Added", mergeToEntity.Fields[3].Name);
         }
@@ -171,7 +171,7 @@ namespace Cynosura.Studio.Generator.Tests
             var entityGenerator = new EntityGenerator(new CodeGenerator(null!, null!));
             entityGenerator.MergeEntity(fromEntity, toEntity, mergeToEntity);
 
-            Assert.Equal(1, mergeToEntity.Fields.Count);
+            Assert.Single(mergeToEntity.Fields);
             Assert.Equal("Field 1", mergeToEntity.Fields[0].Name);
         }
 

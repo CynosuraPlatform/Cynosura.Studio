@@ -7,19 +7,19 @@ namespace Cynosura.Studio.Generator.Models
     public class UpgradeMetadata
     {
         public int Version { get; set; }
-        public IList<UpgradeItem> Upgrades { get; set; }
+        public IList<UpgradeItem> Upgrades { get; set; } = null!;
     }
 
     public class UpgradeItem
     {
         public int From { get; set; }
         public int To { get; set; }
-        public IList<UpgradeRename> Renames { get; set; }
+        public IList<UpgradeRename>? Renames { get; set; }
     }
 
     public class UpgradeRename
     {
-        public string Left { get; set; }
-        public string Right { get; set; }
+        public string Left { get; set; } = null!;
+        public string Right { get; set; } = null!;
     }
 }

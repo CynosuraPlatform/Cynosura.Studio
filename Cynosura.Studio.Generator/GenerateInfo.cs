@@ -5,9 +5,9 @@ namespace Cynosura.Studio.Generator
 {
     public class GenerateInfo
     {
-        public IGenerationObject GenerationObject { get; set; }
-        public object Model { get; set; }
-        public IEnumerable<TemplateType> Types { get; set; }
-        public View View { get; set; }
+        public required IGenerationObject GenerationObject { get; set; }
+        public required object Model { get; set; }
+        public required IEnumerable<TemplateType> Types { get; set; }
+        public View? View { get; set; }
     }
 }

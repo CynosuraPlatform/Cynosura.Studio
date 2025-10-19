@@ -61,7 +61,7 @@ namespace Cynosura.Studio.Generator.Merge
                 var myFilePath = Path.Combine(myDirectoryPath, compareFile.OriginalName);
                 if (compareFile.LeftPath == null)
                 {
-                    var rightFileContent = await ReadFileAsync(compareFile.RightPath);
+                    var rightFileContent = await ReadFileAsync(compareFile.RightPath!);
                     EnsureDirectoryExists(myFilePath);
                     await WriteFileAsync(myFilePath, rightFileContent);
                 }

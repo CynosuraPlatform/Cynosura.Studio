@@ -91,13 +91,13 @@ namespace Cynosura.Studio.Generator
                 {
                     await toSolution.CreateEntityAsync(entity);
                     var newEntity = (await toSolution.GetEntitiesAsync())
-                        .FirstOrDefault(e => e.Id == entity.Id);
+                        .First(e => e.Id == entity.Id);
                     await GenerateEntityAsync(toSolution, newEntity);
                     await GenerateEntityViewAsync(toSolution, newEntity);
 
                     await mergeToSolution.CreateEntityAsync(entity);
                     var newMergeEntity = (await mergeToSolution.GetEntitiesAsync())
-                        .FirstOrDefault(e => e.Id == entity.Id);
+                        .First(e => e.Id == entity.Id);
                     await GenerateEntityAsync(mergeToSolution, newMergeEntity);
                     await GenerateEntityViewAsync(mergeToSolution, newMergeEntity);
                 }
@@ -105,7 +105,7 @@ namespace Cynosura.Studio.Generator
                 {
                     await toSolution.UpdateEntityAsync(entity);
                     var newEntity = (await toSolution.GetEntitiesAsync())
-                        .FirstOrDefault(e => e.Id == entity.Id);
+                        .First(e => e.Id == entity.Id);
                     oldEntitiesToUpgrade.Add(toEntity);
                     newEntitiesToUpgrade.Add(newEntity);
 
@@ -113,8 +113,8 @@ namespace Cynosura.Studio.Generator
                     MergeEntity(entity, toEntity, newMergeEntity);
                     await mergeToSolution.UpdateEntityAsync(newMergeEntity);
                     newMergeEntity = (await mergeToSolution.GetEntitiesAsync())
-                        .FirstOrDefault(e => e.Id == entity.Id);
-                    oldMergeEntitiesToUpgrade.Add(mergeToEntity);
+                        .First(e => e.Id == entity.Id);
+                    oldMergeEntitiesToUpgrade.Add(mergeToEntity!);
                     newMergeEntitiesToUpgrade.Add(newMergeEntity);
                 }
             }

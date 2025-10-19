@@ -85,7 +85,7 @@ namespace Cynosura.Studio.Generator
                 {
                     await toSolution.CreateEnumAsync(@enum);
                     var newEnum = (await toSolution.GetEnumsAsync())
-                        .FirstOrDefault(e => e.Id == @enum.Id);
+                        .First(e => e.Id == @enum.Id);
                     await GenerateEnumAsync(toSolution, newEnum);
                     await GenerateEnumViewAsync(toSolution, newEnum);
                 }
@@ -93,7 +93,7 @@ namespace Cynosura.Studio.Generator
                 {
                     await toSolution.UpdateEnumAsync(@enum);
                     var newEnum = (await toSolution.GetEnumsAsync())
-                        .FirstOrDefault(e => e.Id == @enum.Id);
+                        .First(e => e.Id == @enum.Id);
                     oldEnumsToUpgrade.Add(toEnum);
                     newEnumsToUpgrade.Add(newEnum);
                 }
