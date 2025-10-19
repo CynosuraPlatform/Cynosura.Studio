@@ -19,7 +19,7 @@ namespace Cynosura.Studio.Generator.Merge
             _logger = logger;
         }
 
-        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)> renames = null)
+        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)>? renames = null)
         {
             _logger.LogInformation("Starting MergeDirectoryAsync for {Path}", myDirectoryPath);
 
@@ -112,7 +112,7 @@ namespace Cynosura.Studio.Generator.Merge
                 if (compareFile.LeftPath == null)
                 {
                     EnsureDirectoryExists(myFilePath);
-                    File.Copy(compareFile.RightPath, myFilePath, true);
+                    File.Copy(compareFile.RightPath!, myFilePath, true);
                 }
                 else if (compareFile.RightPath == null)
                 {
@@ -133,7 +133,7 @@ namespace Cynosura.Studio.Generator.Merge
 
         private void EnsureDirectoryExists(string filePath)
         {
-            var directory = Path.GetDirectoryName(filePath);
+            var directory = Path.GetDirectoryName(filePath)!;
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
         }

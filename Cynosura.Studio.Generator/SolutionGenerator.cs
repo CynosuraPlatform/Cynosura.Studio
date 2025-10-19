@@ -41,7 +41,7 @@ namespace Cynosura.Studio.Generator
             _logger = logger;
         }
 
-        public async Task GenerateSolutionAsync(string path, string name, string templateName, string templateVersion = null)
+        public async Task GenerateSolutionAsync(string path, string name, string templateName, string? templateVersion = null)
         {
             _logger.LogInformation($"GenerateSolution {templateName} {templateVersion}");
             if (string.IsNullOrEmpty(templateVersion))
@@ -109,7 +109,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        public async Task UpgradeSolutionAsync(SolutionAccessor solution, string templateName = null, string templateVersion = null)
+        public async Task UpgradeSolutionAsync(SolutionAccessor solution, string? templateName = null, string? templateVersion = null)
         {
             _logger.LogInformation($"UpgradeSolution {templateName} {templateVersion}");
             if (solution.Metadata == null)

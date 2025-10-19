@@ -17,7 +17,7 @@ namespace Cynosura.Studio.CliTool.Commands
         {
             var assembly = typeof(Program).Assembly;
             var appVersion = assembly
-                .GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+                .GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version;
             var accessor = new SolutionAccessor(SolutionDirectory);
             var meta = accessor.Metadata;
             Console.WriteLine(

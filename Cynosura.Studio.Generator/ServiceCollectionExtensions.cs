@@ -28,8 +28,8 @@ namespace Cynosura.Studio.Generator
             {
                 var options = sp.GetRequiredService<IOptions<LocalFeedOptions>>();
                 return string.IsNullOrEmpty(options.Value?.SourcePath)
-                    ? (IPackageFeed)(sp.GetService<NugetFeed>())
-                    : sp.GetService<LocalFeed>();
+                    ? (IPackageFeed)sp.GetService<NugetFeed>()!
+                    : sp.GetService<LocalFeed>()!;
             });
 
             services.AddTransient<IDirectoryMerge, GitMerge>();

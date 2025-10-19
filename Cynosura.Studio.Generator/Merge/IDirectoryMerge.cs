@@ -7,6 +7,6 @@ namespace Cynosura.Studio.Generator.Merge
 {
     public interface IDirectoryMerge
     {
-        Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)> renames = null);
+        Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)>? renames = null);
     }
 }

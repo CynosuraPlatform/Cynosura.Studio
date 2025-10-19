@@ -4,7 +4,9 @@ namespace Cynosura.Studio.Generator
 {
     public static class GeneratorHelper
     {
-        public static string ToLowerCamelCase(this string str)
+        // TODO: Enable later
+        //[return: NotNullIfNotNull(nameof(str))]
+        public static string? ToLowerCamelCase(this string? str)
         {
             if (str == null)
                 return null;
@@ -12,7 +14,9 @@ namespace Cynosura.Studio.Generator
             return str;
         }
 
-        public static string ToKebabCase(this string str)
+        // TODO: Enable later
+        //[return: NotNullIfNotNull(nameof(str))]
+        public static string? ToKebabCase(this string? str)
         {
             return string.IsNullOrEmpty(str)
                 ? str

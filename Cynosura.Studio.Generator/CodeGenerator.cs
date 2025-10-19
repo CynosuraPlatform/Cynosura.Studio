@@ -32,20 +32,20 @@ namespace Cynosura.Studio.Generator
             var dir = FindDirectory(solution.Path, template.FilePath);
             var fileName = generationObject.ProcessTemplate(template.FileName);
             var filePath = Path.Combine(dir, fileName);
-            var fileDirectory = Path.GetDirectoryName(filePath);
+            var fileDirectory = Path.GetDirectoryName(filePath)!;
             if (!Directory.Exists(fileDirectory))
                 Directory.CreateDirectory(fileDirectory);
             return filePath;
         }
 
-        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject, string overrideSolutionPath = null)
+        private async Task CreateFileAsync(CodeTemplate template, object model, SolutionAccessor solution, IGenerationObject generationObject, string? overrideSolutionPath = null)
         {
             var filePath = GetTemplateFilePath(template, solution, generationObject);
             var fileSavePath = filePath;
             if (!string.IsNullOrEmpty(overrideSolutionPath))
             {
                 fileSavePath = Path.Combine(overrideSolutionPath, Path.GetRelativePath(solution.Path, fileSavePath));
-                var dir = Path.GetDirectoryName(fileSavePath);
+                var dir = Path.GetDirectoryName(fileSavePath)!;
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
             }
@@ -77,7 +77,7 @@ namespace Cynosura.Studio.Generator
             }
         }
 
-        internal async Task GenerateAsync(SolutionAccessor solution, GenerateInfo generateInfo, string overrideSolutionPath = null)
+        internal async Task GenerateAsync(SolutionAccessor solution, GenerateInfo generateInfo, string? overrideSolutionPath = null)
         {
             var templates = await solution.LoadTemplatesAsync();
             foreach (var template in templates.Where(t => t.CheckTypes(generateInfo.Types))

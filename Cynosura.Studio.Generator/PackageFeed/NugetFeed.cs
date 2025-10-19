@@ -29,7 +29,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
             _settings = settings.Value;
         }
 
-        private HttpClient GetHttpClient(HttpMessageHandler handler = null)
+        private HttpClient GetHttpClient(HttpMessageHandler? handler = null)
         {
             if (string.IsNullOrEmpty(_settings.FeedUrl))
             {
@@ -153,7 +153,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
             {
                 return Resources.Where(w => w.Type == explicitType)
                     .Select(s => s.Id)
-                    .FirstOrDefault();
+                    .First();
             }
 
             public IEnumerable<string> GetTypes(string type)
@@ -187,7 +187,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
                     .Where(w => w.Value.Version >= target.Version)
                     .OrderByDescending(d => d.Value.Version)
                     .Select(s => s.Key)
-                    .FirstOrDefault();
+                    .First();
             }
         }
     }

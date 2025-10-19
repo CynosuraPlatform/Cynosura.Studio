@@ -293,7 +293,7 @@ namespace Cynosura.Studio.Generator.Tests
 
             public IDisposable BeginScope<TState>(TState state)
             {
-                return null;
+                return null!;
             }
 
             public bool IsEnabled(LogLevel logLevel)
@@ -301,7 +301,7 @@ namespace Cynosura.Studio.Generator.Tests
                 return true;
             }
 
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
             {
                 _testOutputHelper.WriteLine(formatter(state, exception));
             }

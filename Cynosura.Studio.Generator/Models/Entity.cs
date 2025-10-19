@@ -9,8 +9,8 @@ namespace Cynosura.Studio.Generator.Models
 {
     public class Entity : IGenerationObject
     {
-        private string _nameKebab;
-        private string _pluralNameKebab;
+        private string? _nameKebab;
+        private string? _pluralNameKebab;
 
         public Entity()
         {
@@ -88,7 +88,7 @@ namespace Cynosura.Studio.Generator.Models
         public string PluralNameKebab => _pluralNameKebab ?? (_pluralNameKebab = PluralName.ToKebabCase());
 
         [JsonIgnore]
-        public Field DefaultField
+        public Field? DefaultField
         {
             get
             {
@@ -117,7 +117,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return EntityFields.Select(f => f.Entity)
+                return EntityFields.Select(f => f.Entity!)
                     .Where(e => e.Id != Id)
                     .Distinct()
                     .ToList();
@@ -139,7 +139,7 @@ namespace Cynosura.Studio.Generator.Models
         {
             get
             {
-                return EnumFields.Select(f => f.Enum)
+                return EnumFields.Select(f => f.Enum!)
                     .Distinct()
                     .ToList();
             }
@@ -153,7 +153,7 @@ namespace Cynosura.Studio.Generator.Models
                 return Fields
                     .GroupBy(f => f.Type)
                     .Where(g => g.Key != null)
-                    .ToDictionary(g => g.Key.Value.ToString("g"), g => g.ToList());
+                    .ToDictionary(g => g.Key!.Value.ToString("g"), g => g.ToList());
             }
         }
 

@@ -16,7 +16,7 @@ namespace Cynosura.Studio.Generator.Tests
             {
                 var filePath = Path.Combine(tempPath, file.Path);
                 if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
                 File.WriteAllText(filePath, file.Content);
             }
             return tempPath;

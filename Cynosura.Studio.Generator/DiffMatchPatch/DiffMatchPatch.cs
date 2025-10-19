@@ -86,15 +86,15 @@ namespace DiffMatchPatch {
      * @param d Another Diff to compare against.
      * @return true or false.
      */
-    public override bool Equals(Object obj) {
+    public override bool Equals(Object? obj) {
       // If parameter is null return false.
       if (obj == null) {
         return false;
       }
 
       // If parameter cannot be cast to Diff return false.
-      Diff p = obj as Diff;
-      if ((System.Object)p == null) {
+      Diff? p = obj as Diff;
+      if (p == null) {
         return false;
       }
 
@@ -344,7 +344,7 @@ namespace DiffMatchPatch {
       }
 
       // Check to see if the problem can be split in two.
-      string[] hm = diff_halfMatch(text1, text2);
+      string[]? hm = diff_halfMatch(text1, text2);
       if (hm != null) {
         // A half-match was found, sort out the return data.
         string text1_a = hm[0];
@@ -762,7 +762,7 @@ namespace DiffMatchPatch {
      *     common middle.  Or null if there was no match.
      */
 
-    protected string[] diff_halfMatch(string text1, string text2) {
+    protected string[]? diff_halfMatch(string text1, string text2) {
       if (this.Diff_Timeout <= 0) {
         // Don't risk returning a non-optimal diff if we have unlimited time.
         return null;
@@ -774,12 +774,12 @@ namespace DiffMatchPatch {
       }
 
       // First check if the second quarter is the seed for a half-match.
-      string[] hm1 = diff_halfMatchI(longtext, shorttext,
+      string[]? hm1 = diff_halfMatchI(longtext, shorttext,
                                      (longtext.Length + 3) / 4);
       // Check again based on the third quarter.
-      string[] hm2 = diff_halfMatchI(longtext, shorttext,
+      string[]? hm2 = diff_halfMatchI(longtext, shorttext,
                                      (longtext.Length + 1) / 2);
-      string[] hm;
+      string[]? hm;
       if (hm1 == null && hm2 == null) {
         return null;
       } else if (hm2 == null) {
@@ -810,7 +810,7 @@ namespace DiffMatchPatch {
      *     suffix of longtext, the prefix of shorttext, the suffix of shorttext
      *     and the common middle.  Or null if there was no match.
      */
-    private string[] diff_halfMatchI(string longtext, string shorttext, int i) {
+    private string[]? diff_halfMatchI(string longtext, string shorttext, int i) {
       // Start with a 1/4 length Substring at position i as a seed.
       string seed = longtext.Substring(i, longtext.Length / 4);
       int j = -1;
@@ -850,7 +850,7 @@ namespace DiffMatchPatch {
       // Stack of indices where equalities are found.
       Stack<int> equalities = new Stack<int>();
       // Always equal to equalities[equalitiesLength-1][1]
-      string lastEquality = null;
+      string? lastEquality = null;
       int pointer = 0;  // Index of current position.
       // Number of characters that changed prior to the equality.
       int length_insertions1 = 0;
@@ -1303,7 +1303,7 @@ namespace DiffMatchPatch {
       int chars2 = 0;
       int last_chars1 = 0;
       int last_chars2 = 0;
-      Diff lastDiff = null;
+      Diff? lastDiff = null;
       foreach (Diff aDiff in diffs) {
         if (aDiff.operation != Operation.INSERT) {
           // Equality or deletion.
@@ -2148,7 +2148,7 @@ namespace DiffMatchPatch {
           precontext = precontext.Substring(Math.Max(0,
               precontext.Length - this.Patch_Margin));
 
-          string postcontext = null;
+          string? postcontext = null;
           // Append the end context for this patch.
           if (diff_text1(bigpatch.diffs).Length > Patch_Margin) {
             postcontext = diff_text1(bigpatch.diffs)

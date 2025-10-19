@@ -4,6 +4,6 @@ namespace Cynosura.Studio.Generator.TemplateEngine
 {
     public interface ITemplateEngine
     {
-        string ProcessTemplate(string templateFile, object model, CultureInfo cultureInfo = null);
+        string ProcessTemplate(string templateFile, object model, CultureInfo? cultureInfo = null);
     }
 }

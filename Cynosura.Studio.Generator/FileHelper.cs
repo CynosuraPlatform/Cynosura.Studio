@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Generator
 {
     public static class FileHelper
     {
-        public static void CopyAllFiles(string sourceDirectory, string destinationDirectory, IList<string> ignores = null, bool overwrite = false)
+        public static void CopyAllFiles(string sourceDirectory, string destinationDirectory, IList<string>? ignores = null, bool overwrite = false)
         {
             var dir = new DirectoryInfo(sourceDirectory);
 

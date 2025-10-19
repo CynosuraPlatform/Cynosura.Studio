@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Generator.Merge
 {
     public class DirectoryCompareHelper
     {
-        private static bool FileContains(string fileName, IList<string> ignores)
+        private static bool FileContains(string fileName, IList<string>? ignores)
         {
             if (ignores == null)
                 return false;
@@ -17,14 +17,14 @@ namespace Cynosura.Studio.Generator.Merge
             return false;
         }
 
-        private static IList<string> GetFiles(string directoryPath, IList<string> ignores = null)
+        private static IList<string> GetFiles(string directoryPath, IList<string>? ignores = null)
         {
             return Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories)
                 .Where(f => !FileContains(Path.GetRelativePath(directoryPath, f), ignores))
                 .ToList();
         }
 
-        private static string GetPathAfterRename(string path, IList<(string Left, string Right)> renames)
+        private static string GetPathAfterRename(string path, IList<(string Left, string Right)>? renames)
         {
             if (renames != null)
             {
@@ -37,7 +37,7 @@ namespace Cynosura.Studio.Generator.Merge
             return path;
         }
 
-        public static IList<FileCompare> Compare(string leftPath, string rightPath, IList<(string Left, string Right)> renames = null, IList<string> ignores = null)
+        public static IList<FileCompare> Compare(string leftPath, string rightPath, IList<(string Left, string Right)>? renames = null, IList<string>? ignores = null)
         {
             var leftFiles = GetFiles(leftPath, ignores)
                 .Select(f => new FileCompare()
@@ -69,7 +69,7 @@ namespace Cynosura.Studio.Generator.Merge
     {
         public string OriginalName { get; set; }
         public string Name { get; set; }
-        public string LeftPath { get; set; }
-        public string RightPath { get; set; }
+        public string? LeftPath { get; set; }
+        public string? RightPath { get; set; }
     }
 }

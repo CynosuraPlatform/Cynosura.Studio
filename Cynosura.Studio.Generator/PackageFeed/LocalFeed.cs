@@ -36,7 +36,7 @@ namespace Cynosura.Studio.Generator.PackageFeed
             return Task.FromResult(result);
         }
 
-        private string GetVersion(string packageName, string path)
+        private string? GetVersion(string packageName, string path)
         {
             using (var file = File.OpenRead(path))
             using (var zip = new ZipArchive(file, ZipArchiveMode.Read))

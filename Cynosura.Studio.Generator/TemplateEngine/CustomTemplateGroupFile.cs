@@ -10,6 +10,6 @@ namespace Cynosura.Studio.Generator.TemplateEngine
         {
         }
 
-        public override Uri RootDirUri => new Uri($"file://{new FileInfo(FileName).Directory.FullName}");
+        public override Uri RootDirUri => new Uri($"file://{new FileInfo(FileName).Directory!.FullName}");
     }
 }

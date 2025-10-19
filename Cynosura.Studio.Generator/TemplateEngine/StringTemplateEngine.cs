@@ -10,7 +10,7 @@ namespace Cynosura.Studio.Generator.TemplateEngine
 {
     public class StringTemplateEngine : ITemplateEngine
     {
-        public string ProcessTemplate(string templateFile, object model, CultureInfo cultureInfo = null)
+        public string ProcessTemplate(string templateFile, object model, CultureInfo? cultureInfo = null)
         {
             var stg = new CustomTemplateGroupFile(templateFile);
             stg.RegisterRenderer(typeof(Decimal), new DecimalRenderer());

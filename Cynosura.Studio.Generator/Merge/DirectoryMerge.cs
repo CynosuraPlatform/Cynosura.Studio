@@ -34,7 +34,7 @@ namespace Cynosura.Studio.Generator.Merge
 
         private void EnsureDirectoryExists(string filePath)
         {
-            var directory = Path.GetDirectoryName(filePath);
+            var directory = Path.GetDirectoryName(filePath)!;
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
         }
@@ -52,7 +52,7 @@ namespace Cynosura.Studio.Generator.Merge
             await WriteFileAsync(myFilePath, resultText);
         }
 
-        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)> renames = null)
+        public async Task MergeDirectoryAsync(string originalDirectoryPath, string theirDirectoryPath, string myDirectoryPath, IEnumerable<(string Original, string Their)>? renames = null)
         {
             var renameList = renames != null ? renames.ToList() : new List<(string, string)>();
             var compareFiles = DirectoryCompareHelper.Compare(originalDirectoryPath, theirDirectoryPath, renameList);

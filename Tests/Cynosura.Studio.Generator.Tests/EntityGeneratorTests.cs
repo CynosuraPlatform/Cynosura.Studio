@@ -31,7 +31,7 @@ namespace Cynosura.Studio.Generator.Tests
                 Fields = new List<Field>(),
             };
 
-            var entityGenerator = new EntityGenerator(new CodeGenerator(null, null));
+            var entityGenerator = new EntityGenerator(new CodeGenerator(null!, null!));
             entityGenerator.MergeEntity(fromEntity, toEntity, mergeToEntity);
 
             Assert.Equal("Name Not Changed", mergeToEntity.Name);
@@ -108,7 +108,7 @@ namespace Cynosura.Studio.Generator.Tests
                 },
             };
 
-            var entityGenerator = new EntityGenerator(new CodeGenerator(null, null));
+            var entityGenerator = new EntityGenerator(new CodeGenerator(null!, null!));
             entityGenerator.MergeEntity(fromEntity, toEntity, mergeToEntity);
 
             Assert.Equal(4, mergeToEntity.Fields.Count);
@@ -168,7 +168,7 @@ namespace Cynosura.Studio.Generator.Tests
                 },
             };
 
-            var entityGenerator = new EntityGenerator(new CodeGenerator(null, null));
+            var entityGenerator = new EntityGenerator(new CodeGenerator(null!, null!));
             entityGenerator.MergeEntity(fromEntity, toEntity, mergeToEntity);
 
             Assert.Equal(1, mergeToEntity.Fields.Count);
@@ -203,7 +203,7 @@ namespace Cynosura.Studio.Generator.Tests
                 Fields = new List<Field>(),
             };
 
-            var entityGenerator = new EntityGenerator(new CodeGenerator(null, null));
+            var entityGenerator = new EntityGenerator(new CodeGenerator(null!, null!));
             entityGenerator.MergeEntity(fromEntity, toEntity, mergeToEntity);
 
             Assert.Equal(true, mergeToEntity.Properties["View"]);

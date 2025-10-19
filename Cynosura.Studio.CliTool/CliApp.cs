@@ -19,7 +19,7 @@ namespace Cynosura.Studio.CliTool
         private IConfigService _configService;
         private string _solutionDirectory;
         private string _feed = "https://api.nuget.org/v3/index.json";
-        private string _src;
+        private string? _src;
         private string _templateName = "Cynosura.Template";
         public LogLevel LogLevel = LogLevel.Error;
 
@@ -156,7 +156,7 @@ namespace Cynosura.Studio.CliTool
 
         public async Task<bool> StartAsync(ServiceProvider serviceProvider)
         {
-            var logger = serviceProvider.GetService<ILogger<CliApp>>();
+            var logger = serviceProvider.GetService<ILogger<CliApp>>()!;
             logger.LogInformation($"Working directory: {_solutionDirectory}");
             logger.LogInformation($"Feed: {_feed}");
             logger.LogInformation($"Local feed source path: {_src}");

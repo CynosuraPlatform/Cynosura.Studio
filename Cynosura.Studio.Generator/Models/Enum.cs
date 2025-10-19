@@ -8,7 +8,7 @@ namespace Cynosura.Studio.Generator.Models
 {
     public class Enum : IGenerationObject
     {
-        private string _nameKebab;
+        private string? _nameKebab;
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string DisplayName { get; set; }

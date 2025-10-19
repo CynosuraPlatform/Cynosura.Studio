@@ -23,13 +23,13 @@ namespace Cynosura.Studio.Generator.Models
         public PropertyCollection Properties { get; set; }
 
         [JsonIgnore]
-        public Entity Entity { get; set; }
+        public Entity? Entity { get; set; }
 
         [JsonIgnore]
-        public Enum Enum { get; set; }
+        public Enum? Enum { get; set; }
 
         [JsonIgnore]
-        public Type NetType
+        public Type? NetType
         {
             get
             {
@@ -66,14 +66,14 @@ namespace Cynosura.Studio.Generator.Models
         public string NameLower => Name.ToLowerCamelCase();
 
         [JsonIgnore]
-        public string TypeName 
+        public string? TypeName 
         {
             get
             {
                 if (Type != null)
                 {
                     var typeName = FieldTypeInfo.Types[Type.Value].NetTypeName;
-                    if (NetType.IsValueType && !IsRequired)
+                    if (NetType!.IsValueType && !IsRequired)
                         typeName += "?";
                     return typeName;
                 }
@@ -82,14 +82,14 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
-        public string TypeNameNullable
+        public string? TypeNameNullable
         {
             get
             {
                 if (Type != null)
                 {
                     var typeName = FieldTypeInfo.Types[Type.Value].NetTypeName;
-                    if (NetType.IsValueType)
+                    if (NetType!.IsValueType)
                         typeName += "?";
                     return typeName;
                 }
@@ -98,7 +98,7 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
-        public string JsTypeName
+        public string? JsTypeName
         {
             get
             {
@@ -109,7 +109,7 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
-        public string EntityIdTypeName
+        public string? EntityIdTypeName
         {
             get
             {
@@ -126,7 +126,7 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
-        public string EntityIdTypeNameNullable
+        public string? EntityIdTypeNameNullable
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Cynosura.Studio.Generator.Models
         }
 
         [JsonIgnore]
-        public string TypeTemplate => System.Enum.GetName(typeof(FieldType), Type);
+        public string? TypeTemplate => Type != null ? System.Enum.GetName(typeof(FieldType), Type) : null;
 
         [JsonIgnore]
         public int Number { get; set; }
