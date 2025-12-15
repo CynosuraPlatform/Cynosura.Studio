@@ -1,12 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-<<<<<<< HEAD
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-=======
     <TargetFramework>net8.0</TargetFramework>
->>>>>>> upgrade
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
