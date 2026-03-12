@@ -6,14 +6,14 @@
 Cynosura is a code generator that allows to quickly create projects with .NET Core and Angular.
 
 Main features:
-1. Backend is written in .NET Core 3.1
+1. Backend is written in .NET 8
 2. For API there are two options: JSON API or gRPC
 3. For data storage Entity Framework Core is used
 4. Business logic is implemented with [MediatR](https://github.com/jbogard/MediatR)
 5. [FluentValudation](https://fluentvalidation.net/) is used for data validation
 6. [AutoMapper](https://automapper.org) is used for data mapping
 7. ASP.NET Core Identity and IdentityServer4 is used for user management and authentication 
-8. Frontend is written in Angular 8
+8. Frontend is written in Angular 13
 9. [Angular Material](https://material.angular.io) UI component library is used
 10. Cynosura.Studio application is generated in Cynosura.Studio
 
@@ -27,7 +27,7 @@ Main features:
 
 ### Prerequisites
 
-* .NET Core SDK 3.1
+* .NET SDK 8
 * Git (used for merging files when updating metadata or upgrading templates)
 
 ### Metadata
