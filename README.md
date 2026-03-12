@@ -108,6 +108,15 @@ Upgrades the current solution to the latest version of its template. Template ch
 cyn upgrade
 ```
 
+#### `cyn update` — Update generated code after metadata changes
+
+Regenerates code for an entity or enum based on the current git changes to its metadata JSON file. It reads the previous version from git history (`HEAD`) and the current version from disk, then runs the upgrade generators to merge changes into your code without overwriting custom modifications.
+
+```bash
+cyn update entity <entityName>
+cyn update enum <enumName>
+```
+
 #### `cyn info` — Show solution and tool information
 
 Prints solution name, template name, template version, CLI version, and CLI location.

@@ -173,7 +173,8 @@ namespace Cynosura.Studio.CliTool
                 {"generate", new GenerateCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
                 {"new", new NewCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
                 {"upgrade", new UpgradeCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
-                {"info", new InfoCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) }
+                {"info", new InfoCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) },
+                {"update", new UpdateCommand(_solutionDirectory, _feed, _src,_templateName, serviceProvider) }
             };
             var helpProps = _setProps.Keys.ToDictionary(k => k, v => v);
             helpProps["src"] = "local feed path";
