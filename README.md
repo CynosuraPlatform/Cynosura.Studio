@@ -1,5 +1,5 @@
 # Cygnus.Studio
-Cygnus is a adaptation of Cynosura.Studio for Ubuntu 24
+Cygnus is an adaptation of Cynosura.Studio for Ubuntu 24
 
 
 # Cynosura.Studio
