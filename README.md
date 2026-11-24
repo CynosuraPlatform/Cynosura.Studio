@@ -1,14 +1,14 @@
 # Cygnus.Studio
-Cygnus is an adaptation of Cynosura.Studio for Ubuntu 24
+Cygnus is an adaptation of Cynosura.Studio for Ubuntu 24.04
 
 ### Prerequisites
 
 * .NET SDK 8
-* Node.js (as ubuntu 24.04 uses Node.js 18 nvm 16 is required)
+* Node.js (as ubuntu 24.04 uses Node.js 18, nvm 16 is required)
 * Docker, Docker Compose
 * Git (used for merging files when updating metadata or upgrading templates)
 
-### Check before run
+### Checks before run
 
 * dotnet --version
 * node --version
