@@ -1,3 +1,7 @@
+# Cygnus.Studio
+Cygnus is a adaptation of Cynosura.Studio for Ubuntu 24
+
+
 # Cynosura.Studio
 ![dev-build-status](https://dev.azure.com/CynosuraPlatform/Cynosura.Studio/_apis/build/status/Cynosura.Studio?branchName=development)
 
