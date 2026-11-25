@@ -2,10 +2,14 @@
   "name": "Cynosura.Studio.Web",
   "version": "0.0.0",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.10 <17"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production --output-path=../Cynosura.Studio.Web/NgApp",
     "build:ssr": "npm run build -- --app=ssr --output-hashing=media",
     "test": "ng test",
     "lint": "ng lint",

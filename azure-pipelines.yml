@@ -6,19 +6,29 @@ trigger:
 pr: none
 
 pool:
-  vmImage: 'ubuntu-22.04'
+  vmImage: 'ubuntu-24.04'
 
 steps:
+- task: DotNetCoreCLI@2
+  displayName: dotnet build
+  inputs:
+    command: 'build'
+    projects: 'Cynosura.Studio.sln'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: 'test'
+    projects: 'Cynosura.Studio.sln'
+    arguments: '--filter "FullyQualifiedName!~FunctionalTests"'
+
 - task: DotNetCoreCLI@2
   displayName: dotnet pack
   inputs:
     command: 'pack'
     packagesToPack: 'Cynosura.Studio.CliTool/*.csproj'
+    arguments: '--output $(Build.ArtifactStagingDirectory)'
     versioningScheme: 'off'
-
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: 
 
 - task: NuGetCommand@2
   displayName: nuget push

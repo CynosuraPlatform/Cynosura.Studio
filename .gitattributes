@@ -61,3 +61,16 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+# Binary files that must never be text-normalized (Cynosura.Studio adaptation)
+*.pfx binary
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+

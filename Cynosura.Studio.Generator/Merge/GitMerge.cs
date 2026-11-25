@@ -64,24 +64,25 @@ namespace Cynosura.Studio.Generator.Merge
         private async Task InitializeRepository(string repositoryPath)
         {
             Directory.CreateDirectory(repositoryPath);
-            await RunCommandAsync("git", "init", repositoryPath);
+            await RunGitAsync("init", repositoryPath);
         }
 
         private async Task CommitOriginal(string repositoryPath, string originalDirectoryPath)
         {
             FileHelper.CopyAllFiles(originalDirectoryPath, repositoryPath);
-            await RunCommandAsync("git", "add -A", repositoryPath);
-            await RunCommandAsync("git", "commit -m \"Original\"", repositoryPath);
+            await RunGitAsync("add -A", repositoryPath);
+            await RunGitAsync("commit --allow-empty -m \"Original\"", repositoryPath);
         }
 
         private async Task CommitUpgrade(string repositoryPath, string upgradeDirectoryPath)
         {
-            await RunCommandAsync("git", "checkout -b upgrade", repositoryPath);
+            await RunGitAsync("checkout -b upgrade", repositoryPath);
             FileHelper.DeleteAllFiles(repositoryPath, ".git");
             FileHelper.CopyAllFiles(upgradeDirectoryPath, repositoryPath);
-            await RunCommandAsync("git", "add -A", repositoryPath);
-            await RunCommandAsync("git", "commit -m \"Upgrade\"", repositoryPath);
-            await RunCommandAsync("git", "checkout master", repositoryPath);
+            await RunGitAsync("add -A", repositoryPath);
+            await RunGitAsync("commit --allow-empty -m \"Upgrade\"", repositoryPath);
+            // вернуться на исходную ветку (имя ветки по умолчанию зависит от git-конфигурации: master/main)
+            await RunGitAsync("checkout -", repositoryPath);
         }
 
         private void ExportCurrent(string currentDirectoryPath, string exportPath)
@@ -94,12 +95,14 @@ namespace Cynosura.Studio.Generator.Merge
         {
             FileHelper.DeleteAllFiles(repositoryPath, ".git");
             FileHelper.CopyAllFiles(currentDirectoryPath, repositoryPath);
-            await RunCommandAsync("git", "add -A", repositoryPath);
-            await RunCommandAsync("git", "commit -m \"Current\"", repositoryPath);
+            await RunGitAsync("add -A", repositoryPath);
+            await RunGitAsync("commit --allow-empty -m \"Current\"", repositoryPath);
         }
 
         private async Task MergeUpgrade(string repositoryPath)
         {
+            // merge может завершиться с ненулевым кодом при конфликтах — это штатная ситуация,
+            // результат конфликта далее обрабатывается в Sync() через сравнение каталогов.
             await RunCommandAsync("git", "merge -Xignore-space-change upgrade", repositoryPath);
         }
 
@@ -136,6 +139,15 @@ namespace Cynosura.Studio.Generator.Merge
             var directory = Path.GetDirectoryName(filePath)!;
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
+        }
+
+        private async Task RunGitAsync(string arguments, string workingDirectory)
+        {
+            var exitCode = await RunCommandAsync("git", arguments, workingDirectory);
+            if (exitCode != 0)
+            {
+                throw new InvalidOperationException($"git {arguments} failed with exit code {exitCode}");
+            }
         }
 
         private async Task<int> RunCommandAsync(string command, string arguments, string workingDirectory)
