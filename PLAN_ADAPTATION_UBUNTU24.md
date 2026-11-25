@@ -66,7 +66,7 @@
 | Публикация (без SPA) | `dotnet publish -p:SkipSpaBuild=true` | exit 0 |
 | Публикация (со сборкой SPA) | `dotnet publish` (полный) | exit 0, `NgApp` в output |
 | Compose конфиг | `docker compose ... config` | exit 0 |
-| Сертификат | `openssl pkcs12 ... -passin pass:qwe123` | валиден |
+| Сертификат | `openssl pkcs12 ... -passin pass:${CERT_PASSWORD}` | валиден |
 | Синтаксис CLI | `grep -rn -- "--prod"` / `"--outputPath"` | пусто |
 
 **Найденные недочёты / уточнения:**
@@ -415,7 +415,7 @@ openssl req -x509 -newkey rsa:2048 -nodes \
 openssl pkcs12 -export \
   -out volumes/cert/mycert.pfx \
   -inkey /tmp/mycert.key -in /tmp/mycert.crt \
-  -passout pass:qwe123
+  -passout pass:${CERT_PASSWORD}
 rm -f /tmp/mycert.key /tmp/mycert.crt
 ```
 
@@ -423,7 +423,7 @@ rm -f /tmp/mycert.key /tmp/mycert.crt
 
 ```yaml
 Jwt__CertificatePath: '/my/cert/mycert.pfx'
-Jwt__CertificatePassword: 'qwe123'
+Jwt__CertificatePassword: '${CERT_PASSWORD}'
 volumes:
   - ./volumes/cert:/my/cert:ro
 ```
@@ -441,7 +441,7 @@ Jwt__Authority: 'http://localhost:5000'
 **Проверка:**
 
 ```bash
-openssl pkcs12 -in volumes/cert/mycert.pfx -info -noout -passin pass:qwe123
+openssl pkcs12 -in volumes/cert/mycert.pfx -info -noout -passin pass:${CERT_PASSWORD}
 ```
 
 ### Этап 5. SQLite, общая БД и worker
@@ -488,7 +488,7 @@ export ConnectionStrings__DefaultConnection="Data Source=/srv/GitHub/Cygnus.Stud
 ```yaml
 Messaging__ConnectionUrl: 'rabbitmq://mq'
 Messaging__Username: 'Manager'
-Messaging__Password: 'Qwerty123!'
+Messaging__Password: '${RABBITMQ_PASSWORD}'
 ```
 
 2. В `docker-compose.yaml` добавить healthcheck:
@@ -514,7 +514,7 @@ depends_on:
 
 4. Host dev оставляет `rabbitmq://localhost`, так как `mq` пробрасывает 5672 на хост.
 
-**Проверка:** `curl -u Manager:Qwerty123! http://localhost:15672/api/overview`; в логах web/worker нет ошибок подключения к RabbitMQ.
+**Проверка:** `curl -u Manager:${RABBITMQ_PASSWORD} http://localhost:15672/api/overview`; в логах web/worker нет ошибок подключения к RabbitMQ.
 
 ### Этап 7. File storage
 
@@ -751,7 +751,7 @@ dotnet test --filter "FullyQualifiedName!~FunctionalTests"
 ### Конфигурация
 
 - [x] `docker compose -f docker-compose.yaml -f docker-compose.Development.yaml config` → без ошибок.
-- [x] `openssl pkcs12 -in volumes/cert/mycert.pfx -info -noout -passin pass:qwe123` → без ошибок.
+- [x] `openssl pkcs12 -in volumes/cert/mycert.pfx -info -noout -passin pass:${CERT_PASSWORD}` → без ошибок.
 - [x] В `git status` нет случайных бинарных изменений.
 - [x] `Kestrel:EndPoints` не конфликтует с `ASPNETCORE_URLS`.
 
@@ -762,7 +762,7 @@ dotnet test --filter "FullyQualifiedName!~FunctionalTests"
 - [ ] `docker compose ... ps` → `web`, `webng`, `worker`, `mq` в состоянии `running`/`healthy`.
 - [ ] `curl -I http://localhost:5000/swagger/index.html` → 200/301/302.
 - [ ] `curl -I http://localhost:5010/` → 200.
-- [ ] `curl -u Manager:Qwerty123! http://localhost:15672/api/overview` → 200.
+- [ ] `curl -u Manager:${RABBITMQ_PASSWORD} http://localhost:15672/api/overview` → 200.
 - [ ] В логах worker нет `no such table`, `database is locked`, ошибок RabbitMQ.
 - [ ] Файл `/data/cynosura.db` существует; после `docker compose restart` данные сохраняются.
 - [ ] Загруженный файл доступен по `/static/...` и сохраняется после перезапуска.
