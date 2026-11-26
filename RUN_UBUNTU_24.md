@@ -11,11 +11,12 @@
 |---|---|---|
 | 1 | §1 | проверить окружение (версии dotnet/node/docker/git) |
 | 2 | §2 | `dotnet restore` + `dotnet build` + `npm ci` — скачать пакеты и собрать |
-| 3 | §4.1–4.6 | RabbitMQ → общий путь БД → Web → Worker (создаст БД) → Frontend → проверка |
+| 3 | §4.1–4.6 | RabbitMQ (один раз) → общий путь БД → Web → Worker (создаст БД) → Frontend → проверка |
 
 **Последующие запуски** — только **§4** (с 4.1 по 4.6):
 
 - §1, §2, §3 повторять **не нужно** (`dotnet run` сам пересобирает код; `npm ci` — только если удалён `node_modules`).
+- §4.1 (RabbitMQ) — повторять **не нужно**: контейнер работает в фоне; только проверить `docker ps` (а после ребута — `docker start mq`).
 - §4.2 (`export ConnectionStrings__DefaultConnection=...`) — повторять **в каждом новом терминале**.
 - Worker на первом запуске создаёт `cynosura.db`; на последующих миграции уже применены.
 - Хочешь без открытых терминалов — используй **§4.7** (запуск в фоне через `nohup ... &`).
@@ -128,21 +129,39 @@ openssl pkcs12 -in volumes/cert/mycert.pfx -info -noout -passin pass:qwe123
 
 Удобно для разработки. В Docker нужен только RabbitMQ.
 
-### 4.1. RabbitMQ
+### 4.1. RabbitMQ (запускается один раз)
+
+RabbitMQ работает как фоновый Docker-контейнер: стартуешь **один раз**, дальше он живёт сам (не привязан к терминалу). При каждом запуске приложения перезапускать его не нужно — достаточно проверить, что контейнер работает.
 
 ```bash
 docker run -d --name mq \
   -p 5672:5672 -p 15672:15672 \
   -e RABBITMQ_DEFAULT_USER=Manager \
   -e RABBITMQ_DEFAULT_PASS='Qwerty123!' \
+  --restart unless-stopped \
   rabbitmq:3.8-management
 ```
 
-Либо только сервис `mq` из compose:
+Проверка, что RabbitMQ запущен:
+
+```bash
+docker ps --filter name=mq
+# должен быть статус "Up"
+```
+
+Если контейнер остановился (после ребута или `docker stop mq`) — просто поднять:
+
+```bash
+docker start mq
+```
+
+Либо сервис `mq` из compose (тоже один раз):
 
 ```bash
 docker compose -f docker-compose.yaml -f docker-compose.Development.yaml up -d mq
 ```
+
+Флаг `--restart unless-stopped` заставляет контейнер подниматься автоматически после перезагрузки машины.
 
 ### 4.2. Общий файл БД (важно!)
 

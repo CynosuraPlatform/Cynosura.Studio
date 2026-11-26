@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Cynosura.Studio.Core;
 using Cynosura.Studio.Core.Entities;
 using Cynosura.Studio.Data;
+using Cynosura.Studio.Generator;
 using Cynosura.Studio.Infrastructure;
 using Cynosura.Studio.Worker.Infrastructure;
 
@@ -58,6 +59,7 @@ namespace Cynosura.Studio.Worker
                     services.AddInfrastructure(hostContext.Configuration);
                     services.AddData();
                     services.AddCore(hostContext.Configuration);
+                    services.AddGenerator(hostContext.Configuration);
                 });
         }
     }

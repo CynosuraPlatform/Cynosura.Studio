@@ -34,6 +34,14 @@
             "namedChunks": true
           },
           "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "production": {
               "budgets": [
                 {
@@ -65,6 +73,9 @@
             "port": 4300
           },
           "configurations": {
+            "development": {
+              "browserTarget": "web-ng-app:build:development"
+            },
             "production": {
               "browserTarget": "web-ng-app:build:production"
             }
