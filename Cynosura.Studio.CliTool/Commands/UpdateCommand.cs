@@ -93,11 +93,9 @@ namespace Cynosura.Studio.CliTool.Commands
 
         private static void ResolveEntityRelationships(Entity entity, List<Entity> entities, List<Generator.Models.Enum> enums)
         {
-            var i = 1;
             if (entity.BaseEntityId != null)
             {
                 entity.BaseEntity = entities.First(e => e.Id == entity.BaseEntityId);
-                i += entity.BaseEntity.AllFields.Count + entity.BaseEntity.AllSystemFields.Count;
             }
 
             foreach (var field in entity.Fields)
@@ -111,9 +109,9 @@ namespace Cynosura.Studio.CliTool.Commands
                 {
                     field.Enum = enums.First(e => e.Id == field.EnumId);
                 }
-
-                field.Number = i++;
             }
+
+            entity.AssignFieldNumbers();
         }
 
         private async Task<bool> UpdateEnumActionAsync(IEnumerable<string> args)

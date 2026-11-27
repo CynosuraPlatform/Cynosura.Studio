@@ -19,6 +19,16 @@ namespace Cynosura.Studio.Generator
 
         public async Task GenerateEntityAsync(SolutionAccessor solution, Entity entity)
         {
+            if (!entity.IsAbstract)
+            {
+                if (entity.AllSystemFields.All(f => f.Name != "Id"))
+                {
+                    throw new Exception($"Entity '{entity.Name}' has no base entity and no 'Id' system field. Set a base entity before generating.");
+                }
+
+                entity.ValidateProtoFieldNumbers();
+            }
+
             var model = new EntityModel(entity, solution);
             await _codeGenerator.GenerateAsync(solution, model.GetGenerateInfo());
         }

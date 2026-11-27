@@ -12,7 +12,9 @@ namespace Cynosura.Studio.Core.Requests.Entities
             RuleFor(x => x.PluralName).MaximumLength(100).NotEmpty().Matches(RegexHelper.CSharpName).WithName(x => localizer["Plural Name"]);
             RuleFor(x => x.DisplayName).MaximumLength(100).NotEmpty().WithName(x => localizer["Display Name"]);
             RuleFor(x => x.PluralDisplayName).MaximumLength(100).NotEmpty().WithName(x => localizer["Plural Display Name"]);
-            RuleFor(x => x.BaseEntityId);
+            RuleFor(x => x.BaseEntityId)
+                .NotEmpty()
+                .When(x => x.IsAbstract != true);
             RuleFor(x => x.IsAbstract);
             RuleForEach(x => x.Fields).SetValidator(new UpdateFieldValidator(localizer));
         }

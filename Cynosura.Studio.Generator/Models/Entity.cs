@@ -177,6 +177,44 @@ namespace Cynosura.Studio.Generator.Models
             }
         }
 
+        public void AssignFieldNumbers()
+        {
+            var i = 1;
+            if (BaseEntity != null)
+            {
+                i += BaseEntity.AllFields.Count + BaseEntity.AllSystemFields.Count;
+            }
+
+            foreach (var field in Fields)
+            {
+                field.Number = i++;
+            }
+        }
+
+        public void ValidateProtoFieldNumbers()
+        {
+            var regularNumbers = new HashSet<int>();
+            foreach (var field in AllFields)
+            {
+                if (field.Number <= 0)
+                    continue;
+                if (!regularNumbers.Add(field.Number))
+                    throw new Exception($"Entity '{Name}': duplicate proto field number {field.Number}.");
+            }
+
+            var idNumber = IdField.Number;
+            if (idNumber > 0 && regularNumbers.Contains(idNumber))
+                throw new Exception($"Entity '{Name}': proto field number {idNumber} is used by both '{IdField.Name}' and a regular field. Add a base entity with an 'Id' system field.");
+
+            foreach (var field in AllSystemFields)
+            {
+                if (field.Number <= 0)
+                    continue;
+                if (regularNumbers.Contains(field.Number))
+                    throw new Exception($"Entity '{Name}': proto field number {field.Number} is used by both system field '{field.Name}' and a regular field.");
+            }
+        }
+
         public string ProcessTemplate(string template)
         {
             template = template.Replace("{Name}", Name);
