@@ -78,6 +78,15 @@ Prints solution name, template name, template version, CLI version, and CLI loca
 cyn info
 ```
 
+### `cyn verify` — Verify the generated solution compiles
+
+Runs `dotnet build` on the solution's `.sln` file to catch compilation errors in generated code
+(e.g. a missing `Id` on an entity).
+
+```bash
+cyn verify
+```
+
 ### `cyn help` — Display help
 
 ```bash

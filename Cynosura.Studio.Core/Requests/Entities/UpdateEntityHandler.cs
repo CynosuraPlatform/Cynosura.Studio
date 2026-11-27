@@ -41,6 +41,12 @@ namespace Cynosura.Studio.Core.Requests.Entities
             }
             var solutionAccessor = new SolutionAccessor(solution.Path);
             var newEntity = _mapper.Map<UpdateEntity, Generator.Models.Entity>(request);
+            newEntity.Name = newEntity.Name.ToPascalCase();
+            newEntity.PluralName = newEntity.PluralName.ToPascalCase();
+            foreach (var field in newEntity.Fields)
+            {
+                field.Name = field.Name.ToPascalCase();
+            }
             var oldEntity = (await solutionAccessor.GetEntitiesAsync()).FirstOrDefault(e => e.Id == request.Id);
             if (oldEntity == null)
             {
