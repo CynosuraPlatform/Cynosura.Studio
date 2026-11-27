@@ -5,6 +5,8 @@ NuGet.config
 appsettings.local.json
 appsettings.Development.json
 cynosura.db
+cynosura.db-shm
+cynosura.db-wal
 
 # User-specific files
 *.suo

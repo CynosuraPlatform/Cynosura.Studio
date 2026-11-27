@@ -11,15 +11,15 @@
 |---|---|---|
 | 1 | §1 | проверить окружение (версии dotnet/node/docker/git) |
 | 2 | §2 | `dotnet restore` + `dotnet build` + `npm ci` — скачать пакеты и собрать |
-| 3 | §4.1–4.6 | RabbitMQ (один раз) → общий путь БД → Web → Worker (создаст БД) → Frontend → проверка |
+| 3 | §4.1, §4.7 | RabbitMQ (один раз) → поднять три systemd-сервиса → проверка |
 
-**Последующие запуски** — только **§4** (с 4.1 по 4.6):
+**Последующие запуски** — только **§4.7** (`systemctl start ...`):
 
-- §1, §2, §3 повторять **не нужно** (`dotnet run` сам пересобирает код; `npm ci` — только если удалён `node_modules`).
+- §1, §2, §3 повторять **не нужно** (`dotnet build` — только после правок кода; `npm ci` — только если удалён `node_modules`).
 - §4.1 (RabbitMQ) — повторять **не нужно**: контейнер работает в фоне; только проверить `docker ps` (а после ребута — `docker start mq`).
-- §4.2 (`export ConnectionStrings__DefaultConnection=...`) — повторять **в каждом новом терминале**.
+- Путь к БД и окружение уже прописаны в systemd-юнитах — вручную `export` не нужен.
 - Worker на первом запуске создаёт `cynosura.db`; на последующих миграции уже применены.
-- Хочешь без открытых терминалов — используй **§4.7** (запуск в фоне через `nohup ... &`).
+- Для разработки с открытыми терминалами есть ручной режим — **§4.3–4.6**.
 
 ---
 
@@ -171,6 +171,8 @@ docker compose -f docker-compose.yaml -f docker-compose.Development.yaml up -d m
 export ConnectionStrings__DefaultConnection='Data Source=/srv/GitHub/Cygnus.Studio/cynosura.db'
 ```
 
+> **При запуске через systemd (§4.7)** этот `export` не нужен — путь уже прописан в юнитах. Команда ниже нужна только для ручного запуска (`dotnet run`, §4.3–4.4) или `nohup` (§4.8).
+
 ### 4.3. Backend (терминал 1)
 
 ```bash
@@ -207,9 +209,40 @@ npm run start
 - RabbitMQ UI: `http://localhost:15672` (`Manager` / `Qwerty123!`)
 - UI: `http://localhost:4300`
 
-### 4.7. Запуск в фоне (чтобы закрыть терминалы)
+### 4.7. Запуск через systemd (рекомендуется — переживает перезагрузку)
 
-Процессы из разделов 4.3–4.5 привязаны к открытым терминалам: закроешь терминал — процесс остановится. Чтобы освободить терминалы, но оставить приложение работающим, запускай через `nohup ... &`.
+Настроены три юнита в `/etc/systemd/system/`:
+
+| Юнит | Компонент | Порт |
+|---|---|---|
+| `cynosura-webng.service` | Frontend (Angular 13) | `4300` |
+| `cynosura-web.service` | Backend API | `43000` |
+| `cynosura-worker.service` | Worker (миграции + фоновые задачи) | — |
+
+Путь к БД и переменные окружения уже прописаны в юнитах, поэтому вручную `export` не нужен.
+
+```bash
+# поднять всё сразу (и включить автозапуск после ребута)
+systemctl enable --now cynosura-webng.service cynosura-web.service cynosura-worker.service
+
+# статус
+systemctl status cynosura-webng.service cynosura-web.service cynosura-worker.service
+
+# логи
+journalctl -u cynosura-web.service -f      # backend
+journalctl -u cynosura-worker.service -f   # worker
+journalctl -u cynosura-webng.service -f    # frontend
+
+# перезапустить / остановить
+systemctl restart cynosura-web.service
+systemctl stop cynosura-webng.service
+```
+
+После ребута сервисы поднимутся автоматически (`enable`), при падении — перезапустятся (`Restart=on-failure`).
+
+### 4.8. Запуск в фоне через nohup (альтернатива)
+
+Процессы из разделов 4.3–4.5 привязаны к открытым терминалам: закроешь терминал — процесс остановится. Чтобы освободить терминалы, но оставить приложение работающим (без systemd), запускай через `nohup ... &`.
 
 > Порядок важен: сначала Worker (применит миграции), затем Web и Frontend.
 
@@ -247,7 +280,7 @@ pkill -f "Cynosura.Studio.Worker"
 pkill -f "ng serve"
 ```
 
-> Примечание: `nohup` не переживает перезагрузку машины. Для постоянного запуска (автозапуск после ребута) используйте `systemd`-юниты или `docker compose up -d` (раздел 5).
+> Примечание: `nohup` не переживает перезагрузку машины. Для постоянного запуска (автозапуск после ребута) используйте **§4.7 (systemd)** или `docker compose up -d` (раздел 5).
 
 ---
 
@@ -324,7 +357,7 @@ dotnet publish Cynosura.Studio.Web/Cynosura.Studio.Web.csproj -c Release -o ./ou
 | `MSB3202 ... tests/...csproj was not found` | старый `.sln` — обновить/проверить регистр путей (`Tests` vs `tests`) |
 | Worker падает с `no such table` | БД не мигрирована — worker выполняет миграции при старте; убедиться, что web и worker используют **один** `ConnectionStrings__DefaultConnection` |
 | `database is locked` | SQLite, одновременная запись web/worker — перезапустить worker, либо не запускать web и worker одновременно на запись |
-| Worker/web видят разные данные | относительный путь `Data Source=cynosura.db` разрешается от рабочей папки каждого проекта — задать абсолютный путь (раздел 4.2) или общий volume в compose |
+| Worker/web видят разные данные | относительный путь `Data Source=cynosura.db` разрешается от рабочей папки каждого проекта — задать абсолютный путь (раздел 4.2). В systemd-юнитах (§4.7) абсолютный путь уже прописан |
 | Фронт не видит API | проверить `apiBaseUrl` в `assets/config.json` (host dev = `http://localhost:43000`, compose = `http://localhost:5000`) |
 | RabbitMQ: нет соединения | в compose — `rabbitmq://mq`, в host dev — `rabbitmq://localhost`; проверить учётку `Manager`/`Qwerty123!` |
 | `openssl pkcs12` не читает `mycert.pfx` | файл повреждён/закоммичен как текст — перегенерировать (раздел 3), не коммитить `.pfx` |
